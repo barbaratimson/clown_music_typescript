@@ -1,3 +1,8 @@
+import Player from "../Player";
+import React from "react";
+import Navbar from "../Navbar";
+import {Container} from "@mui/material";
+
 
 const Main = () => {
 
@@ -6,9 +11,10 @@ const Main = () => {
     //TODO: Change components structure
 
     return (
-        <>
-
-        </>
+            <div className="main-wrapper">
+                <Navbar/>
+                <Player/>
+            </div>
     )
 }
 
