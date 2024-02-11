@@ -1,7 +1,7 @@
 import Player from "../Player";
 import React from "react";
 import Navbar from "../Navbar";
-import {Container} from "@mui/material";
+import Page from "../Pages";
 
 
 const Main = () => {
@@ -13,6 +13,7 @@ const Main = () => {
     return (
             <div className="main-wrapper">
                 <Navbar/>
+                <Page />
                 <Player/>
             </div>
     )

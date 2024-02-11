@@ -7,20 +7,44 @@ html,body {
 * {
     box-sizing: border-box;
 }
+.main-wrapper {
+    width: 100dvw;
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: 0.05fr 1.95fr;
+    grid-template-rows: 1.75fr 0.25fr;
+    gap: 20px 20px;
+    grid-template-areas:
+    "navbar page"
+    "navbar player";
+    padding: 20px;
+}
 .navbar {
-    width: 40px;
-    margin: 20px;
+    display: flex;
+    flex-direction: column;
     background: rgba(255, 255, 255, 0.04);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
+    grid-area: navbar;
 }
-.button-wrapper {
+.button-wrapper-nav {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
+    gap: 40px;
+}
+.button-wrapper-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    flex-grow: 1;
+    padding-bottom: 10px;
+    gap: 20px;
 }
 
 
@@ -28,9 +52,54 @@ html,body {
     width: fit-content;
     color: white !important;
 }
-
-.main-wrapper {
-    display: flex;
-    width: 100dvw;
-    height: 100dvh;
+.player-primary-button {
+    color: white !important;
+    padding: 0 5px !important;
 }
+.player-primary-button > svg {
+    font-size: 2rem;
+}
+.play > svg {
+    font-size: 2.5rem;
+}
+.play {
+    user-focus: none;
+}
+.page-wrapper {
+    display: flex;
+    grid-area: page;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    padding: 5px 10px;
+
+}
+.player-wrapper {
+    display: flex;
+    flex-direction: row;
+    grid-area: player;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+}
+.player-track-info {
+    width: 30%;
+}
+.player-primary-controls {
+    padding: 10px 0;
+    flex-grow: 1;
+}
+.player-secondary-controls {
+    width: 30%;
+}
+.player-primary-buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
