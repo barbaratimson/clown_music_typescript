@@ -17,7 +17,7 @@ const Player = () => {
     const audioElem = useRef<HTMLAudioElement>(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [position, setPosition] = useState(0)
-    const currentSong = {url:"https://s286myt.storage.yandex.net/get-mp3/43979d3e67f599eae0e59a6e54be731f/000611183ad7a768/rmusic/U2FsdGVkX19zEcMjhrDcEUawGULWR98kCY-s5BNDLZ2HoInsNbQVcC3r_20TY8Xyrln6g8HB8X36gtVZ2CswG6LdpTra-nYh5DIMLOEexm4/40c62d6787ae0140d4ac2a43595bf7e366f9a65dfdb7cc552c5119f281b7027e"}
+    const currentSong = {url:"https://s200iva.storage.yandex.net/get-mp3/bbdb0d554a46b57693640705aff25814/000611846b080229/rmusic/U2FsdGVkX1_LcCjGiSov9LnyCqtN3DhAtjVOzgMEkaWHaRPJ52rpmLI9m4sRZLgkjcGjveY8HljFvhDk51ke_3QBkjCb0xHX6n_rV7CWzRY/bf446e78933de14fc051ed19eeb2f0e87273baa9f874b75d02a4b3f972aaff58"}
     const [songLoading, setIsSongLoading] = useState(false)
     const [duration,setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
@@ -53,10 +53,16 @@ const Player = () => {
     }
 
 
+
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
-    });
+    },[]);
+    useEffect(() => {
+        if (audioElem.current) {
+            audioElem.current.volume = 0.05
+        }
+    }, []);
     return (
         <>
             <div className="player-wrapper">
