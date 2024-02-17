@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {SongT} from "../../utils/types/types";
+import {TrackT} from "../../utils/types/types";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import {Box, IconButton} from "@mui/material";
@@ -9,7 +9,7 @@ import {FastForwardRounded, FastRewindRounded, PauseRounded, PlayArrowRounded} f
 interface PlayerProps {
     playerState: "loading" | "playing" | "error",
     playPause: Function
-    currentSong: SongT
+    currentSong: TrackT
 
 }
 

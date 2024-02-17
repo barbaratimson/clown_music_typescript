@@ -2,11 +2,12 @@ export interface Example {
     example: string
 }
 
-export interface SongT {
+export interface TrackT {
     id: string
     title: string,
     artist: ArtistT,
     url:URL
+    track?:TrackT
 }
 
 export interface ArtistT {
@@ -19,6 +20,14 @@ export interface OwnerT {
 
 }
 
-export interface PlaylistT {
+export interface CoverT {
+    uri:string
+}
 
+export interface PlaylistT {
+    uid: number | string
+    tracks: Array<TrackT>
+    title: string
+    ogImage:string
+    description:string
 }

@@ -7,25 +7,18 @@ html,body {
     box-sizing: border-box;
 }
 .main-wrapper {
-    width: 100dvw;
-    height: 100dvh;
-    display: grid;
-    grid-template-columns: 0.05fr 1.95fr;
-    grid-template-rows: 1.75fr 0.25fr;
-    gap: 20px 20px;
-    grid-template-areas:
-    "navbar page"
-    "navbar player";
-    padding: 20px;
+    display: flex;
+    flex-direction: row;
 }
 .navbar {
+    position: fixed;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background: rgba(255, 255, 255, 0.01);
     border-radius: 16px;
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
-    grid-area: navbar;
 }
 .button-wrapper-nav {
     display: flex;
@@ -66,13 +59,21 @@ html,body {
 .page-wrapper {
     display: flex;
     grid-area: page;
-    padding: 5px 10px;
+    padding: 20px 50px;
 
 }
 .player-wrapper {
     display: flex;
     flex-direction: row;
     grid-area: player;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 16px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    margin: 0 40px;
 }
 .player-track-info {
     width: 30%;
@@ -92,5 +93,16 @@ html,body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.track-wrapper {
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+.songs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
