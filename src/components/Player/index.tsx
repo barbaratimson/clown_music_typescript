@@ -2,9 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {TrackT} from "../../utils/types/types";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import {Box, IconButton} from "@mui/material";
+import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {FastForwardRounded, FastRewindRounded, PauseRounded, PlayArrowRounded} from '@mui/icons-material';
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import axios from "axios";
+import {updateSongLink} from "../../store/CurrentSongSlice";
+import {playerStart, playerStop, setCurrentTime, setIsLoading} from "../../store/PlayerSlice";
 
 interface PlayerProps {
     playerState: "loading" | "playing" | "error",
@@ -13,14 +17,21 @@ interface PlayerProps {
 
 }
 
+const link = process.env.REACT_APP_YMAPI_LINK
+
 const Player = () => {
+    const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [position, setPosition] = useState(0)
-    const currentSong = {url:"https://s200iva.storage.yandex.net/get-mp3/bbdb0d554a46b57693640705aff25814/000611846b080229/rmusic/U2FsdGVkX1_LcCjGiSov9LnyCqtN3DhAtjVOzgMEkaWHaRPJ52rpmLI9m4sRZLgkjcGjveY8HljFvhDk51ke_3QBkjCb0xHX6n_rV7CWzRY/bf446e78933de14fc051ed19eeb2f0e87273baa9f874b75d02a4b3f972aaff58"}
-    const [songLoading, setIsSongLoading] = useState(false)
+    const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const [duration,setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
+    const playerState = useAppSelector((state:RootState)=>state.player)
+    const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
+    const stopPlayerFunc = () => dispatch(playerStop())
+    const startPlayerFunc = () => dispatch(playerStart())
+    const playerSeekTo = (time:number) => dispatch(setCurrentTime(time))
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -52,7 +63,18 @@ const Player = () => {
         }
     }
 
-
+    useEffect(() => {
+        if (!audioElem.current) {
+            return
+        }
+        console.log(playerState)
+        if (!playerState.playing){
+            audioElem.current.pause()
+        } else {
+             audioElem.current.play()
+        }
+        setPosition(playerState.currentTime)
+        }, [playerState]);
 
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
@@ -60,7 +82,7 @@ const Player = () => {
     },[]);
     useEffect(() => {
         if (audioElem.current) {
-            audioElem.current.volume = 0.05
+            audioElem.current.volume = 0.1
         }
     }, []);
     return (
@@ -79,7 +101,7 @@ const Player = () => {
                         <IconButton
                             className="player-primary-button play"
                             aria-label={isPlaying ? 'play' : 'pause'}
-                            onClick={()=>{!isPlaying ? audioElem.current?.play() : audioElem.current?.pause()}}
+                            onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}
                             onKeyDown={(e)=>{e.preventDefault();handleKeyPress(e)}}
                         >
                             {!isPlaying ? (
@@ -92,41 +114,48 @@ const Player = () => {
                             <FastForwardRounded/>
                         </IconButton>
                     </Box>
-                    <Slider
-                        aria-label="time-indicator"
-                        size="small"
-                        value={position}
-                        min={0}
-                        step={1}
-                        max={duration}
-                        onChange={(_, value) => changeTime(value as number)}
-                        sx={{
-                            color: '#fff',
-                            height: 4,
-                            '& .MuiSlider-thumb': {
-                                display: "none",
-                            },
-                            '& .MuiSlider-rail': {
-                                opacity: 0.28,
-                            },
-                        }}
-                    />
+                    {!playerState.loading ? (
+                        <Slider
+                            aria-label="time-indicator"
+                            size="small"
+                            value={position}
+                            min={0}
+                            key={"timeseek"}
+                            step={1}
+                            max={duration}
+                            onChange={(_, value) => changeTime(value as number)}
+                            className="player-seek"
+                            sx={{
+                                color: '#fff',
+                                height: 4,
+                                '& .MuiSlider-thumb': {
+                                    display: "none",
+                                },
+                                '& .MuiSlider-rail': {
+                                    opacity: 0.28,
+                                },
+                            }}
+                        />
+                    ) : (
+                        <LinearProgress />
+                    )}
+
                 </div>
                 <div className="player-secondary-controls">
 
                 </div>
             </div>
             <audio preload={"auto"} crossOrigin="anonymous"
-                   src={currentSong.url} ref={audioElem}
+                   src={playerState.src} ref={audioElem}
                    onLoadStart={() => {
-                       setIsSongLoading(true)
+                       setLoading(true)
                    }}
                    onError={(e) => {
                        setIsPlaying(false);
-                       setIsSongLoading(false)
+                       setLoading(false)
                    }}
                    onCanPlay={() => {
-                       setIsSongLoading(false)
+                       setLoading(false)
                    }} onPlay={() => {
                 setIsPlaying(true)
             }}

@@ -14,6 +14,7 @@ const Navbar = () => {
 
     }
     return (
+        <div className="nav-wrapper">
         <div className="navbar">
             <div className="button-wrapper-nav">
                 <Link to={"/home"}><IconButton className="navbar-button"><HomeIcon/></IconButton></Link>
@@ -25,6 +26,7 @@ const Navbar = () => {
                 <Link to={"/user"}><IconButton className="navbar-button"><PersonIcon/></IconButton></Link>
                 <Link to={"/settings"}><IconButton className="navbar-button"><SettingsIcon/></IconButton></Link>
             </div>
+        </div>
         </div>
     );
 

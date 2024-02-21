@@ -1,18 +1,17 @@
 
 import React from "react";
-import {TrackT} from "../../utils/types/types";
+import {TrackType} from "../../utils/types/types";
+import Track from "../Track/Track";
 
 interface SongsListProps {
-    songs:Array<TrackT>
+    songs: Array<TrackType>
 }
 const SongsList = ({songs}:SongsListProps) => {
 
     return (
         <div className="songs-wrapper">
             {songs ? songs.map((song) => (
-                <div className="track-wrapper" key={song.id}>
-                    {song.track?.title}
-                </div>
+                <Track key={song.id} track={song}/>
             )) : null}
         </div>
     )

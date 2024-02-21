@@ -1,13 +1,35 @@
 export interface Example {
     example: string
 }
+export type ProgressT = "same" | "up" | "down"
+
+export interface ChartPosT {
+        bgColor:string
+        listeners: number
+        position: number
+        progress: ProgressT
+        shift:number
+    }
+
+export interface ChartTrackT {
+    id: number | string
+    chart: ChartPosT
+    track: TrackT
+}
+
+export interface ChartT {
+    chart:PlaylistT,
+    title:string
+}
+
+export type TrackType = TrackT | ChartTrackT
 
 export interface TrackT {
-    id: string
+    id:string | number
     title: string,
     artist: ArtistT,
-    url:URL
-    track?:TrackT
+    url: string
+    ogImage: string
 }
 
 export interface ArtistT {
@@ -26,7 +48,7 @@ export interface CoverT {
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackT>
+    tracks: Array<TrackT> | Array<ChartTrackT>
     title: string
     ogImage:string
     description:string

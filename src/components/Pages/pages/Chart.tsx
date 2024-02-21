@@ -3,12 +3,13 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import SongsList from "../../SongsList";
 import Playlist from "../../Playlist";
+import {ChartT} from "../../../utils/types/types";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Chart = () => {
     const [isLoading,setIsLoading] = useState(true)
-    const [chartResult,setChartResult] = useState<any>()
+    const [chartResult,setChartResult] = useState<ChartT>()
     const fetchChart = async () => {
         setIsLoading(true)
         try {
@@ -25,9 +26,12 @@ const Chart = () => {
     useEffect(()=>{
         fetchChart()
     },[])
+    if (isLoading) return <div>Loading</div>
     return (
         <>
-            <Playlist playlist={chartResult?.chart}/>
+            {chartResult ? (
+                <Playlist playlist={chartResult.chart}/>
+            ):null}
         </>
     )
 }
