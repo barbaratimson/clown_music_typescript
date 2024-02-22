@@ -5,7 +5,7 @@ import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "../../stor
 import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
 import axios from "axios";
 import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
-import {getImageLink} from "../../utils/types/utils";
+import {getImageLink} from "../../utils/utils";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 

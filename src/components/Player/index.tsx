@@ -9,6 +9,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import axios from "axios";
 import {updateSongLink} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading} from "../../store/PlayerSlice";
+import {getImageLink} from "../../utils/utils";
 
 interface PlayerProps {
     playerState: "loading" | "playing" | "error",
@@ -92,11 +93,23 @@ const Player = () => {
     return (
         <>
             <div className="player-wrapper">
-                <div className="player-track-info">
-
+                <div className="player-track-info-wrapper">
+                    <div className="player-track-cover-wrapper">
+                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                    </div>
+                    <div className="player-track-info">
+                        <div className="player-track-info-title">
+                            {currentSong.title}
+                        </div>
+                        <div className="player-track-info-artists-wrapper">
+                            {currentSong.artists.map(artist => (
+                                <div className="player-track-info-artist">{artist.name}</div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 <div className="player-primary-controls">
-                    <Box
+                <Box
                         className="player-primary-buttons-wrapper"
                     >
                         <IconButton className="player-primary-button" aria-label="previous song">
@@ -124,7 +137,6 @@ const Player = () => {
                             size="small"
                             value={position}
                             min={0}
-                            key={"timeseek"}
                             step={1}
                             max={duration}
                             onChange={(_, value) => changeTime(value as number)}

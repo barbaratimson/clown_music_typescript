@@ -52,4 +52,5 @@ export interface PlaylistT {
     title: string
     ogImage:string
     description:string
+    cover:CoverT
 }
