@@ -28,7 +28,7 @@ const playerSlice = createSlice({
         setDuration(state, action) {
             state.duration = action.payload
         },
-        setCurrentTime(state, action) {
+        playerSeekTo(state, action) {
             state.currentTime = action.payload
         },
         playerStop(state) {
@@ -44,5 +44,5 @@ const playerSlice = createSlice({
 })
 
 
-export const { setSrc, setIsLoading,setDuration,setCurrentTime,playerStop,playerStart } = playerSlice.actions
+export const { setSrc, setIsLoading,setDuration,playerSeekTo,playerStop,playerStart } = playerSlice.actions
 export default playerSlice.reducer

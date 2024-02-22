@@ -27,9 +27,9 @@ export type TrackType = TrackT | ChartTrackT
 export interface TrackT {
     id:string | number
     title: string,
-    artist: ArtistT,
+    artists: Array<ArtistT>,
     url: string
-    ogImage: string
+    coverUri: string
 }
 
 export interface ArtistT {

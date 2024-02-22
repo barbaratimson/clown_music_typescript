@@ -5,6 +5,7 @@ html,body {
 }
 * {
     box-sizing: border-box;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
 }
 .main-wrapper {
     display: flex;
@@ -91,7 +92,7 @@ html,body {
     padding: 10px;
         background: rgba(255, 255, 255, 0.01);
         border-radius: 0 16px 16px 16px;
-        backdrop-filter: blur(2.6px);
+        backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(2.6px);
 }
 .player-track-info {
@@ -115,19 +116,76 @@ html,body {
 .player-seek {
     padding: 0 !important;
 }
+.MuiLinearProgress-bar {
+    background-color: white !important;
+    border-radius: 16px;
+}
 
+.MuiLinearProgress-bar {
+    background-color: white !important;
+    border-radius: 16px;
+}
+
+
+.MuiLinearProgress-colorSecondary {
+    color: #f3f2f2 !important;
+}
+
+.MuiLinearProgress-root {
+    background-color: gray !important;
+}
 .track-wrapper {
     display: flex;
     flex-direction: row;
-    color: white;
     width: 100%;
-    height: 70px;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.01);
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
+    transition: all .4s;
 }
+
+.track-cover-wrapper {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.track-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 0 10px;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.track-current {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-5px);
+}
+
+.track-info-artists-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left: 2px;
+}
+.track-info-title {
+}
+.track-info-artist {
+    font-size: 13px;
+}
+.track-info-artist:not(:last-child)::after {
+    content: ",";
+}
+
 .songs-wrapper {
     display: flex;
     flex-direction: column;

@@ -8,7 +8,7 @@ import {FastForwardRounded, FastRewindRounded, PauseRounded, PlayArrowRounded} f
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import axios from "axios";
 import {updateSongLink} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop, setCurrentTime, setIsLoading} from "../../store/PlayerSlice";
+import {playerStart, playerStop, setIsLoading} from "../../store/PlayerSlice";
 
 interface PlayerProps {
     playerState: "loading" | "playing" | "error",
@@ -31,7 +31,7 @@ const Player = () => {
     const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const playerSeekTo = (time:number) => dispatch(setCurrentTime(time))
+    const playerSeekTo = useAppSelector((state:RootState) => state.player.currentTime )
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -67,14 +67,18 @@ const Player = () => {
         if (!audioElem.current) {
             return
         }
-        console.log(playerState)
         if (!playerState.playing){
             audioElem.current.pause()
         } else {
              audioElem.current.play()
         }
-        setPosition(playerState.currentTime)
         }, [playerState]);
+
+    useEffect(() => {
+       if (audioElem.current) {
+           audioElem.current.currentTime = playerSeekTo
+       }
+    }, [playerSeekTo]);
 
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
@@ -100,11 +104,11 @@ const Player = () => {
                         </IconButton>
                         <IconButton
                             className="player-primary-button play"
-                            aria-label={isPlaying ? 'play' : 'pause'}
+                            aria-label={playerState.playing ? 'play' : 'pause'}
                             onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}
                             onKeyDown={(e)=>{e.preventDefault();handleKeyPress(e)}}
                         >
-                            {!isPlaying ? (
+                            {!playerState.playing ? (
                                 <PlayArrowRounded/>
                             ) : (
                                 <PauseRounded/>
@@ -137,7 +141,7 @@ const Player = () => {
                             }}
                         />
                     ) : (
-                        <LinearProgress />
+                        <LinearProgress color="inherit" />
                     )}
 
                 </div>

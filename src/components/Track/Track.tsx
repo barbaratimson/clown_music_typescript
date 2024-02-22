@@ -4,7 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
 import axios from "axios";
-import {playerStart, playerStop, setCurrentTime, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import {getImageLink} from "../../utils/types/utils";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -46,7 +47,7 @@ const TrackInChart = ({track}:TrackInChartProps) => {
     const setPlayerSrc = (link:string) => dispatch(setSrc(link))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const changePlayerTime = (time:number) => dispatch(setCurrentTime(time))
+    const changePlayerTime = (time:number) => dispatch(playerSeekTo(time))
     const setCurrentSong = (track:TrackT) => dispatch(changeCurrentSong(track))
 
     const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
@@ -58,18 +59,22 @@ const TrackInChart = ({track}:TrackInChartProps) => {
             setCurrentSong(song)
             setPlayerSrc(await fetchYaSongLink(song.id))
             startPlayerFunc()
-
         }
 
 
 
     return (
-        <div className="track-wrapper"  onClick={()=>{changeSong(track.track)}}>
+        <div className={`track-wrapper ${currentSong.id == track.track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track.track)}}>
             <div className="track-cover-wrapper">
-
+                <img src={getImageLink(track.track.coverUri,"200x200")} loading="lazy" alt=""/>
             </div>
-            <div className="track-info-wrapper" style={{color:`${currentSong.id === track.track.id ? "red" : "green"}`}}>
-                {track.track.title}
+            <div className="track-info-wrapper">
+                <div className="track-info-title">{track.track.title}</div>
+                <div className="track-info-artists-wrapper">
+                    {track.track.artists.map(artist => (
+                        <div className="track-info-artist">{artist.name}</div>
+                    ))}
+                </div>
             </div>
             <div className="track-controls-wrapper"></div>
         </div>

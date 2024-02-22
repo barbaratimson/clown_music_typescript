@@ -6,7 +6,7 @@ interface currentSongState {
 }
 
 const initialState:currentSongState = {
-    currentSong: {id:0,title:"",artist:{id:"",name:""},url:"",ogImage:""}
+    currentSong: {id:0,title:"",artists:[{id:"",name:""}],url:"",coverUri:""}
 }
 
 
