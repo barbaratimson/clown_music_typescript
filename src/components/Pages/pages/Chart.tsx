@@ -4,6 +4,7 @@ import axios from "axios";
 import SongsList from "../../SongsList";
 import Playlist from "../../Playlist";
 import {ChartT} from "../../../utils/types/types";
+import Loader from "../../Loader";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -26,7 +27,7 @@ const Chart = () => {
     useEffect(()=>{
         fetchChart()
     },[])
-    if (isLoading) return <div>Loading</div>
+    if (isLoading) return <Loader />
     return (
         <>
             {chartResult ? (

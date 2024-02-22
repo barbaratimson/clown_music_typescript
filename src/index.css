@@ -1,16 +1,28 @@
 :root {
     --font-color-main: #ffffff;
+    --bg-color-main: rgba(0, 0, 0, 0.5);
+
 }
 html,body {
     margin: 0;
     padding: 0;
-    background-color: rgb(10, 10, 10);
+    background-color: rgba(10, 10, 10);
     scroll-behavior: smooth;
 }
 * {
     box-sizing: border-box;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
 }
+
+@keyframes opacity {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+
 .main-wrapper {
     display: flex;
     flex-direction: row;
@@ -25,7 +37,7 @@ html,body {
     display: flex;
     flex-direction: column;
     padding: 5px;
-    background: rgba(255, 255, 255, 0.01);
+    background: var(--bg-color-main);
     border-radius: 0 16px 0 0;
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
@@ -69,13 +81,15 @@ html,body {
     margin-left:50px;
     width: 100%;
     padding: 5px;
-    margin-bottom: 70px;
+    margin-bottom: 75px;
 }
+
 .playlist-wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 10px;
+    animation: opacity .8s;
 }
 .playlist-card {
     display: flex;
@@ -116,9 +130,9 @@ html,body {
     bottom: 0;
     width: 100%;
     padding: 10px;
-        background: rgba(255, 255, 255, 0.01);
+        background: var(--bg-color-main);
         border-radius: 0 16px 16px 16px;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(2.6px);
 }
 
@@ -133,8 +147,8 @@ html,body {
 .player-track-info-wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     width: 30%;
+    margin-left: 10px;
 }
 .player-track-info {
     display: flex;
@@ -143,7 +157,7 @@ html,body {
     justify-content: center;
     color: #ffffff;
     font-weight: 500;
-    letter-spacing: 0.5px;
+    width: 100%;
 }
 
 .player-track-info-artists-wrapper {
@@ -151,6 +165,7 @@ html,body {
     flex-direction: row;
     gap: 5px;
     margin-left: 2px;
+    overflow: hidden;
 
 }
 
@@ -159,10 +174,21 @@ html,body {
 }
 .player-track-info-title {
     font-size: 20px;
+    width: 100%;
+    max-height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .player-track-info-artist {
     font-size: 15px;
+    max-height: 20px;
+    width: fit-content;
+    white-space: nowrap;
+}
+.player-track-info-artist:not(:first-child) {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .player-primary-controls {
@@ -263,5 +289,16 @@ html,body {
     flex-direction: column;
     width: 100%;
     gap: 10px;
+}
+
+.loader-wrapper {
+    position: absolute;
+    top: 45%;
+    left: 48%;
+    transform: translate(50%,-50%);
+    z-index: 9999;
+}
+.loader {
+    color: var(--font-color-main) !important;
 }
 

@@ -22,7 +22,7 @@ export interface ChartT {
     title:string
 }
 
-export type TrackType = TrackT | ChartTrackT
+export type TrackType = TrackDefaultT | ChartTrackT
 
 export interface TrackT {
     id:string | number
@@ -30,6 +30,10 @@ export interface TrackT {
     artists: Array<ArtistT>,
     url: string
     coverUri: string
+}
+
+export interface TrackDefaultT {
+    track:TrackT
 }
 
 export interface ArtistT {
@@ -48,7 +52,7 @@ export interface CoverT {
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackT> | Array<ChartTrackT>
+    tracks: Array<TrackDefaultT> | Array<ChartTrackT>
     title: string
     ogImage:string
     description:string

@@ -11,7 +11,7 @@ const SongsList = ({songs}:SongsListProps) => {
     return (
         <div className="songs-wrapper">
             {songs ? songs.map((song) => (
-                <Track key={song.id} track={song}/>
+                <Track key={song.track.id} track={song}/>
             )) : null}
         </div>
     )
