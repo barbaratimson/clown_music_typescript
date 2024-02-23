@@ -30,17 +30,25 @@ const Track = ({track}:TrackProps) => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const changePlayerTime = (time:number) => dispatch(playerSeekTo(time))
-    const setCurrentSong = (track:TrackT) => dispatch(changeCurrentSong(track))
+    const setCurrentSong = (track:TrackType) => dispatch(changeCurrentSong(track))
 
     const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
 
-    const changeSong = async (song:TrackT) => {
-        setLoading(true)
-        stopPlayerFunc()
-        changePlayerTime(0)
-        setCurrentSong(song)
-        setPlayerSrc(await fetchYaSongLink(song.id))
-        startPlayerFunc()
+    const playerState = useAppSelector((state:RootState)=>state.player)
+
+    const changeSong = async (song:TrackType) => {
+        if (song.id != currentSong.id) {
+            setLoading(true)
+            stopPlayerFunc()
+            changePlayerTime(0)
+            setCurrentSong(song)
+            setPlayerSrc(await fetchYaSongLink(song.id))
+            startPlayerFunc()
+        } else if (playerState.playing) {
+            stopPlayerFunc()
+        } else {
+            startPlayerFunc()
+        }
     }
 
 
@@ -54,7 +62,7 @@ const Track = ({track}:TrackProps) => {
                     </div>
                 </div>
             ) : null}
-            <div className={`track-wrapper ${currentSong.id == track.track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track.track)}}>
+            <div className={`track-wrapper ${currentSong.id == track.track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
                     <img src={getImageLink(track.track.coverUri,"200x200")} loading="lazy" alt=""/>
                 </div>

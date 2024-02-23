@@ -23,12 +23,12 @@ const link = process.env.REACT_APP_YMAPI_LINK
 const Player = () => {
     const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
-    const [isPlaying, setIsPlaying] = useState(false)
     const [position, setPosition] = useState(0)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const [duration,setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state:RootState)=>state.player)
+    const queue = useAppSelector((state:RootState) => state.playingQueue.queue.tracks)
     const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
@@ -36,7 +36,9 @@ const Player = () => {
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
-            !isPlaying ? audioElem.current?.play() : audioElem.current?.pause()
+
+            !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
+            console.log(playerState.playing)
         }
     }
     const onPlaying = (e:any) => {
@@ -48,6 +50,7 @@ const Player = () => {
         }
         setBuffered(getBuffered())
     }
+
     const changeTime = (value:number) => {
         if (audioElem.current && audioElem.current.currentTime !== 0) {
             audioElem.current.currentTime=value
@@ -62,6 +65,14 @@ const Player = () => {
                 return (audioElem.current.buffered.end(audioElem.current.buffered.length-1)/audioElem.current.duration)*100
             }
         }
+    }
+
+    const skipBack = () => {
+
+    }
+
+    const skipForward = () => {
+
     }
 
     useEffect(() => {
@@ -86,25 +97,27 @@ const Player = () => {
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
-    },[]);
+    });
+
     useEffect(() => {
         if (audioElem.current) {
-            audioElem.current.volume = 0.1
+            audioElem.current.volume = 0.05
         }
     }, []);
+
     return (
         <>
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                        <img src={getImageLink(currentSong.track.coverUri, "200x200")} loading="lazy" alt=""/>
                     </div>
                     <div className="player-track-info">
                         <div className="player-track-info-title">
-                            {currentSong.title}
+                            {currentSong.track.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
-                            {currentSong.artists.map(artist => (
+                            {currentSong.track.artists.map(artist => (
                                 <div className="player-track-info-artist">{artist.name}</div>
                             ))}
                         </div>
@@ -114,7 +127,7 @@ const Player = () => {
                 <Box
                         className="player-primary-buttons-wrapper"
                     >
-                        <IconButton className="player-primary-button" aria-label="previous song">
+                        <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
                             <FastRewindRounded/>
                         </IconButton>
                         <IconButton
@@ -129,7 +142,7 @@ const Player = () => {
                                 <PauseRounded/>
                             )}
                         </IconButton>
-                        <IconButton className="player-primary-button" aria-label="next song">
+                        <IconButton onClick={skipForward} className="player-primary-button" aria-label="next song">
                             <FastForwardRounded/>
                         </IconButton>
                     </Box>
@@ -169,16 +182,16 @@ const Player = () => {
                        setLoading(true)
                    }}
                    onError={(e) => {
-                       setIsPlaying(false);
+                       stopPlayerFunc()
                        setLoading(false)
                    }}
                    onCanPlay={() => {
                        setLoading(false)
                    }} onPlay={() => {
-                setIsPlaying(true)
+                       startPlayerFunc()
             }}
                    onPause={() => {
-                       setIsPlaying(false)
+                      stopPlayerFunc()
                    }} onEnded={(e) => {
                 // skiptoNext(e)
             }} onTimeUpdate={onPlaying}></audio>

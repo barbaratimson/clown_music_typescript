@@ -1,4 +1,4 @@
-    import React, { useEffect,useRef,useState } from 'react';
+import React from 'react';
 import Player from "../Player";
 import {Box, Button, Container, IconButton} from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home'
@@ -10,9 +10,6 @@ import HomeIcon from '@mui/icons-material/Home'
     import {Link} from "react-router-dom";
 
 const Navbar = () => {
-    const changePage = (e:any) => {
-
-    }
     return (
         <div className="nav-wrapper">
         <div className="navbar">

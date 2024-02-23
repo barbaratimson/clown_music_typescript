@@ -12,7 +12,9 @@ const Playlist = ({playlist}:PlaylistProps) => {
     const dispatch = useAppDispatch()
     const playlistCard = useRef(null)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
-    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist))
+    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist.tracks))
+    const [currentPlaylist,setCurrentPlaylist] = useState<PlaylistT>()
+
 
 
     return (
@@ -30,7 +32,7 @@ const Playlist = ({playlist}:PlaylistProps) => {
                     </div>
                 </div>
             </div>
-            <SongsList songs={playlist.tracks}/>
+            <SongsList playlist={playlist}/>
         </div>
     )
 }

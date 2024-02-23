@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {PlaylistT, TrackT} from "../../../utils/types/types";
@@ -10,7 +9,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 const Collection = () => {
     const [isLoading,setIsLoading] = useState(true)
     const [userTracks,setUserTracks] = useState<PlaylistT>()
-    const fetchYaMudicSongs = async () => {
+    const fetchYaMusicSongs = async () => {
         setIsLoading(true)
         try {
             const response = await axios.get(
@@ -24,7 +23,7 @@ const Collection = () => {
     };
 
     useEffect(()=>{
-        fetchYaMudicSongs()
+        fetchYaMusicSongs()
     },[])
 
     if (isLoading) return <Loader />

@@ -9,6 +9,7 @@ export const store = configureStore({
         CurrentSongStore:CurrentSongSlice,
         player:playerSlice,
         playingQueue:playingQueueSlice,
+        currentPlaylist:CurrentSongSlice
     }
 });
 

@@ -1,12 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {TrackType} from "../utils/types/types";
+import {PlaylistT, TrackType} from "../utils/types/types";
 
 interface QueueState {
-    queue:Array<TrackType>
+    queue:PlaylistT
 }
 
 const initialState:QueueState = {
-    queue:[{id:0,track:{id:0,title:"",artists:[{id:"",name:""}],url:"",coverUri:""}}]
+    queue:{uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""}}
 }
 
 const playingQueueSlice = createSlice({
