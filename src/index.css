@@ -89,7 +89,7 @@ html,body {
     flex-direction: column;
     width: 100%;
     padding: 10px;
-    animation: opacity .8s;
+    animation: opacity .6s;
 }
 .playlist-card {
     display: flex;
@@ -158,6 +158,7 @@ html,body {
     color: #ffffff;
     font-weight: 500;
     width: 100%;
+    animation: opacity .4s;
 }
 
 .player-track-info-artists-wrapper {
@@ -282,6 +283,22 @@ html,body {
 }
 .track-info-artist:not(:last-child)::after {
     content: ",";
+}
+.track-chart-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+.track-chart-position-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px 0 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.track-chart-position {
+    color: var(--font-color-main);
 }
 
 .songs-wrapper {

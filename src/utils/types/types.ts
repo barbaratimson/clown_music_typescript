@@ -1,6 +1,3 @@
-export interface Example {
-    example: string
-}
 export type ProgressT = "same" | "up" | "down"
 
 export interface ChartPosT {
@@ -22,7 +19,11 @@ export interface ChartT {
     title:string
 }
 
-export type TrackType = TrackDefaultT | ChartTrackT
+export type TrackType = {
+    id: number | string,
+    track:TrackT,
+    chart?:ChartT
+}
 
 export interface TrackT {
     id:string | number
@@ -52,7 +53,7 @@ export interface CoverT {
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackDefaultT> | Array<ChartTrackT>
+    tracks: Array<TrackT>
     title: string
     ogImage:string
     description:string

@@ -2,14 +2,18 @@ import React, {useEffect, useRef, useState} from "react";
 import {PlaylistT} from "../../utils/types/types";
 import { getImageLink } from "../../utils/utils";
 import SongsList from "../SongsList";
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import { setQueue } from "../../store/playingQueueSlice";
 
 interface PlaylistProps {
     playlist:PlaylistT
 }
 const Playlist = ({playlist}:PlaylistProps) => {
+    const dispatch = useAppDispatch()
     const playlistCard = useRef(null)
-    const [playlistCardHeightOffset, setPlaylistCardHeightOffset] = useState(0)
-    const [playlistCardSticky, setPlaylistCardSticky] = useState(false)
+    const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
+    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist))
+
 
     return (
         <div className="playlist-wrapper">

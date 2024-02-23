@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import {TrackT} from "../utils/types/types";
+import {TrackT, TrackType} from "../utils/types/types";
 
 interface currentSongState {
-    currentSong: TrackT
+    currentSong: TrackType
 }
 
 const initialState:currentSongState = {
-    currentSong: {id:0,title:"",artists:[{id:"",name:""}],url:"",coverUri:""}
+    currentSong: {id:0,track:{id:0,title:"",artists:[{id:"",name:""}],url:"",coverUri:""}}
 }
 
 
@@ -18,7 +18,7 @@ const CurrentSongSlice = createSlice({
             state.currentSong = action.payload
         },
         updateSongLink(state,action) {
-            state.currentSong.url = action.payload
+            state.currentSong.track.url = action.payload
         }
     }
 })

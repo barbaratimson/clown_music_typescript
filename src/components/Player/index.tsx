@@ -71,7 +71,9 @@ const Player = () => {
         if (!playerState.playing){
             audioElem.current.pause()
         } else {
-             audioElem.current.play()
+             audioElem.current.play().catch((e)=>{
+                 console.warn(e)
+             })
         }
         }, [playerState]);
 
@@ -93,7 +95,7 @@ const Player = () => {
     return (
         <>
             <div className="player-wrapper">
-                <div className="player-track-info-wrapper">
+                <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
                         <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
                     </div>
