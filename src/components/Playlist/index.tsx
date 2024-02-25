@@ -1,20 +1,20 @@
 import React, {useEffect, useRef, useState} from "react";
 import {PlaylistT} from "../../utils/types/types";
-import { getImageLink } from "../../utils/utils";
+import {getImageLink} from "../../utils/utils";
 import SongsList from "../SongsList";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import { setQueue } from "../../store/playingQueueSlice";
+import {setQueue} from "../../store/playingQueueSlice";
 
 interface PlaylistProps {
-    playlist:PlaylistT
+    playlist: PlaylistT
 }
-const Playlist = ({playlist}:PlaylistProps) => {
+
+const Playlist = ({playlist}: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const playlistCard = useRef(null)
-    const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
-    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist.tracks))
-    const [currentPlaylist,setCurrentPlaylist] = useState<PlaylistT>()
-
+    const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
+    const setPlayingQueue = (playlist: PlaylistT) => dispatch(setQueue(playlist.tracks))
+    const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistT>()
 
 
     return (

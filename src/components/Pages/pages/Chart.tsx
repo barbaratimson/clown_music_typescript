@@ -26,7 +26,9 @@ const Chart = () => {
     useEffect(()=>{
         fetchChart()
     },[])
+
     if (isLoading) return <Loader />
+
     return (
         <>
             {chartResult ? (

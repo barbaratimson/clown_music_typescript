@@ -7,22 +7,11 @@ import axios from "axios";
 import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 
-const link = process.env.REACT_APP_YMAPI_LINK
 
 interface TrackProps {
     track : TrackType
 }
 
-const fetchYaSongLink = async (id:string | number) => {
-    try {
-        const response = await axios.get(
-            `${link}/ya/tracks/${id}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-        return response.data
-    } catch (err) {
-        console.error('Ошибка при получении списка треков:', err);
-        console.log(err)
-    }
-};
 const Track = ({track}:TrackProps) => {
     const dispatch = useAppDispatch()
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
@@ -38,12 +27,7 @@ const Track = ({track}:TrackProps) => {
 
     const changeSong = async (song:TrackType) => {
         if (song.id != currentSong.id) {
-            setLoading(true)
-            stopPlayerFunc()
-            changePlayerTime(0)
             setCurrentSong(song)
-            setPlayerSrc(await fetchYaSongLink(song.id))
-            startPlayerFunc()
         } else if (playerState.playing) {
             stopPlayerFunc()
         } else {

@@ -10,7 +10,7 @@ interface SongsListProps {
 }
 const SongsList = ({playlist}:SongsListProps) => {
     const dispatch = useAppDispatch()
-    const setPlayingQueue = (songs:PlaylistT) => dispatch(setQueue(songs))
+    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist))
     const changeCurrentQueue = () => {
         setPlayingQueue(playlist)
     }

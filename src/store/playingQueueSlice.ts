@@ -19,9 +19,15 @@ const playingQueueSlice = createSlice({
         addTrackToQueue(state, action) {
             // position, track
         },
-        changeTrackPosition(state, action) {
-
+        removeTrackFromQueue(state,action) {
+            state.queue.tracks = state.queue.tracks.filter(track => track.id !== action.payload.id)
         },
+        changeTrackPosition(state,action){
+            // @ts-ignore
+            state.queue.tracks.move = function(from = action.payload.from, to = action.payload.to) {
+                this.splice(to, 0, this.splice(from, 1)[0]);
+            };
+        }
     }
 })
 
