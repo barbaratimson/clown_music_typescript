@@ -92,15 +92,18 @@ html,body {
     flex-grow: 1;
     justify-content: start;
     margin-left: 20px;
-    color: gray !important;
-}
-
-.player-primary-button.shuffle.active {
     color: white !important;
 }
 
+.player-primary-button.shuffle.active > svg{
+    color: black !important;
+    background-color: white;
+}
+
 .player-primary-buttons-wrapper .shuffle > svg{
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    transition: all .4s;
+    border-radius: 6px;
 }
 
 
@@ -109,12 +112,39 @@ html,body {
     flex-grow: 1;
     justify-content: end;
     margin-right: 20px;
+    color: white !important;
+}
+
+.player-primary-button.repeat.active > svg{
+    color: black !important;
+    background-color: white;
 }
 
 .player-primary-buttons-wrapper .repeat > svg{
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    transition: all .4s;
+    border-radius: 6px;
 }
 
+.player-primary-seek-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+.player-loader {
+    width: 100%;
+}
+
+.player-primary-trackTime {
+    text-align: center;
+    padding: 0 5px;
+    margin-bottom: 2px;
+    color:white;
+    font-size: 12px;
+    font-weight: 400;
+    min-width: 30px;
+}
 
 .page-wrapper {
     display: flex;
@@ -231,11 +261,25 @@ html,body {
     flex-direction: column;
     justify-self: center;
     flex-grow: 2;
-    gap: 10px;
 }
 .player-secondary-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30%;
 }
+
+.player-volume-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    color: white !important;
+    gap: 10px;
+}
+
+
 .player-primary-buttons-wrapper {
     display: flex;
     flex-direction: row;

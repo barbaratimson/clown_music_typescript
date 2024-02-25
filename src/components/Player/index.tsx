@@ -10,23 +10,14 @@ import {
     PauseRounded,
     PlayArrowRounded,
     Repeat,
-    Shuffle
+    Shuffle, VolumeDown,
+    VolumeMute, VolumeOff, VolumeUp
 } from '@mui/icons-material';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import axios from "axios";
 import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
 import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
-import { fetchYaSongLink } from '../../utils/apiRequests';
-
-interface PlayerProps {
-    playerState: "loading" | "playing" | "error",
-    playPause: Function
-    currentSong: TrackT
-
-}
-
-const link = process.env.REACT_APP_YMAPI_LINK
+import {fetchYaSongLink} from '../../utils/apiRequests';
 
 const Player = () => {
     const dispatch = useAppDispatch()
@@ -36,15 +27,19 @@ const Player = () => {
     const [duration, setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
-    const [playerShuffle,setPlayerShuffle] = useState(false)
+    const [playerShuffle, setPlayerShuffle] = useState(false)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue)
-    const changePlayerTime = (time:number) => dispatch(playerSeekTo(time))
-    const setPlayerSrc = (link:string) => dispatch(setSrc(link))
+    const [playerVolume, setPlayerVolume] = useState(50)
+    const [playerRepeat, setPlayerRepeat] = useState(false)
+
+    const volumeMultiplier = 0.5
+    const changePlayerTime = (time: number) => dispatch(playerSeekTo(time))
+    const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const playerSeekToTime = useAppSelector((state: RootState) => state.player.currentTime)
-    const setCurrentSong = (track:TrackType) => dispatch(changeCurrentSong(track))
+    const setCurrentSong = (track: TrackType) => dispatch(changeCurrentSong(track))
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -81,38 +76,23 @@ const Player = () => {
 
     const skipBack = () => {
         const index = queue.tracks.findIndex(x => x.id == currentSong.id);
-        if (index !== 0) {
+        if (!audioElem.current) return
+        if (audioElem.current.currentTime >= 10) {
+            audioElem.current.currentTime = 0
+        } else if (index !== 0) {
             setCurrentSong(queue.tracks[index + -1])
         } else {
             changePlayerTime(0)
             console.log(playerSeekToTime)
         }
     }
-    // const skipBack = () => {
-    //     if (!isSongLoading && currentSongs.length !== 0) {
-    //         if (audioElem.current.currentTime >= 3) {
-    //             audioElem.current.currentTime = 0
-    //         } else if (playerRepeat && audioElem.current.currentTime === currentSong.duration) {
-    //             audioElem.current.currentTime = 0
-    //             audioElem.current.play()
-    //         } else if (playerRandom) {
-    //             audioElem.current.src = ""
-    //             setCurrentSong(prevSong)
-    //         } else {
-    //             const index = currentSongs.findIndex(x => String(x.id) === String(currentSong.id));
-    //             if (index !== 0) {
-    //                 audioElem.current.src = ""
-    //                 setCurrentSong(currentSongs[index - 1])
-    //             } else {
-    //                 audioElem.current.currentTime = 0
-    //             }
-    //         }
-    //     }
-    // }
-
     const skipForward = () => {
         const index = queue.tracks.findIndex(x => x.id == currentSong.id);
-        if (playerShuffle) {
+        if (!audioElem.current) return
+        if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration) {
+            audioElem.current.currentTime = 0
+            startPlayerFunc()
+        } else if (playerShuffle) {
             let randomSong = () => (Math.random() * (queue.tracks.length + 1)) << 0
             let newSongId = randomSong()
             if (queue.tracks[newSongId] === currentSong) {
@@ -121,44 +101,21 @@ const Player = () => {
                 setCurrentSong(queue.tracks[newSongId])
             }
         } else if (index === queue.tracks.length - 1) {
-                       setCurrentSong(queue.tracks[0])
-                    } else {
-                        setCurrentSong(queue.tracks[index + 1])
-                    }
+            setCurrentSong(queue.tracks[0])
+        } else {
+            setCurrentSong(queue.tracks[index + 1])
+        }
     }
 
-    // const skipForward = () => {
-    // try {
-    //     if (!isSongLoading && currentSongs.length !== 0) {
-    //         if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration) {
-    //             audioElem.current.currentTime = 0
-    //             audioElem.current.play()
-    //         } else if (playerRandom) {
-    //             setPrevSong(currentSong)
-    //             audioElem.current.src = ""
-    //             let randomSong = () => (Math.random() * (currentSongs.length + 1)) << 0
-    //             let newSongId = randomSong()
-    //             if (currentSong.id === currentSongs[newSongId].id) {
-    //                 setCurrentSong(currentSongs[randomSong()])
-    //             } else {
-    //                 setCurrentSong(currentSongs[newSongId])
-    //             }
-    //         } else {
-    //             const index = currentSongs.findIndex(x => x.title === currentSong.title);
-    //             setPrevSong(currentSong)
-    //             if (index === currentSongs.length - 1) {
-    //                 audioElem.current.src = ""
-    //                 setCurrentSong(currentSongs[0])
-    //             } else {
-    //                 audioElem.current.src = ""
-    //                 setCurrentSong(currentSongs[index + 1])
-    //             }
-    //         }
-    //     }
-    // } catch (e) {
-    //     console.log(e)
-    //     setCurrentSong(prevSong)
-    // }
+    function secToMinutesAndSeconds(time:number | undefined) {
+        if (time){
+            const minutes = Math.floor(time / 60);
+            const seconds = Math.floor(time - minutes * 60);
+            return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
+        } else {
+            return '-:-'
+        }
+    }
 
     useEffect(() => {
         if (!audioElem.current) {
@@ -196,9 +153,9 @@ const Player = () => {
 
     useEffect(() => {
         if (audioElem.current) {
-            audioElem.current.volume = 0.05
+            audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
         }
-    }, []);
+    }, [playerVolume]);
 
     return (
         <>
@@ -222,7 +179,10 @@ const Player = () => {
                     <Box
                         className="player-primary-buttons-wrapper"
                     >
-                        <div className={`player-primary-button shuffle ${playerShuffle ? "active" : ""}`} onClick={()=>{setPlayerShuffle(!playerShuffle)}}><Shuffle /></div>
+                        <div className={`player-primary-button shuffle ${playerShuffle ? "active" : ""}`}
+                             onClick={() => {
+                                 setPlayerShuffle(!playerShuffle)
+                             }}><Shuffle/></div>
                         <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
                             <FastRewindRounded/>
                         </IconButton>
@@ -246,36 +206,78 @@ const Player = () => {
                         <IconButton onClick={skipForward} className="player-primary-button" aria-label="next song">
                             <FastForwardRounded/>
                         </IconButton>
-                        <div className="player-primary-button repeat" style={{color:`${playerShuffle ? "white" : ""}`}} onClick={()=>{setPlayerShuffle(!playerShuffle)}}><Repeat/></div>
+                        <div className={`player-primary-button repeat ${playerRepeat ? "active" : ""}`}
+                             onClick={() => {
+                                 setPlayerRepeat(!playerRepeat)
+                             }}><Repeat /></div>
                     </Box>
-                    {!playerState.loading ? (
-                        <Slider
-                            aria-label="time-indicator"
-                            size="small"
-                            value={position}
-                            min={0}
-                            step={1}
-                            max={duration}
-                            onChange={(_, value) => changeTime(value as number)}
-                            className="player-seek"
-                            sx={{
-                                color: '#fff',
-                                height: 4,
-                                '& .MuiSlider-thumb': {
-                                    display: "none",
-                                },
-                                '& .MuiSlider-rail': {
-                                    opacity: 0.28,
-                                },
-                            }}
-                        />
-                    ) : (
-                        <LinearProgress color="inherit"/>
-                    )}
+                    <div className="player-primary-seek-wrapper">
 
+                        <div className="player-primary-trackTime">
+                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
+                        </div>
+                        {!playerState.loading ? (
+                            <Slider
+                                aria-label="time-indicator"
+                                size="small"
+                                value={position}
+                                min={0}
+                                step={1}
+                                max={duration}
+                                onChange={(_, value) => changeTime(value as number)}
+                                className="player-seek"
+                                sx={{
+                                    color: '#fff',
+                                    height: 4,
+                                    '& .MuiSlider-thumb': {
+                                        display: "none",
+                                    },
+                                    '& .MuiSlider-rail': {
+                                        opacity: 0.28,
+                                    },
+                                }}
+                                valueLabelDisplay="auto"/>
+                        ) : (
+                            <LinearProgress className="player-loader" color="inherit"/>
+                        )}
+                        <div className="player-primary-trackTime">
+                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
+                        </div>
+                    </div>
                 </div>
                 <div className="player-secondary-controls">
-
+                <div className="player-volume-wrapper">
+                        {playerVolume === 0 ? (
+                            <VolumeOff/>
+                        ) : playerVolume <= 33 ? (
+                            <VolumeMute/>
+                        ) : playerVolume <= 66 ? (
+                            <VolumeDown/>
+                        ) : playerVolume <= 100 ? (
+                            <VolumeUp/>
+                        ) : null}
+                        <Slider size="small"
+                                value={playerVolume}
+                                max={100}
+                                step={1}
+                                onChange={(_, value) => setPlayerVolume(value as number)}
+                                className="player-seek"
+                                sx={{
+                                    color: '#fff',
+                                    height: 4,
+                                    '& .MuiSlider-track': {
+                                        border: 'none',
+                                    },
+                                    '& .MuiSlider-thumb': {
+                                        '&::before': {
+                                            boxShadow: 'none',
+                                        },
+                                        '&:hover, &.Mui-focusVisible, &.Mui-active': {
+                                            boxShadow: 'none',
+                                        },
+                                }}}
+                                aria-label="Default" valueLabelDisplay="auto"/>
+                    </div>
                 </div>
             </div>
             <audio preload={"auto"} crossOrigin="anonymous"
@@ -295,7 +297,7 @@ const Player = () => {
                    onPause={() => {
                        stopPlayerFunc()
                    }} onEnded={(e) => {
-                        skipForward()
+                skipForward()
             }} onTimeUpdate={onPlaying}></audio>
         </>
     )
