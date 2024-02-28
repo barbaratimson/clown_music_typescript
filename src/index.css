@@ -23,6 +23,19 @@ html,body {
     }
 }
 
+@keyframes bubble-out {
+    0%{
+        scale: 1;
+    }
+    50%{
+        scale: 0.9;
+    }
+    100%{
+        scale: 1;
+    }
+
+}
+
 @keyframes translate {
     0%{
         transform: translate(-200px);
@@ -85,13 +98,14 @@ html,body {
 }
 .player-primary-buttons-wrapper .play {
     user-focus: none;
+    animation: opacity .4s !important;
 }
 
 .player-primary-buttons-wrapper .shuffle {
     display: flex;
     flex-grow: 1;
-    justify-content: start;
-    margin-left: 20px;
+    justify-content: center;
+    align-items: center;
     color: white !important;
 }
 
@@ -110,8 +124,8 @@ html,body {
 .player-primary-buttons-wrapper .repeat {
     display: flex;
     flex-grow: 1;
-    justify-content: end;
-    margin-right: 20px;
+    justify-content: center;
+    align-items: center;
     color: white !important;
 }
 
@@ -138,7 +152,6 @@ html,body {
 
 .player-primary-trackTime {
     text-align: center;
-    padding: 0 5px;
     margin-bottom: 2px;
     color:white;
     font-size: 12px;
@@ -209,6 +222,7 @@ html,body {
 }
 
 .player-track-cover-wrapper {
+    position: relative;
     display: flex;
     min-width: 60px;
     height: 60px;
@@ -223,7 +237,7 @@ html,body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    animation: opacity .4s;
+    animation: translate .2s ease-in-out;
 }
 .player-track-info {
     display: flex;
@@ -324,6 +338,7 @@ html,body {
     transition: all .2s;
 }
 .track-cover-wrapper {
+    position: relative;
     display: flex;
     align-self: center;
     justify-self: center;
@@ -383,6 +398,38 @@ html,body {
 
 .track-chart-position {
     color: var(--font-color-main);
+}
+.track-wrapper:hover .track-playing-status {
+    opacity: 1;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.track-playing-status > svg {
+    color: var(--font-color-main) !important;
+    stroke: black;
+    stroke-width: 0.2px;
+    animation: opacity .4s;
+}
+
+.track-current-playing {
+    animation: bubble-out 1s ease-in-out infinite !important;
+}
+
+.track-playing-status {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all .4s;
+    background: rgba(40, 40, 40, 0.3);
+}
+.track-playing-status.show {
+    opacity: 1;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .songs-wrapper {

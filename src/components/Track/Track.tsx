@@ -6,6 +6,7 @@ import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
 import axios from "axios";
 import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
+import {MusicNote, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 
 
 interface TrackProps {
@@ -48,7 +49,16 @@ const Track = ({track}:TrackProps) => {
             ) : null}
             <div className={`track-wrapper ${currentSong.id == track.track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
-                    <img src={getImageLink(track.track.coverUri,"200x200")} loading="lazy" alt=""/>
+                    <div className={`track-playing-status ${currentSong.id == track.track.id ? "show" : ""}`}>
+                        {currentSong.id != track.track.id ? (
+                            <PlayArrowRounded/>
+                        ) : playerState.playing ? (
+                            <MusicNote className="track-current-playing" />
+                            ) : (
+                            <PauseRounded/>
+                        )}
+                    </div>
+                    <img src={getImageLink(track.track.coverUri, "200x200")} loading="lazy" alt=""/>
                 </div>
                 <div className="track-info-wrapper">
                     <div className="track-info-title">{track.track.title}</div>

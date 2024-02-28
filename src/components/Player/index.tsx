@@ -133,6 +133,7 @@ const Player = () => {
         const changeTrack = async () => {
             setLoading(true)
             stopPlayerFunc()
+            setPlayerSrc("")
             changePlayerTime(0)
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
             startPlayerFunc()
@@ -169,7 +170,7 @@ const Player = () => {
                             {currentSong.track.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
-                            {currentSong.track.artists.map(artist => (
+                        {currentSong.track.artists.map(artist => (
                                 <div className="player-track-info-artist">{artist.name}</div>
                             ))}
                         </div>
@@ -247,7 +248,7 @@ const Player = () => {
                 </div>
                 <div className="player-secondary-controls">
                 <div className="player-volume-wrapper">
-                        {playerVolume === 0 ? (
+                            {playerVolume === 0 ? (
                             <VolumeOff/>
                         ) : playerVolume <= 33 ? (
                             <VolumeMute/>
