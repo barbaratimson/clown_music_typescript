@@ -38,7 +38,7 @@ html,body {
 
 @keyframes translate {
     0%{
-        transform: translate(-200px);
+        transform: translate(-250px);
     }
     100%{
         transform: translate(0);
@@ -237,7 +237,7 @@ html,body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    animation: translate .2s ease-in-out;
+    animation: translate .3s ease;
 }
 .player-track-info {
     display: flex;
