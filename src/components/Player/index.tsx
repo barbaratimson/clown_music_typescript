@@ -32,7 +32,7 @@ const Player = () => {
     const playerState = useAppSelector((state: RootState) => state.player)
     const [playerShuffle, setPlayerShuffle] = useState<boolean>(savedShuffle === "true")
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue)
-    const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
+    const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
     const [playerRepeat, setPlayerRepeat] = useState<boolean>(savedRepeat === "true")
 
     const volumeMultiplier = 0.5
@@ -135,7 +135,6 @@ const Player = () => {
     useEffect(() => {
         const changeTrack = async () => {
             setLoading(true)
-            stopPlayerFunc()
             setPlayerSrc("")
             changePlayerTime(0)
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
@@ -169,6 +168,11 @@ const Player = () => {
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerShuffle.toString())
     }, [playerShuffle]);
+
+    // TODO: Debug loading and playing state
+    useEffect(() => {
+        console.log(playerState.loading)
+    });
 
     return (
         <>
