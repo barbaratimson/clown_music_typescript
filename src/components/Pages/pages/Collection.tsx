@@ -3,6 +3,7 @@ import axios from "axios";
 import {PlaylistT, TrackT} from "../../../utils/types/types";
 import Playlist from "../../Playlist";
 import Loader from "../../Loader";
+import SongsList from "../../SongsList";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -29,11 +30,13 @@ const Collection = () => {
     if (isLoading) return <Loader />
 
     return (
-        <>
-            {userTracks ? (
-                <Playlist playlist={userTracks}/>
-            ) : null}
-        </>
+            <div className="collection-wrapper">
+                <div className="collection-title">Коллекция</div>
+                <div className="collection-user-tracks"></div>
+                {userTracks ? (
+                    <SongsList playlist={userTracks}/>
+                ) : null}
+            </div>
     )
 }
 

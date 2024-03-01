@@ -135,10 +135,10 @@ const Player = () => {
     useEffect(() => {
         const changeTrack = async () => {
             setLoading(true)
+            stopPlayerFunc()
             setPlayerSrc("")
             changePlayerTime(0)
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
-            startPlayerFunc()
         }
         changeTrack()
     }, [currentSong]);
@@ -308,6 +308,7 @@ const Player = () => {
                    }}
                    onCanPlay={() => {
                        setLoading(false)
+                       startPlayerFunc()
                    }} onPlay={() => {
                 startPlayerFunc()
             }}

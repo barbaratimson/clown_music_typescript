@@ -491,3 +491,16 @@ html,body {
     color: var(--font-color-main) !important;
 }
 
+.collection-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.collection-user-tracks {
+    display:grid;
+
+}
+
