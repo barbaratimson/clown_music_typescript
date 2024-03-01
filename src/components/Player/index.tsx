@@ -19,6 +19,9 @@ import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../..
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
 
+const savedVolume = localStorage.getItem("player_volume")
+const savedRepeat = localStorage.getItem("player_repeat")
+const savedShuffle = localStorage.getItem("player_shuffle")
 const Player = () => {
     const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
@@ -27,10 +30,10 @@ const Player = () => {
     const [duration, setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
-    const [playerShuffle, setPlayerShuffle] = useState(false)
+    const [playerShuffle, setPlayerShuffle] = useState<boolean>(savedShuffle === "true")
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue)
-    const [playerVolume, setPlayerVolume] = useState(50)
-    const [playerRepeat, setPlayerRepeat] = useState(false)
+    const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
+    const [playerRepeat, setPlayerRepeat] = useState<boolean>(savedRepeat === "true")
 
     const volumeMultiplier = 0.5
     const changePlayerTime = (time: number) => dispatch(playerSeekTo(time))
@@ -156,7 +159,16 @@ const Player = () => {
         if (audioElem.current) {
             audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
         }
+        localStorage.setItem("player_volume",playerVolume.toString())
     }, [playerVolume]);
+
+    useEffect(() => {
+        localStorage.setItem("player_repeat", playerRepeat.toString())
+    }, [playerRepeat]);
+
+    useEffect(() => {
+        localStorage.setItem("player_shuffle", playerShuffle.toString())
+    }, [playerShuffle]);
 
     return (
         <>
