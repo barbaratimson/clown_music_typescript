@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 
-const link = "http://localhost:5051"
+const link = process.env.REACT_APP_YMAPI_LINK
 const token = localStorage.getItem("Authorization")
 const [localUserId, localAccessToken] = token ? token.split(":") : []
 const User = () => {
@@ -14,7 +14,6 @@ const User = () => {
         try {
             const response = await axios.get(
                 `${link}/ya/user`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
-            console.log(response.data)
             setUserData(response.data)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);

@@ -6,7 +6,9 @@ import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
 import axios from "axios";
 import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
-import {MusicNote, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import {MusicNote, PauseRounded, PlayArrowOutlined, PlayArrowRounded} from "@mui/icons-material";
+import CircularProgress from "@mui/material/CircularProgress";
+import EqualizerIcon from "../../assets/EqualizerIcon";
 
 
 interface TrackProps {
@@ -53,7 +55,7 @@ const Track = ({track}:TrackProps) => {
                         {currentSong.id != track.track.id ? (
                             <PlayArrowRounded/>
                         ) : playerState.playing ? (
-                            <MusicNote className="track-current-playing" />
+                            <EqualizerIcon/>
                             ) : (
                             <PauseRounded/>
                         )}
