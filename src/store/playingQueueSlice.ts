@@ -6,7 +6,7 @@ interface QueueState {
 }
 
 const initialState:QueueState = {
-    queue:{uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""}}
+    queue:{uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""},available:true,owner:{uid:0,name:"",verified:false},kind:0}
 }
 
 const playingQueueSlice = createSlice({

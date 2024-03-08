@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackType} from "../../utils/types/types";
+import {TrackT, TrackType} from "../../utils/types/types";
 import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {
@@ -38,7 +38,7 @@ const Player = () => {
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const setCurrentSong = (track: TrackType) => dispatch(changeCurrentSong(track))
+    const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -139,7 +139,6 @@ const Player = () => {
         changeTrack()
     }, [currentSong]);
 
-
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
@@ -165,14 +164,14 @@ const Player = () => {
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.track.coverUri, "200x200")} loading="lazy" alt=""/>
+                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
                     </div>
                     <div className="player-track-info">
                         <div className="player-track-info-title">
-                            {currentSong.track.title}
+                            {currentSong.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
-                        {currentSong.track.artists.map(artist => (
+                        {currentSong.artists.map(artist => (
                                 <div className="player-track-info-artist">{artist.name}</div>
                             ))}
                         </div>
@@ -183,9 +182,9 @@ const Player = () => {
                         className="player-primary-buttons-wrapper"
                     >
                         <div className={`player-primary-button shuffle ${playerShuffle ? "active" : ""}`}
-                             onClick={() => {
-                                 setPlayerShuffle(!playerShuffle)
-                             }}><Shuffle/></div>
+                             ><Shuffle onClick={() => {
+                            setPlayerShuffle(!playerShuffle)
+                        }}/></div>
                         <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
                             <FastRewindRounded/>
                         </IconButton>
@@ -211,9 +210,9 @@ const Player = () => {
                             <FastForwardRounded/>
                         </IconButton>
                         <div className={`player-primary-button repeat ${playerRepeat ? "active" : ""}`}
-                             onClick={() => {
-                                 setPlayerRepeat(!playerRepeat)
-                             }}><Repeat /></div>
+                             ><Repeat onClick={() => {
+                            setPlayerRepeat(!playerRepeat)
+                        }}/></div>
                     </Box>
                     <div className="player-primary-seek-wrapper">
 

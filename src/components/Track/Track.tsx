@@ -12,8 +12,10 @@ import EqualizerIcon from "../../assets/EqualizerIcon";
 
 
 interface TrackProps {
-    track : TrackType
+    track : TrackT
 }
+
+const link = process.env.REACT_APP_YMAPI_LINK
 
 const Track = ({track}:TrackProps) => {
     const dispatch = useAppDispatch()
@@ -22,13 +24,13 @@ const Track = ({track}:TrackProps) => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const changePlayerTime = (time:number) => dispatch(playerSeekTo(time))
-    const setCurrentSong = (track:TrackType) => dispatch(changeCurrentSong(track))
+    const setCurrentSong = (track:TrackT) => dispatch(changeCurrentSong(track))
 
     const setLoading = (loading:boolean) => dispatch(setIsLoading(loading))
 
     const playerState = useAppSelector((state:RootState)=>state.player)
 
-    const changeSong = async (song:TrackType) => {
+    const changeSong = async (song:TrackT) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song)
         } else if (playerState.playing) {
@@ -37,8 +39,6 @@ const Track = ({track}:TrackProps) => {
             startPlayerFunc()
         }
     }
-
-
 
     return (
         <div className="track-chart-wrapper">
@@ -49,10 +49,10 @@ const Track = ({track}:TrackProps) => {
                     </div>
                 </div>
             ) : null}
-            <div className={`track-wrapper ${currentSong.id == track.track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
+            <div className={`track-wrapper ${currentSong.id == track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
-                    <div className={`track-playing-status ${currentSong.id == track.track.id ? "show" : ""}`}>
-                        {currentSong.id != track.track.id ? (
+                    <div className={`track-playing-status ${currentSong.id == track.id ? "show" : ""}`}>
+                        {currentSong.id != track.id ? (
                             <PlayArrowRounded/>
                         ) : playerState.playing ? (
                             <EqualizerIcon/>
@@ -60,12 +60,12 @@ const Track = ({track}:TrackProps) => {
                             <PauseRounded/>
                         )}
                     </div>
-                    <img src={getImageLink(track.track.coverUri, "200x200")} loading="lazy" alt=""/>
+                    <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                 </div>
                 <div className="track-info-wrapper">
-                    <div className="track-info-title">{track.track.title}</div>
+                    <div className="track-info-title">{track.title}</div>
                     <div className="track-info-artists-wrapper">
-                        {track.track.artists.map(artist => (
+                        {track.artists.map(artist => (
                             <div className="track-info-artist">{artist.name}</div>
                         ))}
                     </div>

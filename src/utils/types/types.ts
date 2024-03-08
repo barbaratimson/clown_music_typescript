@@ -1,3 +1,5 @@
+import exp from "constants";
+
 export type ProgressT = "same" | "up" | "down"
 
 export interface ChartPosT {
@@ -13,6 +15,11 @@ export interface ChartTrackT {
     chart: ChartPosT
     track: TrackT
 }
+
+export interface GeneratedPlaylistT {
+    data:PlaylistT
+}
+
 
 export interface ChartT {
     chart:PlaylistT,
@@ -31,6 +38,7 @@ export interface TrackT {
     artists: Array<ArtistT>,
     url: string
     coverUri: string
+    chart:ChartPosT
 }
 
 export interface TrackDefaultT {
@@ -43,8 +51,9 @@ export interface ArtistT {
 }
 
 export interface OwnerT {
-
-
+    name:string
+    uid:number
+    verified: boolean
 }
 
 export interface CoverT {
@@ -53,9 +62,12 @@ export interface CoverT {
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackType>
+    tracks: Array<TrackT>
     title: string
     ogImage:string
     description:string
     cover:CoverT
+    available: boolean
+    owner: OwnerT
+    kind:number
 }

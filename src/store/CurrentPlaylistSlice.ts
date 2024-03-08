@@ -6,7 +6,7 @@ interface currentPlaylistState {
 }
 
 const initialState:currentPlaylistState = {
-    playlist: {uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""}}
+    playlist: {uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""},available:true,owner:{uid:0,name:"",verified:false},kind:1}
 }
 
 

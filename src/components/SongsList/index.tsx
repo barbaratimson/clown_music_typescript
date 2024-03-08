@@ -5,6 +5,8 @@ import Track from "../Track/Track";
 import {setQueue} from "../../store/playingQueueSlice";
 import {useAppDispatch} from "../../store";
 
+
+
 interface SongsListProps {
     playlist: PlaylistT
 }
@@ -16,9 +18,9 @@ const SongsList = ({playlist}:SongsListProps) => {
     }
     return (
         <div className="songs-wrapper">
-            {playlist.tracks ? playlist.tracks.map((song) => (
+            {playlist ? playlist.tracks.map((song) => (
                 <div onClick={changeCurrentQueue}>
-                <Track key={song.track.id} track={song}/>
+                    <Track key={song.id} track={song}/>
                 </div>
             )) : null}
         </div>
