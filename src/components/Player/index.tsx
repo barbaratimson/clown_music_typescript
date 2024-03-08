@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackT, TrackType} from "../../utils/types/types";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
+import {TrackType} from "../../utils/types/types";
 import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {
@@ -14,8 +12,8 @@ import {
     VolumeMute, VolumeOff, VolumeUp
 } from '@mui/icons-material';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
-import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import {changeCurrentSong} from "../../store/CurrentSongSlice";
+import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
 
@@ -36,12 +34,10 @@ const Player = () => {
     const [playerRepeat, setPlayerRepeat] = useState<boolean>(savedRepeat === "true")
 
     const volumeMultiplier = 0.5
-    const changePlayerTime = (time: number) => dispatch(playerSeekTo(time))
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const playerSeekToTime = useAppSelector((state: RootState) => state.player.currentTime)
     const setCurrentSong = (track: TrackType) => dispatch(changeCurrentSong(track))
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
@@ -85,8 +81,7 @@ const Player = () => {
         } else if (index !== 0) {
             setCurrentSong(queue.tracks[index + -1])
         } else {
-            changePlayerTime(0)
-            console.log(playerSeekToTime)
+            changeTime(0)
         }
     }
     const skipForward = () => {
@@ -116,7 +111,7 @@ const Player = () => {
             const seconds = Math.floor(time - minutes * 60);
             return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
         } else {
-            return '-:-'
+            return '0:00'
         }
     }
 
@@ -133,21 +128,17 @@ const Player = () => {
     }, [playerState]);
 
     useEffect(() => {
+
+        setPosition(0)
         const changeTrack = async () => {
             setLoading(true)
             stopPlayerFunc()
             setPlayerSrc("")
-            changePlayerTime(0)
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
         }
         changeTrack()
     }, [currentSong]);
 
-    useEffect(() => {
-        if (audioElem.current) {
-            audioElem.current.currentTime = playerSeekToTime
-        }
-    }, [playerSeekToTime]);
 
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
@@ -168,11 +159,6 @@ const Player = () => {
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerShuffle.toString())
     }, [playerShuffle]);
-
-    // TODO: Debug loading and playing state
-    useEffect(() => {
-        console.log(playerState.loading)
-    });
 
     return (
         <>
@@ -205,6 +191,7 @@ const Player = () => {
                         </IconButton>
                         <IconButton
                             className="player-primary-button play"
+                            key={`player-button-play-${playerState.playing}`}
                             aria-label={playerState.playing ? 'play' : 'pause'}
                             onClick={() => {
                                 !playerState.playing ? startPlayerFunc() : stopPlayerFunc()

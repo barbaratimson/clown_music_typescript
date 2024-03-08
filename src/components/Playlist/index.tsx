@@ -6,7 +6,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {setQueue} from "../../store/playingQueueSlice";
 
 interface PlaylistProps {
-    playlist: PlaylistT
+    playlist: PlaylistT | any
 }
 
 const Playlist = ({playlist}: PlaylistProps) => {
@@ -16,6 +16,12 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const setPlayingQueue = (playlist: PlaylistT) => dispatch(setQueue(playlist.tracks))
     const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistT>()
 
+
+    useEffect(() => {
+        if (!playlist.tracks) {
+
+        }
+    }, []);
 
     return (
         <div className="playlist-wrapper">

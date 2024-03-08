@@ -12,8 +12,8 @@ const Main = () => {
 
     return (
             <div className="main-wrapper">
-                <Page />
                 <Navbar/>
+                <Page />
                 <Player/>
             </div>
     )

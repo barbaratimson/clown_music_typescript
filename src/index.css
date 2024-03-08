@@ -1,6 +1,8 @@
 :root {
     --font-color-main: #ffffff;
     --bg-color-main: rgba(0, 0, 0, 0.5);
+    --bg-color-secondary: rgba(255, 255, 255, 0.08);
+    --bg-color-secondary_hover: rgba(255, 247, 247, 0.19);
 
 }
 html,body {
@@ -9,6 +11,26 @@ html,body {
     background-color: rgba(10, 10, 10);
     scroll-behavior: smooth;
 }
+
+*::-webkit-scrollbar {
+    height: 1px;
+    width: 6px;
+}
+*::-webkit-scrollbar-track {
+    display: none;
+}
+
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background-color: var(--bg-color-secondary);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bg-color-secondary_hover);
+}
+
+
 * {
     box-sizing: border-box;
     font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
@@ -78,9 +100,11 @@ html,body {
 
 @keyframes translate {
     0%{
+        opacity : 0;
         transform: translate(-250px);
     }
     100%{
+        opacity: 1;
         transform: translate(0);
     }
 }
@@ -138,7 +162,7 @@ html,body {
 }
 .player-primary-buttons-wrapper .play {
     user-focus: none;
-    animation: opacity .4s !important;
+    animation: opacity .2s !important;
 }
 
 .player-primary-buttons-wrapper .shuffle {
@@ -222,7 +246,7 @@ html,body {
     height: 200px;
     overflow: hidden;
     margin-bottom: 10px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--bg-color-secondary);
     border-radius: 16px;
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
@@ -377,6 +401,11 @@ html,body {
     background: rgba(255, 255, 255, 0.06);
     transition: all .3s;
 }
+
+.track-current:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
 .track-cover-wrapper {
     position: relative;
     display: flex;
@@ -442,8 +471,6 @@ html,body {
 }
 .track-wrapper:hover .track-playing-status {
     opacity: 1;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
 }
 .track-playing-status > svg {
     color: var(--font-color-main) !important;
@@ -469,8 +496,7 @@ html,body {
 }
 .track-playing-status.show {
     opacity: 1;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(0.5px);
 }
 
 .songs-wrapper {

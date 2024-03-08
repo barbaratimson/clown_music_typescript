@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import User from "./pages/User";
 import Settings from "./pages/Settings";
+import Playlist from "../Playlist";
 
 
 const Page = () => {
@@ -21,6 +22,7 @@ const Page = () => {
                 <Route path="search" element={<Search/>} />
                 <Route path="user" element={<User/>} />
                 <Route path="settings" element={<Settings/>} />
+                {/*<Route path="playlist/:playlistId" element={<Playlist/>} />*/}
                 <Route path = '*' element = {<div>Страница не найдена</div>} />
             </Routes>
         </div>
