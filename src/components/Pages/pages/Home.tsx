@@ -31,11 +31,13 @@ const Home = () => {
     if (isLoading) return <Loader />
 
     return (
-        <>
+        <div className="homePage-wrapper animated-opacity">
+            <div className="homePage-playlists-wrapper">
                 {generatedPlaylists ? generatedPlaylists.map((playlist) => (
-                    <Playlist playlist={playlist.data}/>
+                    <PlaylistCard playlist={playlist.data}/>
                 )) : null}
-        </>
+            </div>
+        </div>
     )
 }
 

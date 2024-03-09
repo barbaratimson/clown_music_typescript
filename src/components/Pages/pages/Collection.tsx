@@ -12,17 +12,17 @@ const Collection = () => {
     const [isLoading,setIsLoading] = useState(true)
     const [userTracks,setUserTracks] = useState<PlaylistT>()
     const [userPlaylists,setUserPlaylists] = useState<Array<PlaylistT>>()
-    // const fetchUserPlaylists = async () => {
-    //     setIsLoading(true)
-    //     try {
-    //         const response = await axios.get(
-    //             `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-    //         setUserPlaylists(response.data)
-    //         setIsLoading(false)
-    //     } catch (err) {
-    //         console.error('Ошибка при получении списка треков:', err);
-    //     }
-    // };
+    const fetchUserPlaylists = async () => {
+        setIsLoading(true)
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+            setUserPlaylists(response.data)
+            setIsLoading(false)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    };
 
     const fetchYaMusicSongs = async () => {
         setIsLoading(true)
@@ -39,14 +39,17 @@ const Collection = () => {
 
     useEffect(()=>{
         fetchYaMusicSongs()
-        // Todo: Playlists handling
-        // fetchUserPlaylists()
+        fetchUserPlaylists()
     },[])
 
     if (isLoading) return <Loader />
 
     return (
             <div className="collection-wrapper animated-opacity">
+                {userPlaylists ? userPlaylists.map((playlist)=>(
+                    <PlaylistCard playlist={playlist}/>
+                    )
+                ) : null}
                 <div className="collection-title">Коллекция</div>
                 <div className="collection-user-tracks"></div>
                 {userTracks ? (

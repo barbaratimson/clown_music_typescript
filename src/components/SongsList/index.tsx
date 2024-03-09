@@ -1,6 +1,6 @@
 
 import React from "react";
-import {PlaylistT, TrackType} from "../../utils/types/types";
+import {PlaylistT, TrackT, TrackType} from "../../utils/types/types";
 import Track from "../Track/Track";
 import {setQueue} from "../../store/playingQueueSlice";
 import {useAppDispatch} from "../../store";
@@ -8,18 +8,14 @@ import {useAppDispatch} from "../../store";
 
 
 interface SongsListProps {
-    playlist: PlaylistT
+    tracks: Array<TrackType>
+    changeCurrentQueue:Function
 }
-const SongsList = ({playlist}:SongsListProps) => {
-    const dispatch = useAppDispatch()
-    const setPlayingQueue = (playlist:PlaylistT) => dispatch(setQueue(playlist))
-    const changeCurrentQueue = () => {
-        setPlayingQueue(playlist)
-    }
+const SongsList = ({tracks,changeCurrentQueue}:SongsListProps) => {
     return (
         <div className="songs-wrapper">
-            {playlist ? playlist.tracks.map((song) => (
-                <div onClick={changeCurrentQueue}>
+            {tracks ? tracks.map((song) => (
+                <div onClick={()=>{changeCurrentQueue()}}>
                     <Track key={song.id} track={song}/>
                 </div>
             )) : null}

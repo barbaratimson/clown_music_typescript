@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, current} from "@reduxjs/toolkit";
 import {PlaylistT, TrackType} from "../utils/types/types";
 
 interface QueueState {
@@ -15,6 +15,7 @@ const playingQueueSlice = createSlice({
     reducers:{
         setQueue(state, action) {
             state.queue = action.payload
+            console.log(action.payload)
         },
         addTrackToQueue(state, action) {
             // position, track

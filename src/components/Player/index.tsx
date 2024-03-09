@@ -93,7 +93,7 @@ const Player = () => {
         } else if (playerShuffle) {
             let randomSong = () => (Math.random() * (queue.tracks.length + 1)) << 0
             let newSongId = randomSong()
-            if (queue.tracks[newSongId] === currentSong) {
+            if (queue.tracks[newSongId] === currentSong.track) {
                 setCurrentSong(queue.tracks[randomSong()])
             } else {
                 setCurrentSong(queue.tracks[newSongId])
@@ -164,14 +164,14 @@ const Player = () => {
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                        <img src={getImageLink(currentSong.track.coverUri, "200x200")} loading="lazy" alt=""/>
                     </div>
                     <div className="player-track-info">
                         <div className="player-track-info-title">
-                            {currentSong.title}
+                            {currentSong.track.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
-                        {currentSong.artists.map(artist => (
+                        {currentSong.track.artists.map(artist => (
                                 <div className="player-track-info-artist">{artist.name}</div>
                             ))}
                         </div>

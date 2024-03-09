@@ -17,34 +17,14 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const playlistInfo = useRef(null)
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
-    const setPlayingQueue = (playlist: PlaylistT) => dispatch(setQueue(playlist.tracks))
+    const setPlayingQueue = (playlist: PlaylistT) => dispatch(setQueue(playlist))
     const [currentPlaylist, setCurrentPlaylist] = useState<PlaylistT>()
-    const [playlistTracks, setPlaylistTracks] = useState(playlist.tracks)
+    const [playlistTracks, setPlaylistTracks] = useState(playlist)
     const [playlistState,setPlaylist] = useState(playlist)
-    const [isLoading,setIsLoading] = useState(true)
 
-
-    const fetchPlaylistSongs = async (userId:number,kind:number) => {
-        setIsLoading(true)
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlist/tracks/${userId}/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
-            setPlaylistTracks(response.data)
-            setIsLoading(false)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-        }
-    };
-
-    useEffect(() => {
-        const a = async () => {
-            await fetchPlaylistSongs(playlist.kind,playlist.owner.uid)
-        }
-        a()
-    }, []);
-
-    if (isLoading) return  <Loader/>
+    const changeCurrentQueue = () => {
+        setPlayingQueue(playlist)
+    }
     return (
         <div className="playlist-wrapper animated-opacity">
             <div ref={playlistInfo} className="playlist">
@@ -60,7 +40,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
                     </div>
                 </div>
             </div>
-            <SongsList playlist={{...playlist,tracks:playlistTracks}}/>
+            <SongsList changeCurrentQueue={changeCurrentQueue} tracks={playlist.tracks}/>
         </div>
     )
 }
