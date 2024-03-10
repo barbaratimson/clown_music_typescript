@@ -13,48 +13,50 @@ const Collection = () => {
     const [userTracks,setUserTracks] = useState<PlaylistT>()
     const [userPlaylists,setUserPlaylists] = useState<Array<PlaylistT>>()
     const fetchUserPlaylists = async () => {
-        setIsLoading(true)
         try {
             const response = await axios.get(
                 `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
             setUserPlaylists(response.data)
-            setIsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
         }
     };
 
     const fetchYaMusicSongs = async () => {
-        setIsLoading(true)
         try {
             const response = await axios.get(
                 `${link}/ya/myTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
             setUserTracks(response.data)
-            console.log(response.data)
-            setIsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
         }
     };
 
     useEffect(()=>{
-        fetchYaMusicSongs()
-        fetchUserPlaylists()
+        const a = async () => {
+            setIsLoading(true)
+            await fetchYaMusicSongs()
+            await fetchUserPlaylists()
+        }
+        a().then(()=>{setIsLoading(false)})
     },[])
+
 
     if (isLoading) return <Loader />
 
     return (
             <div className="collection-wrapper animated-opacity">
+                <div className="collection-title">Коллекция</div>
+                <div className="collection-user-tracks"></div>
+                {userTracks ? (
+                    <PlaylistCard playlist={userTracks}/>
+                ) : null}
+                <div className="collection-user-playlists">
                 {userPlaylists ? userPlaylists.map((playlist)=>(
                     <PlaylistCard playlist={playlist}/>
                     )
                 ) : null}
-                <div className="collection-title">Коллекция</div>
-                <div className="collection-user-tracks"></div>
-                {userTracks ? (
-                    <Playlist playlist={userTracks}/>
-                ) : null}
+                </div>
             </div>
     )
 }

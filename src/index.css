@@ -162,6 +162,13 @@ html,body {
     width: fit-content;
     color: white !important;
 }
+
+.navLink-active {
+    background-color: var(--bg-color-secondary) !important;
+    border-radius: 16px;
+    transition: all .4s;
+}
+
 .player-primary-button {
     color: white !important;
     padding: 0 5px !important;
@@ -552,8 +559,17 @@ html,body {
     display:grid;
 
 }
+.collection-user-playlists {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
 
 .playlist-card-wrapper {
+    width: 160px;
+    height: 180px;
     padding: 5px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
@@ -563,7 +579,9 @@ html,body {
 }
 
 .playlist-card-image {
-    width: 150px;
+    position: relative;
+    display: flex;
+    min-width: 150px;
     height: 150px;
     border-radius: 14px;
     overflow: hidden;
@@ -573,6 +591,12 @@ html,body {
     color: var(--font-color-main);
     font-weight: 600;
     text-align: center;
+    white-space: nowrap;
+    padding: 0 20px;
+    height: 20px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .homePage-playlists-wrapper {
     display: flex;

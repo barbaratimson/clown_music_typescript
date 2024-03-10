@@ -145,6 +145,23 @@ const Player = () => {
     });
 
     useEffect(() => {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: currentSong.track.title,
+            artist:currentSong.track.artists && currentSong.track.artists.length > 0 ? currentSong.track.artists[0].name : "",
+            artwork: [
+                {
+                    src: getImageLink(currentSong.track.coverUri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+            ]
+        })
+        return () => {
+            navigator.mediaSession.metadata = null;
+        };
+    }, [currentSong.track.title]);
+
+    useEffect(() => {
         if (audioElem.current) {
             audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
         }
