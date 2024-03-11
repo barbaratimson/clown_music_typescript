@@ -9,14 +9,12 @@ const PlaylistView = () => {
     const {userId,playlistId} = useParams()
     const [playlistState,setPlaylist] = useState()
     const [isLoading,setIsLoading] = useState(true)
-    console.log(userId,playlistId)
     const fetchPlaylistSongs = async (userId:any,kind:any) => {
         setIsLoading(true)
         try {
             const response = await axios.get(
                 `${link}/ya/playlist/tracks/${userId}/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
             setPlaylist(response.data)
-            console.log(response.data)
             setIsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);

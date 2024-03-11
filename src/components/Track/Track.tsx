@@ -26,7 +26,7 @@ const Track = ({track}:TrackProps) => {
 
     const playerState = useAppSelector((state:RootState)=>state.player)
 
-    const changeSong = async (song:TrackType) => {
+    const changeSong = (song:TrackType) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song)
         } else if (playerState.playing) {

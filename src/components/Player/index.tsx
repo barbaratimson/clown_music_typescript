@@ -16,6 +16,8 @@ import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
+import {useMediaSession} from "@mebtte/react-media-session";
+import MediaSession from "@mebtte/react-media-session"
 
 const savedVolume = localStorage.getItem("player_volume")
 const savedRepeat = localStorage.getItem("player_repeat")
@@ -44,8 +46,34 @@ const Player = () => {
             e.preventDefault()
 
             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-            console.log(playerState.playing)
         }
+    }
+
+    const setMediaSession = (track:TrackT) => {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: track.title,
+            artist: track.artists && track.artists.length > 0 ? track.artists[0].name : "",
+            artwork: [
+                {
+                    src: getImageLink(track.coverUri, "200x200") ?? "",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+            ]
+        })
+
+        navigator.mediaSession.setActionHandler("previoustrack", () => {
+            skipBack()
+        });
+        navigator.mediaSession.setActionHandler("nexttrack", () => {
+            skipForward()
+        });
+
+        navigator.mediaSession.setActionHandler("seekto", (e) => {
+            if (e.seekTime && audioElem.current) {
+                audioElem.current.currentTime = e.seekTime
+            }
+        });
     }
     const onPlaying = (e: any) => {
         const duration = audioElem.current?.duration;
@@ -140,26 +168,23 @@ const Player = () => {
     }, [currentSong]);
 
     useEffect(() => {
+        setMediaSession(currentSong.track)
+        return () => {
+            navigator.mediaSession.metadata = null
+        }
+    }, []);
+
+    useEffect(() => {
+        setMediaSession(currentSong.track)
+    }, [currentSong]);
+
+    useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
 
-    useEffect(() => {
-        navigator.mediaSession.metadata = new MediaMetadata({
-            title: currentSong.track.title,
-            artist:currentSong.track.artists && currentSong.track.artists.length > 0 ? currentSong.track.artists[0].name : "",
-            artwork: [
-                {
-                    src: getImageLink(currentSong.track.coverUri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png",
-                    sizes: "512x512",
-                    type: "image/png",
-                },
-            ]
-        })
-        return () => {
-            navigator.mediaSession.metadata = null;
-        };
-    }, [currentSong.track.title]);
+
+
 
     useEffect(() => {
         if (audioElem.current) {

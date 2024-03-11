@@ -598,6 +598,25 @@ html,body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.collection-title {
+    padding: 10px;
+    color: var(--font-color-main) !important;
+    background-color: var(--bg-color-secondary);
+    width: fit-content;
+    border-radius: 16px;
+}
+
+.collection-user-playlists-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    transition: all .3s;
+}
 .homePage-playlists-wrapper {
     display: flex;
     flex-direction: row;

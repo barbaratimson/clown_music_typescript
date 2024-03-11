@@ -25,7 +25,7 @@ const User = () => {
         fetchUser()
     }, [userId, accessToken])
     return (
-        <>
+        <div style={{color:"white"}}>
             <Typography>{userData?.account?.displayName}</Typography>
             <TextField id="outlined-basic" label="User ID" value={userId} onChange={(e) => {
                 setUserId(e.target.value)
@@ -33,7 +33,7 @@ const User = () => {
             <TextField id="outlined-basic" label="Token" value={accessToken} onChange={(e) => {
                 setAccessToken(e.target.value)
             }} variant="outlined"/>
-        </>
+        </div>
     )
 }
 

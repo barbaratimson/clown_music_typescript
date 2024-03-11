@@ -46,18 +46,19 @@ const Collection = () => {
 
     return (
             <div className="collection-wrapper animated-opacity">
+                <div className="collection-user-playlists-wrapper">
                 <div className="collection-title">Коллекция</div>
-                <div className="collection-user-tracks"></div>
-                {userTracks ? (
-                    <PlaylistCard playlist={userTracks}/>
-                ) : null}
                 <div className="collection-user-playlists">
-                {userPlaylists ? userPlaylists.map((playlist)=>(
-                    <PlaylistCard playlist={playlist}/>
-                    )
-                ) : null}
+                    {userTracks ? (
+                        <PlaylistCard playlist={userTracks}/>
+                    ) : null}
+                    {userPlaylists ? userPlaylists.map((playlist)=> (
+                            <PlaylistCard playlist={playlist}/>
+                        )
+                    ) : null}
                 </div>
             </div>
+                </div>
     )
 }
 

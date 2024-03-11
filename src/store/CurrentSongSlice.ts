@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, current } from "@reduxjs/toolkit"
 import {TrackT, TrackType} from "../utils/types/types";
+import {getImageLink} from "../utils/utils";
 
 interface currentSongState {
     currentSong: TrackType
@@ -16,7 +17,6 @@ const CurrentSongSlice = createSlice({
     reducers:{
         changeCurrentSong(state, action) {
             state.currentSong = action.payload
-            console.log(action.payload)
         },
         updateSongLink(state,action) {
             state.currentSong.track.url = action.payload

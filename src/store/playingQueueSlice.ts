@@ -15,7 +15,6 @@ const playingQueueSlice = createSlice({
     reducers:{
         setQueue(state, action) {
             state.queue = action.payload
-            console.log(action.payload)
         },
         addTrackToQueue(state, action) {
             // position, track
