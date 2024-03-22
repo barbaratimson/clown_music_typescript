@@ -47,7 +47,8 @@ export interface TrackDefaultT {
 
 export interface ArtistT {
     id: string
-    name: string
+    name: string,
+
 }
 
 export interface OwnerT {

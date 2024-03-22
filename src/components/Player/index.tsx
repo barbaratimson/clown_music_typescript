@@ -16,8 +16,7 @@ import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
-import {useMediaSession} from "@mebtte/react-media-session";
-import MediaSession from "@mebtte/react-media-session"
+
 
 const savedVolume = localStorage.getItem("player_volume")
 const savedRepeat = localStorage.getItem("player_repeat")

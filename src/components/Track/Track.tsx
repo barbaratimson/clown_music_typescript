@@ -9,6 +9,7 @@ import {getImageLink} from "../../utils/utils";
 import {MusicNote, PauseRounded, PlayArrowOutlined, PlayArrowRounded} from "@mui/icons-material";
 import CircularProgress from "@mui/material/CircularProgress";
 import EqualizerIcon from "../../assets/EqualizerIcon";
+import {Link} from "react-router-dom";
 
 
 interface TrackProps {
@@ -62,7 +63,7 @@ const Track = ({track}:TrackProps) => {
                     <div className="track-info-title">{track.track.title}</div>
                     <div className="track-info-artists-wrapper">
                         {track.track.artists.map(artist => (
-                            <div className="track-info-artist">{artist.name}</div>
+                           <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="track-info-artist">{artist.name}</div></Link>
                         ))}
                     </div>
                 </div>
