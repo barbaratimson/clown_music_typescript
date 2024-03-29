@@ -10,6 +10,7 @@ import {MusicNote, PauseRounded, PlayArrowOutlined, PlayArrowRounded} from "@mui
 import CircularProgress from "@mui/material/CircularProgress";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import {Link} from "react-router-dom";
+import ArtistName from "../ArtistName";
 
 
 interface TrackProps {
@@ -55,7 +56,7 @@ const Track = ({track}:TrackProps) => {
                     <div className="track-info-title">{track.title}</div>
                     <div className="track-info-artists-wrapper">
                         {track.artists.map(artist => (
-                           <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="track-info-artist">{artist.name}</div></Link>
+                            <ArtistName artist={artist}/>
                         ))}
                     </div>
                 </div>
