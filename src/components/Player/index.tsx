@@ -214,7 +214,7 @@ const Player = () => {
                         </div>
                         <div className="player-track-info-artists-wrapper">
                         {currentSong.artists.map(artist => (
-                                <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="player-track-info-artist">{artist.name}</div></Link>
+                            <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="player-track-info-artist">{artist.name}</div></Link>
                             ))}
                         </div>
                     </div>

@@ -24,7 +24,7 @@ const PlaylistView = () => {
 
     useEffect(() => {
         fetchPlaylistSongs(playlistId,userId)
-    }, []);
+    }, [playlistId]);
 
     if (isLoading) return <Loader />
     return (
