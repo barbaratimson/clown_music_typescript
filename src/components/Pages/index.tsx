@@ -9,7 +9,7 @@ import Search from "./pages/Search";
 import User from "./pages/User";
 import Settings from "./pages/Settings";
 import Playlist from "../Playlist";
-import PlaylistView from "../../PlaylistView";
+import PlaylistView from "../PlaylistView";
 import Artist from "./pages/Artist";
 
 

@@ -16,6 +16,7 @@ import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
+import {Link} from "react-router-dom";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -106,7 +107,7 @@ const Player = () => {
         if (audioElem.current.currentTime >= 10) {
             audioElem.current.currentTime = 0
         } else if (index !== 0) {
-            setCurrentSong(queue.tracks[index + -1])
+            setCurrentSong(queue.tracks[index + -1].track)
         } else {
             changeTime(0)
         }
@@ -120,15 +121,15 @@ const Player = () => {
         } else if (playerShuffle) {
             let randomSong = () => (Math.random() * (queue.tracks.length + 1)) << 0
             let newSongId = randomSong()
-            if (queue.tracks[newSongId] === currentSong.track) {
-                setCurrentSong(queue.tracks[randomSong()])
+            if (queue.tracks[newSongId].track === currentSong) {
+                setCurrentSong(queue.tracks[randomSong()].track)
             } else {
-                setCurrentSong(queue.tracks[newSongId])
+                setCurrentSong(queue.tracks[newSongId].track)
             }
         } else if (index === queue.tracks.length - 1) {
-            setCurrentSong(queue.tracks[0])
+            setCurrentSong(queue.tracks[0].track)
         } else {
-            setCurrentSong(queue.tracks[index + 1])
+            setCurrentSong(queue.tracks[index + 1].track)
         }
     }
 
@@ -167,14 +168,14 @@ const Player = () => {
     }, [currentSong]);
 
     useEffect(() => {
-        setMediaSession(currentSong.track)
+        setMediaSession(currentSong)
         return () => {
             navigator.mediaSession.metadata = null
         }
     }, []);
 
     useEffect(() => {
-        setMediaSession(currentSong.track)
+        setMediaSession(currentSong)
     }, [currentSong]);
 
     useEffect(() => {
@@ -205,15 +206,15 @@ const Player = () => {
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.track.coverUri, "200x200")} loading="lazy" alt=""/>
+                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
                     </div>
                     <div className="player-track-info">
                         <div className="player-track-info-title">
-                            {currentSong.track.title}
+                            {currentSong.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
-                        {currentSong.track.artists.map(artist => (
-                                <div className="player-track-info-artist">{artist.name}</div>
+                        {currentSong.artists.map(artist => (
+                                <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="player-track-info-artist">{artist.name}</div></Link>
                             ))}
                         </div>
                     </div>

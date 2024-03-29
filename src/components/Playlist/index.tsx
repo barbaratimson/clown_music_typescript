@@ -22,9 +22,6 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const [playlistTracks, setPlaylistTracks] = useState(playlist)
     const [playlistState,setPlaylist] = useState(playlist)
 
-    const changeCurrentQueue = () => {
-        setPlayingQueue(playlist)
-    }
     return (
         <div className="playlist-wrapper animated-opacity">
             <div ref={playlistInfo} className="playlist">
@@ -40,7 +37,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
                     </div>
                 </div>
             </div>
-            <SongsList changeCurrentQueue={changeCurrentQueue} tracks={playlist.tracks}/>
+            <SongsList changeCurrentQueue={()=>{setPlayingQueue(playlist)}} tracks={playlist.tracks}/>
         </div>
     )
 }

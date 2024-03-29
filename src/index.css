@@ -635,3 +635,64 @@ html,body {
     padding: 10px;
     width: 100%;
 }
+
+.artist-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+
+.artist-cover-wrapper {
+    min-width: 200px;
+}
+
+.artist-card-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    background: var(--bg-color-secondary);
+    border-radius: 16px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+}
+
+.artist-card-likes-count {
+    color: var(--font-color-main);
+    font-size: 15px;
+    padding-left: 5px;
+}
+
+.artist-popular-tracks > * {
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows: 2fr;
+}
+
+.artist-card-name {
+    color: var(--font-color-main) !important;
+    font-size: 40px
+}
+
+.artist-primary {
+
+}
+.artist-block-title {
+    color: var(--font-color-main);
+    font-size: 20px;
+    padding: 20px;
+}
+.artist-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    flex-grow: 1;
+    color: var(--font-color-main);
+    font-weight: 600;
+    gap: 20px;
+    margin-left: 20px;
+}

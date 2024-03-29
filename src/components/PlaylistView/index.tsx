@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../components/Loader";
-import Playlist from "../components/Playlist";
+import Loader from "../Loader";
+import Playlist from "../Playlist";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const PlaylistView = () => {

@@ -10,7 +10,7 @@ interface PlaylistCardProps {
 const PlaylistCard = ({playlist}:PlaylistCardProps) => {
 
     return (
-            <div className="playlist-card-wrapper">
+            <div key={playlist.kind} className="playlist-card-wrapper">
         <Link style = {{textDecoration:"none"}} to={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`}>
                 <div className="playlist-card-image">
                     <img src={getImageLink(playlist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>

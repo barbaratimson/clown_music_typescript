@@ -3,11 +3,11 @@ import {TrackT, TrackType} from "../utils/types/types";
 import {getImageLink} from "../utils/utils";
 
 interface currentSongState {
-    currentSong: TrackType
+    currentSong: TrackT
 }
 
 const initialState:currentSongState = {
-    currentSong: {id:0,track:{id:0,title:"",artists:[{id:"",name:""}],url:"",coverUri:"",chart:{bgColor:"",listeners:0,position:0,progress:"up",shift:0}}}
+    currentSong: {id:0,title:"",artists:[{id:"",cover:{uri:""},name:"",likesCount:0}],url:"",coverUri:"",chart:{bgColor:"",listeners:0,position:0,progress:"up",shift:0}}
 }
 
 
@@ -17,9 +17,10 @@ const CurrentSongSlice = createSlice({
     reducers:{
         changeCurrentSong(state, action) {
             state.currentSong = action.payload
+            console.log(current(state))
         },
         updateSongLink(state,action) {
-            state.currentSong.track.url = action.payload
+            state.currentSong.url = action.payload
         }
     }
 })

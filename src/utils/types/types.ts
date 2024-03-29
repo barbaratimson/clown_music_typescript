@@ -48,7 +48,8 @@ export interface TrackDefaultT {
 export interface ArtistT {
     id: string
     name: string,
-
+    cover:CoverT
+    likesCount: number
 }
 
 export interface OwnerT {
@@ -63,7 +64,7 @@ export interface CoverT {
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackT>
+    tracks: Array<TrackType>
     title: string
     ogImage:string
     description:string

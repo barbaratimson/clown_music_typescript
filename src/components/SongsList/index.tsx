@@ -11,16 +11,18 @@ interface SongsListProps {
     tracks: Array<TrackType>
     changeCurrentQueue?:Function
 }
+
 const SongsList = ({tracks,changeCurrentQueue}:SongsListProps) => {
     return (
         <div className="songs-wrapper">
             {tracks ? tracks.map((song) => (
                 <div onClick={()=>{changeCurrentQueue && changeCurrentQueue()}}>
-                    <Track key={song.id} track={song}/>
+                    <Track key={song.id} track={song.track}/>
                 </div>
             )) : null}
         </div>
     )
 }
+
 
 export default SongsList
