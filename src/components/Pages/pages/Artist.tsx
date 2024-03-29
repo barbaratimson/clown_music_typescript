@@ -46,7 +46,7 @@ const PlaylistView = () => {
             <div className="artist-wrapper">
                 {artistResult ? (
                     <>
-                        <div className="artist-card-wrapper">
+                        <div className="artist-card-wrapper animated-opacity">
                  <div className="artist-cover-wrapper">
                     <img src={getImageLink(artistResult?.artist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                  </div>
