@@ -45,6 +45,7 @@ export interface SearchT {
     artists:Array<ArtistT>,
     albums:Array<AlbumT>
     tracks: TracksResultSearchT
+    playlists:PlaylistResultSearchT
     searchRequestId:string
 }
 
@@ -58,6 +59,13 @@ export type TracksResultSearchT = {
     order:number,
     total:number,
     results:Array<TrackT>
+}
+
+export type PlaylistResultSearchT = {
+    perPage:number,
+    order:number,
+    total:number,
+    results:Array<PlaylistT>
 }
 export interface TrackDefaultT {
     track:TrackT

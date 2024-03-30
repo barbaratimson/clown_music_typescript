@@ -6,19 +6,22 @@ import {SearchT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import {trackArrayWrap} from "../../../utils/trackWrap";
 import Loader from "../../Loader";
+import PlaylistCard from "../../PlaylistCard";
+import {useParams, useSearchParams} from "react-router-dom";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
-    const [search,setSearch] = useState("")
+    // const [search,setSearch] = useState("")
     const [searchResults,setSearchResults] = useState<SearchT>()
     const [isLoading,setIsLoading] = useState(false)
     const input = useRef(null)
+    const [search,setSearch] = useSearchParams()
     const handleSearch = async () => {
         setIsLoading(true)
         if (search){
             try {
                 const response = await axios.get(
-                    `${link}/ya/search/${search}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+                    `${link}/ya/search/${search.get("query")}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
                 setSearchResults(response.data)
                 console.log(response.data)
                 setIsLoading(false)
@@ -28,6 +31,7 @@ const Search = () => {
             }
         }
     };
+
 
     useEffect(() => {
         let Debounce = setTimeout(()=>{
@@ -43,12 +47,12 @@ const Search = () => {
         <div className="search-wrapper animated-opacity">
             <div className="searchbar">
                 <div className="nav-search-icon"><SearchIcon/></div>
-                <input ref={input} value={search} className="nav-search-input" type='text'
+                <input ref={input} value={search.get("query") ?? ""} className="nav-search-input" type='text'
                        onChange={(e) => {
-                           setSearch(`${e.target.value}`)
+                           setSearch({query:e.target.value})
                        }}/>
             </div>
-            {search !== "" ? (
+            {search.get("query") !== "" ? (
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (
                         <>
@@ -57,6 +61,11 @@ const Search = () => {
                                 <SongsList tracks={trackArrayWrap(searchResults.tracks.results)}/>
                             ) : null}
                             <div className="nav-search-line">Albums</div>
+                            {searchResults?.playlists?.results ? (
+                                searchResults.playlists.results.map((playlist)=>(
+                                    <PlaylistCard playlist={playlist}/>
+                                ))
+                            ) : null}
                         </>
                     ) : <Loader/>}
                 </div>
