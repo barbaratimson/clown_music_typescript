@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {ChartTrackT, TrackDefaultT, TrackT, TrackType} from "../../utils/types/types";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "../../store";
@@ -21,6 +21,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 
 const Track = ({track}:TrackProps) => {
     const dispatch = useAppDispatch()
+    const [changeSongInactive, setChangeSongInactive] = useState(false)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
@@ -29,6 +30,7 @@ const Track = ({track}:TrackProps) => {
     const playerState = useAppSelector((state:RootState)=>state.player)
 
     const changeSong = (song:TrackT) => {
+        if (changeSongInactive) return
         if (song.id != currentSong.id) {
             setCurrentSong(song)
         } else if (playerState.playing) {
@@ -53,14 +55,14 @@ const Track = ({track}:TrackProps) => {
                     <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                 </div>
                 <div className="track-info-wrapper">
-                    <div className="track-info-title">{track.title}</div>
-                    <div className="track-info-artists-wrapper">
+                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
+                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
                         {track.artists.map(artist => (
-                            <ArtistName artist={artist}/>
+                            <ArtistName size={"12px"} artist={artist}/>
                         ))}
                     </div>
                 </div>
-                <div className="track-controls-wrapper"></div>
+                <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper"></div>
             </div>
     )
 }

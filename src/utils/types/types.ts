@@ -41,8 +41,30 @@ export interface TrackT {
     chart:ChartPosT
 }
 
+export interface SearchT {
+    artists:Array<ArtistT>,
+    albums:Array<AlbumT>
+    tracks: TracksResultSearchT
+    searchRequestId:string
+}
+
+export type BestResultSearchT = {
+    type: "track" | "playlist" | "album" | "artist",
+    result: TrackType | PlaylistT | AlbumT | ArtistT
+}
+
+export type TracksResultSearchT = {
+    perPage:number,
+    order:number,
+    total:number,
+    results:Array<TrackT>
+}
 export interface TrackDefaultT {
     track:TrackT
+}
+
+export interface AlbumT {
+
 }
 
 export interface ArtistT {

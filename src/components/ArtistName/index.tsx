@@ -5,13 +5,14 @@ import {ArtistT} from "../../utils/types/types";
 import {Link} from "react-router-dom";
 
 interface ArtistNameProps {
-    artist: ArtistT
+    artist: ArtistT,
+    size: "15px" | "12px"
 }
 
-const ArtistName = ({artist}:ArtistNameProps) => {
+const ArtistName = ({artist,size}:ArtistNameProps) => {
 
     return (
-        <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="track-info-artist">{artist.name}</div></Link>
+        <Link className="track-info-artist" style = {{fontSize:size,textDecoration:"none"}} to={`/artist/${artist.id}`}>{artist.name}</Link>
     )
 }
 

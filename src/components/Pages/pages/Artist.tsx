@@ -56,7 +56,7 @@ const PlaylistView = () => {
                         </div>
                             </div>
                         <div className="artist-block-title">Popular tracks:</div>
-                        <div className="artist-popular-tracks">
+                        <div className={artistResult.popularTracks.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
                             <SongsList tracks={trackArrayWrap(artistResult?.popularTracks)}/>
                         </div>
                     </>

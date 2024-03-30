@@ -17,6 +17,7 @@ import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerS
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
 import {Link} from "react-router-dom";
+import ArtistName from '../ArtistName';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -214,7 +215,7 @@ const Player = () => {
                         </div>
                         <div className="player-track-info-artists-wrapper">
                         {currentSong.artists.map(artist => (
-                            <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}> <div className="player-track-info-artist">{artist.name}</div></Link>
+                           <ArtistName size={"15px"} artist={artist}/>
                             ))}
                         </div>
                     </div>
