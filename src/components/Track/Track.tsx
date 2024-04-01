@@ -26,9 +26,7 @@ const Track = ({track}:TrackProps) => {
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-
     const playerState = useAppSelector((state:RootState)=>state.player)
-
     const changeSong = (song:TrackT) => {
         if (changeSongInactive) return
         if (song.id != currentSong.id) {

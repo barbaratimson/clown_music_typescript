@@ -103,34 +103,34 @@ const Player = () => {
     }
 
     const skipBack = () => {
-        const index = queue.tracks.findIndex(x => x.id == currentSong.id);
+        const index = queue.findIndex(x => x.id == currentSong.id);
         if (!audioElem.current) return
         if (audioElem.current.currentTime >= 10) {
             audioElem.current.currentTime = 0
         } else if (index !== 0) {
-            setCurrentSong(queue.tracks[index + -1].track)
+            setCurrentSong(queue[index + -1].track)
         } else {
             changeTime(0)
         }
     }
     const skipForward = () => {
-        const index = queue.tracks.findIndex(x => x.id == currentSong.id);
+        const index = queue.findIndex(x => x.id == currentSong.id);
         if (!audioElem.current) return
         if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
             startPlayerFunc()
         } else if (playerShuffle) {
-            let randomSong = () => (Math.random() * (queue.tracks.length + 1)) << 0
+            let randomSong = () => (Math.random() * (queue.length + 1)) << 0
             let newSongId = randomSong()
-            if (queue.tracks[newSongId].track === currentSong) {
-                setCurrentSong(queue.tracks[randomSong()].track)
+            if (queue[newSongId].track === currentSong) {
+                setCurrentSong(queue[randomSong()].track)
             } else {
-                setCurrentSong(queue.tracks[newSongId].track)
+                setCurrentSong(queue[newSongId].track)
             }
-        } else if (index === queue.tracks.length - 1) {
-            setCurrentSong(queue.tracks[0].track)
+        } else if (index === queue.length - 1) {
+            setCurrentSong(queue[0].track)
         } else {
-            setCurrentSong(queue.tracks[index + 1].track)
+            setCurrentSong(queue[index + 1].track)
         }
     }
 

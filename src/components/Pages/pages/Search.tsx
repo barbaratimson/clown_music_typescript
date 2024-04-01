@@ -15,13 +15,14 @@ const Search = () => {
     const [searchResults,setSearchResults] = useState<SearchT>()
     const [isLoading,setIsLoading] = useState(false)
     const input = useRef(null)
-    const [search,setSearch] = useSearchParams()
+    const [search,setSearch] = useState<any>()
+    const [searchQuery,setSearchQuery] = useSearchParams("")
     const handleSearch = async () => {
         setIsLoading(true)
-        if (search){
+        if (searchQuery){
             try {
                 const response = await axios.get(
-                    `${link}/ya/search/${search.get("query")}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+                    `${link}/ya/search/${searchQuery.get("query")}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
                 setSearchResults(response.data)
                 console.log(response.data)
                 setIsLoading(false)
@@ -35,24 +36,29 @@ const Search = () => {
 
     useEffect(() => {
         let Debounce = setTimeout(()=>{
-            handleSearch()
-        },350)
+            setSearchQuery({query:search})
+        },500)
         return () => {
             clearTimeout(Debounce)
         }
     }, [search]);
+
+    useEffect(() => {
+        handleSearch()
+        setSearch(searchQuery?.get("query"))
+    }, [searchQuery]);
 
 
     return (
         <div className="search-wrapper animated-opacity">
             <div className="searchbar">
                 <div className="nav-search-icon"><SearchIcon/></div>
-                <input ref={input} value={search.get("query") ?? ""} className="nav-search-input" type='text'
+                <input ref={input} value={search ?? ""} className="nav-search-input" type='text'
                        onChange={(e) => {
-                           setSearch({query:e.target.value})
+                          setSearch(e.target.value)
                        }}/>
             </div>
-            {search.get("query") !== "" ? (
+            {search !== "" ? (
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (
                         <>
@@ -61,11 +67,13 @@ const Search = () => {
                                 <SongsList tracks={trackArrayWrap(searchResults.tracks.results)}/>
                             ) : null}
                             <div className="nav-search-line">Albums</div>
+                            <div className="playlists-wrapper">
                             {searchResults?.playlists?.results ? (
                                 searchResults.playlists.results.map((playlist)=>(
                                     <PlaylistCard playlist={playlist}/>
                                 ))
                             ) : null}
+                            </div>
                         </>
                     ) : <Loader/>}
                 </div>

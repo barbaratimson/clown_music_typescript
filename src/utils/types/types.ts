@@ -71,12 +71,20 @@ export interface TrackDefaultT {
     track:TrackT
 }
 
-export interface AlbumT {
+export interface EmptyAlbumT {
+    id:number
+    artists:Array<ArtistT>
+    coverUri: string
+    title:string
+}
 
+
+export interface AlbumT extends EmptyAlbumT{
+    volumes:Array<Array<TrackT>>
 }
 
 export interface ArtistT {
-    id: string
+    id: number
     name: string,
     cover:CoverT
     likesCount: number

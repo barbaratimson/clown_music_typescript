@@ -2,15 +2,17 @@ import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Loader from "../../Loader";
-import {ArtistT, TrackT, TrackType} from "../../../utils/types/types";
+import {ArtistT, EmptyAlbumT, TrackT, TrackType} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import {getImageLink} from "../../../utils/utils";
 import {trackArrayWrap, trackWrap} from "../../../utils/trackWrap";
 import Track from "../../Track/Track";
+import AlbumCard from "../../AlbumCard";
 
 interface ArtistResultT {
     artist:ArtistT,
     popularTracks:Array<TrackT>,
+    albums:Array<EmptyAlbumT>
 
 }
 
@@ -47,20 +49,31 @@ const PlaylistView = () => {
                 {artistResult ? (
                     <>
                         <div className="artist-card-wrapper">
-                 <div className="artist-cover-wrapper">
-                    <img src={getImageLink(artistResult?.artist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
-                 </div>
+                            <div className="artist-cover-wrapper">
+                                <img
+                                    src={getImageLink(artistResult?.artist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
+                                    alt="" loading="lazy"/>
+                            </div>
                             <div className="artist-info-wrapper">
                                 <div className="artist-card-name">{artistResult?.artist.name}</div>
-                                <div className="artist-card-likes-count">Нравится: {artistResult?.artist.likesCount}</div>
-                        </div>
+                                <div
+                                    className="artist-card-likes-count">Нравится: {artistResult?.artist.likesCount}</div>
                             </div>
+                        </div>
                         <div className="artist-block-title">Popular tracks:</div>
-                        <div className={artistResult.popularTracks.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
+                        <div
+                            className={artistResult.popularTracks.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
                             <SongsList tracks={trackArrayWrap(artistResult?.popularTracks)}/>
                         </div>
+                        <div className="artist-block-title">Albums:</div>
+                        <div className="playlists-wrapper">
+                        {/*TODO:: Slice array and create button "see all"*/}
+                            {artistResult.albums.map((album) => (
+                                <AlbumCard album={album}/>
+                            ))}
+                        </div>
                     </>
-                ):null}
+                ) : null}
             </div>
     )
 }

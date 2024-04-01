@@ -475,6 +475,7 @@ html,body {
     flex-direction: row;
     gap: 5px;
     margin-left: 2px;
+    width: fit-content;
 }
 .track-info-title {
     width: fit-content;
@@ -570,11 +571,11 @@ html,body {
 
 }
 .collection-user-playlists {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 160px);
     justify-content: center;
-    align-items: center;
-    gap: 20px;
+    gap: 10px;
+    width: 100%;
 }
 
 .playlist-card-wrapper {
@@ -621,6 +622,7 @@ html,body {
     display: flex;
     flex-direction: column;
     padding: 20px;
+    gap: 15px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
     backdrop-filter: blur(2.6px);
@@ -705,6 +707,20 @@ html,body {
     margin-left: 20px;
     gap: 10px;
 }
+.artist-albums-wrapper2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.artist-albums-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 160px);
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
 .search-wrapper {
     display: flex;
     flex-direction: column;
@@ -757,4 +773,50 @@ html,body {
     transform: translate(50%,-50%);
     z-index: 9999;
     color: var(--font-color-main);
+}
+
+.album-artist-info-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.album-artist-info {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 5px;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    transition: background .2s;
+}
+.album-artist-info:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+.album-artist-avatar-wrapper {
+    position: relative;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 2px;
+    overflow: hidden;
+    box-shadow: 0 0 5px 3px rgba(44, 44, 44, 0.2);
+}
+.album-artist-info-name {
+    color: var(--font-color-main);
+}
+
+.playlists-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 160px);
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
 }

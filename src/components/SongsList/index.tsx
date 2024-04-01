@@ -13,10 +13,12 @@ interface SongsListProps {
 }
 
 const SongsList = ({tracks,changeCurrentQueue}:SongsListProps) => {
+    const dispatch = useAppDispatch()
+    const setPlayingQueue = (tracks: Array<TrackType>) => dispatch(setQueue(tracks))
     return (
         <div className="songs-wrapper">
             {tracks ? tracks.map((song) => (
-                <div onClick={()=>{changeCurrentQueue && changeCurrentQueue()}}>
+                <div onClick={()=>{setPlayingQueue(tracks)}}>
                     <Track key={song.id} track={song.track}/>
                 </div>
             )) : null}

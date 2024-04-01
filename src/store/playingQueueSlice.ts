@@ -2,11 +2,11 @@ import {createSlice, current} from "@reduxjs/toolkit";
 import {PlaylistT, TrackType} from "../utils/types/types";
 
 interface QueueState {
-    queue:PlaylistT
+    queue:Array<TrackType>
 }
 
 const initialState:QueueState = {
-    queue:{uid:"",tracks:[],title:"",ogImage:"",description:"",cover:{uri:""},available:true,owner:{uid:0,name:"",verified:false},kind:0}
+    queue:[{id:0,track:{id:0,title:"",artists:[{id:0,cover:{uri:""},name:"",likesCount:0}],url:"",coverUri:"",chart:{bgColor:"",listeners:0,position:0,progress:"up",shift:0}}}]
 }
 
 const playingQueueSlice = createSlice({
@@ -20,11 +20,11 @@ const playingQueueSlice = createSlice({
             // position, track
         },
         removeTrackFromQueue(state,action) {
-            state.queue.tracks = state.queue.tracks.filter(track => track.id !== action.payload.id)
+            state.queue = state.queue.filter(track => track.id !== action.payload.id)
         },
         changeTrackPosition(state,action){
             // @ts-ignore
-            state.queue.tracks.move = function(from = action.payload.from, to = action.payload.to) {
+            state.queue.move = function(from = action.payload.from, to = action.payload.to) {
                 this.splice(to, 0, this.splice(from, 1)[0]);
             };
         }

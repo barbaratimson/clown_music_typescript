@@ -48,7 +48,7 @@ const Collection = () => {
             <div className="collection-wrapper animated-opacity">
                 <div className="collection-user-playlists-wrapper">
                 <div className="collection-title">Коллекция</div>
-                <div className="collection-user-playlists">
+                <div className="playlists-wrapper">
                     {userTracks ? (
                         <PlaylistCard playlist={userTracks}/>
                     ) : null}

@@ -32,7 +32,7 @@ const Home = () => {
 
     return (
         <div className="homePage-wrapper animated-opacity">
-            <div className="homePage-playlists-wrapper">
+            <div className="playlists-wrapperr">
                 {generatedPlaylists ? generatedPlaylists.map((playlist) => (
                     <PlaylistCard playlist={playlist.data}/>
                 )) : null}

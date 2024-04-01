@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 import Playlist from "../Playlist";
 import PlaylistView from "../PlaylistView";
 import Artist from "./pages/Artist";
+import AlbumView from "../AlbumView";
 
 
 const Page = () => {
@@ -26,6 +27,7 @@ const Page = () => {
                 <Route path="settings" element={<Settings/>} />
                 <Route path="users/:userId/playlist/:playlistId" element={<PlaylistView />} />
                 <Route path="artist/:artistId" element={<Artist/>}></Route>
+                <Route path="artist/:artistId/album/:albumId" element={<AlbumView/>}></Route>
                 <Route path = '*' element = {<div>Страница не найдена</div>} />
             </Routes>
         </div>
