@@ -544,7 +544,7 @@ html,body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 10px;
+    gap: 10px 15px;
 }
 
 .loader-wrapper {
