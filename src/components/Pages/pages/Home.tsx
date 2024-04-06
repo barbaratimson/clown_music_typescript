@@ -1,10 +1,8 @@
-
 import React, {useEffect, useState} from "react";
 import PlaylistCard from "../../PlaylistCard";
 import Loader from "../../Loader";
 import axios from "axios";
-import {GeneratedPlaylistT, PlaylistT} from "../../../utils/types/types";
-import Playlist from "../../Playlist";
+import {GeneratedPlaylistT} from "../../../utils/types/types";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Home = () => {
@@ -32,7 +30,7 @@ const Home = () => {
 
     return (
         <div className="homePage-wrapper animated-opacity">
-            <div className="playlists-wrapperr">
+            <div className="playlists-wrapper">
                 {generatedPlaylists ? generatedPlaylists.map((playlist) => (
                     <PlaylistCard playlist={playlist.data}/>
                 )) : null}

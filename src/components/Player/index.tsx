@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackT, TrackType} from "../../utils/types/types";
+import {TrackT} from "../../utils/types/types";
 import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {
@@ -8,16 +8,19 @@ import {
     PauseRounded,
     PlayArrowRounded,
     Repeat,
-    Shuffle, VolumeDown,
-    VolumeMute, VolumeOff, VolumeUp
+    Shuffle,
+    VolumeDown,
+    VolumeMute,
+    VolumeOff,
+    VolumeUp
 } from '@mui/icons-material';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
-import {Link} from "react-router-dom";
 import ArtistName from '../ArtistName';
+import Queue from "../Queue/queue";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -158,14 +161,15 @@ const Player = () => {
 
     useEffect(() => {
 
-        setPosition(0)
         const changeTrack = async () => {
             setLoading(true)
             stopPlayerFunc()
             setPlayerSrc("")
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
         }
-        changeTrack()
+
+         changeTrack()
+
     }, [currentSong]);
 
     useEffect(() => {
@@ -205,6 +209,7 @@ const Player = () => {
     return (
         <>
             <div className="player-wrapper">
+                <Queue/>
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
                         <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
@@ -338,9 +343,7 @@ const Player = () => {
                    onCanPlay={() => {
                        setLoading(false)
                        startPlayerFunc()
-                   }} onPlay={() => {
-                startPlayerFunc()
-            }}
+                   }}
                    onPause={() => {
                        stopPlayerFunc()
                    }} onEnded={(e) => {

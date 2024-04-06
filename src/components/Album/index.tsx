@@ -1,11 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
-import {AlbumT, PlaylistT} from "../../utils/types/types";
+import React, {useRef} from "react";
+import {AlbumT} from "../../utils/types/types";
 import {getImageLink} from "../../utils/utils";
 import SongsList from "../SongsList";
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {setQueue} from "../../store/playingQueueSlice";
-import axios from "axios";
-import Loader from "../Loader";
+import {useAppDispatch} from "../../store";
 import {trackArrayWrap} from "../../utils/trackWrap";
 import {Link} from "react-router-dom";
 

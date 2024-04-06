@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {PlaylistT, TrackT} from "../../../utils/types/types";
-import Playlist from "../../Playlist";
+import {PlaylistT} from "../../../utils/types/types";
 import Loader from "../../Loader";
-import SongsList from "../../SongsList";
 import PlaylistCard from "../../PlaylistCard";
 
 const link = process.env.REACT_APP_YMAPI_LINK

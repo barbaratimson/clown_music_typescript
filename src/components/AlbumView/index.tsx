@@ -2,10 +2,8 @@ import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Loader from "../Loader";
-import Playlist from "../Playlist";
 import Album from "../Album";
 import {AlbumT} from "../../utils/types/types";
-import {trackArrayWrap} from "../../utils/trackWrap";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const AlbumView = () => {

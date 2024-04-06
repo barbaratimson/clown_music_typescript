@@ -1,4 +1,3 @@
-
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,24 +6,23 @@ import SongsList from "../../SongsList";
 import {trackArrayWrap} from "../../../utils/trackWrap";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
-import {useParams, useSearchParams} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
-    // const [search,setSearch] = useState("")
     const [searchResults,setSearchResults] = useState<SearchT>()
     const [isLoading,setIsLoading] = useState(false)
     const input = useRef(null)
-    const [search,setSearch] = useState<any>()
+    const [search,setSearch] = useState("")
     const [searchQuery,setSearchQuery] = useSearchParams("")
     const handleSearch = async () => {
         setIsLoading(true)
-        if (searchQuery){
+        if (searchQuery.get("query") !== null && searchQuery.get("query") !== ""){
+            console.log(searchQuery.get("query"))
             try {
                 const response = await axios.get(
                     `${link}/ya/search/${searchQuery.get("query")}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
                 setSearchResults(response.data)
-                console.log(response.data)
                 setIsLoading(false)
             } catch (err) {
                 console.error('Ошибка при получении списка треков:', err);
@@ -45,7 +43,9 @@ const Search = () => {
 
     useEffect(() => {
         handleSearch()
-        setSearch(searchQuery?.get("query"))
+        if (searchQuery.get("query") !== null) {
+            setSearch(searchQuery?.get("query") ?? "")
+        }
     }, [searchQuery]);
 
 

@@ -1,13 +1,13 @@
-import { createSlice, current } from "@reduxjs/toolkit"
-import {TrackT, TrackType} from "../utils/types/types";
-import {getImageLink} from "../utils/utils";
+import {createSlice} from "@reduxjs/toolkit"
+import {TrackT} from "../utils/types/types";
+import {SongInitState} from "./initialStates.js";
 
 interface currentSongState {
     currentSong: TrackT
 }
 
 const initialState:currentSongState = {
-    currentSong: {id:0,title:"",artists:[{id:0,cover:{uri:""},name:"",likesCount:0}],url:"",coverUri:"",chart:{bgColor:"",listeners:0,position:0,progress:"up",shift:0}}
+    currentSong: SongInitState
 }
 
 
@@ -17,7 +17,6 @@ const CurrentSongSlice = createSlice({
     reducers:{
         changeCurrentSong(state, action) {
             state.currentSong = action.payload
-            console.log(current(state))
         },
         updateSongLink(state,action) {
             state.currentSong.url = action.payload

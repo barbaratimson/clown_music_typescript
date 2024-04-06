@@ -1,10 +1,8 @@
-
 import React from "react";
-import {PlaylistT, TrackT, TrackType} from "../../utils/types/types";
+import {TrackType} from "../../utils/types/types";
 import Track from "../Track/Track";
 import {setQueue} from "../../store/playingQueueSlice";
 import {useAppDispatch} from "../../store";
-
 
 
 interface SongsListProps {

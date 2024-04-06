@@ -1,6 +1,6 @@
 import exp from "constants";
 
-export type ProgressT = "same" | "up" | "down"
+export declare type ProgressT = "same" | "up" | "down"
 
 export interface ChartPosT {
         bgColor:string

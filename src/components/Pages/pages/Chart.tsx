@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import SongsList from "../../SongsList";
-import Playlist from "../../Playlist";
-import {ChartT, PlaylistT} from "../../../utils/types/types";
+import {ChartT, TrackType} from "../../../utils/types/types";
 import Loader from "../../Loader";
 import {getImageLink} from "../../../utils/utils";
 import {setQueue} from "../../../store/playingQueueSlice";
@@ -15,7 +13,7 @@ const Chart = () => {
     const dispatch = useAppDispatch()
     const [isLoading,setIsLoading] = useState(true)
     const [chartResult,setChartResult] = useState<ChartT>()
-    const setPlayingQueue = (playlist: PlaylistT) => dispatch(setQueue(playlist))
+    const setPlayingQueue = (playlist: Array<TrackType>) => dispatch(setQueue(playlist))
     const fetchChart = async () => {
         setIsLoading(true)
         try {
@@ -52,7 +50,7 @@ const Chart = () => {
             </div>
             <div className="songs-wrapper">
                 {chartResult ? chartResult.chart.tracks.map((song) => (
-                    <div onClick={()=>{setPlayingQueue(chartResult?.chart)}} className="track-chart-wrapper">
+                    <div onClick={()=>{setPlayingQueue(chartResult?.chart.tracks)}} className="track-chart-wrapper">
                             <div className="track-chart-position-wrapper">
                                 <div className="track-chart-position">
                                     {song.track.chart.position}

@@ -2,11 +2,10 @@ import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Loader from "../../Loader";
-import {ArtistT, EmptyAlbumT, TrackT, TrackType} from "../../../utils/types/types";
+import {ArtistT, EmptyAlbumT, TrackT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import {getImageLink} from "../../../utils/utils";
-import {trackArrayWrap, trackWrap} from "../../../utils/trackWrap";
-import Track from "../../Track/Track";
+import {trackArrayWrap} from "../../../utils/trackWrap";
 import AlbumCard from "../../AlbumCard";
 
 interface ArtistResultT {
@@ -69,7 +68,7 @@ const PlaylistView = () => {
                         <div className="playlists-wrapper">
                         {/*TODO:: Slice array and create button "see all"*/}
                             {artistResult.albums.map((album) => (
-                                <AlbumCard album={album}/>
+                                <AlbumCard key={album.id} album={album}/>
                             ))}
                         </div>
                     </>

@@ -2,8 +2,6 @@ import Player from "../Player";
 import React from "react";
 import Navbar from "../Navbar";
 import Page from "../Pages";
-import {getImageLink} from "../../utils/utils";
-import {RootState, useAppSelector} from "../../store";
 
 
 const Main = () => {

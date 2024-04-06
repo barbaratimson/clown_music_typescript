@@ -1,15 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {ChartTrackT, TrackDefaultT, TrackT, TrackType} from "../../utils/types/types";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState, useAppDispatch, useAppSelector} from "../../store";
-import {changeCurrentSong, updateSongLink} from "../../store/CurrentSongSlice";
-import axios from "axios";
-import {playerSeekTo, playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import React, {useState} from "react";
+import {TrackT} from "../../utils/types/types";
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import {changeCurrentSong} from "../../store/CurrentSongSlice";
+import {playerStart, playerStop} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
-import {MusicNote, PauseRounded, PlayArrowOutlined, PlayArrowRounded} from "@mui/icons-material";
-import CircularProgress from "@mui/material/CircularProgress";
+import {PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
-import {Link} from "react-router-dom";
 import ArtistName from "../ArtistName";
 
 

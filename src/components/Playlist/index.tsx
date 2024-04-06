@@ -1,11 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {PlaylistT} from "../../utils/types/types";
 import {getImageLink} from "../../utils/utils";
 import SongsList from "../SongsList";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {setQueue} from "../../store/playingQueueSlice";
-import axios from "axios";
-import Loader from "../Loader";
 
 interface PlaylistProps {
     playlist: PlaylistT | any
