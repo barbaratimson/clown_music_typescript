@@ -297,6 +297,7 @@ const Player = () => {
                     </div>
                 </div>
                 <div className="player-secondary-controls">
+                    <div className="player-queue-button"></div>
                 <div className="player-volume-wrapper">
                             {playerVolume === 0 ? (
                             <VolumeOff/>
