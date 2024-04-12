@@ -53,7 +53,7 @@ const Chart = () => {
                     <div onClick={()=>{setPlayingQueue(chartResult?.chart.tracks)}} className="track-chart-wrapper">
                             <div className="track-chart-position-wrapper">
                                 <div className="track-chart-position">
-                                    {song.track.chart.position}
+                                    {song.track.chart?.position}
                                 </div>
                             </div>
                         <Track key={song.id} track={song.track}/>
