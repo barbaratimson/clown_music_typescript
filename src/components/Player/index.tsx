@@ -1,7 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {TrackT} from "../../utils/types/types";
-import {Box, IconButton, LinearProgress} from "@mui/material";
+import {Box, Fade, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import {changeCurrentSong} from "../../store/CurrentSongSlice";
+import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import {getImageLink} from "../../utils/utils";
+import {fetchYaSongLink} from '../../utils/apiRequests';
+import ArtistName from '../ArtistName';
+import Queue from "../Queue/queue";
 import {
     FastForwardRounded,
     FastRewindRounded,
@@ -14,13 +21,7 @@ import {
     VolumeOff,
     VolumeUp
 } from '@mui/icons-material';
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {changeCurrentSong} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
-import {getImageLink} from "../../utils/utils";
-import {fetchYaSongLink} from '../../utils/apiRequests';
-import ArtistName from '../ArtistName';
-import Queue from "../Queue/queue";
+import ListIcon from '@mui/icons-material/List';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -38,6 +39,8 @@ const Player = () => {
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue)
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
     const [playerRepeat, setPlayerRepeat] = useState<boolean>(savedRepeat === "true")
+    const [open, setOpen] = React.useState(false);
+    const [queueButton, setQueueButton] = useState<any>()
 
     const volumeMultiplier = 0.5
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
@@ -209,7 +212,6 @@ const Player = () => {
     return (
         <>
             <div className="player-wrapper">
-                <Queue/>
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <div className="player-track-cover-wrapper">
                         <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
@@ -297,7 +299,7 @@ const Player = () => {
                     </div>
                 </div>
                 <div className="player-secondary-controls">
-                    <div className="player-queue-button"></div>
+                    <div className="player-queue-button" onClick={(e)=>{setOpen(!open);setQueueButton(e.currentTarget.getBoundingClientRect())}}><ListIcon/></div>
                 <div className="player-volume-wrapper">
                             {playerVolume === 0 ? (
                             <VolumeOff/>
@@ -329,6 +331,9 @@ const Player = () => {
                                         },
                                 }}}
                                 aria-label="Default" valueLabelDisplay="auto"/>
+                    </div>
+                    <div className="player-queue-section">
+                        <Fade in={open}><div><Queue/></div></Fade>
                     </div>
                 </div>
             </div>
