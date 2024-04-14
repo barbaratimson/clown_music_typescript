@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {ChartT, TrackType} from "../../../utils/types/types";
+import {ChartT, QueueT, TrackType} from "../../../utils/types/types";
 import Loader from "../../Loader";
 import {getImageLink} from "../../../utils/utils";
 import {setQueue} from "../../../store/playingQueueSlice";
-import {useAppDispatch} from "../../../store";
+import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import Track from "../../Track/Track";
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -13,7 +13,8 @@ const Chart = () => {
     const dispatch = useAppDispatch()
     const [isLoading,setIsLoading] = useState(true)
     const [chartResult,setChartResult] = useState<ChartT>()
-    const setPlayingQueue = (playlist: Array<TrackType>) => dispatch(setQueue(playlist))
+    const currentQueueId = useAppSelector((state: RootState) => state.playingQueue.queue.id)
+    const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
     const fetchChart = async () => {
         setIsLoading(true)
         try {
@@ -50,7 +51,7 @@ const Chart = () => {
             </div>
             <div className="songs-wrapper">
                 {chartResult ? chartResult.chart.tracks.map((song) => (
-                    <div onClick={()=>{setPlayingQueue(chartResult?.chart.tracks)}} className="track-chart-wrapper">
+                    <div onClick={()=>{if (currentQueueId !== chartResult?.chart.kind) setPlayingQueue({id:chartResult?.chart.kind,queueTracks:chartResult?.chart.tracks})}} className="track-chart-wrapper">
                             <div className="track-chart-position-wrapper">
                                 <div className="track-chart-position">
                                     {song.track.chart?.position}

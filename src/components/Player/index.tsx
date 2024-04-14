@@ -4,7 +4,7 @@ import {Box, Fade, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop, setIsLoading, setSrc} from "../../store/PlayerSlice";
+import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
@@ -25,8 +25,6 @@ import ListIcon from '@mui/icons-material/List';
 
 
 const savedVolume = localStorage.getItem("player_volume")
-const savedRepeat = localStorage.getItem("player_repeat")
-const savedShuffle = localStorage.getItem("player_shuffle")
 const Player = () => {
     const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
@@ -35,13 +33,12 @@ const Player = () => {
     const [duration, setDuration] = useState(0)
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
-    const [playerShuffle, setPlayerShuffle] = useState<boolean>(savedShuffle === "true")
-    const queue = useAppSelector((state: RootState) => state.playingQueue.queue)
+    const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
-    const [playerRepeat, setPlayerRepeat] = useState<boolean>(savedRepeat === "true")
     const [open, setOpen] = React.useState(false);
     const [queueButton, setQueueButton] = useState<any>()
-
+    const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
+    const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 0.5
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
@@ -122,10 +119,10 @@ const Player = () => {
     const skipForward = () => {
         const index = queue.findIndex(x => x.id == currentSong.id);
         if (!audioElem.current) return
-        if (playerRepeat && audioElem.current.currentTime === audioElem.current.duration) {
+        if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
             startPlayerFunc()
-        } else if (playerShuffle) {
+        } else if (playerState.shuffle) {
             let randomSong = () => (Math.random() * (queue.length + 1)) << 0
             let newSongId = randomSong()
             if (queue[newSongId].track === currentSong) {
@@ -202,12 +199,12 @@ const Player = () => {
     }, [playerVolume]);
 
     useEffect(() => {
-        localStorage.setItem("player_repeat", playerRepeat.toString())
-    }, [playerRepeat]);
+        localStorage.setItem("player_repeat", playerState.repeat.toString())
+    }, [playerState.repeat]);
 
     useEffect(() => {
-        localStorage.setItem("player_shuffle", playerShuffle.toString())
-    }, [playerShuffle]);
+        localStorage.setItem("player_shuffle", playerState.shuffle.toString())
+    }, [playerState.shuffle]);
 
     return (
         <>
@@ -231,9 +228,9 @@ const Player = () => {
                     <Box
                         className="player-primary-buttons-wrapper"
                     >
-                        <div className={`player-primary-button shuffle ${playerShuffle ? "active" : ""}`}
+                        <div className={`player-primary-button shuffle ${playerState.shuffle ? "active" : ""}`}
                              ><Shuffle onClick={() => {
-                            setPlayerShuffle(!playerShuffle)
+                            setPlayerShuffle(!playerState.shuffle)
                         }}/></div>
                         <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
                             <FastRewindRounded/>
@@ -259,9 +256,9 @@ const Player = () => {
                         <IconButton onClick={skipForward} className="player-primary-button" aria-label="next song">
                             <FastForwardRounded/>
                         </IconButton>
-                        <div className={`player-primary-button repeat ${playerRepeat ? "active" : ""}`}
+                        <div className={`player-primary-button repeat ${playerState.repeat ? "active" : ""}`}
                              ><Repeat onClick={() => {
-                            setPlayerRepeat(!playerRepeat)
+                            setPlayerRepeat(!playerState.repeat)
                         }}/></div>
                     </Box>
                     <div className="player-primary-seek-wrapper">

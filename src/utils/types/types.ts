@@ -111,3 +111,8 @@ export interface PlaylistT {
     owner: OwnerT
     kind:number
 }
+
+export interface QueueT {
+    id: number | string
+    queueTracks:Array<TrackType>,
+}

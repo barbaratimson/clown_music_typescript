@@ -35,7 +35,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
                     </div>
                 </div>
             </div>
-            <SongsList changeCurrentQueue={()=>{setPlayingQueue(playlist)}} tracks={playlist.tracks}/>
+            <SongsList changeCurrentQueue={()=>{setPlayingQueue(playlist)}} playlistId={playlist.kind} tracks={playlist.tracks}/>
         </div>
     )
 }

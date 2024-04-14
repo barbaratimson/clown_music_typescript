@@ -4,21 +4,34 @@ import {RootState, useAppSelector} from "../../store";
 import Track from "../Track/Track";
 import SongsList from "../SongsList";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-
+import { Repeat } from "@mui/icons-material";
 
 const Queue = () => {
-    const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue)
+    const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
+    const playerState = useAppSelector((state: RootState) => state.player)
     return (
         <div className="queue-wrapper animated-opacity">
             <div className="queue-title">Current queue</div>
             <div className="queue-tracks">
-                {currentQueue ? (
-                    <SongsList tracks={currentQueue}/>
-                ):null}
+                <div className="songs-wrapper">
+                    {currentQueue ? currentQueue.map((song) => (
+                            <Track key={song.id} track={song.track}/>
+                    )) : null}
+                </div>
             </div>
-            <div className="queue-controls">
-                <ShuffleIcon/>
-            </div>
+                <div className="queue-controls">
+            {playerState.shuffle ? (
+                <div className = "queue-controls-shuffle">
+                 <ShuffleIcon/>
+                </div>
+            ):null}
+            {playerState.repeat ? (
+                    <div className="queue-controls-repeat">
+                        <Repeat/>
+                    </div>
+                ) : null}
+                </div>
+
         </div>
     )
 }

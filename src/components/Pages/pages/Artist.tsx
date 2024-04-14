@@ -62,7 +62,7 @@ const PlaylistView = () => {
                         <div className="artist-block-title">Popular tracks:</div>
                         <div
                             className={artistResult.popularTracks.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList tracks={trackArrayWrap(artistResult?.popularTracks)}/>
+                            <SongsList playlistId={artistResult.artist.id} tracks={trackArrayWrap(artistResult?.popularTracks)}/>
                         </div>
                         <div className="artist-block-title">Albums:</div>
                         <div className="playlists-wrapper">

@@ -860,6 +860,20 @@ html,body {
     align-items: center;
     color: white;
 }
+.queue-controls-shuffle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.queue-controls-repeat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    border-left: 1px solid var(--bg-color-secondary_hover);
+}
 
 .queue-title {
     display: flex;

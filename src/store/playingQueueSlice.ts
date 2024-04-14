@@ -1,13 +1,12 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {TrackType} from "../utils/types/types";
+import {QueueT, TrackType} from "../utils/types/types";
 import {SongInitState} from "./initialStates.js";
 
 interface QueueState {
-    queue:Array<TrackType>
+    queue:QueueT
 }
-
 const initialState:QueueState = {
-    queue:[{id:0,track:SongInitState}]
+    queue:{id:0,queueTracks:[{id:0,track:SongInitState}]}
 }
 
 const playingQueueSlice = createSlice({
@@ -21,11 +20,11 @@ const playingQueueSlice = createSlice({
             // position, track
         },
         removeTrackFromQueue(state,action) {
-            state.queue = state.queue.filter(track => track.id !== action.payload.id)
+            state.queue.queueTracks = state.queue.queueTracks.filter(track => track.id !== action.payload.id)
         },
         changeTrackPosition(state,action){
             // @ts-ignore
-            state.queue.move = function(from = action.payload.from, to = action.payload.to) {
+            state.queue.queueTracks.move = function(from = action.payload.from, to = action.payload.to) {
                 this.splice(to, 0, this.splice(from, 1)[0]);
             };
         }

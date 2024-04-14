@@ -1,12 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit"
 import React from "react";
+import {playerRepeatInit, playerShuffleInit} from "./initialStates.js";
 
 interface playerState {
     currentTime:number
     duration: number,
     src: string
     playing : boolean,
-    loading : boolean
+    loading : boolean,
+    shuffle:boolean,
+    repeat:boolean
 }
 
 const initialState:playerState = {
@@ -14,7 +17,9 @@ const initialState:playerState = {
     duration : 0,
     src: "",
     playing: false,
-    loading: false
+    loading: false,
+    shuffle: playerShuffleInit,
+    repeat: playerRepeatInit
 }
 
 
@@ -27,6 +32,12 @@ const playerSlice = createSlice({
         },
         setDuration(state, action) {
             state.duration = action.payload
+        },
+        setShuffle(state, action) {
+            state.shuffle = action.payload
+        },
+        setRepeat(state, action) {
+            state.repeat = action.payload
         },
         playerSeekTo(state, action) {
             state.currentTime = action.payload
@@ -44,5 +55,5 @@ const playerSlice = createSlice({
 })
 
 
-export const { setSrc, setIsLoading,setDuration,playerSeekTo,playerStop,playerStart } = playerSlice.actions
+export const { setSrc, setIsLoading,setDuration,playerSeekTo,playerStop,playerStart, setShuffle, setRepeat } = playerSlice.actions
 export default playerSlice.reducer

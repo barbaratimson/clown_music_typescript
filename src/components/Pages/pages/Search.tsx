@@ -64,7 +64,7 @@ const Search = () => {
                         <>
                             <div className="nav-search-line">Tracks</div>
                             {searchResults?.tracks?.results ? (
-                                <SongsList tracks={trackArrayWrap(searchResults.tracks.results)}/>
+                                <SongsList playlistId={searchResults.searchRequestId} tracks={trackArrayWrap(searchResults.tracks.results)}/>
                             ) : null}
                             <div className="nav-search-line">Albums</div>
                             <div className="playlists-wrapper">

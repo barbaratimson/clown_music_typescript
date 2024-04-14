@@ -56,7 +56,11 @@ const Track = ({track}:TrackProps) => {
                         ))}
                     </div>
                 </div>
-                <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper"></div>
+                <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">
+                    <div className="track-like-button">
+
+                    </div>
+                </div>
             </div>
     )
 }

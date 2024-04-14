@@ -42,7 +42,7 @@ const Album = ({album}: AlbumProps) => {
                 </div>
             </div>
             {album.volumes.map((volume)=>(
-             <SongsList tracks={trackArrayWrap(volume)}/>
+             <SongsList playlistId={album.id} tracks={trackArrayWrap(volume)}/>
             ))}
         </div>
     )
