@@ -12,7 +12,7 @@ const Queue = () => {
     return (
         <div className="queue-wrapper animated-opacity">
             <div className="queue-title">Current queue</div>
-            <div className="queue-tracks">
+            <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`}>
                 <div className="songs-wrapper">
                     {currentQueue ? currentQueue.map((song) => (
                             <Track key={song.id} track={song.track}/>

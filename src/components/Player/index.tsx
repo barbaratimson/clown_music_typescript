@@ -11,7 +11,8 @@ import ArtistName from '../ArtistName';
 import Queue from "../Queue/queue";
 import {
     FastForwardRounded,
-    FastRewindRounded,
+    FastRewindRounded, Favorite,
+    FavoriteBorder,
     PauseRounded,
     PlayArrowRounded,
     Repeat,
@@ -37,6 +38,7 @@ const Player = () => {
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
     const [open, setOpen] = React.useState(false);
     const [queueButton, setQueueButton] = useState<any>()
+    const [liked,setLiked] = useState(true)
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 0.5
@@ -223,9 +225,23 @@ const Player = () => {
                             ))}
                         </div>
                     </div>
+                    <div className="player-track-controls">
+                        <div className="player-track-controls-border">
+
+                            <div className={`player-track-controls-likeButton ${liked ? "heart-pulse" : null}`} onClick={() => {
+                                setLiked(!liked)
+                            }}>
+                                {liked ? (
+                                        <Favorite/>
+                                ) : (
+                                    <FavoriteBorder/>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="player-primary-controls">
-                    <Box
+                <Box
                         className="player-primary-buttons-wrapper"
                     >
                         <div className={`player-primary-button shuffle ${playerState.shuffle ? "active" : ""}`}

@@ -4,7 +4,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop} from "../../store/PlayerSlice";
 import {getImageLink} from "../../utils/utils";
-import {PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import {Favorite, FavoriteBorder, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
 
@@ -23,6 +23,7 @@ const Track = ({track}:TrackProps) => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const playerState = useAppSelector((state:RootState)=>state.player)
+    const [liked,setLiked] = useState(true)
     const changeSong = (song:TrackT) => {
         if (changeSongInactive) return
         if (song.id != currentSong.id) {
@@ -57,12 +58,18 @@ const Track = ({track}:TrackProps) => {
                     </div>
                 </div>
                 <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">
-                    <div className="track-like-button">
-
+                    <div className={`track-controls-button ${liked ? "heart-pulse" : null}`} onClick={() => {
+                        setLiked(!liked)
+                    }}>
+                        {liked ? (
+                            <Favorite/>
+                        ) : (
+                            <FavoriteBorder/>
+                        )}
                     </div>
                 </div>
-            </div>
-    )
+        </div>
+)
 }
 
 
