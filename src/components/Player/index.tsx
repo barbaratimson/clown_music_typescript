@@ -164,9 +164,7 @@ const Player = () => {
     useEffect(() => {
 
         const changeTrack = async () => {
-            setLoading(true)
             stopPlayerFunc()
-            setPlayerSrc("")
             setPlayerSrc(await fetchYaSongLink(currentSong.id))
         }
 
