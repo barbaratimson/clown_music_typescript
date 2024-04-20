@@ -346,7 +346,9 @@ const Player = () => {
                                 aria-label="Default" valueLabelDisplay="auto"/>
                     </div>
                     <div className="player-queue-section">
-                        <Fade in={open}><div><Queue/></div></Fade>
+                        {open ? (
+                            <Queue/>
+                        ): null}
                     </div>
                 </div>
             </div>

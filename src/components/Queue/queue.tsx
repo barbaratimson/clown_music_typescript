@@ -10,7 +10,7 @@ const Queue = () => {
     const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
     const playerState = useAppSelector((state: RootState) => state.player)
     return (
-        <div className="queue-wrapper animated-opacity">
+        <div className="queue-wrapper animated-opacity-2ms">
             <div className="queue-title">Current queue</div>
             <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`}>
                 <div className="songs-wrapper">

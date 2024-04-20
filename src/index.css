@@ -275,6 +275,14 @@ html,body {
     animation: opacity .6s;
 }
 
+.animated-opacity-4ms {
+    animation: opacity .4s;
+}
+
+.animated-opacity-2ms {
+    animation: opacity .2s;
+}
+
 .playlist-wrapper {
     display: flex;
     flex-direction: column;
@@ -396,7 +404,7 @@ html,body {
 }
 
 .player-track-controls-border {
-    border-right: 1px solid rgba(241, 241, 241, 0.15);
+    border-right: 1px solid rgba(241, 241, 241, 0.1);
     height: 100%;
 }
 
@@ -919,7 +927,7 @@ html,body {
 
 .queue-tracks-repeat .songs-wrapper .track-current {
     transition: all 1s;
-    outline: 1px solid orange;
+    outline: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .queue-controls {
@@ -930,6 +938,10 @@ html,body {
     justify-content: center;
     align-items: center;
     color: white;
+}
+
+.queue-controls-repeat:not(:first-child) {
+    border-left: 1px solid var(--bg-color-secondary_hover);
 }
 .queue-controls-shuffle {
     display: flex;
@@ -943,8 +955,8 @@ html,body {
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-    border-left: 1px solid var(--bg-color-secondary_hover);
 }
+
 
 .queue-title {
     display: flex;
