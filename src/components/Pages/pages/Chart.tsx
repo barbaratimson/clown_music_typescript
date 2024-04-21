@@ -6,6 +6,7 @@ import {getImageLink} from "../../../utils/utils";
 import {setQueue} from "../../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import Track from "../../Track/Track";
+import {ErrCodeT, setErrorMessage, setMessageActive} from "../../../store/ErrorMessageSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -15,6 +16,8 @@ const Chart = () => {
     const [chartResult,setChartResult] = useState<ChartT>()
     const currentQueueId = useAppSelector((state: RootState) => state.playingQueue.queue.id)
     const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
+    const setErrMessageActive = (active:boolean) => dispatch(setMessageActive(active))
+    const setErrMessage = (message:string,code:ErrCodeT) => dispatch(setErrorMessage({message,code}))
     const fetchChart = async () => {
         setIsLoading(true)
         try {
@@ -23,7 +26,9 @@ const Chart = () => {
             setChartResult(response.data)
             console.log(response.data)
             setIsLoading(false)
-        } catch (err) {
+        } catch (err:any) {
+            setErrMessageActive(true)
+            setErrMessage(err.message,err.code)
             console.error('Ошибка при получении списка треков:', err);
         }
     };
@@ -36,6 +41,8 @@ const Chart = () => {
 
     return (
         <div className="playlist-wrapper animated-opacity">
+            {chartResult ? (
+                <>
             <div className="playlist">
                 <div className="playlist-cover-wrapper">
                     <img src={getImageLink(chartResult?.chart.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
@@ -50,7 +57,7 @@ const Chart = () => {
                 </div>
             </div>
             <div className="songs-wrapper">
-                {chartResult ? chartResult.chart.tracks.map((song) => (
+                {chartResult.chart.tracks.map((song) => (
                     <div onClick={()=>{if (currentQueueId !== chartResult?.chart.kind) setPlayingQueue({id:chartResult?.chart.kind,queueTracks:chartResult?.chart.tracks})}} className="track-chart-wrapper">
                             <div className="track-chart-position-wrapper">
                                 <div className="track-chart-position">
@@ -59,8 +66,10 @@ const Chart = () => {
                             </div>
                         <Track key={song.id} track={song.track}/>
                     </div>
-                )) : null}
+                ))}
             </div>
+            </>
+                ): null}
         </div>
     )
 }

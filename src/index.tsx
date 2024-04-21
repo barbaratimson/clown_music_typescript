@@ -12,9 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
         <BrowserRouter>
     <Provider store={store}>
-     <React.StrictMode>
+     {/*<React.StrictMode>*/}
         <Main/>
-      </React.StrictMode>
+      {/*</React.StrictMode>*/}
     </Provider>
         </BrowserRouter>
 );

@@ -3,13 +3,15 @@ import CurrentSongSlice from "./CurrentSongSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import playerSlice from "./PlayerSlice";
 import playingQueueSlice from "./playingQueueSlice";
+import ErrorMessageSlice from "./ErrorMessageSlice";
 
 export const store = configureStore({
     reducer:{
         CurrentSongStore:CurrentSongSlice,
         player:playerSlice,
         playingQueue:playingQueueSlice,
-        currentPlaylist:CurrentSongSlice
+        currentPlaylist:CurrentSongSlice,
+        errorMessage:ErrorMessageSlice
     }
 });
 
