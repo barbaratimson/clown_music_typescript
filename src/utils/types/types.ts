@@ -32,6 +32,11 @@ export type TrackType = {
     chart?:ChartPosT
 }
 
+export type TrackId = {
+    id: number | string,
+    albumId: number | string
+}
+
 export interface TrackT {
     id:string | number
     title: string,
@@ -39,6 +44,8 @@ export interface TrackT {
     url: string
     coverUri: string
     chart:ChartPosT
+    available:boolean
+    durationMs:number
 }
 
 export interface SearchT {

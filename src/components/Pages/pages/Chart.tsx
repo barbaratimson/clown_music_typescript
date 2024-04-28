@@ -6,7 +6,7 @@ import {getImageLink} from "../../../utils/utils";
 import {setQueue} from "../../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import Track from "../../Track/Track";
-import {ErrCodeT, setErrorMessage, setMessageActive} from "../../../store/ErrorMessageSlice";
+import {ErrCodeT, showMessage} from "../../../store/MessageSlice";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -16,8 +16,8 @@ const Chart = () => {
     const [chartResult,setChartResult] = useState<ChartT>()
     const currentQueueId = useAppSelector((state: RootState) => state.playingQueue.queue.id)
     const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
-    const setErrMessageActive = (active:boolean) => dispatch(setMessageActive(active))
-    const setErrMessage = (message:string,code:ErrCodeT) => dispatch(setErrorMessage({message,code}))
+    const setErrMessageActive = (active:boolean) => dispatch(showMessage(active))
+    const setErrMessage = (message:string,code:ErrCodeT) => dispatch(showMessage({message,code}))
     const fetchChart = async () => {
         setIsLoading(true)
         try {

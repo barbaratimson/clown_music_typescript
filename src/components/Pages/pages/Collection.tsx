@@ -4,8 +4,8 @@ import {PlaylistT} from "../../../utils/types/types";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
 
-const link = process.env.REACT_APP_YMAPI_LINK
 
+const link = process.env.REACT_APP_YMAPI_LINK
 const Collection = () => {
     const [isLoading,setIsLoading] = useState(true)
     const [userTracks,setUserTracks] = useState<PlaylistT>()

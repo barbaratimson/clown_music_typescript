@@ -64,7 +64,10 @@ const Search = () => {
                         <>
                             <div className="nav-search-line">Tracks</div>
                             {searchResults?.tracks?.results ? (
+                                <div
+                                    className={searchResults.tracks.results.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
                                 <SongsList playlistId={searchResults.searchRequestId} tracks={trackArrayWrap(searchResults.tracks.results)}/>
+                                </div>
                             ) : null}
                             <div className="nav-search-line">Albums</div>
                             <div className="playlists-wrapper">

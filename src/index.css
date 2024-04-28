@@ -431,6 +431,13 @@ html,body {
     justify-content:  center;
     align-items: center;
     width: 30%;
+    padding: 0 40px;
+}
+
+.player-button-row {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
 }
 
 .player-volume-wrapper {
@@ -510,19 +517,30 @@ html,body {
 }
 .track-controls-wrapper {
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
     margin-left: auto;
     padding: 0 20px;
     transition: scale .2s;
+    gap: 20px;
 }
-
+.track-controls-info-time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--font-color-main);
+}
 .track-controls-button {
     color: var(--font-color-main);
+    transition: scale .4s;
 }
 
 .track-controls-button:hover {
     scale: 1.2
+}
+
+.track-controls-button:active {
+    scale: 1
 }
 
 .track-info-wrapper {
@@ -967,9 +985,15 @@ html,body {
 }
 
 .player-queue-button {
-    padding: 0 40px;
     color: var(--font-color-main);
+    transition: scale .2s;
+    cursor: pointer;
 }
+
+.player-queue-button:active {
+    scale: 0.95;
+}
+
 .player-queue-section {
     position: absolute;
     bottom: 0;
@@ -986,4 +1010,18 @@ html,body {
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.48);
     z-index: 99999;
+}
+
+.playlist-sign-wrapper {
+    position: absolute;
+    display: flex;
+    z-index: 99999;
+    right: 0;
+    top: -20px;
+    user-select: none;
+    pointer-events: none;
+}
+.playlist-sign {
+    width: 300px;
+    height: 300px;
 }

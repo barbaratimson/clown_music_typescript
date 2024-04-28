@@ -1,12 +1,16 @@
-import React, {useState} from "react";
-import {TrackT} from "../../utils/types/types";
+import React, {useEffect, useState} from "react";
+import {TrackId, TrackT} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop} from "../../store/PlayerSlice";
-import {getImageLink} from "../../utils/utils";
-import {Favorite, FavoriteBorder, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import {getImageLink, msToMinutesAndSeconds, secToMinutesAndSeconds} from "../../utils/utils";
+import {Favorite, FavoriteBorder, MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
+import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
+import {userId} from "../../utils/constants";
+import {setLikedSongs} from "../../store/LikedSongsSlice";
+import {showMessage} from "../../store/MessageSlice";
 
 
 interface TrackProps {
@@ -19,11 +23,13 @@ const Track = ({track}:TrackProps) => {
     const dispatch = useAppDispatch()
     const [changeSongInactive, setChangeSongInactive] = useState(false)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
+    const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
+    const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
+    const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const playerState = useAppSelector((state:RootState)=>state.player)
-    const [liked,setLiked] = useState(true)
     const changeSong = (song:TrackT) => {
         if (changeSongInactive) return
         if (song.id != currentSong.id) {
@@ -33,7 +39,20 @@ const Track = ({track}:TrackProps) => {
         } else {
             startPlayerFunc()
         }
+        console.log(track)
     }
+
+    const isLiked = (id: number | string) => {
+        const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
+        return !!likedSong
+    }
+
+    const updateLikedSongs = async (action:"liked" | "removed") => {
+        setLikedSongsData( await fetchLikedSongs())
+        if (action === "liked") trackAddedMessage(`Track ${track.title} added to Liked`);
+        if (action === "removed") trackAddedMessage(`Track ${track.title} removed to Liked`);
+    }
+
 
     return (
             <div className={`track-wrapper ${currentSong.id == track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
@@ -58,14 +77,20 @@ const Track = ({track}:TrackProps) => {
                     </div>
                 </div>
                 <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">
-                    <div className={`track-controls-button ${liked ? "heart-pulse" : null}`} onClick={() => {
-                        setLiked(!liked)
-                    }}>
-                        {liked ? (
-                            <Favorite/>
+                        {isLiked(track.id) ? (
+                            <div className={`track-controls-button`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
+                                <Favorite/>
+                            </div>
                         ) : (
-                            <FavoriteBorder/>
+                            <div className={`track-controls-button`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
+                                <FavoriteBorder/>
+                            </div>
                         )}
+                    <div className="track-controls-info-time">
+                        {msToMinutesAndSeconds(track.durationMs)}
+                    </div>
+                    <div className="track-controls-button">
+                        <MoreVert/>
                     </div>
                 </div>
         </div>

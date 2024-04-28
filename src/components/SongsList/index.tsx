@@ -16,11 +16,11 @@ const SongsList = memo(({tracks,playlistId,changeCurrentQueue}:SongsListProps) =
     const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
     return (
         <div className="songs-wrapper">
-            {tracks ? tracks.map((song) => (
+            {tracks ? tracks.map((song) => song.track.available ? (
                 <div onClick={()=>{if (currentQueueId !== playlistId) setPlayingQueue({id:playlistId,queueTracks:tracks})}}>
                     <Track key={song.id} track={song.track}/>
                 </div>
-            )) : null}
+            ): null) : null}
         </div>
     )
 })

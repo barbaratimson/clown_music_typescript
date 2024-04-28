@@ -3,7 +3,8 @@ import CurrentSongSlice from "./CurrentSongSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import playerSlice from "./PlayerSlice";
 import playingQueueSlice from "./playingQueueSlice";
-import ErrorMessageSlice from "./ErrorMessageSlice";
+import LikedSongsSlice from "./LikedSongsSlice";
+import MessageSlice from "./MessageSlice";
 
 export const store = configureStore({
     reducer:{
@@ -11,7 +12,8 @@ export const store = configureStore({
         player:playerSlice,
         playingQueue:playingQueueSlice,
         currentPlaylist:CurrentSongSlice,
-        errorMessage:ErrorMessageSlice
+        message:MessageSlice,
+        likedSongs:LikedSongsSlice
     }
 });
 

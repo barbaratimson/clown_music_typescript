@@ -1,26 +1,25 @@
 import React, {useEffect} from "react";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {Fade, Modal} from "@mui/material";
-import {setMessageActive} from "../../store/ErrorMessageSlice";
+import {hideMessage, showMessage} from "../../store/MessageSlice";
 
 
 const Message = () => {
     const dispatch = useAppDispatch()
-    const errorMessage = useAppSelector((state:RootState)=> state.errorMessage.errorMessage)
-    const setErrMessageActive = (active:boolean) => dispatch(setMessageActive(active))
-    const handleClose = () => setErrMessageActive(false)
+    const message = useAppSelector((state:RootState)=> state.message.message)
+    const hideMessageFunc = () => dispatch(hideMessage())
 
     useEffect(() => {
         const a = setTimeout(()=>{
-            setErrMessageActive(false)
+            hideMessageFunc()
         },2000)
         return ()=>{clearInterval(a)}
-    }, [errorMessage.active]);
+    }, [message.active]);
 
     return (
-        <Fade in={errorMessage.active}>
+        <Fade in={message.active}>
                     <div className="error-message-wrapper">
-                        <div>{errorMessage.message}</div>
+                        <div>{message.message}</div>
                     </div>
         </Fade>
     )

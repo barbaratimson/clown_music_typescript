@@ -4,3 +4,23 @@ export const getImageLink = (link:string | undefined,size:string) => {
     if (!link) return undefined
     return `http://${link.substring(0, link.lastIndexOf('/'))}/${size}`
 }
+
+export function secToMinutesAndSeconds(time:number | undefined) {
+    if (time){
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time - minutes * 60);
+        return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
+    } else {
+        return '0:00'
+    }
+}
+
+export function msToMinutesAndSeconds(time:number | undefined) {
+    if (time){
+        const minutes = Math.floor(time / 60000);
+        const seconds = Number(((time % 60000) / 1000).toFixed(0));
+        return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
+    } else {
+        return '0:00'
+    }
+}

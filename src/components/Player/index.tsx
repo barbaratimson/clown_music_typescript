@@ -5,7 +5,7 @@ import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../store/PlayerSlice";
-import {getImageLink} from "../../utils/utils";
+import {getImageLink, secToMinutesAndSeconds} from "../../utils/utils";
 import {fetchYaSongLink} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
 import Queue from "../Queue/queue";
@@ -39,6 +39,7 @@ const Player = () => {
     const [open, setOpen] = React.useState(false);
     const [queueButton, setQueueButton] = useState<any>()
     const [liked,setLiked] = useState(true)
+    const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 0.5
@@ -53,6 +54,11 @@ const Player = () => {
 
             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
         }
+    }
+
+    const isLiked = (id: number | string) => {
+        const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
+        return !!likedSong
     }
 
     const setMediaSession = (track:TrackT) => {
@@ -139,15 +145,6 @@ const Player = () => {
         }
     }
 
-    function secToMinutesAndSeconds(time:number | undefined) {
-        if (time){
-            const minutes = Math.floor(time / 60);
-            const seconds = Math.floor(time - minutes * 60);
-            return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
-        } else {
-            return '0:00'
-        }
-    }
 
     useEffect(() => {
         if (!audioElem.current) {
@@ -226,15 +223,15 @@ const Player = () => {
                     <div className="player-track-controls">
                         <div className="player-track-controls-border">
 
-                            <div className={`player-track-controls-likeButton ${liked ? "heart-pulse" : null}`} onClick={() => {
-                                setLiked(!liked)
-                            }}>
-                                {liked ? (
+                                {isLiked(currentSong.id) ? (
+                                    <div className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}>
                                         <Favorite/>
+                                    </div>
                                 ) : (
+                                        <div className={`player-track-controls-likeButton`}>
                                     <FavoriteBorder/>
+                                        </div>
                                 )}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -310,7 +307,9 @@ const Player = () => {
                     </div>
                 </div>
                 <div className="player-secondary-controls">
-                    <div className="player-queue-button" onClick={(e)=>{setOpen(!open);setQueueButton(e.currentTarget.getBoundingClientRect())}}><ListIcon/></div>
+                    <div className="player-button-row">
+                        <div className="player-queue-button" onClick={(e)=>{setOpen(!open);setQueueButton(e.currentTarget.getBoundingClientRect())}}><ListIcon/></div>
+                    </div>
                 <div className="player-volume-wrapper">
                             {playerVolume === 0 ? (
                             <VolumeOff/>
