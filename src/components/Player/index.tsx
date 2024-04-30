@@ -86,6 +86,15 @@ const Player = () => {
                 audioElem.current.currentTime = e.seekTime
             }
         });
+
+        navigator.mediaSession.setActionHandler("play", (e) => {
+            startPlayerFunc()
+        })
+          
+        navigator.mediaSession.setActionHandler("pause", (e) => {
+            stopPlayerFunc()
+        })
+
     }
     const onPlaying = (e: any) => {
         const duration = audioElem.current?.duration;
