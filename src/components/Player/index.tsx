@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackT} from "../../utils/types/types";
+import {TrackId, TrackT} from "../../utils/types/types";
 import {Box, Fade, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../store/PlayerSlice";
 import {getImageLink, secToMinutesAndSeconds} from "../../utils/utils";
-import {fetchYaSongLink} from '../../utils/apiRequests';
+import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
 import Queue from "../Queue/queue";
 import {
@@ -23,6 +23,8 @@ import {
     VolumeUp
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
+import { showMessage } from '../../store/MessageSlice';
+import { setLikedSongs } from '../../store/LikedSongsSlice';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -43,6 +45,8 @@ const Player = () => {
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 0.5
+    const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
+    const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
@@ -153,7 +157,12 @@ const Player = () => {
             setCurrentSong(queue[index + 1].track)
         }
     }
-
+    
+    const updateLikedSongs = async (action:"liked" | "removed") => {
+        setLikedSongsData( await fetchLikedSongs())
+        if (action === "liked") trackAddedMessage(`Track ${currentSong.title} added to Liked`);
+        if (action === "removed") trackAddedMessage(`Track ${currentSong.title} removed to Liked`);
+    }
 
     useEffect(() => {
         if (!audioElem.current) {
@@ -231,16 +240,15 @@ const Player = () => {
                     </div>
                     <div className="player-track-controls">
                         <div className="player-track-controls-border">
-
-                                {isLiked(currentSong.id) ? (
-                                    <div className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}>
-                                        <Favorite/>
-                                    </div>
-                                ) : (
-                                        <div className={`player-track-controls-likeButton`}>
+                            {isLiked(currentSong.id) ? (
+                                <div className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`} onClick={()=>{dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))}}>
+                                    <Favorite/>
+                                </div>
+                            ) : (
+                                <div className={`player-track-controls-likeButton`} onClick={()=>{likeSong(currentSong).then((response) => updateLikedSongs("liked"))}}>
                                     <FavoriteBorder/>
-                                        </div>
-                                )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
