@@ -176,6 +176,7 @@ const Player = () => {
         }
     }, [playerState]);
 
+
     useEffect(() => {
 
         const changeTrack = async () => {
@@ -202,7 +203,6 @@ const Player = () => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
-
 
 
 
