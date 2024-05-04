@@ -71,9 +71,11 @@ const Track = ({track}:TrackProps) => {
                 <div className="track-info-wrapper">
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
-                        {track.artists.map(artist => (
-                            <ArtistName size={"12px"} artist={artist}/>
-                        ))}
+                        <span className="track-info-artist-span">
+                            {track.artists.map(artist => (
+                                <ArtistName size={"12px"} artist={artist}/>
+                            ))}
+                        </span>
                     </div>
                 </div>
                 <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">

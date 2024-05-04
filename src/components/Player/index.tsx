@@ -233,9 +233,11 @@ const Player = () => {
                             {currentSong.title}
                         </div>
                         <div className="player-track-info-artists-wrapper">
+                            <span className="track-info-artist-span">
                         {currentSong.artists.map(artist => (
                            <ArtistName size={"15px"} artist={artist}/>
                             ))}
+                            </span>
                         </div>
                     </div>
                     <div className="player-track-controls">
