@@ -46,6 +46,7 @@ export interface TrackT {
     chart:ChartPosT
     available:boolean
     durationMs:number
+    albums:Array<AlbumT>
 }
 
 export interface SearchT {
@@ -83,6 +84,7 @@ export interface EmptyAlbumT {
     artists:Array<ArtistT>
     coverUri: string
     title:string
+    genre: string
 }
 
 

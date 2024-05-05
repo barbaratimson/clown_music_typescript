@@ -1020,3 +1020,40 @@ html,body {
     width: 300px;
     height: 300px;
 }
+.playlist-filter-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-bottom: 15px;
+    overflow-x: scroll;
+}
+
+.playlist-filter-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background-color: rgba(255, 247, 247, 0.41);
+    color: white;
+    font-size: 15px;
+    white-space: nowrap;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.playlist-filter-button:hover {
+     background-color: rgba(255, 247, 247, 0.6);
+ }
+
+.playlist-filter-button:active {
+    transform: scale(0.95);
+}
+.playlist-filter-button-active {
+    background-color: rgba(255, 255, 255, 0.7)
+}
+
+.playlist-filter-wrapper::-webkit-scrollbar {
+    display: none;
+}

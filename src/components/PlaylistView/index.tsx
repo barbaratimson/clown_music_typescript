@@ -29,7 +29,11 @@ const PlaylistView = () => {
     if (isLoading) return <Loader />
     return (
         <>
-            <Playlist playlist={playlistState}/>
+            {playlistState ? (
+                <Playlist playlist={playlistState}/>
+                ): null
+            }
+
         </>
     )
 }
