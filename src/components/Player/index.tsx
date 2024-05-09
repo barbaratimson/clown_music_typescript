@@ -181,7 +181,6 @@ const Player = () => {
 
     useEffect(() => {
         if (!currentSong.available) skipForward()
-        console.log(currentSong.available)
         const changeTrack = async () => {
             if (currentSong.available && currentSong){
                 stopPlayerFunc()

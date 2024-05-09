@@ -4,6 +4,7 @@ import {getImageLink} from "../../utils/utils";
 import SongsList from "../SongsList";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {setQueue} from "../../store/playingQueueSlice";
+import {useSearchParams} from "react-router-dom";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -15,9 +16,15 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const playlistInfo = useRef(null)
     const [genres, setGenres] = useState<Array<string | undefined>>()
     const [genre, setGenre] = useState<string>()
-
     const [tracksFiltred, setTracksFiltred] = useState<Array<TrackType>>()
-    
+
+
+
+    //TODO: Add filter to search params
+    const [filterQuery,setFilterQuery] = useSearchParams("")
+
+
+
     useEffect(() => {
         const genres = playlist.tracks.map((track) => {
             if (track.track.albums[0]?.genre !== undefined) {
