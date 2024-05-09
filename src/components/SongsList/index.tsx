@@ -11,14 +11,11 @@ interface SongsListProps {
 
 const SongsList = (({tracks,playlistId}:SongsListProps) => {
     const dispatch = useAppDispatch()
-    const currentQueueId = useAppSelector((state: RootState) => state.playingQueue.queue.id)
     const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
-
-    //TODO: Queue changing with filters dont work
     return (
         <div className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (
-                <div onClick={()=>{if (currentQueueId !== playlistId) setPlayingQueue({id:playlistId,queueTracks:tracks})}}>
+                <div onClick={()=>{setPlayingQueue({id:playlistId,queueTracks:tracks})}}>
                     <Track key={song.id} track={song.track}/>
                 </div>
             ): null) : null}

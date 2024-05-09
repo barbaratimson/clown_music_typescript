@@ -283,6 +283,10 @@ html,body {
     animation: opacity .2s;
 }
 
+.animated-opacity-1ms {
+    animation: opacity .1s;
+}
+
 .playlist-wrapper {
     display: flex;
     flex-direction: column;
@@ -991,8 +995,9 @@ html,body {
 }
 
 .player-queue-section {
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    right: 0;
     margin-bottom: 80px;
 }
 
@@ -1008,17 +1013,16 @@ html,body {
 }
 
 .playlist-sign-wrapper {
-    position: absolute;
     display: flex;
-    z-index: 99999;
-    right: 0;
-    top: -20px;
+    justify-content: center;
+    align-items: center;
     user-select: none;
     pointer-events: none;
+    padding: 10px;
 }
 .playlist-sign {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
 }
 .playlist-filter-wrapper {
     display: flex;
@@ -1051,6 +1055,10 @@ html,body {
     transform: scale(0.95);
 }
 .playlist-filter-button-active {
+    background-color: rgba(255, 255, 255, 0.7)
+}
+
+.playlist-filter-button-active:hover {
     background-color: rgba(255, 255, 255, 0.7)
 }
 

@@ -124,4 +124,5 @@ export interface PlaylistT {
 export interface QueueT {
     id: number | string
     queueTracks:Array<TrackType>,
+    queueOpen?:boolean
 }

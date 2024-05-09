@@ -39,7 +39,6 @@ const Track = ({track}:TrackProps) => {
         } else {
             startPlayerFunc()
         }
-        console.log(track)
     }
 
     const isLiked = (id: number | string) => {
@@ -55,7 +54,7 @@ const Track = ({track}:TrackProps) => {
 
 
     return (
-            <div className={`track-wrapper ${currentSong.id == track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
+            <div className={`track-wrapper animated-opacity-4ms ${currentSong.id == track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
                     <div className={`track-playing-status ${currentSong.id == track.id ? "show" : ""}`}>
                         {currentSong.id != track.id ? (

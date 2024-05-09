@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {TrackId, TrackT} from "../../utils/types/types";
-import {Box, Fade, IconButton, LinearProgress} from "@mui/material";
+import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
@@ -8,10 +8,10 @@ import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} fr
 import {getImageLink, secToMinutesAndSeconds} from "../../utils/utils";
 import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
-import Queue from "../Queue/queue";
 import {
     FastForwardRounded,
-    FastRewindRounded, Favorite,
+    FastRewindRounded,
+    Favorite,
     FavoriteBorder,
     PauseRounded,
     PlayArrowRounded,
@@ -23,8 +23,9 @@ import {
     VolumeUp
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import { showMessage } from '../../store/MessageSlice';
-import { setLikedSongs } from '../../store/LikedSongsSlice';
+import {showMessage} from '../../store/MessageSlice';
+import {setLikedSongs} from '../../store/LikedSongsSlice';
+import {setOpeningState} from "../../store/playingQueueSlice";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -37,8 +38,8 @@ const Player = () => {
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
+    const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
-    const [open, setOpen] = React.useState(false);
     const [queueButton, setQueueButton] = useState<any>()
     const [liked,setLiked] = useState(true)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
@@ -47,6 +48,7 @@ const Player = () => {
     const volumeMultiplier = 0.5
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
@@ -178,10 +180,13 @@ const Player = () => {
 
 
     useEffect(() => {
-
+        if (!currentSong.available) skipForward()
+        console.log(currentSong.available)
         const changeTrack = async () => {
-            stopPlayerFunc()
-            setPlayerSrc(await fetchYaSongLink(currentSong.id))
+            if (currentSong.available && currentSong){
+                stopPlayerFunc()
+                setPlayerSrc(await fetchYaSongLink(currentSong.id))
+            }
         }
 
          changeTrack()
@@ -326,7 +331,7 @@ const Player = () => {
                 </div>
                 <div className="player-secondary-controls">
                     <div className="player-button-row">
-                        <div className="player-queue-button" onClick={(e)=>{setOpen(!open);setQueueButton(e.currentTarget.getBoundingClientRect())}}><ListIcon/></div>
+                        <div className="player-queue-button" onClick={(e)=>{setQueueOpen(!queueOpen);setQueueButton(e.currentTarget.getBoundingClientRect())}}><ListIcon/></div>
                     </div>
                 <div className="player-volume-wrapper">
                             {playerVolume === 0 ? (
@@ -359,11 +364,6 @@ const Player = () => {
                                         },
                                 }}}
                                 aria-label="Default" valueLabelDisplay="auto"/>
-                    </div>
-                    <div className="player-queue-section">
-                        {open ? (
-                            <Queue/>
-                        ): null}
                     </div>
                 </div>
             </div>

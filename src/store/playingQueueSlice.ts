@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, current} from "@reduxjs/toolkit";
 import {QueueT, TrackType} from "../utils/types/types";
 import {SongInitState} from "./initialStates.js";
 
@@ -6,7 +6,7 @@ interface QueueState {
     queue:QueueT
 }
 const initialState:QueueState = {
-    queue:{id:0,queueTracks:[{id:0,track:SongInitState}]}
+    queue:{id:0,queueTracks:[{id:0,track:SongInitState}],queueOpen:false}
 }
 
 const playingQueueSlice = createSlice({
@@ -14,7 +14,12 @@ const playingQueueSlice = createSlice({
     initialState,
     reducers:{
         setQueue(state, action) {
-            state.queue = action.payload
+            state.queue.id = action.payload.id
+            state.queue.queueTracks = action.payload.queueTracks
+        },
+
+        setOpeningState(state, action) {
+            state.queue.queueOpen = action.payload
         },
         addTrackToQueue(state, action) {
             // position, track
@@ -31,5 +36,5 @@ const playingQueueSlice = createSlice({
     }
 })
 
-export const { setQueue,addTrackToQueue,changeTrackPosition } = playingQueueSlice.actions
+export const { setQueue,addTrackToQueue,changeTrackPosition,setOpeningState } = playingQueueSlice.actions
 export default playingQueueSlice.reducer
