@@ -69,7 +69,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
             </div>
             <div className="playlist-filter-wrapper">
                     {genres ? genres.map(genreRender => (
-                        <div className={`playlist-filter-button ${genre === genreRender ? "playlist-filter-button-active" : null}`} onClick={()=>{genre !== genreRender ? setGenre(genreRender) : setGenre(undefined)}}>{genreRender}</div>
+                        <div className={`playlist-filter-button ${genre === genreRender ? "playlist-filter-button-active" : null}`} onClick={()=>{genre !== genreRender ? setGenre(genreRender) : setGenre(undefined)}}>{genreRender ? genreRender.charAt(0).toUpperCase() + genreRender.slice(1) : null}</div>
                     )) : null}
             </div>
             <SongsList playlistId={playlist.kind} tracks={tracksFiltred ?? playlist.tracks}/>
