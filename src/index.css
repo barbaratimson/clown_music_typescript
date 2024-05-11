@@ -689,19 +689,23 @@ html,body {
     border-radius: 14px;
     overflow: hidden;
 }
+
+.playlist-card-title-wrapper {
+    height: 20px;
+    max-width: 180px;
+}
+
 .playlist-card-title {
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 14px;
     color: var(--font-color-main);
-    font-weight: 600;
-    white-space: nowrap;
-    margin-top: 1px;
-    height: 20px;
-    width: 100%;
+    margin-top: 3px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 10px;
 }
 
 .collection-title {
