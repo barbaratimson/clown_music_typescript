@@ -37,14 +37,16 @@ const Playlist = ({playlist}: PlaylistProps) => {
     }, []);
 
     useEffect(() => {
-        if (genre === "Unknown") {
+        const filter = filterQuery.get("genre")
+        if (filter === "Unknown") {
             setTracksFiltred(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
-        } else if (genre){
-            setTracksFiltred(playlist.tracks.filter(track => track.track.albums[0]?.genre === genre))
+        } else if (filter){
+            setTracksFiltred(playlist.tracks.filter(track => track.track.albums[0]?.genre === filter))
         } else {
             setTracksFiltred(playlist.tracks)
         }
-    }, [genre]);
+    }, [filterQuery.get("genre")]);
+
 
     return (
         <div className="playlist-wrapper animated-opacity">
@@ -69,7 +71,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
             </div>
             <div className="playlist-filter-wrapper">
                     {genres ? genres.map(genreRender => (
-                        <div className={`playlist-filter-button ${genre === genreRender ? "playlist-filter-button-active" : null}`} onClick={()=>{genre !== genreRender ? setGenre(genreRender) : setGenre(undefined)}}>{genreRender ? genreRender.charAt(0).toUpperCase() + genreRender.slice(1) : null}</div>
+                        <div className={`playlist-filter-button ${filterQuery.get("genre") === genreRender ? "playlist-filter-button-active" : null}`} onClick={()=>{filterQuery.get("genre") !== genreRender && genreRender ? setFilterQuery({genre:genreRender}) : setFilterQuery(undefined)}}>{genreRender ? genreRender.charAt(0).toUpperCase() + genreRender.slice(1) : null}</div>
                     )) : null}
             </div>
             <SongsList playlistId={playlist.kind} tracks={tracksFiltred ?? playlist.tracks}/>

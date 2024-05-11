@@ -50,9 +50,9 @@ const Collection = () => {
                     {userTracks ? (
                         <PlaylistCard playlist={userTracks}/>
                     ) : null}
-                    {userPlaylists ? userPlaylists.map((playlist)=> (
+                    {userPlaylists ? userPlaylists.map((playlist)=> playlist.kind !== 0 ? (
                             <PlaylistCard playlist={playlist}/>
-                        )
+                        ):null
                     ) : null}
                 </div>
             </div>
