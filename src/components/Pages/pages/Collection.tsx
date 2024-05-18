@@ -3,6 +3,7 @@ import axios from "axios";
 import {PlaylistT} from "../../../utils/types/types";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
+import {getImageLink} from "../../../utils/utils";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -10,6 +11,7 @@ const Collection = () => {
     const [isLoading,setIsLoading] = useState(true)
     const [userTracks,setUserTracks] = useState<PlaylistT>()
     const [userPlaylists,setUserPlaylists] = useState<Array<PlaylistT>>()
+    const [userData, setUserData] = useState<any>()
     const fetchUserPlaylists = async () => {
         try {
             const response = await axios.get(
@@ -30,11 +32,23 @@ const Collection = () => {
         }
     };
 
+    const fetchUser = async () => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/user`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
+            setUserData(response.data)
+            console.log(response.data)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    };
+
     useEffect(()=>{
         const a = async () => {
             setIsLoading(true)
             await fetchYaMusicSongs()
             await fetchUserPlaylists()
+            await fetchUser()
         }
         a().then(()=>{setIsLoading(false)})
     },[])
@@ -44,12 +58,22 @@ const Collection = () => {
 
     return (
             <div className="collection-wrapper animated-opacity">
+                <div className="user-card-wrapper">
+                    <div className="user-card-avatar-wrapper">
+                        <img
+                            src={"https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
+                            alt="" loading="lazy"/>
+                    </div>
+                    <div className="user-card-info-wrapper">
+                        <div className="user-card-title">Коллекция</div>
+                    </div>
+                </div>
+                {userTracks ? (
+                    <PlaylistCard playlist={userTracks}/>
+                ) : null}
                 <div className="collection-user-playlists-wrapper">
-                <div className="collection-title">Коллекция</div>
+                <div className="collection-title">Плейлисты</div>
                 <div className="playlists-wrapper">
-                    {userTracks ? (
-                        <PlaylistCard playlist={userTracks}/>
-                    ) : null}
                     {userPlaylists ? userPlaylists.map((playlist)=> playlist.kind !== 0 ? (
                             <PlaylistCard playlist={playlist}/>
                         ):null

@@ -6,7 +6,10 @@ import SongsList from "../../SongsList";
 import {trackArrayWrap} from "../../../utils/trackWrap";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
-import {useSearchParams} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
+import Artist from "./Artist";
+import Track from "../../Track/Track";
+import {getImageLink} from "../../../utils/utils";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
@@ -24,6 +27,7 @@ const Search = () => {
                     `${link}/ya/search/${searchQuery.get("query")}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
                 setSearchResults(response.data)
                 setIsLoading(false)
+                console.log(response.data)
             } catch (err) {
                 console.error('Ошибка при получении списка треков:', err);
                 console.log(err)
@@ -62,6 +66,8 @@ const Search = () => {
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (
                         <>
+                            <div className="nav-search-line">Best</div>
+                            <div><BestResult bestResult={searchResults?.best}/></div>
                             <div className="nav-search-line">Tracks</div>
                             {searchResults?.tracks?.results ? (
                                 <div
@@ -83,6 +89,38 @@ const Search = () => {
             ):<div className="search-no-search">Начните поиск</div>}
 
         </div>
+    )
+}
+
+const BestResult = ({bestResult}:any) => {
+    const formatReturn = () => {
+        switch (bestResult.type) {
+            case "artist" : {
+                return (
+                    <div className="playlist-card-wrapper">
+                        <Link style = {{textDecoration:"none"}} to={`/artist/${bestResult.result.id}`}>
+                        <div className="playlist-card-image image-rounded">
+                            <img
+                                src={getImageLink(bestResult.result.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
+                                alt="" loading="lazy"/>
+                        </div>
+                            <div className="playlist-card-title-wrapper">
+                                <div className="playlist-card-title">{bestResult.result.name}</div>
+                            </div>
+                        </Link>
+                    </div>
+                )
+            }
+            case "track" : {
+                return <Track track={bestResult.result} />
+            }
+        }
+
+    }
+    return (
+        <>
+         {formatReturn()}
+        </>
     )
 }
 

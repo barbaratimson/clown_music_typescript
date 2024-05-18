@@ -55,6 +55,12 @@ export interface SearchT {
     tracks: TracksResultSearchT
     playlists:PlaylistResultSearchT
     searchRequestId:string
+    best: SearchBestT
+}
+
+export interface SearchBestT {
+    result: TrackT | ArtistT
+    type: "artist" | "track"
 }
 
 export type BestResultSearchT = {

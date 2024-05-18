@@ -671,49 +671,60 @@ html,body {
 }
 
 .playlist-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
     width: 160px;
-    height: 180px;
+    height: 185px;
+    border-radius: 10px;
+    transition: background .2s;
+    overflow: hidden;
     padding: 5px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
-    transition: all .3s;
+}
+
+.playlist-card-wrapper:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .playlist-card-image {
-    position: relative;
     display: flex;
-    min-width: 150px;
-    height: 150px;
-    border-radius: 14px;
+    justify-self: center;
+    align-self: center;
+    border-radius: 10px;
     overflow: hidden;
+    width: 150px;
+    height: 150px;
+    pointer-events: none;
+}
+
+.playlist-card-image.image-rounded {
+    border-radius: 50%;
+}
+
+.playlist-card-image > img {
+    width: 160px;
+    height: 160px;
 }
 
 .playlist-card-title-wrapper {
-    height: 20px;
-    max-width: 180px;
-}
-
-.playlist-card-title {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 30px;
+}
+
+.playlist-card-title {
     font-size: 14px;
     color: var(--font-color-main);
-    margin-top: 3px;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
     padding: 0 10px;
+    font-weight: 600;
 }
 
 .collection-title {
-    padding: 10px;
     color: var(--font-color-main) !important;
-    background-color: var(--bg-color-secondary);
-    width: fit-content;
-    border-radius: 16px;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .collection-user-playlists-wrapper {
@@ -843,6 +854,8 @@ html,body {
     -webkit-backdrop-filter: blur(2.6px);
 }
 
+
+
 .nav-search-input {
     background-color: transparent;
     border: 0;
@@ -876,6 +889,28 @@ html,body {
     transform: translate(50%,-50%);
     z-index: 9999;
     color: var(--font-color-main);
+}
+
+.search-artist-info {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    transition: background .2s;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.search-artist-avatar-wrapper > img {
+    width: 150px;
+    height: 150px;
 }
 
 .album-artist-info-wrapper {
@@ -912,6 +947,21 @@ html,body {
     overflow: hidden;
     box-shadow: 0 0 5px 3px rgba(44, 44, 44, 0.2);
 }
+
+.search-artist-info-name {
+    color: var(--font-color-main);
+}
+
+
+.search-artist-info-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.search-artist-info:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
 .album-artist-info-name {
     color: var(--font-color-main);
 }
@@ -920,7 +970,7 @@ html,body {
     display: grid;
     grid-template-columns: repeat(auto-fill, 160px);
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
 }
 
@@ -1069,4 +1119,29 @@ html,body {
 
 .playlist-filter-wrapper::-webkit-scrollbar {
     display: none;
+}
+
+.user-card-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background: var(--bg-color-secondary);
+    border-radius: 16px;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+    overflow: hidden;
+    gap: 20px;
+}
+
+.user-card-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-card-title {
+    color: var(--font-color-main);
+    font-size: 40px;
+    font-weight: 500;
 }

@@ -10,16 +10,18 @@ interface PlaylistCardProps {
 const PlaylistCard = ({playlist}:PlaylistCardProps) => {
 
     return (
+        <>
+        <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`}>
             <div key={playlist.kind} className="playlist-card-wrapper">
-        <Link style = {{textDecoration:"none"}} to={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`}>
                 <div className="playlist-card-image">
                     <img src={getImageLink(playlist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                 </div>
                 <div className="playlist-card-title-wrapper">
                     <div className="playlist-card-title">{playlist.title}</div>
                 </div>
-        </Link>
             </div>
+        </Link>
+        </>
     )
 }
 
