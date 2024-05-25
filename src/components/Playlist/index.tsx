@@ -71,7 +71,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
                         {playlist.description}
                     </div>
                 </div>
-                {playlist.kind=== 3 ? (
+                {/*TODO: HIDDEN!!!!!*/}
+                {playlist.kind=== 3 && false ? (
                     <div className="playlist-sign-wrapper">
                         <img className="playlist-sign" src={signImage} alt=""/>
                     </div>

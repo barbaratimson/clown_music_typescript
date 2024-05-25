@@ -12,7 +12,7 @@ const MobileHeader = () => {
     const headerInfo = useAppSelector((state:RootState) => state.header.header)
         return (
         <div className="header-wrapper-mobile">
-            <div className="header-mobile">
+            <div className={`header-mobile ${headerInfo.active ? "dim" : null}`}>
                 <div className="button-wrapper-header-mobile">
                     <IconButton onClick={()=>{navigate(-1)}} className="navbar-button"><ArrowBackIosNew/></IconButton>
                     <Fade in={headerInfo.active}>

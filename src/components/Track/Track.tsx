@@ -79,11 +79,11 @@ const Track = ({track}:TrackProps) => {
                 </div>
                 <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">
                         {isLiked(track.id) ? (
-                            <div className={`track-controls-button`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
+                            <div className={`track-controls-button like`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
                                 <Favorite/>
                             </div>
                         ) : (
-                            <div className={`track-controls-button`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
+                            <div className={`track-controls-button like`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
                                 <FavoriteBorder/>
                             </div>
                         )}

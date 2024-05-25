@@ -20,6 +20,7 @@ import {
 import NavbarMobile from "../Navbar/NavbarMobile";
 import PlayerMobile from "../Player/PlayerMobile";
 import MobileHeader from "../MobileHeader";
+import {Fade} from "@mui/material";
 
 
 const Main = () => {
@@ -48,11 +49,11 @@ const Main = () => {
                 <Page isMobile={isMobile}/>
                 {!isMobile ? (<Player/>) : (<PlayerMobile/>)}
                 <Message/>
-                <div className="player-queue-section">
-                    {queueOpen ? (
-                        <Queue/>
-                    ): null}
-                </div>
+                    <Fade in={queueOpen} unmountOnExit>
+                        <div className="player-queue-section">
+                            <Queue/>
+                        </div>
+                    </Fade>
             </div>
     )
 }

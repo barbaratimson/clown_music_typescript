@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {TrackId, TrackT} from "../../../utils/types/types";
-import {Box, IconButton, LinearProgress} from "@mui/material";
+import {Box, Fade, IconButton, LinearProgress, Slide} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import {changeCurrentSong} from "../../../store/CurrentSongSlice";
@@ -43,6 +43,7 @@ const Player = () => {
     const [queueButton, setQueueButton] = useState<any>()
     const [liked,setLiked] = useState(true)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
+    const [playerFolded, setPlayerFolded] = useState(true)
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 0.5
@@ -191,6 +192,14 @@ const Player = () => {
          changeTrack()
     }, [currentSong]);
 
+
+    useEffect(() => {
+        if (!playerFolded) {
+            document.body.style.overflow = "hidden"
+        }
+        return () => {document.body.style.overflow = "unset"}
+    }, [playerFolded]);
+
     useEffect(() => {
         setMediaSession(currentSong)
         return () => {
@@ -207,8 +216,6 @@ const Player = () => {
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
 
-
-
     useEffect(() => {
         if (audioElem.current) {
             audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
@@ -224,92 +231,255 @@ const Player = () => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
     }, [playerState.shuffle]);
 
+
     return (
         <>
-            <div className="player-wrapper" style={{marginBottom: "49px"}}>
-                <div className="player-track-info-wrapper mobile" key={currentSong.id}>
-                    <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
-                    </div>
-                    <div className="player-track-info">
-                        <div className="player-track-info-title">
-                            {currentSong.title}
+            {playerFolded &&
+                <div className="player-wrapper" onClick={()=>{setPlayerFolded(!playerFolded)}} style={{marginBottom: "49px"}}>
+                        <div className="player-track-info-wrapper mobile" key={currentSong.id}>
+                            <div className="player-track-cover-wrapper">
+                                <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                            </div>
+                            <div className="player-track-info">
+                                <div className="player-track-info-title">
+                                    {currentSong.title}
+                                </div>
+                                <div className="player-track-info-artists-wrapper">
+                                    <span className="track-info-artist-span">
+                                        <div onClick={(e)=>{e.stopPropagation()}}>
+                                {currentSong.artists.map(artist => (
+                                        <ArtistName size={"15px"} artist={artist}/>
+                                ))}
+                                    </div>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div className="player-track-info-artists-wrapper">
+                        <div className="player-primary-controls-mobile" onClick={(e)=>{e.stopPropagation()}}>
+                            <Box
+                                className="player-primary-buttons-wrapper mobile"
+                            >
+                                    {isLiked(currentSong.id) ? (
+                                        <div
+                                            className={`player-track-controls-likeButton-mobile ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
+                                            }}>
+                                            <Favorite/>
+                                        </div>
+                                    ) : (
+                                        <div className={`player-track-controls-likeButton-mobile`} onClick={() => {
+                                            likeSong(currentSong).then((response) => updateLikedSongs("liked"))
+                                        }}>
+                                            <FavoriteBorder/>
+                                        </div>
+                                    )}
+                                <IconButton
+                                    className="player-primary-button play"
+                                    key={`player-button-play-${playerState.playing}`}
+                                    aria-label={playerState.playing ? 'play' : 'pause'}
+                                    onClick={() => {
+                                        !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
+                                    }}
+                                    onKeyDown={(e) => {
+                                        e.preventDefault();
+                                        handleKeyPress(e)
+                                    }}
+                                >
+                                    {!playerState.playing ? (
+                                        <PlayArrowRounded/>
+                                    ) : (
+                                        <PauseRounded/>
+                                    )}
+                                </IconButton>
+                            </Box>
+                        </div>
+                        <div className="player-primary-seek-wrapper-mobile">
+                            {!playerState.loading ? (
+                                <Slider
+                                    aria-label="time-indicator"
+                                    size="small"
+                                    value={position}
+                                    min={0}
+                                    step={1}
+                                    max={duration}
+                                    onChange={(_, value) => changeTime(value as number)}
+                                    className="player-seek"
+                                    sx={{
+                                        color: '#fff',
+                                        height: 4,
+                                        '& .MuiSlider-thumb': {
+                                            display: "none",
+                                        },
+                                        '& .MuiSlider-rail': {
+                                            opacity: 0.28,
+                                        },
+                                    }}
+                                    valueLabelDisplay="auto"/>
+                            ) : (
+                                <LinearProgress className="player-loader" color="inherit"/>
+                            )}
+                        </div>
+                    </div>
+            }
+
+
+
+
+                <Slide direction={"up"} in={!playerFolded}>
+                    <div className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
+                        {!playerFolded ? (
+                            <>
+                            <div className="player-track-info-wrapper-full" key={currentSong.id}>
+                                <div className="player-track-cover-wrapper-full">
+                                    <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                                </div>
+                                <div className="player-track-info">
+                                    <div className="player-track-info-title">
+                                        {currentSong.title}
+                                    </div>
+                                    <div className="player-track-info-artists-wrapper">
                             <span className="track-info-artist-span">
                         {currentSong.artists.map(artist => (
                             <ArtistName size={"15px"} artist={artist}/>
                         ))}
                             </span>
-                        </div>
-                    </div>
-                </div>
-                <div className="player-primary-controls-mobile">
-                    <Box
-                        className="player-primary-buttons-wrapper mobile"
-                    >
-                            {isLiked(currentSong.id) ? (
-                                <div
-                                    className={`player-track-controls-likeButton-mobile ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
-                                    onClick={() => {
-                                        dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
-                                    }}>
-                                    <Favorite/>
+                                    </div>
                                 </div>
-                            ) : (
-                                <div className={`player-track-controls-likeButton-mobile`} onClick={() => {
-                                    likeSong(currentSong).then((response) => updateLikedSongs("liked"))
-                                }}>
-                                    <FavoriteBorder/>
+                                <div className="player-track-controls-full">
+                                        {isLiked(currentSong.id) ? (
+                                            <div
+                                                className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
+                                                onClick={() => {
+                                                    dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
+                                                }}>
+                                                <Favorite/>
+                                            </div>
+                                        ) : (
+                                            <div className={`player-track-controls-likeButton`} onClick={() => {
+                                                likeSong(currentSong).then((response) => updateLikedSongs("liked"))
+                                            }}>
+                                                <FavoriteBorder/>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
-                        <IconButton
-                            className="player-primary-button play"
-                            key={`player-button-play-${playerState.playing}`}
-                            aria-label={playerState.playing ? 'play' : 'pause'}
-                            onClick={() => {
-                                !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-                            }}
-                            onKeyDown={(e) => {
-                                e.preventDefault();
-                                handleKeyPress(e)
-                            }}
-                        >
-                            {!playerState.playing ? (
-                                <PlayArrowRounded/>
-                            ) : (
-                                <PauseRounded/>
-                            )}
-                        </IconButton>
-                    </Box>
+                            <div className="player-primary-controls-full">
+                                <Box
+                                    className="player-primary-buttons-wrapper"
+                                >
+                                    <div className={`player-primary-button shuffle ${playerState.shuffle ? "active" : ""}`}
+                                    ><Shuffle onClick={() => {
+                                        setPlayerShuffle(!playerState.shuffle)
+                                    }}/></div>
+                                    <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
+                                        <FastRewindRounded/>
+                                    </IconButton>
+                                    <IconButton
+                                        className="player-primary-button play"
+                                        key={`player-button-play-${playerState.playing}`}
+                                        aria-label={playerState.playing ? 'play' : 'pause'}
+                                        onClick={() => {
+                                            !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
+                                        }}
+                                        onKeyDown={(e) => {
+                                            e.preventDefault();
+                                            handleKeyPress(e)
+                                        }}
+                                    >
+                                        {!playerState.playing ? (
+                                            <PlayArrowRounded/>
+                                        ) : (
+                                            <PauseRounded/>
+                                        )}
+                                    </IconButton>
+                                    <IconButton onClick={skipForward} className="player-primary-button" aria-label="next song">
+                                        <FastForwardRounded/>
+                                    </IconButton>
+                                    <div className={`player-primary-button repeat ${playerState.repeat ? "active" : ""}`}
+                                    ><Repeat onClick={() => {
+                                        setPlayerRepeat(!playerState.repeat)
+                                    }}/></div>
+                                </Box>
+                                <div className="player-primary-seek-wrapper">
+
+                                    <div className="player-primary-trackTime">
+                                        {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
+                                    </div>
+                                    {!playerState.loading ? (
+                                        <Slider
+                                            aria-label="time-indicator"
+                                            size="small"
+                                            value={position}
+                                            min={0}
+                                            step={1}
+                                            max={duration}
+                                            onChange={(_, value) => changeTime(value as number)}
+                                            className="player-seek"
+                                            sx={{
+                                                color: '#fff',
+                                                height: 4,
+                                                '& .MuiSlider-thumb': {
+                                                    display: "none",
+                                                },
+                                                '& .MuiSlider-rail': {
+                                                    opacity: 0.28,
+                                                },
+                                            }}
+                                            valueLabelDisplay="auto"/>
+                                    ) : (
+                                        <LinearProgress className="player-loader" color="inherit"/>
+                                    )}
+                                    <div className="player-primary-trackTime">
+                                        {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="player-secondary-controls-full">
+                            <div className="player-button-row">
+                            <div className="player-queue-button" onClick={(e) => {
+                            setQueueOpen(!queueOpen);
+                            setQueueButton(e.currentTarget.getBoundingClientRect())
+                        }}><ListIcon/></div>
                 </div>
-                <div className="player-primary-seek-wrapper-mobile">
-                    {!playerState.loading ? (
-                        <Slider
-                            aria-label="time-indicator"
-                            size="small"
-                            value={position}
-                            min={0}
-                            step={1}
-                            max={duration}
-                            onChange={(_, value) => changeTime(value as number)}
-                            className="player-seek"
-                            sx={{
-                                color: '#fff',
-                                height: 4,
-                                '& .MuiSlider-thumb': {
-                                    display: "none",
+            <div className="player-volume-wrapper">
+                {playerVolume === 0 ? (
+                    <VolumeOff/>
+                ) : playerVolume <= 33 ? (
+                    <VolumeMute/>
+                ) : playerVolume <= 66 ? (
+                    <VolumeDown/>
+                ) : playerVolume <= 100 ? (
+                    <VolumeUp/>
+                ) : null}
+                <Slider size="small"
+                        value={playerVolume}
+                        max={100}
+                        step={1}
+                        onChange={(_, value) => setPlayerVolume(value as number)}
+                        className="player-seek"
+                        sx={{
+                            color: '#fff',
+                            height: 4,
+                            '& .MuiSlider-track': {
+                                border: 'none',
+                            },
+                            '& .MuiSlider-thumb': {
+                                '&::before': {
+                                    boxShadow: 'none',
                                 },
-                                '& .MuiSlider-rail': {
-                                    opacity: 0.28,
+                                '&:hover, &.Mui-focusVisible, &.Mui-active': {
+                                    boxShadow: 'none',
                                 },
-                            }}
-                            valueLabelDisplay="auto"/>
-                    ) : (
-                        <LinearProgress className="player-loader" color="inherit"/>
-                    )}
-                </div>
+                            }
+                        }}
+                        aria-label="Default" valueLabelDisplay="auto"/>
             </div>
+        </div>
+                            </>)
+: null}
+</div>
+                </Slide>
             <audio preload={"auto"} crossOrigin="anonymous"
                    src={playerState.src} ref={audioElem}
                    onLoadStart={() => {
@@ -333,160 +503,6 @@ const Player = () => {
 }
 
 
-// const PlayerUnfolded = ({currentSong, isLiked}) => {
-//     return (
-//         <div className="player-wrapper" style={{marginBottom: "49px"}}>
-//             <div className="player-track-info-wrapper" key={currentSong.id}>
-//                 <div className="player-track-cover-wrapper">
-//                     <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
-//                 </div>
-//                 <div className="player-track-info">
-//                     <div className="player-track-info-title">
-//                         {currentSong.title}
-//                     </div>
-//                     <div className="player-track-info-artists-wrapper">
-//                             <span className="track-info-artist-span">
-//                         {currentSong.artists.map(artist => (
-//                             <ArtistName size={"15px"} artist={artist}/>
-//                         ))}
-//                             </span>
-//                     </div>
-//                 </div>
-//                 <div className="player-track-controls">
-//                     <div className="player-track-controls-border">
-//                         {isLiked(currentSong.id) ? (
-//                             <div
-//                                 className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
-//                                 onClick={() => {
-//                                     dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
-//                                 }}>
-//                                 <Favorite/>
-//                             </div>
-//                         ) : (
-//                             <div className={`player-track-controls-likeButton`} onClick={() => {
-//                                 likeSong(currentSong).then((response) => updateLikedSongs("liked"))
-//                             }}>
-//                                 <FavoriteBorder/>
-//                             </div>
-//                         )}
-//                     </div>
-//                 </div>
-//             </div>
-//             <div className="player-primary-controls">
-//                 <Box
-//                     className="player-primary-buttons-wrapper"
-//                 >
-//                     <div className={`player-primary-button shuffle ${playerState.shuffle ? "active" : ""}`}
-//                     ><Shuffle onClick={() => {
-//                         setPlayerShuffle(!playerState.shuffle)
-//                     }}/></div>
-//                     <IconButton onClick={skipBack} className="player-primary-button" aria-label="previous song">
-//                         <FastRewindRounded/>
-//                     </IconButton>
-//                     <IconButton
-//                         className="player-primary-button play"
-//                         key={`player-button-play-${playerState.playing}`}
-//                         aria-label={playerState.playing ? 'play' : 'pause'}
-//                         onClick={() => {
-//                             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-//                         }}
-//                         onKeyDown={(e) => {
-//                             e.preventDefault();
-//                             handleKeyPress(e)
-//                         }}
-//                     >
-//                         {!playerState.playing ? (
-//                             <PlayArrowRounded/>
-//                         ) : (
-//                             <PauseRounded/>
-//                         )}
-//                     </IconButton>
-//                     <IconButton onClick={skipForward} className="player-primary-button" aria-label="next song">
-//                         <FastForwardRounded/>
-//                     </IconButton>
-//                     <div className={`player-primary-button repeat ${playerState.repeat ? "active" : ""}`}
-//                     ><Repeat onClick={() => {
-//                         setPlayerRepeat(!playerState.repeat)
-//                     }}/></div>
-//                 </Box>
-//                 <div className="player-primary-seek-wrapper">
-//
-//                     <div className="player-primary-trackTime">
-//                         {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
-//                     </div>
-//                     {!playerState.loading ? (
-//                         <Slider
-//                             aria-label="time-indicator"
-//                             size="small"
-//                             value={position}
-//                             min={0}
-//                             step={1}
-//                             max={duration}
-//                             onChange={(_, value) => changeTime(value as number)}
-//                             className="player-seek"
-//                             sx={{
-//                                 color: '#fff',
-//                                 height: 4,
-//                                 '& .MuiSlider-thumb': {
-//                                     display: "none",
-//                                 },
-//                                 '& .MuiSlider-rail': {
-//                                     opacity: 0.28,
-//                                 },
-//                             }}
-//                             valueLabelDisplay="auto"/>
-//                     ) : (
-//                         <LinearProgress className="player-loader" color="inherit"/>
-//                     )}
-//                     <div className="player-primary-trackTime">
-//                         {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
-//                     </div>
-//                 </div>
-//             </div>
-//             <div className="player-secondary-controls">
-//                 <div className="player-button-row">
-//                     <div className="player-queue-button" onClick={(e) => {
-//                         setQueueOpen(!queueOpen);
-//                         setQueueButton(e.currentTarget.getBoundingClientRect())
-//                     }}><ListIcon/></div>
-//                 </div>
-//                 <div className="player-volume-wrapper">
-//                     {playerVolume === 0 ? (
-//                         <VolumeOff/>
-//                     ) : playerVolume <= 33 ? (
-//                         <VolumeMute/>
-//                     ) : playerVolume <= 66 ? (
-//                         <VolumeDown/>
-//                     ) : playerVolume <= 100 ? (
-//                         <VolumeUp/>
-//                     ) : null}
-//                     <Slider size="small"
-//                             value={playerVolume}
-//                             max={100}
-//                             step={1}
-//                             onChange={(_, value) => setPlayerVolume(value as number)}
-//                             className="player-seek"
-//                             sx={{
-//                                 color: '#fff',
-//                                 height: 4,
-//                                 '& .MuiSlider-track': {
-//                                     border: 'none',
-//                                 },
-//                                 '& .MuiSlider-thumb': {
-//                                     '&::before': {
-//                                         boxShadow: 'none',
-//                                     },
-//                                     '&:hover, &.Mui-focusVisible, &.Mui-active': {
-//                                         boxShadow: 'none',
-//                                     },
-//                                 }
-//                             }}
-//                             aria-label="Default" valueLabelDisplay="auto"/>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
 
 export default Player;
 
