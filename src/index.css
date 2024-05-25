@@ -151,11 +151,40 @@ html,body {
     height: 100%;
     padding-bottom: 80px;
 }
+.nav-wrapper-mobile {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    bottom: 0;
+    z-index: 99999;
+}
+.header-wrapper-mobile {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    top: 0;
+    z-index: 99999;
+}
 .navbar {
     display: flex;
     flex-direction: column;
     padding: 5px;
     background: var(--bg-color-main);
+    border-radius: 0 16px 0 0;
+    backdrop-filter: blur(2.6px);
+    -webkit-backdrop-filter: blur(2.6px);
+}
+.navbar-mobile {
+    padding: 5px;
+    width: 100%;
+    background: #000000;
+}
+.header-mobile {
+    display: flex;
+    padding: 5px;
+    height: 50px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
     border-radius: 0 16px 0 0;
     backdrop-filter: blur(2.6px);
     -webkit-backdrop-filter: blur(2.6px);
@@ -166,6 +195,12 @@ html,body {
     justify-content: center;
     align-items: center;
     gap: 20px;
+}
+.button-wrapper-nav-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 .button-wrapper-user {
     display: flex;
@@ -270,6 +305,10 @@ html,body {
     margin-bottom: 75px;
     overflow-x: hidden;
 }
+.page-wrapper.mobile {
+    margin-left: 0;
+    margin-top: 50px;
+}
 
 .animated-opacity {
     animation: opacity .6s;
@@ -302,8 +341,6 @@ html,body {
     margin-bottom: 10px;
     background: var(--bg-color-secondary);
     border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
 }
 .playlist-info-wrapper {
     display: flex;
@@ -484,9 +521,6 @@ html,body {
     width: 100%;
     padding: 5px;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     transition: all .3s;
 }
 
@@ -734,8 +768,6 @@ html,body {
     gap: 15px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     transition: all .3s;
 }
 .homePage-playlists-wrapper {
@@ -770,8 +802,6 @@ html,body {
     overflow: hidden;
     background: var(--bg-color-secondary);
     border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
 }
 
 .artist-card-likes-count {
@@ -850,8 +880,6 @@ html,body {
     padding: 10px;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
 }
 
 
@@ -901,8 +929,6 @@ html,body {
     height: 180px;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     transition: background .2s;
     overflow: hidden;
     padding: 5px;
@@ -928,8 +954,6 @@ html,body {
     gap: 5px;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     transition: background .2s;
 }
 .album-artist-info:hover {
@@ -984,8 +1008,6 @@ html,body {
     padding: 10px;
     background: rgba(0,0,0, 0.7);
     border-radius: 10px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     transition: background .2s;
 }
 
@@ -1127,8 +1149,6 @@ html,body {
     width: 100%;
     background: var(--bg-color-secondary);
     border-radius: 16px;
-    backdrop-filter: blur(2.6px);
-    -webkit-backdrop-filter: blur(2.6px);
     overflow: hidden;
     gap: 20px;
 }

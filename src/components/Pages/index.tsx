@@ -13,10 +13,12 @@ import PlaylistView from "../PlaylistView";
 import Artist from "./pages/Artist";
 import AlbumView from "../AlbumView";
 
-
-const Page = () => {
+interface PagePropsT {
+    isMobile:boolean
+}
+const Page = ({isMobile}:PagePropsT) => {
     return (
-        <div className="page-wrapper">
+        <div className={`page-wrapper ${isMobile && "mobile"}`}>
             <Routes>
                 <Route path="collection" element={<Collection/>} />
                 <Route path="chart" element={<Chart/>} />
