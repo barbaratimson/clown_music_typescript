@@ -202,6 +202,14 @@ html,body {
     justify-content: space-evenly;
     align-items: center;
 }
+.button-wrapper-header-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
 .button-wrapper-user {
     display: flex;
     flex-direction: column;
@@ -284,6 +292,15 @@ html,body {
     align-items: center;
     flex-direction: row;
 }
+.player-primary-seek-wrapper-mobile {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
 .player-loader {
     width: 100%;
 }
@@ -307,7 +324,7 @@ html,body {
 }
 .page-wrapper.mobile {
     margin-left: 0;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .animated-opacity {
@@ -395,6 +412,11 @@ html,body {
     text-overflow: ellipsis;
     animation: translate .3s ease;
 }
+.player-track-info-wrapper.mobile {
+    width: auto;
+    flex-grow: 1;
+}
+
 .player-track-info {
     display: flex;
     flex-direction: column;
@@ -440,6 +462,15 @@ html,body {
     margin-right: 10px;
 }
 
+.player-track-controls-likeButton-mobile {
+    color: var(--font-color-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    cursor: pointer;
+}
+
 .player-track-controls-border {
     border-right: 1px solid rgba(241, 241, 241, 0.1);
     height: 100%;
@@ -461,6 +492,13 @@ html,body {
     flex-direction: column;
     justify-self: center;
     flex-grow: 2;
+    gap: 5px;
+}
+.player-primary-controls-mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
 }
 .player-secondary-controls {
@@ -494,6 +532,10 @@ html,body {
     justify-content: center;
     align-items: center;
 }
+
+.player-primary-buttons-wrapper.mobile {
+    gap: 20px;
+}
 .player-seek {
     padding: 0 !important;
 }
@@ -522,6 +564,7 @@ html,body {
     padding: 5px;
     background: rgba(255, 255, 255, 0.03);
     transition: all .3s;
+    border-radius: 16px;
 }
 
 
