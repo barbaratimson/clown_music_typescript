@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import {PlaylistT, TrackT, TrackType} from "../utils/types/types";
-import {PlaylistInitState} from "./initialStates.js";
+import {PlaylistInitState} from "./initialStates";
 
 interface currentPlaylistState {
     playlist: PlaylistT

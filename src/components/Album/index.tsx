@@ -21,7 +21,7 @@ const Album = ({album}: AlbumProps) => {
                 <div className="playlist-cover-wrapper">
                     <img src={getImageLink(album.coverUri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                 </div>
-                <div className="artist-info-wrapper">
+                <div className="album-info-wrapper">
                     <div className="album-artist-info-wrapper">
                         {album.artists.map((artist) => (
                             <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>

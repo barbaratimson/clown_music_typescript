@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {TrackId, TrackT} from "../utils/types/types";
-import { LikedSongsInitState,} from "./initialStates.js";
+import { LikedSongsInitState,} from "./initialStates";
 
 export interface LikedSongsState {
     likedSongs:Array<TrackId>

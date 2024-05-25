@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {TrackT} from "../utils/types/types";
-import { MessageInitState,} from "./initialStates.js";
+import { MessageInitState,} from "./initialStates";
 interface MessageT {
     message:string
     code: ErrCodeT

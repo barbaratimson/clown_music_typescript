@@ -165,6 +165,11 @@ html,body {
     top: 0;
     z-index: 99999;
 }
+.header-mobile-title {
+    font-size: 17px;
+    color: var(--font-color-main);
+    font-weight: 500;
+}
 .navbar {
     display: flex;
     flex-direction: column;
@@ -326,6 +331,7 @@ html,body {
 .page-wrapper.mobile {
     margin-left: 0;
     margin-top: 40px;
+    margin-bottom: 110px;
 }
 
 .animated-opacity {
@@ -372,6 +378,7 @@ html,body {
 }
 .playlist-cover-wrapper{
     min-width: 200px;
+    height: 200px;
 }
 .playlist-info-title {
     font-size: 40px;
@@ -780,8 +787,8 @@ html,body {
 }
 
 .playlist-card-image > img {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
 }
 
 .playlist-card-title-wrapper {
@@ -895,6 +902,18 @@ html,body {
     margin-left: 20px;
     gap: 10px;
 }
+
+.album-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    flex-grow: 1;
+    color: var(--font-color-main);
+    font-weight: 600;
+    margin-left: 20px;
+    gap: 10px;
+}
+
 .artist-albums-wrapper2 {
     display: flex;
     justify-content: center;
@@ -994,10 +1013,9 @@ html,body {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    padding: 5px;
+    border-radius: 25px 10px 10px 25px;
+    padding-right: 5px;
     gap: 5px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
     transition: background .2s;
 }
 .album-artist-info:hover {
@@ -1211,6 +1229,23 @@ html,body {
 }
 
 @media (max-width: 575px) {
+    .album-artist-info-name {
+        font-size: 12px;
+    }
+    .album-info-wrapper {
+        padding: 10px;
+        margin: 0;
+    }
+    .album-artist-info-wrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .artist-popular-tracks-flex > * {
+        padding: 0;
+    }
+    .artist-card-name {
+        font-size: 25px;
+    }
     .player-wrapper {
         gap: 20px;
         border-radius: 0;
@@ -1239,6 +1274,7 @@ html,body {
     }
     .playlist-cover-wrapper {
         min-width: 150px;
+        height: 150px;
     }
     .playlist-cover-wrapper > img {
         width: 150px;
