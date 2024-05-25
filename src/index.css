@@ -178,6 +178,7 @@ html,body {
     padding: 5px;
     width: 100%;
     background: #000000;
+    border-top: 1px solid var(--bg-color-secondary_hover);
 }
 .header-mobile {
     display: flex;
@@ -1207,4 +1208,69 @@ html,body {
     color: var(--font-color-main);
     font-size: 40px;
     font-weight: 500;
+}
+
+@media (max-width: 575px) {
+    .player-wrapper {
+        gap: 20px;
+        border-radius: 0;
+        backdrop-filter: none;
+        background-color: rgba(0, 0, 0, 1);
+    }
+    .player-track-cover-wrapper {
+        min-width: 50px;
+        height: 50px;
+    }
+    .player-track-info-title {
+        font-size: 15px;
+    }
+    .playlist-info-title {
+        font-size: 20px;
+    }
+    .playlist-info-desc {
+        margin: 0;
+    }
+    .playlist-info-wrapper {
+        gap: 10px;
+        margin-left: 25px;
+    }
+    .playlist {
+        height: auto;
+    }
+    .playlist-cover-wrapper {
+        min-width: 150px;
+    }
+    .playlist-cover-wrapper > img {
+        width: 150px;
+        aspect-ratio: 1/1;
+    }
+    .playlist-filter-button {
+        padding: 5px;
+        border-radius: 12px;
+    }
+    .track-wrapper {
+        border-radius: 14px;
+    }
+    .track-cover-wrapper {
+        min-width: 45px;
+        height: 45px;
+        border-radius: 12px;
+    }
+    .track-info-wrapper {
+        font-size: 14px;
+    }
+    .track-info-artist {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+}
+
+@media (hover: hover) {
+
+}
+@media (hover: none) {
+
 }
