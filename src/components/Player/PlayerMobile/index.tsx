@@ -330,9 +330,9 @@ const Player = () => {
                     <div className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
                         {!playerFolded ? (
                             <>
-                            <div className="player-track-info-wrapper-full" key={currentSong.id}>
+                            <div className="player-track-info-wrapper-full animated-opacity" key={currentSong.id}>
                                 <div className="player-track-cover-wrapper-full">
-                                    <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
+                                    <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
                                 </div>
                                 <div className="player-track-info">
                                     <div className="player-track-info-title">
@@ -364,7 +364,7 @@ const Player = () => {
                                         )}
                                     </div>
                                 </div>
-                            <div className="player-primary-controls-full">
+                            <div className="player-primary-controls-full" onClick={(e)=>{e.stopPropagation()}}>
                                 <Box
                                     className="player-primary-buttons-wrapper"
                                 >
