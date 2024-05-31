@@ -359,9 +359,9 @@ const Player = () => {
 
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
 
-                                        {/*<div className="player-primary-trackTime">*/}
-                                        {/*    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}*/}
-                                        {/*</div>*/}
+                                        <div className="player-primary-trackTime">
+                                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
+                                        </div>
                                         {!playerState.loading ? (
                                             <Slider
                                                 aria-label="time-indicator"
@@ -386,9 +386,9 @@ const Player = () => {
                                         ) : (
                                             <LinearProgress className="player-loader" color="inherit"/>
                                         )}
-                                        {/*<div className="player-primary-trackTime">*/}
-                                        {/*    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}*/}
-                                        {/*</div>*/}
+                                        <div className="player-primary-trackTime">
+                                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
+                                        </div>
                                     </div>
 
                                     {/*PLAYER TRACK CONTROLS*/}
