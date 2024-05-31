@@ -577,7 +577,7 @@ html,body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    flex-grow: 1;
+    margin: auto;
 }
 .player-secondary-controls {
     display: flex;
