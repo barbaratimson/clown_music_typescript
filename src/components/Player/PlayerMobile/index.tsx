@@ -439,7 +439,6 @@ const Player = () => {
                                         </Box>
                                     </div>
                                     <div className="player-secondary-controls-full">
-                                        <div className="player-button-row">
                                             <div className="player-track-controls-full">
                                                 {isLiked(currentSong.id) ? (
                                                     <div
@@ -456,7 +455,6 @@ const Player = () => {
                                                         <FavoriteBorder/>
                                                     </div>
                                                 )}
-                                            </div>
                                     
                                         </div>
                                         <div className="player-volume-wrapper">
