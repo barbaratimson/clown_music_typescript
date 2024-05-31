@@ -579,9 +579,16 @@ html,body {
     padding-right: 40px;
 }
 .player-secondary-controls-full {
-    display: none;
-}
 
+}
+.player-navbar-full {
+    position:fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: red;
+}
 .player-button-row {
     display: flex;
     flex-grow: 1;

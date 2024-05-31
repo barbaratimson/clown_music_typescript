@@ -19,7 +19,7 @@ const Album = ({album}: AlbumProps) => {
         <div className="playlist-wrapper animated-opacity">
             <div ref={playlistInfo} className="playlist">
                 <div className="playlist-cover-wrapper">
-                    <img src={getImageLink(album.coverUri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
+                    <img src={getImageLink(album.coverUri, "600x600") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                 </div>
                 <div className="album-info-wrapper">
                     <div className="album-artist-info-wrapper">

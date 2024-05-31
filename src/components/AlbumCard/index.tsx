@@ -13,7 +13,7 @@ const PlaylistCard = ({album}:AlbumCardProps) => {
         <div key={album.id} className="playlist-card-wrapper">
             <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/artist/${album.artists[0].id}/album/${album.id}`}>
                 <div className="playlist-card-image">
-                    <img src={getImageLink(album.coverUri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
+                    <img src={getImageLink(album.coverUri, "600x600") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                 </div>
                 <div className="playlist-card-title-wrapper">
                 <div className="playlist-card-title">

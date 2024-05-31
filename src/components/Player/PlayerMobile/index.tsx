@@ -20,7 +20,8 @@ import {
     VolumeDown,
     VolumeMute,
     VolumeOff,
-    VolumeUp
+    VolumeUp,
+    KeyboardArrowDown
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../../store/MessageSlice';
@@ -324,12 +325,19 @@ const Player = () => {
             }
 
 
-
+             
 
                 <Slide direction={"up"} in={!playerFolded}>
                     <div className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
                         {!playerFolded ? (
-                                <>
+                                <> 
+                                <div className="player-navbar-full">
+                                    <KeyboardArrowDown/>
+                                    <div className="player-queue-button" onClick={(e) => {
+                                                                                        setQueueOpen(!queueOpen);
+                                                                                                                                        setQueueButton(e.currentTarget.getBoundingClientRect())
+                                                                                                                                                                                    }}><ListIcon/></div>
+                                </div>
                                     {/*track title and cover*/}
                                     <div className="player-track-info-wrapper-full animated-opacity" key={currentSong.id}>
                                         <div className="player-track-cover-wrapper-full">
@@ -449,10 +457,7 @@ const Player = () => {
                                                     </div>
                                                 )}
                                             </div>
-                                            <div className="player-queue-button" onClick={(e) => {
-                                                setQueueOpen(!queueOpen);
-                                                setQueueButton(e.currentTarget.getBoundingClientRect())
-                                            }}><ListIcon/></div>
+                                    
                                         </div>
                                         <div className="player-volume-wrapper">
                                             {playerVolume === 0 ? (
