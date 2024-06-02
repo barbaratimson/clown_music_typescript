@@ -266,6 +266,15 @@ html,body {
     font-size: 4rem !important;
 }
 
+.player-primary-button.mobile-secondary > svg {
+    font-size: 2.5rem !important;
+}
+
+.player-primary-button.mobile-func > svg {
+    font-size: 1.5rem !important;
+}
+
+
 .player-primary-button > svg {
     font-size: 1.8rem;
 }
@@ -628,7 +637,11 @@ html,body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto 0;
+    flex-grow: 1;
+}
+
+.player-primary-controls-full .player-primary-buttons-wrapper {
+    height: fit-content;
 }
 .player-secondary-controls {
     display: flex;
@@ -642,7 +655,7 @@ html,body {
     flex-direction: row;
     bottom: 0;
     width: 100%;
-    padding: 10px 20px;
+    height: 50px;
 }
 .player-navbar-full {
     position:fixed;

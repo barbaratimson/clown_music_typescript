@@ -433,12 +433,12 @@ const Player = () => {
                                     </div>
 
                                     {/*PLAYER TRACK CONTROLS*/}
-                                    <div className="player-primary-controls-full" onClick={(e) => {
+                                    <div className="player-primary-controls-full">
+
+
+                                        <Box onClick={(e) => {
                                         e.stopPropagation()
-                                    }}>
-
-
-                                        <Box
+                                        }}
                                             className="player-primary-buttons-wrapper"
                                         >
                                             <div
