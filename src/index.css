@@ -638,6 +638,7 @@ html,body {
     justify-content: center;
     align-items: center;
     flex-grow: 1;
+    margin-bottom: 35px;
 }
 
 .player-primary-controls-full .player-primary-buttons-wrapper {
