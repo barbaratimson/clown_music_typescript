@@ -532,7 +532,6 @@ html,body {
     margin-top: 10px;
 }
 
-
 .player-track-info.full > .player-track-info-artists-wrapper {
     margin: 0;
 }
@@ -638,7 +637,8 @@ html,body {
     justify-content: center;
     align-items: center;
     flex-grow: 1;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
 }
 
 .player-primary-controls-full .player-primary-buttons-wrapper {
