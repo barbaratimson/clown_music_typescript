@@ -204,10 +204,6 @@ const Player = () => {
                     console.log(queue.findIndex(x => x.id == newSong.id) !== -1)
                 } while (queue.findIndex(x => x.id == newSong.id) !== -1)
                 addToQueue(newSong)
-            } else {
-                if(playerState.shuffle) {
-                    setPlayingQueue([trackWrap(currentSong)])
-                }
             }
     }
 

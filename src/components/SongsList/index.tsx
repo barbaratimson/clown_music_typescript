@@ -4,6 +4,7 @@ import Track from "../Track/Track";
 import {initQueue} from "../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import { setCurrentPlaylist } from "../../store/CurrentPlaylistSlice";
+import { trackWrap } from "../../utils/trackWrap";
 
 interface SongsListProps {
     tracks: Array<TrackType>
@@ -13,12 +14,19 @@ interface SongsListProps {
 const SongsList = (({tracks,playlist}:SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
+    const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
+    const playerState = useAppSelector((state: RootState) => state.player)
+    const setInitQueue = (track:Array<TrackType>) => {
+        if(playerState.shuffle) {
+            setPlayingQueue({playlist:playlist,queueTracks:track})
+        } else {
+            setPlayingQueue({playlist:playlist,queueTracks:playlist.tracks})
+        }
+    }
     return (
         <div className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (
-                <div onClick={()=>{setPlayingQueue({playlist:playlist,queueTracks:playlist.tracks})}}>
-                    <Track key={song.id} track={song.track}/>
-                </div>
+                    <Track key={song.id} queueFunc={setInitQueue} track={song.track}/>
             ): null) : null}
         </div>
     )

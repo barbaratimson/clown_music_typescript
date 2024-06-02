@@ -11,29 +11,34 @@ import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
 import {userId} from "../../utils/constants";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {showMessage} from "../../store/MessageSlice";
+import { trackWrap } from "../../utils/trackWrap";
 
 
 interface TrackProps {
-    track : TrackT
+    track : TrackT,
+    queueFunc?:Function
 }
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({track}:TrackProps) => {
+const Track = ({track,queueFunc}:TrackProps) => {
     const dispatch = useAppDispatch()
     const [changeSongInactive, setChangeSongInactive] = useState(false)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const playerState = useAppSelector((state: RootState) => state.player)
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const playerState = useAppSelector((state:RootState)=>state.player)
     const changeSong = (song:TrackT) => {
         if (changeSongInactive) return
         if (song.id != currentSong.id) {
-            setCurrentSong(song)
+            setCurrentSong(song);
+            if (queueFunc) {
+                queueFunc([trackWrap(song)]);
+            }
         } else if (playerState.playing) {
             stopPlayerFunc()
         } else {

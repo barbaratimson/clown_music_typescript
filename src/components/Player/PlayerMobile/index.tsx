@@ -21,7 +21,9 @@ import {
     VolumeMute,
     VolumeOff,
     VolumeUp,
-    KeyboardArrowDown
+    KeyboardArrowDown,
+    ArrowBackIosNew,
+    ExpandMore
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../../store/MessageSlice';
@@ -203,14 +205,8 @@ const Player = () => {
                 let newSong:TrackType;
                 do {
                     newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-                    // console.log(newSong)
-                    // console.log(queue.findIndex(x => x.id == newSong.id) !== -1)
                 } while (queue.findIndex(x => x.id == newSong.id) !== -1)
                 addToQueue(newSong)
-            } else {
-                if(playerState.shuffle) {
-                    setPlayingQueue([trackWrap(currentSong)])
-                }
             }
     }
 
@@ -367,20 +363,23 @@ const Player = () => {
                         {!playerFolded ? (
                                 <> 
                                 <div className="player-navbar-full">
-                                    <KeyboardArrowDown/>
-                                    <div className="player-queue-button" onClick={(e) => {setQueueOpen(!queueOpen);setQueueButton(e.currentTarget.getBoundingClientRect())}}>
+                                    <div className="player-navbar-button close">
+                                        <ExpandMore/>
+                                    </div>
+                                    <div className="player-header-mobile-title">{queueCurrentPlaylist.title}</div>
+                                    <div className="player-navbar-button queue" onClick={(e) => {setQueueOpen(!queueOpen);setQueueButton(e.currentTarget.getBoundingClientRect())}}>
                                         <ListIcon/>
-                                        </div>
+                                    </div>
                                 </div>
                                     {/* cover row */}
-                                    <div className="player-track-cover-row-wrapper-full" key={currentSong.id}>
-                                        <div className="player-track-cover-wrapper-full animated-opacity prev">
+                                    <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
+                                        <div className="player-track-cover-wrapper-full animated-opacity-4ms prev" onClick={()=>{skipBack()}}>
                                             <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                         </div>
-                                        <div className="player-track-cover-wrapper-full animated-scale">
+                                        <div className={`player-track-cover-wrapper-full animated-scale ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
                                             <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
                                         </div>
-                                        <div className="player-track-cover-wrapper-full animated-opacity next">
+                                        <div className="player-track-cover-wrapper-full animated-opacity next" onClick={()=>{skipForward()}}>
                                             <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                         </div>
                                     </div>
@@ -443,16 +442,16 @@ const Player = () => {
                                             className="player-primary-buttons-wrapper"
                                         >
                                             <div
-                                                className={`player-primary-button shuffle ${playerState.shuffle ? "active" : ""}`}
+                                                className={`player-primary-button mobile-func shuffle ${playerState.shuffle ? "active" : ""}`}
                                             ><Shuffle onClick={() => {
                                                 setPlayerShuffle(!playerState.shuffle)
                                             }}/></div>
-                                            <IconButton onClick={skipBack} className="player-primary-button"
+                                            <IconButton onClick={skipBack} className="player-primary-button mobile-secondary"
                                                         aria-label="previous song">
                                                 <FastRewindRounded/>
                                             </IconButton>
                                             <IconButton
-                                                className="player-primary-button full play"
+                                                className="player-primary-button play mobile-main"
                                                 key={`player-button-play-${playerState.playing}`}
                                                 aria-label={playerState.playing ? 'play' : 'pause'}
                                                 onClick={() => {
@@ -469,12 +468,12 @@ const Player = () => {
                                                     <PauseRounded/>
                                                 )}
                                             </IconButton>
-                                            <IconButton onClick={skipForward} className="player-primary-button"
+                                            <IconButton onClick={skipForward} className="player-primary-button mobile-secondary"
                                                         aria-label="next song">
                                                 <FastForwardRounded/>
                                             </IconButton>
                                             <div
-                                                className={`player-primary-button repeat ${playerState.repeat ? "active" : ""}`}
+                                                className={`player-primary-button mobile-func repeat ${playerState.repeat ? "active" : ""}`}
                                             ><Repeat onClick={() => {
                                                 setPlayerRepeat(!playerState.repeat)
                                             }}/></div>
