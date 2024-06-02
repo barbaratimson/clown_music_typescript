@@ -1,6 +1,8 @@
 import {TrackT, TrackType} from "./types/types";
 
-export const trackWrap = (track:TrackT) => {
+type track = TrackT
+
+export const trackWrap = (track:track) => {
     return {track:track}
 }
 

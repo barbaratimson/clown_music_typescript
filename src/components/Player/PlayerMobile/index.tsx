@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackId, TrackT} from "../../../utils/types/types";
+import {TrackDefaultT, TrackId, TrackT, TrackType} from "../../../utils/types/types";
 import {Box, Fade, IconButton, LinearProgress, Slide} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
@@ -26,7 +26,8 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../../store/MessageSlice';
 import {setLikedSongs} from '../../../store/LikedSongsSlice';
-import {setOpeningState} from "../../../store/playingQueueSlice";
+import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
+import { trackWrap } from '../../../utils/trackWrap';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -39,6 +40,7 @@ const Player = () => {
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
+    const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
     const [queueButton, setQueueButton] = useState<any>()
@@ -56,6 +58,10 @@ const Player = () => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
+
+    const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
+    const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
+
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -141,27 +147,27 @@ const Player = () => {
             changeTime(0)
         }
     }
+
     const skipForward = () => {
-        const index = queue.findIndex(x => x.id == currentSong.id);
+        const index = queue.findIndex(x => x.track.id == currentSong.id);
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
             startPlayerFunc()
-        } else if (playerState.shuffle) {
-            let randomSong = () => (Math.random() * (queue.length + 1)) << 0
-            let newSongId = randomSong()
-            if (queue[newSongId].track === currentSong) {
-                setCurrentSong(queue[randomSong()].track)
-            } else {
-                setCurrentSong(queue[newSongId].track)
-            }
         } else if (index === queue.length - 1) {
-            setCurrentSong(queue[0].track)
+                setCurrentSong(queue[0].track)
         } else {
             setCurrentSong(queue[index + 1].track)
         }
     }
+
+        const randomSongFromTrackList = (trackList:Array<TrackType>) => {
+        let randomSong = () => (Math.random() * (trackList.length + 1)) << 0
+        // console.log(randomSong())
+        return trackList[randomSong()]
+    }
     
+
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${currentSong.title} added to Liked`);
@@ -189,8 +195,25 @@ const Player = () => {
                 setPlayerSrc(await fetchYaSongLink(currentSong.id))
             }
         }
-
          changeTrack()
+
+        if (queue.length !== 0 && currentSong.id !== 0) {
+         const index = queue.findIndex(x => x.id == currentSong.id);
+            if (playerState.shuffle && index === queue.length-1) {
+                let newSong:TrackType;
+                do {
+                    newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+                    // console.log(newSong)
+                    // console.log(queue.findIndex(x => x.id == newSong.id) !== -1)
+                } while (queue.findIndex(x => x.id == newSong.id) !== -1)
+                addToQueue(newSong)
+            } else {
+                if(playerState.shuffle) {
+                    setPlayingQueue([trackWrap(currentSong)])
+                }
+            }
+    }
+
     }, [currentSong]);
 
 
@@ -230,7 +253,19 @@ const Player = () => {
 
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
+
+        if (playerState.shuffle) {
+            setPlayingQueue([trackWrap(currentSong)])
+        } else {
+            setPlayingQueue(queueCurrentPlaylist.tracks)
+        }
     }, [playerState.shuffle]);
+
+    useEffect(()=>{
+        if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
+            addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
+        }
+    },[queue])
 
 
     return (
@@ -322,7 +357,7 @@ const Player = () => {
                             )}
                         </div>
                     </div>
-            }
+            }   
 
 
              
@@ -333,62 +368,69 @@ const Player = () => {
                                 <> 
                                 <div className="player-navbar-full">
                                     <KeyboardArrowDown/>
-                                    <div className="player-queue-button" onClick={(e) => {
-                                                                                        setQueueOpen(!queueOpen);
-                                                                                                                                        setQueueButton(e.currentTarget.getBoundingClientRect())
-                                                                                                                                                                                    }}><ListIcon/></div>
+                                    <div className="player-queue-button" onClick={(e) => {setQueueOpen(!queueOpen);setQueueButton(e.currentTarget.getBoundingClientRect())}}>
+                                        <ListIcon/>
+                                        </div>
                                 </div>
-                                    {/*track title and cover*/}
-                                    <div className="player-track-info-wrapper-full animated-opacity" key={currentSong.id}>
-                                        <div className="player-track-cover-wrapper-full">
+                                    {/* cover row */}
+                                    <div className="player-track-cover-row-wrapper-full" key={currentSong.id}>
+                                        <div className="player-track-cover-wrapper-full animated-opacity prev">
+                                            <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                        </div>
+                                        <div className="player-track-cover-wrapper-full animated-scale">
                                             <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
                                         </div>
-                                        <div className="player-track-info full">
+                                        <div className="player-track-cover-wrapper-full animated-opacity next">
+                                            <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                        </div>
+                                    </div>
+                                    {/*track title and artists*/}
+                                    <div className="player-track-info full">
                                             <div className="player-track-info-title">
                                                 {currentSong.title}
                                             </div>
                                             <div className="player-track-info-artists-wrapper">
-                            <span className="track-info-artist-span">
-                        {currentSong.artists.map(artist => (
-                            <ArtistName size={"15px"} artist={artist}/>
-                        ))}
-                            </span>
+                                                <span className="track-info-artist-span">
+                                                    {currentSong.artists.map(artist => (
+                                                        <ArtistName size={"15px"} artist={artist}/>
+                                                    ))}
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
 
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
-
-                                        <div className="player-primary-trackTime">
-                                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
-                                        </div>
-                                        {!playerState.loading ? (
-                                            <Slider
-                                                aria-label="time-indicator"
-                                                size="small"
-                                                value={position}
-                                                min={0}
-                                                step={1}
-                                                max={duration}
-                                                onChange={(_, value) => changeTime(value as number)}
-                                                className="player-seek"
-                                                sx={{
-                                                    color: '#fff',
-                                                    height: 4,
-                                                    '& .MuiSlider-thumb': {
-                                                        display: "none",
-                                                    },
-                                                    '& .MuiSlider-rail': {
-                                                        opacity: 0.28,
-                                                    },
-                                                }}
-                                                valueLabelDisplay="auto"/>
-                                        ) : (
-                                            <LinearProgress className="player-loader" color="inherit"/>
-                                        )}
-                                        <div className="player-primary-trackTime">
-                                            {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
-                                        </div>
+                                            {!playerState.loading ? (
+                                                <Slider
+                                                    aria-label="time-indicator"
+                                                    size="small"
+                                                    value={position}
+                                                    min={0}
+                                                    step={1}
+                                                    max={duration}
+                                                    onChange={(_, value) => changeTime(value as number)}
+                                                    className="player-seek"
+                                                    sx={{
+                                                        color: '#fff',
+                                                        height: 4,
+                                                        '& .MuiSlider-thumb': {
+                                                            display: "none",
+                                                        },
+                                                        '& .MuiSlider-rail': {
+                                                            opacity: 0.28,
+                                                        },
+                                                    }}
+                                                    valueLabelDisplay="auto"/>
+                                            ) : (
+                                                <LinearProgress className="player-loader" color="inherit"/>
+                                            )}
+                                            <div className='player-primary-seek-time-full'>
+                                                <div className="player-primary-trackTime">
+                                                    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
+                                                </div>
+                                                <div className="player-primary-trackTime">
+                                                    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
+                                                </div>
+                                            </div>
                                     </div>
 
                                     {/*PLAYER TRACK CONTROLS*/}

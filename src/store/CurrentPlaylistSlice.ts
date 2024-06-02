@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, current } from "@reduxjs/toolkit"
 import {PlaylistT, TrackT, TrackType} from "../utils/types/types";
 import {PlaylistInitState} from "./initialStates";
 
@@ -17,6 +17,7 @@ const CurrentPlaylistSlice = createSlice({
     reducers:{
         setCurrentPlaylist(state, action) {
             state.playlist = action.payload
+            console.log(current(state))
         }
     }
 })

@@ -6,13 +6,14 @@ import playingQueueSlice from "./playingQueueSlice";
 import LikedSongsSlice from "./LikedSongsSlice";
 import MessageSlice from "./MessageSlice";
 import mobileHeaderSlice from "./mobile/mobileHeaderSlice";
+import CurrentPlaylistSlice from "./CurrentPlaylistSlice";
 
 export const store = configureStore({
     reducer:{
         CurrentSongStore:CurrentSongSlice,
         player:playerSlice,
         playingQueue:playingQueueSlice,
-        currentPlaylist:CurrentSongSlice,
+        currentPlaylist:CurrentPlaylistSlice,
         message:MessageSlice,
         likedSongs:LikedSongsSlice,
         header:mobileHeaderSlice

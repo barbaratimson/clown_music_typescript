@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackId, TrackT} from "../../utils/types/types";
+import {QueueT, TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
 import {Box, IconButton, LinearProgress} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
@@ -25,7 +25,8 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../store/MessageSlice';
 import {setLikedSongs} from '../../store/LikedSongsSlice';
-import {setOpeningState} from "../../store/playingQueueSlice";
+import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
+import { trackArrayWrap, trackWrap } from '../../utils/trackWrap';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -38,6 +39,7 @@ const Player = () => {
     const [buffered, setBuffered] = useState<number | undefined>()
     const playerState = useAppSelector((state: RootState) => state.player)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
+    const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
     const [queueButton, setQueueButton] = useState<any>()
@@ -54,6 +56,10 @@ const Player = () => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
+
+    const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
+    const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
+
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -139,27 +145,26 @@ const Player = () => {
             changeTime(0)
         }
     }
+
     const skipForward = () => {
-        const index = queue.findIndex(x => x.id == currentSong.id);
+        const index = queue.findIndex(x => x.track.id == currentSong.id);
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
             startPlayerFunc()
-        } else if (playerState.shuffle) {
-            let randomSong = () => (Math.random() * (queue.length + 1)) << 0
-            let newSongId = randomSong()
-            if (queue[newSongId].track === currentSong) {
-                setCurrentSong(queue[randomSong()].track)
-            } else {
-                setCurrentSong(queue[newSongId].track)
-            }
         } else if (index === queue.length - 1) {
-            setCurrentSong(queue[0].track)
+                setCurrentSong(queue[0].track)
         } else {
             setCurrentSong(queue[index + 1].track)
         }
     }
     
+
+    const randomSongFromTrackList = (trackList:Array<TrackType>) => {
+        let randomSong = () => (Math.random() * (trackList.length + 1)) << 0
+        console.log(randomSong())
+        return trackList[randomSong()]
+    }
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${currentSong.title} added to Liked`);
@@ -187,8 +192,25 @@ const Player = () => {
                 setPlayerSrc(await fetchYaSongLink(currentSong.id))
             }
         }
-
          changeTrack()
+
+        if (queue.length !== 0 && currentSong.id !== 0) {
+         const index = queue.findIndex(x => x.id == currentSong.id);
+            if (playerState.shuffle && index === queue.length-1) {
+                let newSong:TrackType;
+                do {
+                    newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+                    console.log(newSong)
+                    console.log(queue.findIndex(x => x.id == newSong.id) !== -1)
+                } while (queue.findIndex(x => x.id == newSong.id) !== -1)
+                addToQueue(newSong)
+            } else {
+                if(playerState.shuffle) {
+                    setPlayingQueue([trackWrap(currentSong)])
+                }
+            }
+    }
+
     }, [currentSong]);
 
     useEffect(() => {
@@ -222,7 +244,23 @@ const Player = () => {
 
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
+
+        if (playerState.shuffle) {
+            setPlayingQueue([trackWrap(currentSong)])
+        } else {
+            setPlayingQueue(queueCurrentPlaylist.tracks)
+        }
     }, [playerState.shuffle]);
+
+    useEffect(()=>{
+        if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
+            addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
+        }
+    },[queue])
+
+    
+
+
 
     return (
         <>
