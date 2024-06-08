@@ -92,7 +92,7 @@ const Artist = () => {
                         <div className="artist-block-title">Popular tracks:</div>
                         <div
                             className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList playlistId={artistResult.artist.id} tracks={trackArrayWrap(artistResult?.popularTracks)}/>
+                            <SongsList playlist={{kind:artistResult.artist.id,tracks:trackArrayWrap(artistResult?.popularTracks)}} tracks={trackArrayWrap(artistResult?.popularTracks)}/>
                         </div>
                         <div className="artist-block-title">Albums:</div>
                         <div className="playlists-wrapper">

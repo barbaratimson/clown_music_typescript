@@ -158,8 +158,9 @@ const Player = () => {
             startPlayerFunc()
         } else if (index === queue.length - 1) {
                 setCurrentSong(queue[0].track)
-        } else {
-            setCurrentSong(queue[index + 1].track)
+        }
+        else {
+          setCurrentSong(queue[index + 1].track)
         }
     }
 
@@ -228,7 +229,7 @@ const Player = () => {
     }, []);
 
     useEffect(() => {
-        setMediaSession(currentSong)
+      setMediaSession(currentSong)
     }, [currentSong]);
 
     useEffect(() => {
@@ -373,13 +374,13 @@ const Player = () => {
                                 </div>
                                     {/* cover row */}
                                     <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
-                                        <div className="player-track-cover-wrapper-full animated-opacity-4ms prev" onClick={()=>{skipBack()}}>
+                                        <div className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
                                             <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                         </div>
-                                        <div className={`player-track-cover-wrapper-full animated-scale ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
+                                        <div className={`player-track-cover-wrapper-full animated-opacity-4ms ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
                                             <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
                                         </div>
-                                        <div className="player-track-cover-wrapper-full animated-opacity next" onClick={()=>{skipForward()}}>
+                                        <div className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
                                             <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                         </div>
                                     </div>

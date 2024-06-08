@@ -125,6 +125,15 @@ html,body {
     }
 }
 
+@keyframes scale-active {
+    0%{
+        scale: 0.5;
+    }
+    100%{
+        scale: 1.15;
+    }
+}
+
 @keyframes bubble-out {
     0%{
         scale: 1;
@@ -149,6 +158,16 @@ html,body {
     }
 }
 
+@keyframes translate-right {
+    0%{
+        opacity:0;
+        transform: translate(250px)
+    }
+    100%{
+        opacity:1;
+        transform:translate(0),
+    }
+}
 
 .main-wrapper {
     display: flex;
@@ -342,6 +361,8 @@ html,body {
 
 .player-loader {
     width: 100%;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
 .player-primary-trackTime {
@@ -371,10 +392,13 @@ html,body {
     animation: opacity .6s;
 }
 
-.animated-scale {
-    animation: scale .2s ease-in;
+.animated-translate {
+    animation: translate .3s ease
 }
 
+.animated-translate-right {
+    animation: translate-right .3s ease
+}
 
 .animated-opacity-4ms {
     animation: opacity .4s;
