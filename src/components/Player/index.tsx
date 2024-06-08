@@ -243,17 +243,12 @@ const Player = () => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
 
         if (playerState.shuffle) {
-            setPlayingQueue([trackWrap(currentSong)])
+            setPlayingQueue([trackWrap(currentSong),randomSongFromTrackList(queueCurrentPlaylist.tracks)])
         } else {
             setPlayingQueue(queueCurrentPlaylist.tracks)
         }
     }, [playerState.shuffle]);
 
-    // useEffect(()=>{
-    //     if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
-    //         addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
-    //     }
-    // },[queue])
 
     
 

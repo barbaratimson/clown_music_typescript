@@ -23,13 +23,14 @@ import {
     VolumeUp,
     KeyboardArrowDown,
     ArrowBackIosNew,
-    ExpandMore
+    ExpandMore, ExpandLess
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../../store/MessageSlice';
 import {setLikedSongs} from '../../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
 import { trackWrap } from '../../../utils/trackWrap';
+import {Carousel} from "react-responsive-carousel";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -267,7 +268,7 @@ const Player = () => {
     return (
         <>
             {playerFolded &&
-                <div className="player-wrapper" onClick={()=>{setPlayerFolded(!playerFolded)}} style={{marginBottom: "49px"}}>
+                <div className="player-wrapper" onClick={()=>{setPlayerFolded(!playerFolded)}} style={{marginBottom: "49px",gap:"0"}}>
                         <div className="player-track-info-wrapper mobile" key={currentSong.id}>
                             <div className="player-track-cover-wrapper">
                                 <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
@@ -291,21 +292,9 @@ const Player = () => {
                             <Box
                                 className="player-primary-buttons-wrapper mobile"
                             >
-                                    {isLiked(currentSong.id) ? (
-                                        <div
-                                            className={`player-track-controls-likeButton-mobile ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
-                                            }}>
-                                            <Favorite/>
-                                        </div>
-                                    ) : (
-                                        <div className={`player-track-controls-likeButton-mobile`} onClick={() => {
-                                            likeSong(currentSong).then((response) => updateLikedSongs("liked"))
-                                        }}>
-                                            <FavoriteBorder/>
-                                        </div>
-                                    )}
+                                <div className="player-navbar-button close" onClick={()=>{setPlayerFolded(!playerFolded)}}>
+                                    <ExpandLess/>
+                                </div>
                                 <IconButton
                                     className="player-primary-button play"
                                     key={`player-button-play-${playerState.playing}`}
@@ -323,6 +312,10 @@ const Player = () => {
                                     ) : (
                                         <PauseRounded/>
                                     )}
+                                </IconButton>
+                                <IconButton onClick={skipForward} className="player-primary-button"
+                                            aria-label="next song">
+                                    <FastForwardRounded/>
                                 </IconButton>
                             </Box>
                         </div>
@@ -372,17 +365,18 @@ const Player = () => {
                                     </div>
                                 </div>
                                     {/* cover row */}
-                                    <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
-                                        <div className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
-                                            <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
-                                        </div>
-                                        <div className={`player-track-cover-wrapper-full animated-opacity-4ms ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
-                                            <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
-                                        </div>
-                                        <div className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
-                                            <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
-                                        </div>
-                                    </div>
+                                    <div className="player-full-top-wrapper">
+                                             <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
+                                            <div className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
+                                                <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                            </div>
+                                            <div className={`player-track-cover-wrapper-full animated-opacity-4ms ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
+                                                <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
+                                            </div>
+                                            <div className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
+                                                <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                            </div>
+                                            </div>
                                     {/*track title and artists*/}
                                     <div className="player-track-info full">
                                             <div className="player-track-info-title">
@@ -396,7 +390,6 @@ const Player = () => {
                                                 </span>
                                             </div>
                                         </div>
-
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
                                             {!playerState.loading ? (
                                                 <Slider
@@ -416,7 +409,7 @@ const Player = () => {
                                                         },
                                                         '& .MuiSlider-rail': {
                                                             opacity: 0.28,
-                                                        },
+                                                        }
                                                     }}
                                                     valueLabelDisplay="auto"/>
                                             ) : (
@@ -431,8 +424,11 @@ const Player = () => {
                                                 </div>
                                             </div>
                                     </div>
-
+                                    </div>
                                     {/*PLAYER TRACK CONTROLS*/}
+
+
+                                    <div className="player-full-bottom-wrapper">
                                     <div className="player-primary-controls-full">
 
 
@@ -531,6 +527,7 @@ const Player = () => {
                                                     }}
                                                     aria-label="Default" valueLabelDisplay="auto"/>
                                         </div>
+                                    </div>
                                     </div>
                                 </>)
                             : null}

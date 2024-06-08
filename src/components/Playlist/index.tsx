@@ -59,7 +59,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     }, []);
 
     return (
-        <div className="playlist-wrapper animated-opacity">
+        <div className="playlist-wrapper mobile-folded animated-opacity">
             <div ref={playlistInfo} className="playlist">
                 <div className="playlist-cover-wrapper">
                     <img src={getImageLink(playlist.cover.uri, "600x600") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
