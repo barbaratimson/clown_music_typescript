@@ -784,7 +784,7 @@ html,body {
     justify-content: center;
     align-items: center;
     margin-left: auto;
-    padding: 0 20px;
+    padding: 0 10px;
     transition: scale .2s;
     gap: 20px;
 }
@@ -1250,6 +1250,7 @@ html,body {
     background: rgba(0,0,0, 0.7);
     border-radius: 10px;
     transition: background .2s;
+    z-index: 99999999;
 }
 
 .queue-tracks {

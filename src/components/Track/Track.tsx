@@ -23,7 +23,6 @@ const link = process.env.REACT_APP_YMAPI_LINK
 
 const Track = ({track,queueFunc}:TrackProps) => {
     const dispatch = useAppDispatch()
-    const [changeSongInactive, setChangeSongInactive] = useState(false)
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
@@ -33,7 +32,6 @@ const Track = ({track,queueFunc}:TrackProps) => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const changeSong = (song:TrackT) => {
-        if (changeSongInactive) return
         if (song.id != currentSong.id) {
             setCurrentSong(song);
             if (queueFunc) {

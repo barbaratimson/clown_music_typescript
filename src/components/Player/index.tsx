@@ -135,12 +135,12 @@ const Player = () => {
     }
 
     const skipBack = () => {
-        const index = queue.findIndex(x => x.id == currentSong.id);
+        const index = queue.findIndex(x => x.track.id == currentSong.id);
         if (!audioElem.current) return
         if (audioElem.current.currentTime >= 10) {
             audioElem.current.currentTime = 0
         } else if (index !== 0) {
-            setCurrentSong(queue[index + -1].track)
+            setCurrentSong(queue[index -1].track)
         } else {
             changeTime(0)
         }
@@ -153,18 +153,21 @@ const Player = () => {
             audioElem.current.currentTime = 0
             startPlayerFunc()
         } else if (index === queue.length - 1) {
+            if (playerState.shuffle) {
+                setPlayingQueue([trackWrap(currentSong)])
+            } else {
                 setCurrentSong(queue[0].track)
+            }
         } else {
             setCurrentSong(queue[index + 1].track)
         }
     }
-    
+
 
     const randomSongFromTrackList = (trackList:Array<TrackType>) => {
-        let randomSong = () => (Math.random() * (trackList.length + 1)) << 0
-        console.log(randomSong())
-        return trackList[randomSong()]
+        return trackList[Math.floor((Math.random()*trackList.length))]
     }
+
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${currentSong.title} added to Liked`);
@@ -195,17 +198,15 @@ const Player = () => {
          changeTrack()
 
         if (queue.length !== 0 && currentSong.id !== 0) {
-         const index = queue.findIndex(x => x.id == currentSong.id);
-            if (playerState.shuffle && index === queue.length-1) {
+            const index = queue.findIndex(x => x.id == currentSong.id);
+            if (playerState.shuffle && index === queue.length-1 && queue.length !== queueCurrentPlaylist.tracks.length) {
                 let newSong:TrackType;
                 do {
                     newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-                    console.log(newSong)
-                    console.log(queue.findIndex(x => x.id == newSong.id) !== -1)
-                } while (queue.findIndex(x => x.id == newSong.id) !== -1)
+                } while (queue.findIndex(x => x.track.id === newSong.track.id) !== -1)
                 addToQueue(newSong)
             }
-    }
+        }
 
     }, [currentSong]);
 
@@ -248,11 +249,11 @@ const Player = () => {
         }
     }, [playerState.shuffle]);
 
-    useEffect(()=>{
-        if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
-            addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
-        }
-    },[queue])
+    // useEffect(()=>{
+    //     if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
+    //         addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
+    //     }
+    // },[queue])
 
     
 
