@@ -30,7 +30,6 @@ import {showMessage} from '../../../store/MessageSlice';
 import {setLikedSongs} from '../../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
 import { trackWrap } from '../../../utils/trackWrap';
-import {Carousel} from "react-responsive-carousel";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -159,7 +158,7 @@ const Player = () => {
             startPlayerFunc()
         } else if (index === queue.length - 1) {
             if (playerState.shuffle) {
-                setPlayingQueue([trackWrap(currentSong)])
+                setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
             } else {
                 setCurrentSong(queue[0].track)
             }
@@ -251,17 +250,17 @@ const Player = () => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
 
         if (playerState.shuffle) {
-            setPlayingQueue([trackWrap(currentSong)])
+            setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
         } else {
             setPlayingQueue(queueCurrentPlaylist.tracks)
         }
     }, [playerState.shuffle]);
 
-    useEffect(()=>{
-        if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
-            addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
-        }
-    },[queue])
+    //useEffect(()=>{
+    //    if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
+     //       addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
+   //     }
+ //   },[queue])
 
 
     return (

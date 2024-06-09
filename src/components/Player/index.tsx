@@ -154,7 +154,7 @@ const Player = () => {
             startPlayerFunc()
         } else if (index === queue.length - 1) {
             if (playerState.shuffle) {
-                setPlayingQueue([trackWrap(currentSong)])
+                setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
             } else {
                 setCurrentSong(queue[0].track)
             }
