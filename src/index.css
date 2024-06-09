@@ -607,6 +607,7 @@ html,body {
     color: #ffffff;
     font-weight: 500;
     overflow: hidden;
+    text-wrap: nowrap;
 }
 
 .player-track-info-artists-wrapper {

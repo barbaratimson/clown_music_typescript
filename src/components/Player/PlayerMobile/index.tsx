@@ -199,7 +199,6 @@ const Player = () => {
                 }
             }
             changeTrack()
-
             if (queue.length !== 0 && currentSong.id !== 0) {
                 const index = queue.findIndex(x => x.id == currentSong.id);
                 if (playerState.shuffle && index === queue.length-1 && queue.length !== queueCurrentPlaylist.tracks.length) {
