@@ -276,12 +276,12 @@ const Player = () => {
                                     {currentSong.title}
                                 </div>
                                 <div className="player-track-info-artists-wrapper">
-                                    <span className="track-info-artist-span">
-                                        <div onClick={(e)=>{e.stopPropagation()}}>
+                                    <span onClick={(e)=>{e.stopPropagation()}} className="track-info-artist-span">
+                        
                                 {currentSong.artists.map(artist => (
                                         <ArtistName size={"15px"} artist={artist}/>
                                 ))}
-                                    </div>
+                                
                                     </span>
                                 </div>
                             </div>
