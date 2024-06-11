@@ -23,13 +23,14 @@ import {
     VolumeUp,
     KeyboardArrowDown,
     ArrowBackIosNew,
-    ExpandMore, ExpandLess
+    ExpandMore, ExpandLess, MoreVert
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../../store/MessageSlice';
 import {setLikedSongs} from '../../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
 import { trackWrap } from '../../../utils/trackWrap';
+import {setActiveState, setTrackInfo} from "../../../store/trackInfoSlice";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -52,6 +53,9 @@ const Player = () => {
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 1
+    const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME
+    const setTrackInfoState = (track:TrackT) => dispatch(setTrackInfo(track))
+    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
@@ -229,9 +233,10 @@ const Player = () => {
     //Only in mobile player
     useEffect(()=>{
         if (audioElem.current) {
-            audioElem.current.volume = 1
+            audioElem.current.volume = Number(mobilePlayerInitialVolume) ?? 1
+            console.log(audioElem.current.volume)
         }
-    })
+    },[])
 
     useEffect(() => {
       setMediaSession(currentSong)
@@ -242,12 +247,6 @@ const Player = () => {
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
 
-   // useEffect(() => {
-    //    if (audioElem.current) {
-     //       audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
-    //    }
-   //     localStorage.setItem("player_volume",playerVolume.toString())
-  //  }, [playerVolume]);
 
     useEffect(() => {
         localStorage.setItem("player_repeat", playerState.repeat.toString())
@@ -381,20 +380,42 @@ const Player = () => {
                                             <div className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
                                                 <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                             </div>
-                                            </div>
+                                    </div>
                                     {/*track title and artists*/}
-                                    <div className="player-track-info full">
-                                            <div className="player-track-info-title">
-                                                {currentSong.title}
-                                            </div>
-                                            <div className="player-track-info-artists-wrapper">
-                                                <span className="track-info-artist-span">
-                                                    {currentSong.artists.map(artist => (
-                                                        <ArtistName size={"15px"} artist={artist}/>
-                                                    ))}
-                                                </span>
+                                    <div className="player-full-track-info-wrapper">
+                                        <div className="player-track-info full">
+                                                <div className="player-track-info-title">
+                                                    {currentSong.title}
+                                                </div>
+                                                <div className="player-track-info-artists-wrapper">
+                                                    <span className="track-info-artist-span">
+                                                        {currentSong.artists.map(artist => (
+                                                            <ArtistName size={"15px"} artist={artist}/>
+                                                        ))}
+                                                    </span>
+                                                </div>
+                                        </div>
+                                        <div className="player-track-info-controls" onClick={(e)=>{e.stopPropagation()}}>
+                                            {isLiked(currentSong.id) ? (
+                                                <div
+                                                    className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
+                                                    onClick={() => {
+                                                        dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
+                                                    }}>
+                                                    <Favorite/>
+                                                </div>
+                                            ) : (
+                                                <div className={`player-track-controls-likeButton`} onClick={() => {
+                                                    likeSong(currentSong).then((response) => updateLikedSongs("liked"))
+                                                }}>
+                                                    <FavoriteBorder/>
+                                                </div>
+                                            )}
+                                            <div className="track-controls-button" onClick={()=>{setTrackInfoShowState(true);setTrackInfoState(currentSong)}}>
+                                                <MoreVert/>
                                             </div>
                                         </div>
+                                    </div>
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
                                             {!playerState.loading ? (
                                                 <Slider
@@ -482,21 +503,6 @@ const Player = () => {
                                     </div>
                                     <div className="player-secondary-controls-full">
                                             <div className="player-track-controls-full">
-                                                {isLiked(currentSong.id) ? (
-                                                    <div
-                                                        className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
-                                                        onClick={() => {
-                                                            dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
-                                                        }}>
-                                                        <Favorite/>
-                                                    </div>
-                                                ) : (
-                                                    <div className={`player-track-controls-likeButton`} onClick={() => {
-                                                        likeSong(currentSong).then((response) => updateLikedSongs("liked"))
-                                                    }}>
-                                                        <FavoriteBorder/>
-                                                    </div>
-                                                )}
                                     
                                         </div>
                                     </div>

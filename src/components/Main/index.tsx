@@ -4,7 +4,7 @@ import Navbar from "../Navbar";
 import Page from "../Pages";
 import Message from "../Message";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {TrackId} from "../../utils/types/types";
+import {TrackId, TrackT} from "../../utils/types/types";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {fetchLikedSongs} from "../../utils/apiRequests";
 import {userId} from "../../utils/constants";
@@ -21,6 +21,8 @@ import NavbarMobile from "../Navbar/NavbarMobile";
 import PlayerMobile from "../Player/PlayerMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
+import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
+import MobileTrackInfo from "../MobileTrackInfo";
 
 
 const Main = () => {
@@ -28,6 +30,8 @@ const Main = () => {
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const [isMobile, setIsMobile] = useState(false)
+    const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
+    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     useEffect(() => {
         async function fetchData () {
             setLikedSongsData( await fetchLikedSongs())
@@ -54,6 +58,7 @@ const Main = () => {
                             <Queue/>
                         </div>
                     </Fade>
+                <MobileTrackInfo track={trackInfoState.track} active={trackInfoState.active} setActiveState={setTrackInfoShowState}/>
             </div>
     )
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {TrackId, TrackT} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
@@ -12,6 +12,7 @@ import {userId} from "../../utils/constants";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {showMessage} from "../../store/MessageSlice";
 import { trackWrap } from "../../utils/trackWrap";
+import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
 
 
 interface TrackProps {
@@ -29,8 +30,11 @@ const Track = ({track,queueFunc}:TrackProps) => {
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const playerState = useAppSelector((state: RootState) => state.player)
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
+    const [menuActive, setMenuActive] = useState(false)
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
+    const setTrackInfoState = (track:TrackT) => dispatch(setTrackInfo(track))
+    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const changeSong = (song:TrackT) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song);
@@ -93,7 +97,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                     <div className="track-controls-info-time">
                         {msToMinutesAndSeconds(track.durationMs)}
                     </div>
-                    <div className="track-controls-button">
+                    <div className="track-controls-button" onClick={()=>{setTrackInfoShowState(true);setTrackInfoState(track)}}>
                         <MoreVert/>
                     </div>
                 </div>
