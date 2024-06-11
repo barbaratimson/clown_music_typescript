@@ -225,6 +225,13 @@ const Player = () => {
             navigator.mediaSession.metadata = null
         }
     }, []);
+     
+    //Only in mobile player
+    useEffect(()=>{
+        if (audioElem.current) {
+            audioElem.current.volume = 1
+        }
+    })
 
     useEffect(() => {
       setMediaSession(currentSong)
@@ -235,12 +242,12 @@ const Player = () => {
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
 
-    useEffect(() => {
-        if (audioElem.current) {
-            audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
-        }
-        localStorage.setItem("player_volume",playerVolume.toString())
-    }, [playerVolume]);
+   // useEffect(() => {
+    //    if (audioElem.current) {
+     //       audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
+    //    }
+   //     localStorage.setItem("player_volume",playerVolume.toString())
+  //  }, [playerVolume]);
 
     useEffect(() => {
         localStorage.setItem("player_repeat", playerState.repeat.toString())
@@ -326,7 +333,7 @@ const Player = () => {
                                     min={0}
                                     step={1}
                                     max={duration}
-                                    onChange={(_, value) => changeTime(value as number)}
+                                   // onChange={(_, value) => changeTime(value as number)}
                                     className="player-seek"
                                     sx={{
                                         color: '#fff',
@@ -491,39 +498,6 @@ const Player = () => {
                                                     </div>
                                                 )}
                                     
-                                        </div>
-                                        <div className="player-volume-wrapper">
-                                            {playerVolume === 0 ? (
-                                                <VolumeOff/>
-                                            ) : playerVolume <= 33 ? (
-                                                <VolumeMute/>
-                                            ) : playerVolume <= 66 ? (
-                                                <VolumeDown/>
-                                            ) : playerVolume <= 100 ? (
-                                                <VolumeUp/>
-                                            ) : null}
-                                            <Slider size="small"
-                                                    value={playerVolume}
-                                                    max={100}
-                                                    step={1}
-                                                    onChange={(_, value) => setPlayerVolume(value as number)}
-                                                    className="player-seek"
-                                                    sx={{
-                                                        color: '#fff',
-                                                        height: 4,
-                                                        '& .MuiSlider-track': {
-                                                            border: 'none',
-                                                        },
-                                                        '& .MuiSlider-thumb': {
-                                                            '&::before': {
-                                                                boxShadow: 'none',
-                                                            },
-                                                            '&:hover, &.Mui-focusVisible, &.Mui-active': {
-                                                                boxShadow: 'none',
-                                                            },
-                                                        }
-                                                    }}
-                                                    aria-label="Default" valueLabelDisplay="auto"/>
                                         </div>
                                     </div>
                                     </div>

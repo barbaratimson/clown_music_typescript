@@ -1512,10 +1512,23 @@ html,body {
     .track-wrapper {
         border-radius: 14px;
     }
+    .track-wrapper:not(.track-current):hover {
+       transform: none;
+       background-color: inherit;
+    }
     .track-cover-wrapper {
         min-width: 45px;
         height: 45px;
         border-radius: 12px;
+    }
+    .track-wrapper:hover .track-playing-status {
+        backdrop-filter: blur(0.5px);
+    }
+    .track-wrapper:hover .track-playing-status:not(.show) {
+        opacity:0;
+    }
+    .track-playing-status.show{
+        backdrop-filter: blur(0.5px)
     }
     .track-info-wrapper {
         font-size: 14px;
@@ -1525,6 +1538,11 @@ html,body {
     }
     .track-controls-button.like {
         display: none;
+    }
+    .track-controls-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .track-controls-info-time {
         display: none;
