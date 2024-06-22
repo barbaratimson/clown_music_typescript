@@ -1467,11 +1467,11 @@ html,body {
     position: fixed;
     display: flex;
     flex-direction: column;
-    align-items: center;
     bottom: 0;
     height: 55%;
     width: 100%;
-    padding: 20px;
+    padding: 10px;
+    gap: 15px;
     border-radius: 20px 20px 0 0;
     background: var(--bg-color-secondary);
     backdrop-filter: blur(15px);
@@ -1480,6 +1480,52 @@ html,body {
     z-index: 99999;
 }
 
+.track-info-mobile-about-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.track-info-mobile-cover-wrapper > img {
+    width: 75px;
+    height: 75px;
+}
+
+.track-info-mobile-cover-wrapper {
+    min-width: 75px;
+    height: 75px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.track-info-mobile-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+    overflow:scroll;
+}
+
+.track-info-mobile-controls-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.track-info-mobile-control-button {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    gap: 10px;
+    border-radius: 12px;
+    background-color: var(--bg-color-secondary_hover);
+}
+.track-info-mobile-control-icon {
+
+}
+.tack-info-mobile-control-label {
+
+}
 @media (max-width: 575px) {
     * {
         -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);

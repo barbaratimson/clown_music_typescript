@@ -47,7 +47,7 @@ const Player = () => {
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
-    const volumeMultiplier = 1
+    const volumeMultiplier = 0.25
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))

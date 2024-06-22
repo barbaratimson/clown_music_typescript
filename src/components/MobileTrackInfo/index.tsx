@@ -1,12 +1,24 @@
 import React from "react";
-import {ArtistT, TrackT} from "../../utils/types/types";
+import {ArtistT, TrackId, TrackT} from "../../utils/types/types";
 import {Link} from "react-router-dom";
 import { Slide } from "@mui/material";
 import {RootState, useAppSelector} from "../../store";
 import {getImageLink} from "../../utils/utils";
-import {PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import {
+    Add,
+    Favorite,
+    FavoriteBorder,
+    PauseRounded,
+    PeopleAlt,
+    PlayArrowRounded,
+    PlaylistAdd
+} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
+import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
+import {showMessage} from "../../store/MessageSlice";
+import {setLikedSongs} from "../../store/LikedSongsSlice";
+import {useDispatch} from "react-redux";
 
 interface MobileTrackInfoProps {
     track:TrackT,
@@ -15,31 +27,126 @@ interface MobileTrackInfoProps {
 }
 
 const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => {
+    const dispatch= useDispatch()
+    const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
+    const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
+    const isLiked = (id: number | string) => {
+        const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
+        return !!likedSong
+    }
+
+    const updateLikedSongs = async (action:"liked" | "removed") => {
+        setLikedSongsData( await fetchLikedSongs())
+        if (action === "liked") trackAddedMessage(`Track ${track.title} added to Liked`);
+        if (action === "removed") trackAddedMessage(`Track ${track.title} removed to Liked`);
+    }
+
     return (
         <Slide direction={"up"} in={active}>
             <div className="track-info-mobile" onClick={()=>{setActiveState(false)}}>
                 {active ? (
                    <>
-                       <div className="track-info-wrapper animated-opacity-4ms">
-                         <div className="player-track-cover-wrapper-full">
-                           <img src={getImageLink(track.coverUri, "600x600")} loading="lazy" alt=""/>
-                        </div>
-                       </div>
-                       <div className="track-info-wrapper">
-                           <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
-                                   {track.artists.map((artist) => (
-                                       <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
-                                           <div className="album-artist-info">
-                                               <div className="album-artist-avatar-wrapper">
-                                                   <img
-                                                       src={getImageLink(artist.cover.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
-                                                       alt="" loading="lazy"/>
-                                               </div>
-                                               <div className="album-artist-info-name">{artist.name}</div>
-                                           </div>
-                                       </Link>
-                                   ))}
+                       <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
+                           <div className="track-info-mobile-cover-wrapper">
+                               <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
+                           <div className="track-info-wrapper">
+                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
+                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
+                        <span className="track-info-artist-span">
+                            {track.artists.map(artist => (
+                                <ArtistName size={"12px"} artist={artist}/>
+                            ))}
+                        </span>
+                               </div>
+                           </div>
+                       </div>
+                       <div className="track-info-mobile-controls-wrapper">
+                           <div className="track-info-mobile-control-button">
+                               <div className="track-info-mobile-control-icon">
+                               {isLiked(track.id) ? (
+                                   <div
+                                       className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}
+                                       onClick={() => {
+                                           dislikeSong(track).then((response) => updateLikedSongs("removed"))
+                                       }}>
+                                       <Favorite/>
+                                   </div>
+                               ) : (
+                                   <div className={`player-track-controls-likeButton`} onClick={() => {
+                                       likeSong(track).then((response) => updateLikedSongs("liked"))
+                                   }}>
+                                       <FavoriteBorder/>
+                                   </div>
+                               )}
+                               </div>
+                               <div>Like</div>
+                           </div>
+
+                           <div className="track-info-mobile-control-button">
+                               <div className="track-info-mobile-control-icon">
+                                   <PlaylistAdd/>
+                               </div>
+                               <div className="tack-info-mobile-control-label">
+                                    Play next
+                               </div>
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               <div className="track-info-mobile-control-icon">
+                                   <PeopleAlt/>
+                               </div>
+                               <div className="tack-info-mobile-control-label">
+                                   Artists
+                               </div>
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               <div className="track-info-mobile-control-icon">
+                                   <Add/>
+                               </div>
+                               <div className="tack-info-mobile-control-label">
+                                   Add to playlist
+                               </div>
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               <div className="track-info-mobile-control-icon">
+                                   <Add/>
+                               </div>
+                               <div className="tack-info-mobile-control-label">
+                                   Album
+                               </div>
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               PLAY NEXT
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               PLAY NEXT
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               PLAY NEXT
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               PLAY NEXT
+                           </div>
+                           <div className="track-info-mobile-control-button">
+                               PLAY NEXT
+                           </div>
+
+                       </div>
+                       {/*<div className="track-info-wrapper">*/}
+                       {/*            {track.artists.map((artist) => (*/}
+                       {/*                <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>*/}
+                       {/*                    <div className="album-artist-info">*/}
+                       {/*                        <div className="album-artist-avatar-wrapper">*/}
+                       {/*                            <img*/}
+                       {/*                                src={getImageLink(artist.cover.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}*/}
+                       {/*                                alt="" loading="lazy"/>*/}
+                       {/*                        </div>*/}
+                       {/*                        <div className="album-artist-info-name">{artist.name}</div>*/}
+                       {/*                    </div>*/}
+                       {/*                </Link>*/}
+                       {/*            ))}*/}
+                       {/*    </div>*/}
                    </>
                     )
                     : null}
