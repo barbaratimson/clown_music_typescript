@@ -1503,6 +1503,7 @@ html,body {
     width: 100%;
     flex-grow: 1;
     overflow:scroll;
+    border-radius: 12px;
 }
 
 .track-info-mobile-controls-wrapper::-webkit-scrollbar {
@@ -1517,8 +1518,8 @@ html,body {
     height: 50px;
     width: 100%;
     gap: 10px;
-    border-radius: 12px;
     background-color: var(--bg-color-secondary_hover);
+    border-bottom: 1px solid rgba(178, 174, 174, 0.19);
 }
 .track-info-mobile-control-icon {
 

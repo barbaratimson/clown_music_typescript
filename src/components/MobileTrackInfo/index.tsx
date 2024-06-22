@@ -53,16 +53,9 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                            </div>
                            <div className="track-info-wrapper">
                                <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
-                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
-                        <span className="track-info-artist-span">
-                            {track.artists.map(artist => (
-                                <ArtistName size={"12px"} artist={artist}/>
-                            ))}
-                        </span>
-                               </div>
                            </div>
                        </div>
-                       <div className="track-info-mobile-controls-wrapper">
+                       <div className="track-info-mobile-controls-wrapper animated-opacity-4ms">
                            <div className="track-info-mobile-control-button">
                                <div className="track-info-mobile-control-icon">
                                {isLiked(track.id) ? (
