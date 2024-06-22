@@ -20,8 +20,10 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
             <div className="track-info-mobile" onClick={()=>{setActiveState(false)}}>
                 {active ? (
                    <>
-                       <div className="track-info-wrapper">
-                           <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
+                       <div className="track-info-wrapper animated-opacity-4ms">
+                         <div className="player-track-cover-wrapper-full">
+                           <img src={getImageLink(track.coverUri, "600x600")} loading="lazy" alt=""/>
+                        </div>
                        </div>
                        <div className="track-info-wrapper">
                            <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>

@@ -87,7 +87,7 @@ const Player = () => {
             artist: track.artists && track.artists.length > 0 ? track.artists[0].name : "",
             artwork: [
                 {
-                    src: getImageLink(track.coverUri, "200x200") ?? "",
+                    src: getImageLink(track.coverUri, "600x600") ?? "",
                     sizes: "512x512",
                     type: "image/png",
                 },
