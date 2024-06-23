@@ -1501,7 +1501,8 @@ html,body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    overflow:scroll;
+    height: auto;
+    overflow:hidden;
     border-radius: 12px;
 }
 
@@ -1530,9 +1531,17 @@ html,body {
 .track-info-mobile-similar-tracks {
     display: flex;
     overflow: scroll;
+    align-items:center;
+    flex-grow: 1;
+    width:100%;
 }
 .track-info-mobile-similar-tracks::-webkit-scrollbar {
     display: none;
+}
+
+.track-info-title.mobile {
+    text-wrap:wrap;
+    overflow:visible;
 }
 @media (max-width: 575px) {
     * {

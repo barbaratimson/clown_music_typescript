@@ -9,9 +9,10 @@ import { trackWrap } from "../../utils/trackWrap";
 interface SongsListProps {
     tracks: Array<TrackType>
     playlist: PlaylistT
+    style?: any
 }
 
-const SongsList = (({tracks,playlist}:SongsListProps) => {
+const SongsList = (({tracks,playlist, style}:SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
@@ -24,7 +25,7 @@ const SongsList = (({tracks,playlist}:SongsListProps) => {
         }
     }
     return (
-        <div className="songs-wrapper">
+        <div style={style} className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (
                     <Track key={song.id} queueFunc={setInitQueue} track={song.track}/>
             ): null) : null}

@@ -72,7 +72,7 @@ const Search = () => {
                             {searchResults?.tracks?.results ? (
                                 <div
                                     className={searchResults.tracks.results.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                                <SongsList playlistId={searchResults.searchRequestId} tracks={trackArrayWrap(searchResults.tracks.results)}/>
+                                <SongsList playlist={{kind:-1,cover:{uri:searchResults.tracks.results[0].coverUri},uid:0,ogImage:searchResults.tracks.results[0].coverUri,available:true,owner:{uid:searchResults.tracks.results[0].artists[0].id,name:searchResults.tracks.results[0].artists[0].name,verified:true},title:`${" "}: Результаты`,description:"",tracks:trackArrayWrap(searchResults.tracks.results)}} tracks={trackArrayWrap(searchResults.tracks.results)}/>
                                 </div>
                             ) : null}
                             <div className="nav-search-line">Albums</div>

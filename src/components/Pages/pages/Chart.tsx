@@ -15,7 +15,7 @@ const Chart = () => {
     const dispatch = useAppDispatch()
     const [isLoading,setIsLoading] = useState(true)
     const [chartResult,setChartResult] = useState<ChartT>()
-    const currentQueueId = useAppSelector((state: RootState) => state.playingQueue.queue.id)
+    const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue)
     const setHeaderActive = (state:any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
@@ -74,7 +74,7 @@ const Chart = () => {
             </div>
             <div className="songs-wrapper">
                 {chartResult.chart.tracks.map((song) => (
-                    <div onClick={()=>{if (currentQueueId !== chartResult?.chart.kind) setPlayingQueue({id:chartResult?.chart.kind,queueTracks:chartResult?.chart.tracks})}} className="track-chart-wrapper">
+                    <div onClick={()=>{if (currentQueue.playlist.kind!== chartResult?.chart.kind) setPlayingQueue({playlist:chartResult?.chart,queueTracks:chartResult?.chart.tracks})}} className="track-chart-wrapper">
                         <div className="track-chart-position-wrapper">
                             <div className="track-chart-position">
                                 {song.track.chart?.position}

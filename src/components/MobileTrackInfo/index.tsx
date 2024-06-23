@@ -30,6 +30,11 @@ interface MobileTrackInfoProps {
     setActiveState: Function
 }
 
+interface SimilarTracksT {
+    track:TrackT
+    similarTracks:Array<TrackT>
+}
+
 const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => {
     const dispatch= useDispatch()
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
@@ -40,7 +45,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         return !!likedSong
     }
     const [isLoading, setIsLoading] = useState(true)
-    const [similarTracks, setSimilarTracks] = useState()
+    const [similarTracks, setSimilarTracks] = useState<SimilarTracksT>()
     const fetchSimilarTracks = async (id:any) => {
         setIsLoading(true)
         try {
@@ -65,13 +70,6 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         fetchSimilarTracks(track.id)
     }, [track]);
 
-    useEffect(() => {
-        if (active) {
-            document.body.style.overflow = "hidden"
-        }
-        return () => {document.body.style.overflow = "unset"}
-    }, [active]);
-
     return (
         <Slide direction={"up"} in={active}>
             <div className="track-info-mobile" onClick={()=>{setActiveState(false)}}>
@@ -82,24 +80,19 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
                            <div className="track-info-wrapper">
-                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
+                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{track.title}</div>
                            </div>
                        </div>
-                       <div className="track-info-mobile-controls-wrapper animated-opacity-4ms">
-                           <div className="track-info-mobile-control-button">
+                       <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
+                           <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) :  likeSong(track).then((response) => updateLikedSongs("liked")))}>
                                <div className="track-info-mobile-control-icon">
                                {isLiked(track.id) ? (
                                    <div
-                                       className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}
-                                       onClick={() => {
-                                           dislikeSong(track).then((response) => updateLikedSongs("removed"))
-                                       }}>
+                                       className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}>
                                        <Favorite/>
                                    </div>
                                ) : (
-                                   <div className={`player-track-controls-likeButton`} onClick={() => {
-                                       likeSong(track).then((response) => updateLikedSongs("liked"))
-                                   }}>
+                                   <div className={`player-track-controls-likeButton`}>
                                        <FavoriteBorder/>
                                    </div>
                                )}
@@ -143,9 +136,9 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                            </div>
 
                        </div>
-                       <div className="track-info-mobile-similar-tracks">
+                       <div className="track-info-mobile-similar-tracks" onClick={(e)=>{e.stopPropagation()}}>
                            {similarTracks ? (
-                             <SongsList playlist={trackArrayWrap(similarTracks?.similarTracks)} tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
+                             <SongsList style={{flexDirection:"row"}} playlist={{kind:-1,cover:{uri:similarTracks.track.coverUri},uid:0,ogImage:similarTracks.track.coverUri,available:true,owner:{uid:similarTracks.track.artists[0].id,name:similarTracks.track.artists[0].name,verified:true},title:`${similarTracks.track.title}: Similar`,description:"",tracks:trackArrayWrap(similarTracks.similarTracks)}} tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
                            ) : null}
                        </div>
                        {/*<div className="track-info-wrapper">*/}
