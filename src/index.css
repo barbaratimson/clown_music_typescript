@@ -1468,7 +1468,7 @@ html,body {
     display: flex;
     flex-direction: column;
     bottom: 0;
-    height: 55%;
+    height: 425px;
     width: 100%;
     padding: 10px;
     gap: 15px;
