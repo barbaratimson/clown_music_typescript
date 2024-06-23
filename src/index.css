@@ -1501,7 +1501,6 @@ html,body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    flex-grow: 1;
     overflow:scroll;
     border-radius: 12px;
 }
@@ -1519,13 +1518,21 @@ html,body {
     width: 100%;
     gap: 10px;
     background-color: var(--bg-color-secondary_hover);
+    color: var(--font-color-main);
     border-bottom: 1px solid rgba(178, 174, 174, 0.19);
 }
 .track-info-mobile-control-icon {
-
 }
-.tack-info-mobile-control-label {
-
+.track-info-mobile-control-label {
+    font-size: 15px;
+    font-weight: 600;
+}
+.track-info-mobile-similar-tracks {
+    display: flex;
+    overflow: scroll;
+}
+.track-info-mobile-similar-tracks::-webkit-scrollbar {
+    display: none;
 }
 @media (max-width: 575px) {
     * {

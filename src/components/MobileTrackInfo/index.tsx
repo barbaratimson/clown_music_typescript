@@ -1,11 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ArtistT, TrackId, TrackT} from "../../utils/types/types";
 import {Link} from "react-router-dom";
 import { Slide } from "@mui/material";
 import {RootState, useAppSelector} from "../../store";
 import {getImageLink} from "../../utils/utils";
 import {
-    Add,
+    Add, Album,
     Favorite,
     FavoriteBorder,
     PauseRounded,
@@ -19,6 +19,10 @@ import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
 import {showMessage} from "../../store/MessageSlice";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
+import axios from "axios";
+import {link} from "../../utils/constants";
+import SongsList from "../SongsList";
+import {trackArrayWrap} from "../../utils/trackWrap";
 
 interface MobileTrackInfoProps {
     track:TrackT,
@@ -35,12 +39,38 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
         return !!likedSong
     }
+    const [isLoading, setIsLoading] = useState(true)
+    const [similarTracks, setSimilarTracks] = useState()
+    const fetchSimilarTracks = async (id:any) => {
+        setIsLoading(true)
+        try {
+            const response = await axios.get(
+                `${link}/ya/tracks/${id}/similar`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+            setSimilarTracks(response.data)
+            console.log(response.data)
+            setIsLoading(false)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+            console.log(err)
+        }
+    };
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${track.title} added to Liked`);
         if (action === "removed") trackAddedMessage(`Track ${track.title} removed to Liked`);
     }
+
+    useEffect(() => {
+        fetchSimilarTracks(track.id)
+    }, [track]);
+
+    useEffect(() => {
+        if (active) {
+            document.body.style.overflow = "hidden"
+        }
+        return () => {document.body.style.overflow = "unset"}
+    }, [active]);
 
     return (
         <Slide direction={"up"} in={active}>
@@ -74,14 +104,16 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                    </div>
                                )}
                                </div>
-                               <div>Like</div>
+                               <div className="track-info-mobile-control-label">
+                                   Like
+                               </div>
                            </div>
 
                            <div className="track-info-mobile-control-button">
                                <div className="track-info-mobile-control-icon">
                                    <PlaylistAdd/>
                                </div>
-                               <div className="tack-info-mobile-control-label">
+                               <div className="track-info-mobile-control-label">
                                     Play next
                                </div>
                            </div>
@@ -89,7 +121,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                <div className="track-info-mobile-control-icon">
                                    <PeopleAlt/>
                                </div>
-                               <div className="tack-info-mobile-control-label">
+                               <div className="track-info-mobile-control-label">
                                    Artists
                                </div>
                            </div>
@@ -97,34 +129,24 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                <div className="track-info-mobile-control-icon">
                                    <Add/>
                                </div>
-                               <div className="tack-info-mobile-control-label">
+                               <div className="track-info-mobile-control-label">
                                    Add to playlist
                                </div>
                            </div>
                            <div className="track-info-mobile-control-button">
                                <div className="track-info-mobile-control-icon">
-                                   <Add/>
+                                   <Album/>
                                </div>
-                               <div className="tack-info-mobile-control-label">
+                               <div className="track-info-mobile-control-label">
                                    Album
                                </div>
                            </div>
-                           <div className="track-info-mobile-control-button">
-                               PLAY NEXT
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               PLAY NEXT
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               PLAY NEXT
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               PLAY NEXT
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               PLAY NEXT
-                           </div>
 
+                       </div>
+                       <div className="track-info-mobile-similar-tracks">
+                           {similarTracks ? (
+                             <SongsList playlist={trackArrayWrap(similarTracks?.similarTracks)} tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
+                           ) : null}
                        </div>
                        {/*<div className="track-info-wrapper">*/}
                        {/*            {track.artists.map((artist) => (*/}
