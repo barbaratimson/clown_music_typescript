@@ -2,12 +2,15 @@
 import React from "react";
 import {CircularProgress} from "@mui/material";
 
+interface LoaderProps {
+    size?:number
+}
 
-const Loader = () => {
+const Loader = ({size}:LoaderProps) => {
 
     return (
         <div className="loader-wrapper">
-            <CircularProgress className="loader" />
+            <CircularProgress size={size} className="loader" />
         </div>
     )
 }

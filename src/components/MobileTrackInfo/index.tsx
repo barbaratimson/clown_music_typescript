@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {ArtistT, TrackId, TrackT} from "../../utils/types/types";
 import {Link} from "react-router-dom";
-import { Slide } from "@mui/material";
+import { ClickAwayListener, Slide } from "@mui/material";
 import {RootState, useAppSelector} from "../../store";
 import {getImageLink} from "../../utils/utils";
 import {
     Add, Album,
     Favorite,
     FavoriteBorder,
+    KeyboardArrowDown,
+    KeyboardArrowLeft,
     PauseRounded,
     PeopleAlt,
     PlayArrowRounded,
@@ -23,6 +25,7 @@ import axios from "axios";
 import {link} from "../../utils/constants";
 import SongsList from "../SongsList";
 import {trackArrayWrap} from "../../utils/trackWrap";
+import Loader from "../Loader";
 
 interface MobileTrackInfoProps {
     track:TrackT,
@@ -46,6 +49,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
     }
     const [isLoading, setIsLoading] = useState(true)
     const [similarTracks, setSimilarTracks] = useState<SimilarTracksT>()
+    const [artistsOpen,setArtistsOpen] = useState(false)
     const fetchSimilarTracks = async (id:any) => {
         setIsLoading(true)
         try {
@@ -71,9 +75,11 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
     }, [track]);
 
     return (
+        <>
+
         <Slide direction={"up"} in={active}>
-            <div className="track-info-mobile" onClick={()=>{setActiveState(false)}}>
-                {active ? (
+            <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setActiveState(false) : setArtistsOpen(false)}}>
+                {track.id ? (
                    <>
                        <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
                            <div className="track-info-mobile-cover-wrapper">
@@ -85,81 +91,94 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                        </div>
                        <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
                            <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) :  likeSong(track).then((response) => updateLikedSongs("liked")))}>
-                               <div className="track-info-mobile-control-icon">
-                               {isLiked(track.id) ? (
-                                   <div
-                                       className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}>
-                                       <Favorite/>
-                                   </div>
-                               ) : (
-                                   <div className={`player-track-controls-likeButton`}>
-                                       <FavoriteBorder/>
-                                   </div>
-                               )}
-                               </div>
-                               <div className="track-info-mobile-control-label">
-                                   Like
-                               </div>
-                           </div>
+                                <div className="track-info-mobile-control-icon">
+                                {isLiked(track.id) ? (
+                                    <div
+                                    className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}>
+                                        <Favorite/>
+                                    </div>
+                                ) : (
+                                    <div className={`player-track-controls-likeButton`}>
+                                        <FavoriteBorder/>
+                                    </div>
+                                )}
+                                </div>
+                                <div className="track-info-mobile-control-label">
+                                    Like
+                                </div>
+                            </div>
 
-                           <div className="track-info-mobile-control-button">
-                               <div className="track-info-mobile-control-icon">
-                                   <PlaylistAdd/>
-                               </div>
-                               <div className="track-info-mobile-control-label">
-                                    Play next
-                               </div>
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               <div className="track-info-mobile-control-icon">
-                                   <PeopleAlt/>
-                               </div>
-                               <div className="track-info-mobile-control-label">
-                                   Artists
-                               </div>
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               <div className="track-info-mobile-control-icon">
-                                   <Add/>
-                               </div>
-                               <div className="track-info-mobile-control-label">
-                                   Add to playlist
-                               </div>
-                           </div>
-                           <div className="track-info-mobile-control-button">
-                               <div className="track-info-mobile-control-icon">
-                                   <Album/>
-                               </div>
-                               <div className="track-info-mobile-control-label">
-                                   Album
-                               </div>
-                           </div>
+                            <div className="track-info-mobile-control-button">
+                                <div className="track-info-mobile-control-icon">
+                                    <PlaylistAdd/>
+                                </div>
+                                <div className="track-info-mobile-control-label">
+                                        Play next
+                                </div>
+                            </div>
+                            <div className="track-info-mobile-control-button">
+                                <div className="track-info-mobile-control-icon">
+                                    <PeopleAlt/>
+                                </div>
+                                <div className="track-info-mobile-control-label" onClick={()=>{setArtistsOpen(true)}}>
+                                    Artists
+                                </div>
+                            </div>
+                            <div className="track-info-mobile-control-button">
+                                <div className="track-info-mobile-control-icon">
+                                    <Add/>
+                                </div>
+                                <div className="track-info-mobile-control-label">
+                                    Add to playlist
+                                </div>
+                            </div>
+                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`}>
+                                    <div className="track-info-mobile-control-icon">
+                                    <Album/>
+                                </div>
+                                <div className="track-info-mobile-control-label">
+                                    Album
+                                </div>
+                                </Link>
+
 
                        </div>
                        <div className="track-info-mobile-similar-tracks" onClick={(e)=>{e.stopPropagation()}}>
-                           {similarTracks ? (
+                           {similarTracks && !isLoading ? (
                              <SongsList style={{flexDirection:"row"}} playlist={{kind:-1,cover:{uri:similarTracks.track.coverUri},uid:0,ogImage:similarTracks.track.coverUri,available:true,owner:{uid:similarTracks.track.artists[0].id,name:similarTracks.track.artists[0].name,verified:true},title:`${similarTracks.track.title}: Similar`,description:"",tracks:trackArrayWrap(similarTracks.similarTracks)}} tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
-                           ) : null}
+                           ) :
+                           <div style={{width:"100%",height:"45px"}}>
+                                <Loader size={30}/>
+                           </div>
+                            }
+                           
                        </div>
-                       {/*<div className="track-info-wrapper">*/}
-                       {/*            {track.artists.map((artist) => (*/}
-                       {/*                <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>*/}
-                       {/*                    <div className="album-artist-info">*/}
-                       {/*                        <div className="album-artist-avatar-wrapper">*/}
-                       {/*                            <img*/}
-                       {/*                                src={getImageLink(artist.cover.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}*/}
-                       {/*                                alt="" loading="lazy"/>*/}
-                       {/*                        </div>*/}
-                       {/*                        <div className="album-artist-info-name">{artist.name}</div>*/}
-                       {/*                    </div>*/}
-                       {/*                </Link>*/}
-                       {/*            ))}*/}
-                       {/*    </div>*/}
                    </>
                     )
-                    : null}
+                    : null
+                    
+                }
             </div>
         </Slide>
+    
+        <Slide direction="up" in={active && artistsOpen}>
+          <div className="track-info-mobile">
+              {track.artists.map((artist) => (
+                  <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
+                                <div className="album-artist-info">
+                                    <div className="album-artist-avatar-wrapper">
+                                        <img
+                                            src={getImageLink(artist.cover.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
+                                            alt="" loading="lazy"/>
+                                    </div>
+                                    <div className="album-artist-info-name">{artist.name}</div>
+                                </div>
+                                </Link>
+                            ))}
+                            </div>
+        </Slide>
+        </>
+
     )
 }
 
