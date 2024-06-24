@@ -1473,11 +1473,7 @@ html,body {
     display: flex;
     flex-direction:column;
     bottom: 0;
-<<<<<<< HEAD
-    /* height: 55%; */
-=======
     height: 425px;
->>>>>>> e5bf382404395ae20b53db477798b0292713b819
     width: 100%;
     padding: 10px;
     gap: 10px;
