@@ -64,6 +64,11 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         }
     };
 
+    const closeAll = () => {
+        setArtistsOpen(false);
+        setActiveState(false);
+    }
+
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${track.title} added to Liked`);
@@ -135,7 +140,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                     Add to playlist
                                 </div>
                             </div>
-                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`}>
+                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`} onClick={()=>{closeAll()}}>
                                     <div className="track-info-mobile-control-icon">
                                     <Album/>
                                 </div>
@@ -165,16 +170,19 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         </Slide>
     
         <Slide direction="up" in={active && artistsOpen}>
-          <div className="track-info-mobile">
+          <div className="track-info-mobile" onClick={()=>{setArtistsOpen(false)}}>
+            <div className="track-info-artists-title-wrapper">
+            <div className="track-info-artists-title">Artists</div>
+            </div>
               {track.artists ? (track.artists.map((artist) => (
-                  <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
-                                <div className="album-artist-info">
-                                    <div className="album-artist-avatar-wrapper">
+                  <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`} onClick={()=>{closeAll()}}>
+                                <div className="track-info-artist-info">
+                                    <div className="track-info-artist-avatar-wrapper">
                                         <img
                                             src={getImageLink(artist.cover?.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
                                             alt="" loading="lazy"/>
                                     </div>
-                                    <div className="album-artist-info-name">{artist.name}</div>
+                                    <div className="track-info-artist-info-name">{artist.name}</div>
                                 </div>
                                 </Link>
                             ))): null}
