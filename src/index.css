@@ -1553,6 +1553,18 @@ html,body {
     text-wrap:wrap;
     overflow:visible;
 }
+.track-info-back-button {
+    display:flex;
+    flex-grow:1;
+    justify-content:end;
+    align-items:center;
+    color:var(--font-color-main);
+    margin-right:10px;
+}
+.track-info-back-button > svg  {
+    transition: all .3s ease;
+    font-size: 35px; 
+}
 @media (max-width: 575px) {
     * {
         -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);

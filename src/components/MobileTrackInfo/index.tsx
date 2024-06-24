@@ -88,6 +88,9 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                            <div className="track-info-wrapper">
                                <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{track.title}</div>
                            </div>
+                           <div className="track-info-back-button">
+                             <KeyboardArrowDown className="track-info-back-icon" style={{rotate: artistsOpen ? "90deg" : "0deg"}}/>
+                           </div>
                        </div>
                        <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
                            <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) :  likeSong(track).then((response) => updateLikedSongs("liked")))}>
@@ -163,18 +166,18 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
     
         <Slide direction="up" in={active && artistsOpen}>
           <div className="track-info-mobile">
-              {track.artists.map((artist) => (
+              {track.artists ? (track.artists.map((artist) => (
                   <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
                                 <div className="album-artist-info">
                                     <div className="album-artist-avatar-wrapper">
                                         <img
-                                            src={getImageLink(artist.cover.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
+                                            src={getImageLink(artist.cover?.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
                                             alt="" loading="lazy"/>
                                     </div>
                                     <div className="album-artist-info-name">{artist.name}</div>
                                 </div>
                                 </Link>
-                            ))}
+                            ))): null}
                             </div>
         </Slide>
         </>
