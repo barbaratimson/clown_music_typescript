@@ -116,11 +116,11 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                         Play next
                                 </div>
                             </div>
-                            <div className="track-info-mobile-control-button">
+                            <div className="track-info-mobile-control-button" onClick={()=>{setArtistsOpen(true)}}>
                                 <div className="track-info-mobile-control-icon">
                                     <PeopleAlt/>
                                 </div>
-                                <div className="track-info-mobile-control-label" onClick={()=>{setArtistsOpen(true)}}>
+                                <div className="track-info-mobile-control-label">
                                     Artists
                                 </div>
                             </div>
