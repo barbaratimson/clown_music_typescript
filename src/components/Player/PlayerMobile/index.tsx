@@ -198,7 +198,12 @@ const Player = () => {
             const changeTrack = async () => {
                 if (currentSong.available && currentSong){
                     stopPlayerFunc()
-                    setPlayerSrc(await fetchYaSongLink(currentSong.id))
+                    setLoading(true)
+                    const trackLink = await fetchYaSongLink(currentSong.id)
+                    if (trackLink) {
+                        setPlayerSrc(trackLink)
+                        setLoading(false)
+                    }
                 }
             }
             changeTrack()
@@ -240,6 +245,9 @@ const Player = () => {
 
     useEffect(() => {
       setMediaSession(currentSong)
+      return () => {
+        navigator.mediaSession.metadata = null
+      }
     }, [currentSong]);
 
     useEffect(() => {
