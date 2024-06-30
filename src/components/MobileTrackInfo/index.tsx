@@ -83,10 +83,10 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
         <>
 
         <Slide direction={"up"} in={active}>
-            <div key={track.id} className="track-info-mobile" onClick={()=>{!artistsOpen ? setActiveState(false) : setArtistsOpen(false)}}>
+            <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setActiveState(false) : setArtistsOpen(false)}}>
                 {track.id ? (
                    <>
-                       <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
+                       <div key={track.id} className="track-info-mobile-about-wrapper animated-opacity-4ms">
                            <div className="track-info-mobile-cover-wrapper">
                                <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
@@ -97,7 +97,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                              <KeyboardArrowDown className="track-info-back-icon" style={{rotate: artistsOpen ? "90deg" : "0deg"}}/>
                            </div>
                        </div>
-                       <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
+                       <div key={track.id} className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
                            <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) :  likeSong(track).then((response) => updateLikedSongs("liked")))}>
                                 <div className="track-info-mobile-control-icon">
                                 {isLiked(track.id) ? (
