@@ -86,7 +86,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
             <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setActiveState(false) : setArtistsOpen(false)}}>
                 {track.id ? (
                    <>
-                       <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
+                       <div key={track.id} className="track-info-mobile-about-wrapper animated-opacity-4ms">
                            <div className="track-info-mobile-cover-wrapper">
                                <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
