@@ -5,7 +5,7 @@ import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import {changeCurrentSong} from "../../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../../store/PlayerSlice";
-import {getImageLink, secToMinutesAndSeconds} from "../../../utils/utils";
+import {addAlpha, getImageLink, secToMinutesAndSeconds} from "../../../utils/utils";
 import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../../utils/apiRequests';
 import ArtistName from '../../ArtistName';
 import {
@@ -31,6 +31,7 @@ import {setLikedSongs} from '../../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
 import { trackWrap } from '../../../utils/trackWrap';
 import {setActiveState, setTrackInfo} from "../../../store/trackInfoSlice";
+import { usePalette } from 'react-palette';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -64,10 +65,10 @@ const Player = () => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
-
+    const mobilePlayerFull = useRef<HTMLDivElement>(null)
     const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
     const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
-
+    const { data, loading, error } = usePalette(currentSong && currentSong.coverUri ? `http://${currentSong.coverUri.substring(0, currentSong.coverUri.lastIndexOf('/'))}/800x800` : "")
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
@@ -94,12 +95,8 @@ const Player = () => {
             ]
         })
 
-        navigator.mediaSession.setActionHandler("previoustrack", () => {
-            skipBack()
-        });
-        navigator.mediaSession.setActionHandler("nexttrack", () => {
-            skipForward()
-        });
+        navigator.mediaSession.setActionHandler("previoustrack", skipBack);
+        navigator.mediaSession.setActionHandler("nexttrack", skipForward);
 
         navigator.mediaSession.setActionHandler("seekto", (e) => {
             if (e.seekTime && audioElem.current) {
@@ -161,8 +158,12 @@ const Player = () => {
             audioElem.current.currentTime = 0
             startPlayerFunc()
         } else if (index === queue.length - 1) {
-            if (playerState.shuffle) {
-                setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
+            if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
+                    let newSong:TrackType;
+                    do {
+                        newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+                    } while (currentSong.id == newSong.track.id)
+                setPlayingQueue([trackWrap(currentSong), newSong])
             } else {
                 setCurrentSong(queue[0].track)
             }
@@ -234,6 +235,13 @@ const Player = () => {
             navigator.mediaSession.metadata = null
         }
     }, []);
+
+    useEffect(() => {
+        setMediaSession(currentSong)
+        return () => {
+            navigator.mediaSession.metadata = null
+        }
+    }, [currentSong,queue]);
      
     //Only in mobile player
     useEffect(()=>{
@@ -244,17 +252,9 @@ const Player = () => {
     },[])
 
     useEffect(() => {
-      setMediaSession(currentSong)
-      return () => {
-        navigator.mediaSession.metadata = null
-      }
-    }, [currentSong]);
-
-    useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
         return () => window.removeEventListener('keypress', handleKeyPress)
     });
-
 
     useEffect(() => {
         localStorage.setItem("player_repeat", playerState.repeat.toString())
@@ -262,20 +262,26 @@ const Player = () => {
 
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
-
-        if (playerState.shuffle) {
-            setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
+        if (playerState.shuffle && queueCurrentPlaylist.tracks.length > 1) {
+            let newSong:TrackType;
+            do {
+                newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+            } while (currentSong.id == newSong.track.id)
+            setPlayingQueue([trackWrap(currentSong), newSong])
         } else {
             setPlayingQueue(queueCurrentPlaylist.tracks)
         }
     }, [playerState.shuffle]);
 
-    //useEffect(()=>{
-    //    if (queue.length === 1 && queueCurrentPlaylist.tracks.length !== 0) {
-     //       addToQueue(randomSongFromTrackList(queueCurrentPlaylist.tracks))
-   //     }
- //   },[queue])
-
+    useEffect(()=>{
+        if (!mobilePlayerFull.current) return
+        if (data.darkMuted) {
+            mobilePlayerFull.current.style.backgroundColor = addAlpha(data.darkMuted,0.5)   
+        } else {
+            mobilePlayerFull.current.style.backgroundColor = "rgba(0, 0, 0, 0.5)"
+        }
+        
+      },[data])
 
     return (
         <>
@@ -364,7 +370,7 @@ const Player = () => {
              
 
                 <Slide direction={"up"} in={!playerFolded}>
-                    <div className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
+                    <div ref={mobilePlayerFull} className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
                         {!playerFolded ? (
                                 <> 
                                 <div className="player-navbar-full">

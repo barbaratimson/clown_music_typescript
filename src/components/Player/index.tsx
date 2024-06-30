@@ -85,13 +85,10 @@ const Player = () => {
                 },
             ]
         })
+        
+        navigator.mediaSession.setActionHandler("previoustrack", skipBack);
 
-        navigator.mediaSession.setActionHandler("previoustrack", () => {
-            skipBack()
-        });
-        navigator.mediaSession.setActionHandler("nexttrack", () => {
-            skipForward()
-        });
+        navigator.mediaSession.setActionHandler("nexttrack", skipForward);
 
         navigator.mediaSession.setActionHandler("seekto", (e) => {
             if (e.seekTime && audioElem.current) {
@@ -152,9 +149,13 @@ const Player = () => {
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
             startPlayerFunc()
-        } else if (index === queue.length - 1) {
-            if (playerState.shuffle) {
-                setPlayingQueue([trackWrap(currentSong), randomSongFromTrackList(queueCurrentPlaylist.tracks)])
+        } else if (index === queue.length - 1 ) {
+            if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
+                let newSong:TrackType;
+                do {
+                    newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+                } while (currentSong.id == newSong.track.id)
+                setPlayingQueue([trackWrap(currentSong), newSong])
             } else {
                 setCurrentSong(queue[0].track)
             }
@@ -189,14 +190,18 @@ const Player = () => {
 
     useEffect(() => {
         if (!currentSong.available) skipForward()
-        const changeTrack = async () => {
-            if (currentSong.available && currentSong){
-                stopPlayerFunc()
-                setPlayerSrc(await fetchYaSongLink(currentSong.id))
+            const changeTrack = async () => {
+                if (currentSong.available && currentSong){
+                    stopPlayerFunc()
+                    setLoading(true)
+                    const trackLink = await fetchYaSongLink(currentSong.id)
+                    if (trackLink) {
+                        setPlayerSrc(trackLink)
+                        setLoading(false)
+                    }
+                }
             }
-        }
-         changeTrack()
-
+            changeTrack()
         if (queue.length !== 0 && currentSong.id !== 0) {
             const index = queue.findIndex(x => x.id == currentSong.id);
             if (playerState.shuffle && index === queue.length-1 && queue.length !== queueCurrentPlaylist.tracks.length) {
@@ -219,7 +224,10 @@ const Player = () => {
 
     useEffect(() => {
         setMediaSession(currentSong)
-    }, [currentSong]);
+        return () => {
+            navigator.mediaSession.metadata = null
+        }
+    }, [currentSong,queue]);
 
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);
@@ -241,9 +249,12 @@ const Player = () => {
 
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
-
-        if (playerState.shuffle) {
-            setPlayingQueue([trackWrap(currentSong),randomSongFromTrackList(queueCurrentPlaylist.tracks)])
+        if (playerState.shuffle && queueCurrentPlaylist.tracks.length > 1) {
+            let newSong:TrackType;
+            do {
+                newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+            } while (currentSong.id == newSong.track.id)
+            setPlayingQueue([trackWrap(currentSong), newSong])
         } else {
             setPlayingQueue(queueCurrentPlaylist.tracks)
         }
