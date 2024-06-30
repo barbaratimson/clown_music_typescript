@@ -203,7 +203,6 @@ const Player = () => {
                     const trackLink = await fetchYaSongLink(currentSong.id)
                     if (trackLink) {
                         setPlayerSrc(trackLink)
-                        setLoading(false)
                     }
                 }
             }
