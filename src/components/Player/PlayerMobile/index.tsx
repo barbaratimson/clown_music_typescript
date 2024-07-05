@@ -195,7 +195,6 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
-            if (!currentSong.available) skipForward()
             const changeTrack = async () => {
                 if (currentSong.available && currentSong){
                     stopPlayerFunc()
@@ -274,12 +273,12 @@ const Player = () => {
 
     useEffect(()=>{
         if (!mobilePlayerFull.current) return
+        if (loading) return;
         if (data.darkMuted) {
-            mobilePlayerFull.current.style.backgroundColor = addAlpha(data.darkMuted,0.5)   
+            mobilePlayerFull.current.style.backgroundColor = addAlpha(data.darkMuted,0.7)
         } else {
-            mobilePlayerFull.current.style.backgroundColor = "rgba(0, 0, 0, 0.5)"
+            mobilePlayerFull.current.style.backgroundColor = "rgba(0, 0, 0, 0.7)"
         }
-        
       },[data])
 
     return (

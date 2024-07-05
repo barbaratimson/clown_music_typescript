@@ -4,6 +4,7 @@ import {PlaylistT} from "../../../utils/types/types";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
 import {getImageLink} from "../../../utils/utils";
+import {Link} from "react-router-dom";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -68,9 +69,16 @@ const Collection = () => {
                         <div className="user-card-title">Коллекция</div>
                     </div>
                 </div>
-                {userTracks ? (
-                    <PlaylistCard playlist={userTracks}/>
-                ) : null}
+                <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/users/${userData.account.uid}/playlist/3`}>
+                    <div className="playlist-card-wrapper">
+                        <div className="playlist-card-image">
+                            <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy"/>
+                        </div>
+                        <div className="playlist-card-title-wrapper">
+                            <div className="playlist-card-title">Favourites</div>
+                        </div>
+                    </div>
+                </Link>
                 <div className="collection-user-playlists-wrapper">
                 <div className="collection-title">Плейлисты</div>
                 <div className="playlists-wrapper">

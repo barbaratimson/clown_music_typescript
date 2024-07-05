@@ -5,6 +5,7 @@ import {initQueue} from "../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import { setCurrentPlaylist } from "../../store/CurrentPlaylistSlice";
 import { trackWrap } from "../../utils/trackWrap";
+import playlist from "../Playlist";
 
 interface SongsListProps {
     tracks: Array<TrackType>
@@ -24,6 +25,8 @@ const SongsList = (({tracks,playlist, style}:SongsListProps) => {
             setPlayingQueue({playlist:playlist,queueTracks:playlist.tracks})
         }
     }
+
+
     return (
         <div style={style} className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (
