@@ -10,7 +10,6 @@ export const fetchYaSongLink = async (id:string | number) => {
         return response.data
     } catch (err) {
         console.error('Ошибка при получении списка треков:', err);
-        console.log(err)
     }
 };
 

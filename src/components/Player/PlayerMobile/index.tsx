@@ -168,7 +168,7 @@ const Player = () => {
                 setCurrentSong(queue[0].track)
             }
         } else {
-            setCurrentSong(queue[index + 1].track)
+                setCurrentSong(queue[index + 1].track)
         }
     }
         const randomSongFromTrackList = (trackList:Array<TrackType>) => {
@@ -195,28 +195,27 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
-            const changeTrack = async () => {
-                if (currentSong.available && currentSong){
-                    stopPlayerFunc()
-                    setLoading(true)
-                    const trackLink = await fetchYaSongLink(currentSong.id)
-                    if (trackLink) {
-                        setPlayerSrc(trackLink)
+                const changeTrack = async () => {
+                    if (currentSong.available && currentSong) {
+                        stopPlayerFunc()
+                        setLoading(true)
+                        const trackLink = await fetchYaSongLink(currentSong.id)
+                        if (trackLink) {
+                            setPlayerSrc(trackLink)
+                        }
                     }
                 }
-            }
-            changeTrack()
-            if (queue.length !== 0 && currentSong.id !== 0) {
-                const index = queue.findIndex(x => x.id == currentSong.id);
-                if (playerState.shuffle && index === queue.length-1 && queue.length !== queueCurrentPlaylist.tracks.length) {
-                    let newSong:TrackType;
-                    do {
-                        newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-                    } while (queue.findIndex(x => x.track.id === newSong.track.id) !== -1)
-                    addToQueue(newSong)
+                changeTrack()
+                if (queue.length !== 0 && currentSong.id !== 0) {
+                    const index = queue.findIndex(x => x.id == currentSong.id);
+                    if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
+                        let newSong: TrackType;
+                        do {
+                            newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
+                        } while (queue.findIndex(x => x.track.id === newSong.track.id) !== -1)
+                        addToQueue(newSong)
+                    }
                 }
-            }
-
         }, [currentSong]);
 
 
