@@ -4,7 +4,14 @@ import {Box, Fade, IconButton, LinearProgress, Slide} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import {changeCurrentSong} from "../../../store/CurrentSongSlice";
-import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../../store/PlayerSlice";
+import {
+    playerStart,
+    playerStop,
+    setIsLoading,
+    setRepeat,
+    setShuffle,
+    setSrc
+} from "../../../store/PlayerSlice";
 import {addAlpha, getImageLink, secToMinutesAndSeconds} from "../../../utils/utils";
 import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../../utils/apiRequests';
 import ArtistName from '../../ArtistName';
@@ -32,6 +39,7 @@ import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playing
 import { trackWrap } from '../../../utils/trackWrap';
 import {setActiveState, setTrackInfo} from "../../../store/trackInfoSlice";
 import { usePalette } from 'react-palette';
+import SeekSlider from '../components/SeekSlider';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -271,8 +279,7 @@ const Player = () => {
     }, [playerState.shuffle]);
 
     useEffect(()=>{
-        if (!mobilePlayerFull.current) return
-        if (loading) return;
+        if (!mobilePlayerFull.current || loading) return
         if (data.darkMuted) {
             mobilePlayerFull.current.style.backgroundColor = addAlpha(data.darkMuted,0.7)
         } else {
@@ -294,11 +301,11 @@ const Player = () => {
                                 </div>
                                 <div className="player-track-info-artists-wrapper">
                                     <span onClick={(e)=>{e.stopPropagation()}} className="track-info-artist-span">
-                        
+
                                 {currentSong.artists.map(artist => (
                                         <ArtistName size={"15px"} artist={artist}/>
                                 ))}
-                                
+
                                     </span>
                                 </div>
                             </div>
@@ -335,41 +342,18 @@ const Player = () => {
                             </Box>
                         </div>
                         <div className="player-primary-seek-wrapper-mobile">
-                            {!playerState.loading ? (
-                                <Slider
-                                    aria-label="time-indicator"
-                                    size="small"
-                                    value={position}
-                                    min={0}
-                                    step={1}
-                                    max={duration}
-                                   // onChange={(_, value) => changeTime(value as number)}
-                                    className="player-seek"
-                                    sx={{
-                                        color: '#fff',
-                                        height: 4,
-                                        '& .MuiSlider-thumb': {
-                                            display: "none",
-                                        },
-                                        '& .MuiSlider-rail': {
-                                            opacity: 0.28,
-                                        },
-                                    }}
-                                    valueLabelDisplay="auto"/>
-                            ) : (
-                                <LinearProgress className="player-loader" color="inherit"/>
-                            )}
+                            <SeekSlider loadingState={playerState.loading} position={position} duration={duration} changeTime={()=>{}}/>
                         </div>
                     </div>
-            }   
+            }
 
 
-             
+
 
                 <Slide direction={"up"} in={!playerFolded}>
                     <div ref={mobilePlayerFull} className="player-wrapper-full" onClick={()=>{setPlayerFolded(true)}} style={{marginBottom: "49px"}}>
                         {!playerFolded ? (
-                                <> 
+                                <>
                                 <div className="player-navbar-full">
                                     <div className="player-navbar-button close">
                                         <ExpandMore/>
@@ -428,30 +412,7 @@ const Player = () => {
                                         </div>
                                     </div>
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
-                                            {!playerState.loading ? (
-                                                <Slider
-                                                    aria-label="time-indicator"
-                                                    size="small"
-                                                    value={position}
-                                                    min={0}
-                                                    step={1}
-                                                    max={duration}
-                                                    onChange={(_, value) => changeTime(value as number)}
-                                                    className="player-seek"
-                                                    sx={{
-                                                        color: '#fff',
-                                                        height: 4,
-                                                        '& .MuiSlider-thumb': {
-                                                            display: "none",
-                                                        },
-                                                        '& .MuiSlider-rail': {
-                                                            opacity: 0.28,
-                                                        }
-                                                    }}
-                                                    valueLabelDisplay="auto"/>
-                                            ) : (
-                                                <LinearProgress className="player-loader" color="inherit"/>
-                                            )}
+                                        <SeekSlider loadingState={playerState.loading} position={position} duration={duration} changeTime={changeTime}/>
                                             <div className='player-primary-seek-time-full'>
                                                 <div className="player-primary-trackTime">
                                                     {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
@@ -514,7 +475,7 @@ const Player = () => {
                                     </div>
                                     <div className="player-secondary-controls-full">
                                             <div className="player-track-controls-full">
-                                    
+
                                         </div>
                                     </div>
                                     </div>

@@ -607,6 +607,7 @@ html,body {
 }
 .player-track-info.full > .player-track-info-title {
     font-size: 20px;
+    height: 25px;
 }
 
 .player-track-info-wrapper.mobile {
