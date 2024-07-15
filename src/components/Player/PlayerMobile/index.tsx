@@ -375,10 +375,10 @@ const Player = () => {
                                             <div key={String(playerState.shuffle)} className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
                                                 <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                             </div>
-                                            <div className={`player-track-cover-wrapper-full animated-opacity-4ms ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
+                                            <div className={`player-track-cover-wrapper-full ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
                                                 <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
                                             </div>
-                                            <div className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
+                                            <div key={String(playerState.shuffle) + 1} className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
                                                 <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                             </div>
                                     </div>
