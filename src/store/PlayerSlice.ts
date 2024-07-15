@@ -39,7 +39,7 @@ const playerSlice = createSlice({
         setRepeat(state, action) {
             state.repeat = action.payload
         },
-        playerSeekTo(state, action) {
+        setCurrentTime(state, action) {
             state.currentTime = action.payload
         },
         playerStop(state) {
@@ -55,5 +55,5 @@ const playerSlice = createSlice({
 })
 
 
-export const { setSrc, setIsLoading,setDuration,playerSeekTo,playerStop,playerStart, setShuffle, setRepeat } = playerSlice.actions
+export const { setSrc, setIsLoading,setDuration,setCurrentTime,playerStop,playerStart, setShuffle, setRepeat } = playerSlice.actions
 export default playerSlice.reducer

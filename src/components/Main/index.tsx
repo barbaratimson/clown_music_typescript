@@ -44,6 +44,7 @@ const Main = () => {
             console.log(getIsMobile(deviceState))
         }
         getIsMobileInfo()
+
     }, []);
 
     return (

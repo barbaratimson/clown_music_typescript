@@ -30,7 +30,7 @@ const SongsList = (({tracks,playlist, style}:SongsListProps) => {
     return (
         <div style={style} className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (
-                    <Track key={song.id} queueFunc={setInitQueue} track={song.track}/>
+                    <Track key={song.track.id} queueFunc={setInitQueue} track={song.track}/>
             ): null) : null}
         </div>
     )

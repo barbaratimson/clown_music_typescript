@@ -108,13 +108,11 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                 <div className="track-info-mobile-control-icon">
                                 {isLiked(track.id) ? (
                                     <div
-                                    className={`player-track-controls-likeButton ${isLiked(track.id) ? "heart-pulse" : null}`}>
+                                    className={`${isLiked(track.id) ? "heart-pulse" : null}`}>
                                         <Favorite/>
                                     </div>
                                 ) : (
-                                    <div className={`player-track-controls-likeButton`}>
                                         <FavoriteBorder/>
-                                    </div>
                                 )}
                                 </div>
                                 <div className="track-info-mobile-control-label">

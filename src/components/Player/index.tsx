@@ -27,6 +27,7 @@ import {showMessage} from '../../store/MessageSlice';
 import {setLikedSongs} from '../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
 import { trackArrayWrap, trackWrap } from '../../utils/trackWrap';
+import SeekSlider from "./components/SeekSlider";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -340,30 +341,7 @@ const Player = () => {
                         <div className="player-primary-trackTime">
                             {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
                         </div>
-                        {!playerState.loading ? (
-                            <Slider
-                                aria-label="time-indicator"
-                                size="small"
-                                value={position}
-                                min={0}
-                                step={1}
-                                max={duration}
-                                onChange={(_, value) => changeTime(value as number)}
-                                className="player-seek"
-                                sx={{
-                                    color: '#fff',
-                                    height: 4,
-                                    '& .MuiSlider-thumb': {
-                                        display: "none",
-                                    },
-                                    '& .MuiSlider-rail': {
-                                        opacity: 0.28,
-                                    },
-                                }}
-                                valueLabelDisplay="auto"/>
-                        ) : (
-                            <LinearProgress className="player-loader" color="inherit"/>
-                        )}
+                        <SeekSlider loadingState={playerState.loading} position={position} duration={duration} changeTime={changeTime}/>
                         <div className="player-primary-trackTime">
                             {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
                         </div>
