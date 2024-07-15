@@ -32,10 +32,11 @@ import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playing
 import { trackWrap } from '../../../utils/trackWrap';
 import {setActiveState, setTrackInfo} from "../../../store/trackInfoSlice";
 import { usePalette } from 'react-palette';
-
+import { useLocation } from 'react-router-dom'
 
 const savedVolume = localStorage.getItem("player_volume")
 const Player = () => {
+    const location = useLocation()
     const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
     const [position, setPosition] = useState(0)
@@ -280,6 +281,10 @@ const Player = () => {
         }
       },[data])
 
+      useEffect(()=>{
+        setPlayerFolded(true)
+      },[location])
+
     return (
         <>
             {playerFolded &&
@@ -382,7 +387,7 @@ const Player = () => {
                                     {/* cover row */}
                                     <div className="player-full-top-wrapper">
                                              <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
-                                            <div className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
+                                            <div key={String(playerState.shuffle)} className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
                                                 <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
                                             </div>
                                             <div className={`player-track-cover-wrapper-full animated-opacity-4ms ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>

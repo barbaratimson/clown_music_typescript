@@ -26,6 +26,7 @@ import {link} from "../../utils/constants";
 import SongsList from "../SongsList";
 import {trackArrayWrap} from "../../utils/trackWrap";
 import Loader from "../Loader";
+import { useLocation } from 'react-router-dom'
 
 interface MobileTrackInfoProps {
     track:TrackT,
@@ -40,6 +41,7 @@ interface SimilarTracksT {
 
 const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => {
     const dispatch= useDispatch()
+    const location = useLocation()
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
@@ -78,6 +80,10 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
     useEffect(() => {
         fetchSimilarTracks(track.id)
     }, [track]);
+
+    useEffect(()=>{
+       closeAll()
+    },[location])
 
     return (
         <>
@@ -140,7 +146,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                     Add to playlist
                                 </div>
                             </div>
-                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`} onClick={()=>{closeAll()}}>
+                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`}>
                                     <div className="track-info-mobile-control-icon">
                                     <Album/>
                                 </div>
@@ -175,7 +181,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
             <div className="track-info-artists-title">Artists</div>
             </div>
               {track.artists ? (track.artists.map((artist) => (
-                  <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`} onClick={()=>{closeAll()}}>
+                  <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
                                 <div className="track-info-artist-info">
                                     <div className="track-info-artist-avatar-wrapper">
                                         <img
