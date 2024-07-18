@@ -38,6 +38,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
     const changeSong = (song:TrackT) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song);
+            startPlayerFunc()
             if (queueFunc) {
                 queueFunc([trackWrap(song)]);
             }

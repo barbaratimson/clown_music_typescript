@@ -206,16 +206,18 @@ const Player = () => {
 
         useEffect(() => {
                 const changeTrack = async () => {
-                    if (currentSong.available && currentSong) {
-                        stopPlayerFunc()
-                        setLoading(true)
+                    setIsLoading(true)
+                    if (currentSong.available && currentSong && audioElem.current) {
+                        audioElem.current.pause()
+                        setPosition(0)
+                        changeTime(0)
                         const trackLink = await fetchYaSongLink(currentSong.id)
                         if (trackLink) {
-                            setPlayerSrc(trackLink)
+                            audioElem.current.src = trackLink
                         }
                     }
                 }
-                changeTrack()
+                changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play()})
                 if (queue.length !== 0 && currentSong.id !== 0) {
                     const index = queue.findIndex(x => x.id == currentSong.id);
                     if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
@@ -490,20 +492,21 @@ const Player = () => {
                     </div>
                 </Slide>
             <audio preload={"auto"} crossOrigin="anonymous"
-                   src={playerState.src} ref={audioElem}
+                   ref={audioElem}
                    onLoadStart={() => {
                        setLoading(true)
                    }}
                    onError={(e) => {
-                       stopPlayerFunc()
+                    //   stopPlayerFunc()
                        setLoading(false)
                    }}
                    onCanPlay={() => {
                        setLoading(false)
-                       startPlayerFunc()
+                     //  if (playerState.playing && audioElem.current) audioElem.current.play()
+                    //   startPlayerFunc()
                    }}
                    onPause={() => {
-                       stopPlayerFunc()
+                     //  stopPlayerFunc()
                    }} onEnded={(e) => {
                 skipForward()
             }} onTimeUpdate={onPlaying}></audio>
