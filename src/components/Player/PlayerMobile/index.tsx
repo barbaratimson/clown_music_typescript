@@ -205,17 +205,18 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
-                const changeTrack = async () => {
-                    setIsLoading(true)
+            setIsLoading(true)
                     if (currentSong.available && currentSong && audioElem.current) {
                         audioElem.current.pause()
                         setPosition(0)
                         changeTime(0)
-                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
-                        if (trackLink) {
-                            audioElem.current.src = trackLink
-                        }
                     }
+                    const changeTrack = async () => {
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
+                         if (trackLink && audioElem.current) {
+                            audioElem.current.setAttribute('src',trackLink)
+                         }
+                     
                 }
                 changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
                 if (queue.length !== 0 && currentSong.id !== 0) {
