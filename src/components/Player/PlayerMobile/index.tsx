@@ -211,7 +211,7 @@ const Player = () => {
                         audioElem.current.pause()
                         setPosition(0)
                         changeTime(0)
-                        const trackLink = await fetchYaSongLink(currentSong.id)
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
                         if (trackLink) {
                             audioElem.current.src = trackLink
                         }
@@ -240,16 +240,10 @@ const Player = () => {
 
     useEffect(() => {
         setMediaSession(currentSong)
-        return () => {
-            navigator.mediaSession.metadata = null
-        }
     }, []);
 
     useEffect(() => {
         setMediaSession(currentSong)
-        return () => {
-            navigator.mediaSession.metadata = null
-        }
     }, [currentSong,queue]);
      
     //Only in mobile player
