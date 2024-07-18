@@ -34,7 +34,16 @@ const SeekSlider = ({loadingState,position,duration,changeTime}:SeekSliderProps)
                     }}
                     valueLabelDisplay="auto"/>
             ) : (
-                <LinearProgress className="player-loader" color="inherit"/>
+                <LinearProgress sx={{
+                    color: '#fff',
+                    height:4,
+                    '& .MuiLinearProgress-bar1': {
+                        display: "none"
+                    },
+                    '& .MuiLinearProgress-root': {
+                        
+                    }
+                }} className="player-loader"/>
             )}
         </>
     )

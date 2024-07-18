@@ -216,8 +216,8 @@ const Player = () => {
                          if (trackLink && audioElem.current) {
                             audioElem.current.setAttribute('src',trackLink)
                          }
-                     
-                }
+                        }
+                
                 changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
                 if (queue.length !== 0 && currentSong.id !== 0) {
                     const index = queue.findIndex(x => x.id == currentSong.id);
