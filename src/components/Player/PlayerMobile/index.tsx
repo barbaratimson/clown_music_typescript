@@ -217,7 +217,7 @@ const Player = () => {
                         }
                     }
                 }
-                changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play()})
+                changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
                 if (queue.length !== 0 && currentSong.id !== 0) {
                     const index = queue.findIndex(x => x.id == currentSong.id);
                     if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
