@@ -27,21 +27,18 @@ import SongsList from "../SongsList";
 import {trackArrayWrap} from "../../utils/trackWrap";
 import Loader from "../Loader";
 import { useLocation } from 'react-router-dom'
-
-interface MobileTrackInfoProps {
-    track:TrackT,
-    active:boolean,
-    setActiveState: Function
-}
+import { setActiveState } from "../../store/trackInfoSlice";
 
 interface SimilarTracksT {
     track:TrackT
     similarTracks:Array<TrackT>
 }
 
-const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => {
+const MobileTrackInfo = () => {
     const dispatch= useDispatch()
     const location = useLocation()
+    const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
+    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
@@ -68,18 +65,18 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
 
     const closeAll = () => {
         setArtistsOpen(false);
-        setActiveState(false);
+        setTrackInfoShowState(false);
     }
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
-        if (action === "liked") trackAddedMessage(`Track ${track.title} added to Liked`);
-        if (action === "removed") trackAddedMessage(`Track ${track.title} removed to Liked`);
+        if (action === "liked") trackAddedMessage(`Track ${trackInfoState.track.title} added to Liked`);
+        if (action === "removed") trackAddedMessage(`Track ${trackInfoState.track.title} removed to Liked`);
     }
 
     useEffect(() => {
-        fetchSimilarTracks(track.id)
-    }, [track]);
+        fetchSimilarTracks(trackInfoState.track.id)
+    }, [trackInfoState.track]);
 
     useEffect(()=>{
        closeAll()
@@ -88,27 +85,27 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
     return (
         <>
 
-        <Slide direction={"up"} in={active}>
-            <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setActiveState(false) : setArtistsOpen(false)}}>
-                {track.id ? (
+        <Slide direction={"up"} in={trackInfoState.active}>
+            <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setTrackInfoShowState(false) : setArtistsOpen(false)}}>
+                {trackInfoState.track.id ? (
                    <>
                        <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
                            <div className="track-info-mobile-cover-wrapper">
-                               <img src={getImageLink(track.coverUri, "200x200")} loading="lazy" alt=""/>
+                               <img src={getImageLink(trackInfoState.track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
                            <div className="track-info-wrapper">
-                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{track.title}</div>
+                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{trackInfoState.track.title}</div>
                            </div>
                            <div className="track-info-back-button">
                              <KeyboardArrowDown className="track-info-back-icon" style={{rotate: artistsOpen ? "90deg" : "0deg"}}/>
                            </div>
                        </div>
                        <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
-                           <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) :  likeSong(track).then((response) => updateLikedSongs("liked")))}>
+                           <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(trackInfoState.track.id) ? dislikeSong(trackInfoState.track).then((response) => updateLikedSongs("removed")) :  likeSong(trackInfoState.track).then((response) => updateLikedSongs("liked")))}>
                                 <div className="track-info-mobile-control-icon">
-                                {isLiked(track.id) ? (
+                                {isLiked(trackInfoState.track.id) ? (
                                     <div
-                                    className={`${isLiked(track.id) ? "heart-pulse" : null}`}>
+                                    className={`${isLiked(trackInfoState.track.id) ? "heart-pulse" : null}`}>
                                         <Favorite/>
                                     </div>
                                 ) : (
@@ -144,7 +141,7 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
                                     Add to playlist
                                 </div>
                             </div>
-                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${track.albums[0].artists[0].id}/album/${track.albums[0].id}`}>
+                                <Link className="track-info-mobile-control-button" style={{textDecoration:"none"}} to={`/artist/${trackInfoState.track.albums[0].artists[0].id}/album/${trackInfoState.track.albums[0].id}`}>
                                     <div className="track-info-mobile-control-icon">
                                     <Album/>
                                 </div>
@@ -173,12 +170,12 @@ const MobileTrackInfo = ({track,active,setActiveState}:MobileTrackInfoProps) => 
             </div>
         </Slide>
     
-        <Slide direction="up" in={active && artistsOpen}>
+        <Slide direction="up" in={trackInfoState.active && artistsOpen}>
           <div className="track-info-mobile" onClick={()=>{setArtistsOpen(false)}}>
             <div className="track-info-artists-title-wrapper">
             <div className="track-info-artists-title">Artists</div>
             </div>
-              {track.artists ? (track.artists.map((artist) => (
+              {trackInfoState.track.artists ? (trackInfoState.track.artists.map((artist) => (
                   <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
                                 <div className="track-info-artist-info">
                                     <div className="track-info-artist-avatar-wrapper">

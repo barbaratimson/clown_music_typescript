@@ -16,7 +16,6 @@ interface SongsListProps {
 const SongsList = (({tracks,playlist, style}:SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
-    const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const playerState = useAppSelector((state: RootState) => state.player)
     const setInitQueue = (track:Array<TrackType>) => {
         if(playerState.shuffle) {

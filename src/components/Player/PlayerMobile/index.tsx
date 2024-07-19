@@ -41,6 +41,7 @@ import {setActiveState, setTrackInfo} from "../../../store/trackInfoSlice";
 import { usePalette } from 'react-palette';
 import { useLocation } from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
+import PlayButton from '../components/PlayButton';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -320,24 +321,10 @@ const Player = () => {
                                 <div className="player-navbar-button close" onClick={()=>{setPlayerFolded(!playerFolded)}}>
                                     <ExpandLess/>
                                 </div>
-                                <IconButton
-                                    className="player-primary-button play"
-                                    key={`player-button-play-${playerState.playing}`}
-                                    aria-label={playerState.playing ? 'play' : 'pause'}
-                                    onClick={() => {
-                                        !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-                                    }}
-                                    onKeyDown={(e) => {
+                                <PlayButton playing={playerState.playing} startFunc={startPlayerFunc} stopFunc={stopPlayerFunc} onKeyDown={(e:Event) => {
                                         e.preventDefault();
                                         handleKeyPress(e)
-                                    }}
-                                >
-                                    {!playerState.playing ? (
-                                        <PlayArrowRounded/>
-                                    ) : (
-                                        <PauseRounded/>
-                                    )}
-                                </IconButton>
+                                    }}/>
                                 <IconButton onClick={skipForward} className="player-primary-button"
                                             aria-label="next song">
                                     <FastForwardRounded/>
@@ -418,10 +405,10 @@ const Player = () => {
                                         <SeekSlider loadingState={playerState.loading} position={position} duration={duration} changeTime={changeTime}/>
                                             <div className='player-primary-seek-time-full'>
                                                 <div className="player-primary-trackTime">
-                                                    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.currentTime : undefined)}
+                                                    {secToMinutesAndSeconds(position)}
                                                 </div>
                                                 <div className="player-primary-trackTime">
-                                                    {secToMinutesAndSeconds(audioElem.current ? audioElem.current.duration : undefined)}
+                                                    {secToMinutesAndSeconds(duration)}
                                                 </div>
                                             </div>
                                     </div>
@@ -447,24 +434,10 @@ const Player = () => {
                                                         aria-label="previous song">
                                                 <FastRewindRounded/>
                                             </IconButton>
-                                            <IconButton
-                                                className="player-primary-button play mobile-main"
-                                                key={`player-button-play-${playerState.playing}`}
-                                                aria-label={playerState.playing ? 'play' : 'pause'}
-                                                onClick={() => {
-                                                    !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-                                                }}
-                                                onKeyDown={(e) => {
-                                                    e.preventDefault();
-                                                    handleKeyPress(e)
-                                                }}
-                                            >
-                                                {!playerState.playing ? (
-                                                    <PlayArrowRounded/>
-                                                ) : (
-                                                    <PauseRounded/>
-                                                )}
-                                            </IconButton>
+                                            <PlayButton className="mobile-main" playing={playerState.playing} startFunc={startPlayerFunc} stopFunc={stopPlayerFunc} onKeyDown={(e:Event) => {
+                                                e.preventDefault();
+                                                handleKeyPress(e)
+                                            }}/>
                                             <IconButton onClick={skipForward} className="player-primary-button mobile-secondary"
                                                         aria-label="next song">
                                                 <FastForwardRounded/>
@@ -488,7 +461,7 @@ const Player = () => {
                 </Slide>
             <audio preload={"auto"} crossOrigin="anonymous"
                    ref={audioElem}
-                   onLoadStart={() => {
+                   onLoadStart={(e) => {
                        setLoading(true)
                    }}
                    onError={(e) => {

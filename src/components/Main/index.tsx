@@ -30,8 +30,6 @@ const Main = () => {
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const [isMobile, setIsMobile] = useState(false)
-    const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
-    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     useEffect(() => {
         async function fetchData () {
             setLikedSongsData( await fetchLikedSongs())
@@ -59,7 +57,7 @@ const Main = () => {
                             <Queue/>
                         </div>
                     </Fade>
-                <MobileTrackInfo track={trackInfoState.track} active={trackInfoState.active} setActiveState={setTrackInfoShowState}/>
+                <MobileTrackInfo/>
             </div>
     )
 }
