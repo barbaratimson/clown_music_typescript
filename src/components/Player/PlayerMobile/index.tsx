@@ -209,8 +209,10 @@ const Player = () => {
             setIsLoading(true)
                     if (currentSong.available && currentSong && audioElem.current) {
                         audioElem.current.pause()
-                        setPosition(0)
+                        audioElem.current.src = ""
+                        audioElem.current.removeAttribute("src")
                         changeTime(0)
+                        setPosition(0)
                     }
                     const changeTrack = async () => {
                         const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
@@ -459,7 +461,7 @@ const Player = () => {
                             : null}
                     </div>
                 </Slide>
-            <audio preload={"auto"} crossOrigin="anonymous"
+            <audio key={currentSong.id + "_player"} preload={"auto"} crossOrigin="anonymous"
                    ref={audioElem}
                    onLoadStart={(e) => {
                        setLoading(true)
