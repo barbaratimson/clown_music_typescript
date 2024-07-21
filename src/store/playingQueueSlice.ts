@@ -34,12 +34,16 @@ const playingQueueSlice = createSlice({
             console.log(current(state))
         },
         addTrackToQueuePosition(state, action) {
-            const currentQueue = current(state.queue.queueTracks)
+            const currentQueue = state.queue.queueTracks
             const track = action.payload.songToAdd
             const trackExistsIndex = currentQueue.findIndex(song => song.id == track.id)
             const currentSongPosition = currentQueue.findIndex(song => song.id == action.payload.currentSong.id)
             if (trackExistsIndex !== -1) {
-                move(trackExistsIndex,currentSongPosition,state.queue.queueTracks)
+                if (trackExistsIndex <= currentSongPosition) {
+                    move(trackExistsIndex,currentSongPosition,state.queue.queueTracks)
+                } else {
+                    move(trackExistsIndex,currentSongPosition + 1,state.queue.queueTracks)
+                }
             } else if (currentSongPosition !== -1) {
                 state.queue.queueTracks.splice(currentSongPosition + 1,0,trackWrap(track))
             } else {
