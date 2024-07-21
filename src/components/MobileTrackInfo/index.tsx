@@ -30,6 +30,7 @@ import { useLocation } from 'react-router-dom'
 import { setActiveState } from "../../store/trackInfoSlice";
 import CurrentSongSlice from "../../store/CurrentSongSlice";
 import { addTrackToQueuePosition } from "../../store/playingQueueSlice";
+import PopUpModal from "../PopUpModal";
 
 interface SimilarTracksT {
     track:TrackT
@@ -38,7 +39,6 @@ interface SimilarTracksT {
 
 const MobileTrackInfo = () => {
     const dispatch= useDispatch()
-    const location = useLocation()
     const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
@@ -72,6 +72,14 @@ const MobileTrackInfo = () => {
         setTrackInfoShowState(false);
     }
 
+    const closeCondArtists = () => {
+        if (artistsOpen) {
+            setArtistsOpen(false)
+        } else {
+            closeAll()
+        }
+    }
+
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
         if (action === "liked") trackAddedMessage(`Track ${trackInfoState.track.title} added to Liked`);
@@ -82,15 +90,11 @@ const MobileTrackInfo = () => {
         fetchSimilarTracks(trackInfoState.track.id)
     }, [trackInfoState.track]);
 
-    useEffect(()=>{
-       closeAll()
-    },[location])
-
     return (
         <>
 
-        <Slide direction={"up"} in={trackInfoState.active}>
-            <div className="track-info-mobile" onClick={()=>{!artistsOpen ? setTrackInfoShowState(false) : setArtistsOpen(false)}}>
+        <PopUpModal active={trackInfoState.active} setActive={closeCondArtists}>
+            <>
                 {trackInfoState.track.id ? (
                    <>
                        <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
@@ -164,18 +168,18 @@ const MobileTrackInfo = () => {
                                 <Loader size={30}/>
                            </div>
                             }
-                           
+
                        </div>
                    </>
                     )
                     : null
-                    
+
                 }
-            </div>
-        </Slide>
-    
-        <Slide direction="up" in={trackInfoState.active && artistsOpen}>
-          <div className="track-info-mobile" onClick={()=>{setArtistsOpen(false)}}>
+            </>
+        </PopUpModal>
+
+        <PopUpModal active={trackInfoState.active && artistsOpen} setActive={setArtistsOpen}>
+          <div onClick={()=>{setArtistsOpen(false)}}>
             <div className="track-info-artists-title-wrapper">
             <div className="track-info-artists-title">Artists</div>
             </div>
@@ -192,7 +196,7 @@ const MobileTrackInfo = () => {
                                 </Link>
                             ))): null}
                             </div>
-        </Slide>
+        </PopUpModal>
         </>
 
     )

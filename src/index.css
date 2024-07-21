@@ -1407,6 +1407,8 @@ html,body {
 .playlist-filter-wrapper {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
     gap: 5px;
     margin-bottom: 10px;
     overflow-x: scroll;
@@ -1476,6 +1478,7 @@ html,body {
     bottom: 0;
     width: 100%;
     padding: 10px;
+    left: 0;
     gap: 10px;
     border-radius: 20px 20px 0 0;
     background: var(--bg-color-secondary);
