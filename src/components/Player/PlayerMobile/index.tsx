@@ -207,10 +207,9 @@ const Player = () => {
 
         useEffect(() => {
             setIsLoading(true)
+                    //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
                         audioElem.current.pause()
-                        audioElem.current.src = ""
-                        audioElem.current.removeAttribute("src")
                         changeTime(0)
                         setPosition(0)
                     }

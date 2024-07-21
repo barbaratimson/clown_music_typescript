@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ArtistT, TrackId, TrackT} from "../../utils/types/types";
+import {ArtistT, TrackId, TrackT, TrackType} from "../../utils/types/types";
 import {Link} from "react-router-dom";
 import { ClickAwayListener, Slide } from "@mui/material";
 import {RootState, useAppSelector} from "../../store";
@@ -28,6 +28,8 @@ import {trackArrayWrap} from "../../utils/trackWrap";
 import Loader from "../Loader";
 import { useLocation } from 'react-router-dom'
 import { setActiveState } from "../../store/trackInfoSlice";
+import CurrentSongSlice from "../../store/CurrentSongSlice";
+import { addTrackToQueuePosition } from "../../store/playingQueueSlice";
 
 interface SimilarTracksT {
     track:TrackT
@@ -39,6 +41,8 @@ const MobileTrackInfo = () => {
     const location = useLocation()
     const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
+    const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
+    const playNext = (currentSong:TrackT,songToAdd:TrackT) => dispatch(addTrackToQueuePosition({currentSong,songToAdd}))
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
@@ -121,7 +125,7 @@ const MobileTrackInfo = () => {
                                 <div className="track-info-mobile-control-icon">
                                     <PlaylistAdd/>
                                 </div>
-                                <div className="track-info-mobile-control-label">
+                                <div className="track-info-mobile-control-label" onClick={()=>{playNext(currentSong,trackInfoState.track)}}>
                                         Play next
                                 </div>
                             </div>

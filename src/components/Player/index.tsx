@@ -42,7 +42,7 @@ const Player = () => {
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
-    const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
+    const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
     const [queueButton, setQueueButton] = useState<any>()
     const [liked,setLiked] = useState(true)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
