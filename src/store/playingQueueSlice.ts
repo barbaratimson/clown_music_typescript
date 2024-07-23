@@ -15,11 +15,11 @@ const playingQueueSlice = createSlice({
     initialState,
     reducers:{
         initQueue(state, action) {
-            state.queue.playlist = action.payload.playlist
-            state.queue.queueTracks = action.payload.queueTracks
+            state.queue.playlist = {...action.payload.playlist, tracks:action.payload.playlist.tracks.filter((track:TrackType) => track.track.available)}
+            state.queue.queueTracks = action.payload.queueTracks.filter((track:TrackType) => track.track.available)
         },
         setQueue(state, action) {
-            state.queue.queueTracks = action.payload
+            state.queue.queueTracks = action.payload.filter((track:TrackType) => track.track.available)
         },
         setOpeningState(state, action) {
             state.queue.queueOpen = action.payload
