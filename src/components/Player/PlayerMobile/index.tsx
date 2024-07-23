@@ -209,12 +209,13 @@ const Player = () => {
             setIsLoading(true)
                     //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
+                        audioElem.current.volume = Number(mobilePlayerInitialVolume)
                         audioElem.current.pause()
                         changeTime(0)
                         setPosition(0)
                     }
                     const changeTrack = async () => {
-                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = ""; console.log(e)}})
                          if (trackLink && audioElem.current) {
                             audioElem.current.setAttribute('src',trackLink)
                          }
@@ -248,14 +249,6 @@ const Player = () => {
     useEffect(() => {
         setMediaSession(currentSong)
     }, [currentSong,queue]);
-     
-    //Only in mobile player
-    useEffect(()=>{
-        if (audioElem.current) {
-            audioElem.current.volume = Number(mobilePlayerInitialVolume) ?? 1
-            console.log(audioElem.current.volume)
-        }
-    },[])
 
     useEffect(() => {
         window.addEventListener('keypress', handleKeyPress);

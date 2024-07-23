@@ -190,30 +190,31 @@ const Player = () => {
 
 
     useEffect(() => {
-        if (!currentSong.available) skipForward()
-            const changeTrack = async () => {
-                if (currentSong.available && currentSong){
-                    stopPlayerFunc()
-                    setLoading(true)
-                    const trackLink = await fetchYaSongLink(currentSong.id)
-                    if (trackLink) {
-                        setPlayerSrc(trackLink)
-                        setLoading(false)
-                    }
-                }
+        setIsLoading(true)
+        //TODO: Error handling
+        if (currentSong.available && currentSong && audioElem.current) {
+            audioElem.current.pause()
+            changeTime(0)
+            setPosition(0)
+        }
+        const changeTrack = async () => {
+            const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
+            if (trackLink && audioElem.current) {
+                audioElem.current.setAttribute('src',trackLink)
             }
-            changeTrack()
+        }
+
+        changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
         if (queue.length !== 0 && currentSong.id !== 0) {
             const index = queue.findIndex(x => x.id == currentSong.id);
-            if (playerState.shuffle && index === queue.length-1 && queue.length !== queueCurrentPlaylist.tracks.length) {
-                let newSong:TrackType;
+            if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
+                let newSong: TrackType;
                 do {
                     newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
                 } while (queue.findIndex(x => x.track.id === newSong.track.id) !== -1)
                 addToQueue(newSong)
             }
         }
-
     }, [currentSong]);
 
     useEffect(() => {
