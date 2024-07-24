@@ -1691,7 +1691,7 @@ html,body {
         opacity:0;
     }
     .track-playing-status.show{
-        backdrop-filter: blur(0.5px)
+        backdrop-filter: none;
     }
     .track-info-wrapper {
         font-size: 14px;
