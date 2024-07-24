@@ -1670,7 +1670,7 @@ html,body {
     }
     .track-wrapper {
         border-radius: 14px;
-        padding:3px;
+        padding:2.5px;
     }
     .track-wrapper:not(.track-current):hover {
        transform: none;
@@ -1724,7 +1724,7 @@ html,body {
     }
     .songs-wrapper {
         padding:0;
-        gap: 5px
+        gap: 10px
     }
 }
 
