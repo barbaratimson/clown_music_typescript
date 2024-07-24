@@ -1685,7 +1685,7 @@ html,body {
         border-radius: 12px;
     }
     .track-wrapper:hover .track-playing-status {
-        backdrop-filter: blur(0.5px);
+        backdrop-filter: none;
     }
     .track-wrapper:hover .track-playing-status:not(.show) {
         opacity:0;
