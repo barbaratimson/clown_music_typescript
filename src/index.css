@@ -1670,6 +1670,7 @@ html,body {
     }
     .track-wrapper {
         border-radius: 14px;
+        padding:3px;
     }
     .track-wrapper:not(.track-current):hover {
        transform: none;
@@ -1719,11 +1720,15 @@ html,body {
     }
     .track-current {
         transform: none;
+        background: rgba(255,255,255,0.1);
+    }
+    .songs-wrapper {
+        padding:0;
+        gap: 5px
     }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-
 }
 
 @media (hover: hover) {

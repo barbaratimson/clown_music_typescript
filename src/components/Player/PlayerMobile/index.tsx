@@ -234,6 +234,15 @@ const Player = () => {
                 }
         }, [currentSong]);
 
+    //TODO: Под вопросом, лагает.
+    //useEffect(()=>{
+    //    if (audioElem.current) {
+    //  navigator.mediaSession.setPositionState({
+    //        duration: duration,
+    //                position: audioElem.current.currentTime,
+    //                  })
+    //                }
+    //},[position])
 
     useEffect(() => {
         if (!playerFolded) {
