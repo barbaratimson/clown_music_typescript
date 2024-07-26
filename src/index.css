@@ -1411,7 +1411,6 @@ html,body {
 .playlist-filter-wrapper {
     display: flex;
     flex-direction: column;
-    height: 600px;
     overflow-y: scroll;
     gap: 5px;
 }
@@ -1421,7 +1420,7 @@ html,body {
     width: fit-content(100%);
     justify-content: space-between;
     border-radius: 15px;
-    background-color: rgba(255, 247, 247, 0.41);
+    background-color: rgb(255 247 247 / 17%);
     color: white;
     font-size: 15px;
     white-space: nowrap;
@@ -1502,13 +1501,12 @@ html,body {
     position: fixed;
     display: flex;
     flex-direction:column;
-    bottom: 0;
     width: 100%;
     padding: 10px;
     left: 0;
     gap: 10px;
     border-radius: 20px 20px 0 0;
-    background: var(--bg-color-secondary);
+    background: rgb(82 82 82 / 50%);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(2.6px);
     transition: all .4s ease-in;
@@ -1783,6 +1781,12 @@ html,body {
     .songs-wrapper {
         padding:0;
         gap: 10px
+    }
+    .playlist-filter-button:hover {
+        background-color: rgb(255 247 247 / 17%);
+    }
+    .playlist-filter-button:active {
+        transform: none;
     }
 }
 
