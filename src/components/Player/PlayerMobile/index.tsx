@@ -42,6 +42,7 @@ import { usePalette } from 'react-palette';
 import { useLocation } from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
+import QueueMobile from "../../Queue/QueueMobile";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -129,7 +130,7 @@ const Player = () => {
         const ct = audioElem.current?.currentTime;
         if (ct && duration) {
             setDuration(duration)
-            setPosition(ct)
+           setPosition(ct)
         }
         setBuffered(getBuffered())
     }
@@ -167,7 +168,7 @@ const Player = () => {
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
-            startPlayerFunc()
+            audioElem.current.play()
         } else if (index === queue.length - 1) {
             if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
                     let newSong:TrackType;
@@ -351,8 +352,8 @@ const Player = () => {
                                     <div className="player-navbar-button close">
                                         <ExpandMore/>
                                     </div>
-                                    <div className="player-header-mobile-title">{queueCurrentPlaylist.title}</div>
-                                    <div className="player-navbar-button queue" onClick={(e) => {setQueueOpen(!queueOpen);setQueueButton(e.currentTarget.getBoundingClientRect())}}>
+                                    <div className="player-header-mobile-title" onClick={(e)=>{e.stopPropagation()}}>{queueCurrentPlaylist.title}</div>
+                                    <div className="player-navbar-button queue" onClick={(e) => {setQueueOpen(!queueOpen); e.stopPropagation()}}>
                                         <ListIcon/>
                                     </div>
                                 </div>
@@ -406,14 +407,14 @@ const Player = () => {
                                     </div>
                                     <div className="player-primary-seek-wrapper-full" onClick={(e)=>{e.stopPropagation()}}>
                                         <SeekSlider loadingState={playerState.loading} position={position} duration={duration} changeTime={changeTime}/>
-                                            <div className='player-primary-seek-time-full'>
-                                                <div className="player-primary-trackTime">
-                                                    {secToMinutesAndSeconds(position)}
-                                                </div>
-                                                <div className="player-primary-trackTime">
-                                                    {secToMinutesAndSeconds(duration)}
-                                                </div>
+                                        <div className='player-primary-seek-time-full'>
+                                            <div className="player-primary-trackTime">
+                                                {secToMinutesAndSeconds(position)}
                                             </div>
+                                            <div className="player-primary-trackTime">
+                                                {secToMinutesAndSeconds(duration)}
+                                            </div>
+                                        </div>
                                     </div>
                                     </div>
                                     {/*PLAYER TRACK CONTROLS*/}
@@ -484,7 +485,6 @@ const Player = () => {
         </>
     )
 }
-
 
 export default Player;
 

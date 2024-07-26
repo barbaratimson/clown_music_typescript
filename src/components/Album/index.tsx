@@ -42,7 +42,7 @@ const Album = ({album}: AlbumProps) => {
                 </div>
             </div>
             {album.volumes.map((volume)=>(
-             <SongsList playlist={{kind:album.id,cover:{uri:album.coverUri},uid:0,ogImage:album.coverUri,available:true,owner:{uid:album.artists[0].id,name:album.artists[0].name,verified:true},title:`${album.title}: Популярное`,description:"",tracks:trackArrayWrap(volume)}} tracks={trackArrayWrap(volume)}/>
+             <SongsList playlist={{kind:album.id,cover:{uri:album.coverUri},uid:0,ogImage:album.coverUri,available:true,owner:{uid:album.artists[0].id,name:album.artists[0].name,verified:true},title:album.title,description:"",tracks:trackArrayWrap(volume)}} tracks={trackArrayWrap(volume)}/>
             ))}
         </div>
     )

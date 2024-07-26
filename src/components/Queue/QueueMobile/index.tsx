@@ -4,11 +4,13 @@ import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import Track from "../../Track/Track";
 import SongsList from "../../SongsList";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import { Repeat } from "@mui/icons-material";
+import {ExpandLess, ExpandMore, KeyboardArrowDown, Repeat} from "@mui/icons-material";
 import { setQueue } from "../../../store/playingQueueSlice";
 import { TrackDefaultT } from "../../../utils/types/types";
 import { trackWrap } from "../../../utils/trackWrap";
-import { Collapse, Slide } from "@mui/material";
+import {Collapse, Fade, Slide} from "@mui/material";
+import {useSearchParams} from "react-router-dom";
+import {getImageLink} from "../../../utils/utils";
 
 interface QueueMobileProps {
     active : boolean,
@@ -20,31 +22,28 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
     const playerState = useAppSelector((state: RootState) => state.player)
 
     return (
-        <Collapse orientation={"vertical"} in={active}>
-                    <div className="player-wrapper-full" onClick={()=>{setActive(false)}} style={{marginBottom: "49px"}}>
-            <div className="queue-title">Current queue</div>
-            <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`}>
+        <Slide direction={"up"} in={active}>
+            <div className="queue-mobile" onClick={()=>{setActive(false)}}>
+                <div className="queue-mobile-header animated-opacity-4ms">
+                    <div className="track-info-mobile-cover-wrapper">
+                        <img src={getImageLink(currentQueue.playlist.cover.uri, "200x200")} loading="lazy" alt=""/>
+                    </div>
+                    <div className="track-info-wrapper">
+                        <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.title}</div>
+                    </div>
+                    <div className="track-info-back-button">
+                        <ExpandMore/>
+                    </div>
+                </div>
+            <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`} onClick={(e)=>{e.stopPropagation()}}>
                 <div className="songs-wrapper">
                     {currentQueue ? currentQueue.queueTracks.map((song) => (
                             <Track key={song.id} track={song.track}/>
                     )) : null}
                 </div>
             </div>
-                <div className="queue-controls">
-            {playerState.shuffle ? (
-                <div className = "queue-controls-shuffle">
-                 <ShuffleIcon/>
-                </div>
-            ):null}
-            {playerState.repeat ? (
-                    <div className="queue-controls-repeat">
-                        <Repeat/>
-                    </div>
-                ) : null}
-                </div>
-
         </div>
-        </Collapse>
+        </Slide>
     )
 }
 

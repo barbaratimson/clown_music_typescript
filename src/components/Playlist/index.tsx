@@ -8,7 +8,7 @@ import {useSearchParams} from "react-router-dom";
 import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
 import { signImage } from "../../assets/sign";
 import PopUpModal from "../PopUpModal";
-import { FilterAlt } from "@mui/icons-material";
+import {ExpandMore, FilterAlt} from "@mui/icons-material";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -16,14 +16,18 @@ interface PlaylistProps {
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
+interface GenreCountT {
+    genre: string,
+    amount: number
+}
 const Playlist = ({playlist}: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const setHeaderActive = (state:any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
-    const [genres, setGenres] = useState<Array<string | undefined>>()
-    const [genre, setGenre] = useState<string>()
-    const [tracksFiltred, setTracksFiltred] = useState<Array<TrackType>>()
+    const [genres, setGenres] = useState<GenreCountT[]>()
+    const [genre, setGenre] = useState<GenreCountT>()
+    const [tracksFiltered, setTracksFiltered] = useState<Array<TrackType>>()
     const [filterQuery,setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
 
@@ -35,17 +39,22 @@ const Playlist = ({playlist}: PlaylistProps) => {
                 return "Unknown"
             }
         })
-        setGenres(Array.from(new Set(genres)))
+        const uniqueGenres = Array.from(new Set(genres))
+        const countAmount = uniqueGenres.map((genre) => {
+            const amountOfGenre = genres.filter(elem => elem == genre)
+            return {genre:genre,amount:amountOfGenre.length}
+        })
+        setGenres(countAmount.sort((a,b) => b.amount-a.amount))
     }, []);
 
     useEffect(() => {
         const filter = filterQuery.get("genre")
         if (filter === "Unknown") {
-            setTracksFiltred(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
+            setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
         } else if (filter){
-            setTracksFiltred(playlist.tracks.filter(track => track.track.albums[0]?.genre === filter))
+            setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === filter))
         } else {
-            setTracksFiltred(playlist.tracks)
+            setTracksFiltered(playlist.tracks)
         }
     }, [filterQuery.get("genre")]);
 
@@ -60,6 +69,13 @@ const Playlist = ({playlist}: PlaylistProps) => {
         document.addEventListener("scroll",a)
         return ()=>{document.removeEventListener("scroll",a);setHeaderOff()}
     }, []);
+
+    useEffect(() => {
+        if (filterMenuActive) {
+            document.body.style.overflow = "hidden"
+        }
+        return () => {document.body.style.overflow = "unset"}
+    }, [filterMenuActive]);
 
     return (
         <>
@@ -80,19 +96,28 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                 <img className="playlist-sign" src={signImage} alt=""/>
                             </div>
                         ) : null}
-                        <div className="playlist-filter-info"></div>
+                        <div className="playlist-filter-info">
+                            <FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>
+                        </div>
                     </div>
-                    <FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>
                 </div>
-                <SongsList playlist={tracksFiltred ? {...playlist, tracks:tracksFiltred, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : "" }`} : playlist} tracks={tracksFiltred ?? playlist.tracks}/>
+                <SongsList playlist={tracksFiltered ? {...playlist, tracks:tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : "" }`} : playlist} tracks={tracksFiltered ?? playlist.tracks}/>
             </div>
 
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
+                <>
+                         <div className="playlist-filter-title"><ExpandMore/></div>
                     <div className="playlist-filter-wrapper">
                         {genres ? genres.map(genreRender => (
-                            <div key={genreRender} className={`playlist-filter-button ${filterQuery.get("genre") === genreRender ? "playlist-filter-button-active" : null}`} onClick={()=>{filterQuery.get("genre") !== genreRender && genreRender ? setFilterQuery({genre:genreRender}) : setFilterQuery(undefined)}}>{genreRender ? genreRender.charAt(0).toUpperCase() + genreRender.slice(1) : null}</div>
+                            <div className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={()=>{filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({genre:genreRender.genre}) : setFilterQuery(undefined)}}>
+                                <div className="playlist-filter-button-text" key={genreRender.genre}>{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
+                                <div className="playlist-filter-button-amount"  style={{width:genreRender.amount + "%"}}>
+                                    <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
+                                </div>
+                            </div>
                         )) : null}
                     </div>
+                </>
             </PopUpModal>
         </>
     )

@@ -35,9 +35,10 @@ interface PopUpModalProps {
     children:ReactElement,
     active: boolean,
     setActive: any,
+    unmount?:boolean
 }
 
-const PopUpModal = ({children,active,setActive}:PopUpModalProps) => {
+const PopUpModal = ({children,active,setActive,unmount}:PopUpModalProps) => {
     const location = useLocation()
 
     useEffect(()=>{
@@ -46,7 +47,7 @@ const PopUpModal = ({children,active,setActive}:PopUpModalProps) => {
 
     return (
         <>
-            <Slide direction={"up"} in={active}>
+            <Slide direction={"up"} in={active} unmountOnExit={unmount}>
                     <div className="track-info-mobile" onClick={()=>{setActive(false);console.log("dsdsd")}}>
                         {children}
                     </div>

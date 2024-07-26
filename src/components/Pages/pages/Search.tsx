@@ -16,7 +16,7 @@ const Search = () => {
     const [searchResults,setSearchResults] = useState<SearchT>()
     const [isLoading,setIsLoading] = useState(false)
     const input = useRef(null)
-    const [search,setSearch] = useState("")
+    const [search,setSearch] = useState<string>()
     const [searchQuery,setSearchQuery] = useSearchParams("")
     const handleSearch = async () => {
         setIsLoading(true)
@@ -37,6 +37,7 @@ const Search = () => {
 
 
     useEffect(() => {
+        if (!search) return
         let Debounce = setTimeout(()=>{
             setSearchQuery({query:search})
         },500)
@@ -49,6 +50,8 @@ const Search = () => {
         handleSearch()
         if (searchQuery.get("query") !== null) {
             setSearch(searchQuery?.get("query") ?? "")
+        } else {
+            setSearch("")
         }
     }, [searchQuery]);
 
@@ -94,6 +97,7 @@ const Search = () => {
 
 const BestResult = ({bestResult}:any) => {
     const formatReturn = () => {
+        if (!bestResult) return
         switch (bestResult.type) {
             case "artist" : {
                 return (

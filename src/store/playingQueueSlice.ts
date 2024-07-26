@@ -31,7 +31,6 @@ const playingQueueSlice = createSlice({
         },
         addTrackToQueue(state, action) {
             state.queue.queueTracks.push(action.payload)
-            console.log(current(state))
         },
         addTrackToQueuePosition(state, action) {
             const currentQueue = state.queue.queueTracks
@@ -49,7 +48,6 @@ const playingQueueSlice = createSlice({
             } else {
                 return 
             }
-            console.log(currentSongPosition)
         },
         removeTrackFromQueue(state,action) {
             state.queue.queueTracks = state.queue.queueTracks.filter(track => track.id !== action.payload.id)

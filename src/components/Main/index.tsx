@@ -23,12 +23,15 @@ import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
 import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
 import MobileTrackInfo from "../MobileTrackInfo";
+import QueueMobile from "../Queue/QueueMobile";
+import {setOpeningState} from "../../store/playingQueueSlice";
 
 
 const Main = () => {
     const dispatch = useAppDispatch()
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
+    const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
     useEffect(() => {
         async function fetchData () {
@@ -52,11 +55,16 @@ const Main = () => {
                 <Page isMobile={isMobile}/>
                 {!isMobile ? (<Player/>) : (<PlayerMobile/>)}
                 <Message/>
+                {!isMobile ? (
+                    <>
                     <Fade in={queueOpen} unmountOnExit>
-                        <div className="player-queue-section">
-                            <Queue/>
-                        </div>
+                    <div className="player-queue-section">
+                        <Queue/>
+                    </div>
                     </Fade>
+                    </>
+                ) : (<QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>)}
+
                 <MobileTrackInfo/>
             </div>
     )
