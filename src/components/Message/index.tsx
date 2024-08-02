@@ -16,13 +16,14 @@ const Message = () => {
         return ()=>{clearInterval(a)}
     }, [message.active]);
 
-    return (
-        <Fade in={message.active}>
+            return (
+                <Fade in={message.active}>
                     <div className="error-message-wrapper">
                         <div>{message.message}</div>
                     </div>
-        </Fade>
-    )
+                </Fade>
+            )
+
 }
 
 const MessageDefault = () => {

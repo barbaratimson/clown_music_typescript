@@ -47,7 +47,16 @@ export interface TrackT {
     available:boolean
     durationMs:number
     albums:Array<AlbumT>
+    derivedColors: DerivedColorsT
 }
+
+interface DerivedColorsT {
+    accent: string,
+    average: string,
+    miniPlayer: string,
+    waveText: string
+}
+
 
 export interface SearchT {
     artists:Array<ArtistT>,

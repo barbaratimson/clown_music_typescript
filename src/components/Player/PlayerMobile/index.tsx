@@ -43,9 +43,11 @@ import { useLocation } from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
 import QueueMobile from "../../Queue/QueueMobile";
+import track from "../../Track/Track";
 
 
 const savedVolume = localStorage.getItem("player_volume")
+const emptySound = "data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA//////////////////////////////////////////////////////////////////8AAAA8TEFNRTMuOThyBK8AAAAAAAAAADQgJAawTQABzAAAAnGGK6g3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQRAAP8AAAf4AAAAgAAA/wAAABAAAB/gAAACAAAD/AAAAETEFNRTMuOTguMlVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xBkIg/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ=="
 const Player = () => {
     const location = useLocation()
     const dispatch = useAppDispatch()
@@ -207,13 +209,14 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
-            setIsLoading(true)
                     //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
+                        setIsLoading(true)
                         audioElem.current.volume = Number(mobilePlayerInitialVolume)
                         audioElem.current.pause()
                         changeTime(0)
                         setPosition(0)
+                        setDuration(0)
                     }
                     const changeTrack = async () => {
                         const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = ""; console.log(e)}})
@@ -221,9 +224,11 @@ const Player = () => {
                             audioElem.current.setAttribute('src',trackLink)
                          }
                         }
-                
+
                 changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
-                if (queue.length !== 0 && currentSong.id !== 0) {
+
+
+            if (queue.length !== 0 && currentSong.id !== 0) {
                     const index = queue.findIndex(x => x.id == currentSong.id);
                     if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
                         let newSong: TrackType;
@@ -301,6 +306,7 @@ const Player = () => {
                 <div className="player-wrapper" onClick={()=>{setPlayerFolded(!playerFolded)}} style={{marginBottom: "49px",gap:"0"}}>
                         <div className="player-track-info-wrapper mobile" key={currentSong.id}>
                             <div className="player-track-cover-wrapper">
+                                {console.log(currentSong)}
                                 <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
                             </div>
                             <div className="player-track-info">
@@ -463,7 +469,7 @@ const Player = () => {
                             : null}
                     </div>
                 </Slide>
-            <audio key={currentSong.id + "_player"} preload={"auto"} crossOrigin="anonymous"
+            <audio key={currentSong.id + "_player"} crossOrigin="anonymous"
                    ref={audioElem}
                    onLoadStart={(e) => {
                        setLoading(true)
