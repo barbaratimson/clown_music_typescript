@@ -25,4 +25,16 @@ const Message = () => {
     )
 }
 
+const MessageDefault = () => {
+    return (
+        <></>
+    )
+}
+
+const MessageTrackLiked = () => {
+    return (
+        <></>
+    )
+}
+
 export default Message

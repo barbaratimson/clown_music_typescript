@@ -3,9 +3,13 @@ import {TrackT} from "../utils/types/types";
 import { MessageInitState,} from "./initialStates";
 interface MessageT {
     message:string
-    code: ErrCodeT
+    type: MessageType
+    code?: ErrCodeT
     active:boolean
+    track?:TrackT
 }
+
+export type MessageType = "trackLiked" | "error" | "warning" | "message"
 
 interface messageState {
     message:MessageT
@@ -25,6 +29,8 @@ const MessageSlice = createSlice({
         showMessage(state, action) {
             state.message.message = action.payload.message
             state.message.code = action.payload.code
+            state.message.type = action.payload.type
+            state.message.track = action.payload.track
             state.message.active = true
         },
         hideMessage(state) {
