@@ -306,7 +306,6 @@ const Player = () => {
                 <div className="player-wrapper" onClick={()=>{setPlayerFolded(!playerFolded)}} style={{marginBottom: "49px",gap:"0"}}>
                         <div className="player-track-info-wrapper mobile" key={currentSong.id}>
                             <div className="player-track-cover-wrapper">
-                                {console.log(currentSong)}
                                 <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
                             </div>
                             <div className="player-track-info">
