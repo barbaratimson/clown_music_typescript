@@ -47,6 +47,7 @@ export interface TrackT {
     available:boolean
     durationMs:number
     albums:Array<AlbumT>
+    version?: string
 }
 
 interface DerivedColorsT {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {ArtistT, TrackId, TrackT, TrackType} from "../../utils/types/types";
-import {Link} from "react-router-dom";
+import {Link, useNavigation, useSearchParams} from "react-router-dom";
 import { ClickAwayListener, Slide } from "@mui/material";
 import {RootState, useAppSelector} from "../../store";
 import {getImageLink} from "../../utils/utils";
@@ -8,6 +8,7 @@ import {
     Add, Album,
     Favorite,
     FavoriteBorder,
+    FilterAlt,
     KeyboardArrowDown,
     KeyboardArrowLeft,
     PauseRounded,
@@ -39,6 +40,7 @@ interface SimilarTracksT {
 
 const MobileTrackInfo = () => {
     const dispatch= useDispatch()
+    const [params, setParams] = useSearchParams("")
     const trackInfoState = useAppSelector((state:RootState) => state.trackInfo)
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
@@ -102,14 +104,15 @@ const MobileTrackInfo = () => {
                                <img src={getImageLink(trackInfoState.track.coverUri, "200x200")} loading="lazy" alt=""/>
                            </div>
                            <div className="track-info-wrapper">
-                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{trackInfoState.track.title}</div>
+                               <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
+                               <div style={{marginTop:"5px"}} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
                            </div>
                            <div className="track-info-back-button">
                              <KeyboardArrowDown className="track-info-back-icon" style={{rotate: artistsOpen ? "90deg" : "0deg"}}/>
                            </div>
                        </div>
                        <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e)=>{e.stopPropagation()}}>
-                           <div className="track-info-mobile-control-button" onClick={(e)=>(isLiked(trackInfoState.track.id) ? dislikeSong(trackInfoState.track).then((response) => updateLikedSongs("removed")) :  likeSong(trackInfoState.track).then((response) => updateLikedSongs("liked")))}>
+                           <div className="track-info-mobile-control-button" onClick={(e)=>{isLiked(trackInfoState.track.id) ? dislikeSong(trackInfoState.track).then((response) => updateLikedSongs("removed")) :  likeSong(trackInfoState.track).then((response) => updateLikedSongs("liked"));closeAll()}}>
                                 <div className="track-info-mobile-control-icon">
                                 {isLiked(trackInfoState.track.id) ? (
                                     <div
@@ -157,6 +160,14 @@ const MobileTrackInfo = () => {
                                     Album
                                 </div>
                                 </Link>
+                                <div className="track-info-mobile-control-button" onClick={()=>{setParams({genre:trackInfoState.track.albums[0]?.genre})}}>
+                                <div className="track-info-mobile-control-icon">
+                                    <FilterAlt/>
+                                </div>
+                                <div className="track-info-mobile-control-label">
+                                    FilterByGenre
+                                </div>
+                            </div>
 
 
                        </div>

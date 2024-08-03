@@ -24,9 +24,9 @@ const Message = () => {
                 <div className="message-wrapper track">
                     <div className="message-cover-animation">
                         <div className={`message-cover-animation-icon`}>{message.type === "trackLiked" ? <Favorite /> : <HeartBroken />}</div>
-                        <TrackCover coverUri={message.track.coverUri} size={"150x150"} imageSize="150x150" />
+                        <TrackCover coverUri={message.track.coverUri} size={"150x150"} imageSize="100x100" />
                     </div>
-                    <div className="message-track-title">{message.track.title}</div>
+                    <div style={{textDecoration:message.type === "trackDisliked" ? "line-through" : "none"}} className="message-track-title">{message.track.title}</div>
                 </div>
             </Fade>
         )

@@ -1207,7 +1207,7 @@ html,body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     outline: none;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 0;
     font-size: 15px;
     font-weight: 400;
     margin-right: 10px;
@@ -1628,17 +1628,25 @@ html,body {
     flex-direction: row;
     padding: 10px;
     align-items: center;
-    height: 50px;
+    height: 40px;
     width: 100%;
     gap: 10px;
     background-color: var(--bg-color-secondary_hover);
     color: var(--font-color-main);
     border-bottom: 1px solid rgba(178, 174, 174, 0.19);
 }
+
+.track-info-mobile-control-button:last-child {
+    border: none;
+}
+
 .track-info-mobile-control-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .track-info-mobile-control-label {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
 }
 .track-info-mobile-similar-tracks {
@@ -1679,6 +1687,7 @@ html,body {
     gap:10px;
     width:100%;
     align-items:center;
+    margin-top : 5px;
 }
 .track-info-artist-avatar-wrapper{
     width: 35px;
@@ -1715,7 +1724,7 @@ html,body {
     position: fixed;
     max-height: 100%;
     min-height: 45%;
-    border-radius: 12px;
+    border-radius: 12px 12px 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;

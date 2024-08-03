@@ -77,7 +77,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                     <TrackCover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">
-                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title}</div>
+                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
                         <span className="track-info-artist-span">
                             {track.artists.map(artist => (
