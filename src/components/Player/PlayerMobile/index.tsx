@@ -208,14 +208,13 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
+            setIsLoading(true)
                     //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
-                        setIsLoading(true)
                         audioElem.current.volume = Number(mobilePlayerInitialVolume)
                         audioElem.current.pause()
                         changeTime(0)
                         setPosition(0)
-                        setDuration(0)
                     }
                     const changeTrack = async () => {
                         const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = ""; console.log(e)}})
