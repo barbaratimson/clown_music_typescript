@@ -9,7 +9,7 @@ import { setQueue } from "../../../store/playingQueueSlice";
 import { TrackDefaultT } from "../../../utils/types/types";
 import { trackWrap } from "../../../utils/trackWrap";
 import {Collapse, Fade, Slide} from "@mui/material";
-import {useSearchParams} from "react-router-dom";
+import {useLocation, useSearchParams} from "react-router-dom";
 import {getImageLink} from "../../../utils/utils";
 
 interface QueueMobileProps {
@@ -18,8 +18,13 @@ interface QueueMobileProps {
 }
 
 const QueueMobile = ({active, setActive}:QueueMobileProps) => {
+    const location = useLocation()
     const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue)
     const playerState = useAppSelector((state: RootState) => state.player)
+
+    useEffect(()=>{
+        setActive(false)
+      },[location])
 
     return (
         <Slide direction={"up"} in={active}>

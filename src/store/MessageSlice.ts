@@ -9,7 +9,7 @@ interface MessageT {
     track?:TrackT
 }
 
-export type MessageType = "trackLiked" | "error" | "warning" | "message"
+export type MessageType = "trackLiked" | "trackDisliked" | "error" | "warning" | "message"
 
 interface messageState {
     message:MessageT

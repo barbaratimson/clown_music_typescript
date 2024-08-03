@@ -2,7 +2,6 @@ import {createSlice, current} from "@reduxjs/toolkit";
 import {QueueT, TrackType} from "../utils/types/types";
 import {PlaylistInitState, SongInitState} from "./initialStates";
 import { trackWrap } from "../utils/trackWrap";
-import queue from "../components/Queue/queue";
 
 interface QueueState {
     queue:QueueT

@@ -33,7 +33,7 @@ import {
     ExpandMore, ExpandLess, MoreVert
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import {showMessage} from '../../../store/MessageSlice';
+import {MessageType, showMessage} from '../../../store/MessageSlice';
 import {setLikedSongs} from '../../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
 import { trackWrap } from '../../../utils/trackWrap';
@@ -60,8 +60,6 @@ const Player = () => {
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
-    const [playerVolume, setPlayerVolume    ] = useState<number>(Number(savedVolume)?? 50)
-    const [queueButton, setQueueButton] = useState<any>()
     const [liked,setLiked] = useState(true)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const [playerFolded, setPlayerFolded] = useState(true)
@@ -73,6 +71,7 @@ const Player = () => {
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
     const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const setMessage = (message:string,track:TrackT,type:MessageType) => dispatch(showMessage({message:message,track:track,type:type}))
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
@@ -192,8 +191,8 @@ const Player = () => {
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
-        if (action === "liked") trackAddedMessage(`Track ${currentSong.title} added to Liked`);
-        if (action === "removed") trackAddedMessage(`Track ${currentSong.title} removed to Liked`);
+        if (action === "liked") setMessage(`Track ${currentSong.title} added to Liked`, currentSong, "trackLiked");
+        if (action === "removed") setMessage(`Track ${currentSong.title} removed to Liked`, currentSong, "trackDisliked");
     }
 
     useEffect(() => {

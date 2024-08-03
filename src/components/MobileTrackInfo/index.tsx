@@ -18,7 +18,7 @@ import {
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
 import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
-import {showMessage} from "../../store/MessageSlice";
+import {MessageType, showMessage} from "../../store/MessageSlice";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
 import axios from "axios";
@@ -45,7 +45,7 @@ const MobileTrackInfo = () => {
     const playNext = (currentSong:TrackT,songToAdd:TrackT) => dispatch(addTrackToQueuePosition({currentSong,songToAdd}))
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
-    const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
+    const setMessage = (message:string,track:TrackT,type:MessageType) => dispatch(showMessage({message:message,track:track,type:type}))
     const isLiked = (id: number | string) => {
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
         return !!likedSong
@@ -82,8 +82,8 @@ const MobileTrackInfo = () => {
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
-        if (action === "liked") trackAddedMessage(`Track ${trackInfoState.track.title} added to Liked`);
-        if (action === "removed") trackAddedMessage(`Track ${trackInfoState.track.title} removed to Liked`);
+        if (action === "liked") setMessage(`Track ${trackInfoState.track.title} added to Liked`, trackInfoState.track, "trackLiked");
+        if (action === "removed") setMessage(`Track ${trackInfoState.track.title} removed to Liked`, trackInfoState.track, "trackDisliked");
     }
 
     useEffect(() => {
@@ -129,7 +129,7 @@ const MobileTrackInfo = () => {
                                 <div className="track-info-mobile-control-icon">
                                     <PlaylistAdd/>
                                 </div>
-                                <div className="track-info-mobile-control-label" onClick={()=>{playNext(currentSong,trackInfoState.track)}}>
+                                <div className="track-info-mobile-control-label" onClick={()=>{playNext(currentSong,trackInfoState.track); closeAll()}}>
                                         Play next
                                 </div>
                             </div>

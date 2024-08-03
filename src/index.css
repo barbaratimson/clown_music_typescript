@@ -81,6 +81,17 @@ html,body {
     }
 }
 
+@keyframes blur-opacity {
+    0% {
+        opacity: 0;
+        backdrop-filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        backdrop-filter: blur(2px);
+    }
+}
+
 .eq__bar {
     position: absolute;
     bottom: 0;
@@ -272,6 +283,13 @@ html,body {
     gap: 20px;
 }
 
+.cover-wrapper {
+    position: relative;
+    display: flex;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+}
 
 .navbar-button {
     width: fit-content;
@@ -1385,15 +1403,59 @@ html,body {
     margin-bottom: 80px;
 }
 
-.error-message-wrapper {
+.message-wrapper {
     position: fixed;
-    bottom: 80px;
-    left: 45%;
-    transform: translate(0,-50%);
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     padding: 20px;
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.48);
-    z-index: 99999;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 10%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(2.6px);
+    z-index: 999999999;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.message-wrapper.track {
+    padding: 10px;
+}
+
+.message-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+}
+.message-cover-animation {
+    display: flex;
+    position: relative;
+}
+.message-cover-animation-icon {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    backdrop-filter: blur(2px);
+    background: rgb(65 65 65 / 14%);
+    color: var(--font-color-main);
+    animation: blur-opacity 1s ease-in;
+}
+
+.message-track-title {
+    text-align: center;
+    font-size: 15px;
+    color: var(--font-color-main);
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+    height: 20px;
+    margin-top: 5px;
 }
 
 .playlist-sign-wrapper {
@@ -1413,6 +1475,7 @@ html,body {
     flex-direction: column;
     overflow-y: scroll;
     gap: 5px;
+    max-height: 350px;
 }
 
 .playlist-filter-button {
@@ -1502,11 +1565,9 @@ html,body {
     display: flex;
     flex-direction:column;
     width: 100%;
-    max-height: 50%;
     padding: 10px;
     left: 0;
     bottom: 0;
-
     gap: 10px;
     border-radius: 20px 20px 0 0;
     background: rgb(82 82 82 / 50%);
