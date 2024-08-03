@@ -10,8 +10,8 @@ export const getImageLink = (link:string | undefined,size:string) => {
 
 export function secToMinutesAndSeconds(time:number | undefined) {
     if (time){
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time - minutes * 60);
+        const minutes = Math.trunc(time / 60);
+        const seconds = Math.trunc(time - minutes * 60);
         return (minutes + ":" + (seconds < 10 ? '0' : '') + seconds).toString();
     } else {
         return '0:00'

@@ -555,6 +555,18 @@ html,body {
     margin: 10px 20px; 
 }
 
+.image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: rgb(255 255 255 / 50%);
+}
+.image-placeholder > svg {
+    size: large;
+}
+
 .player-track-cover-row-wrapper-full {
     display: flex;
     flex-direction: row;
@@ -833,6 +845,7 @@ html,body {
     height: 50px;
     border-radius: 14px;
     overflow: hidden;
+    background-color: var(--bg-color-secondary_hover);
     box-shadow: 0 0 5px 3px rgba(44, 44, 44, 0.2);
 }
 .track-controls-wrapper {
@@ -1419,7 +1432,8 @@ html,body {
 }
 
 .message-wrapper.track {
-    padding: 10px;
+    padding: 5px;
+    top: 50%;
 }
 
 .message-cover {
@@ -1444,7 +1458,7 @@ html,body {
     backdrop-filter: blur(2px);
     background: rgb(65 65 65 / 14%);
     color: var(--font-color-main);
-    animation: blur-opacity 1s ease-in;
+    animation: blur-opacity .8s ease;
 }
 
 .message-track-title {
@@ -1454,8 +1468,9 @@ html,body {
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100px;
+    max-width: 150px;
     height: 20px;
+    margin: 0 auto;
     margin-top: 5px;
 }
 

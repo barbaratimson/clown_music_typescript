@@ -30,7 +30,8 @@ import {
     VolumeUp,
     KeyboardArrowDown,
     ArrowBackIosNew,
-    ExpandMore, ExpandLess, MoreVert
+    ExpandMore, ExpandLess, MoreVert,
+    MusicNote
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import {MessageType, showMessage} from '../../../store/MessageSlice';
@@ -44,6 +45,8 @@ import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
 import QueueMobile from "../../Queue/QueueMobile";
 import track from "../../Track/Track";
+import { match } from 'assert';
+import TrackCover, { ImagePlaceholder } from '../../TrackCover';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -69,9 +72,8 @@ const Player = () => {
     const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME
     const setTrackInfoState = (track:TrackT) => dispatch(setTrackInfo(track))
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
-    const trackAddedMessage = (message:string) => dispatch(showMessage({message:message}))
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
-    const setMessage = (message:string,track:TrackT,type:MessageType) => dispatch(showMessage({message:message,track:track,type:type}))
+    const setTrackLikedMessage = (message:string,track:TrackT,type:MessageType) => dispatch(showMessage({message:message,track:track,type:type}))
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const setPlayerSrc = (link: string) => dispatch(setSrc(link))
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
@@ -129,11 +131,13 @@ const Player = () => {
     const onPlaying = (e: any) => {
         const duration = audioElem.current?.duration;
         const ct = audioElem.current?.currentTime;
-        if (ct && duration) {
-            setDuration(duration)
-           setPosition(ct)
-        }
-        setBuffered(getBuffered())
+            if (ct && duration) {
+                setDuration(duration)
+                if (Math.trunc(ct) !== Math.trunc(position)) {
+                    setPosition(ct)
+                }
+            }
+            // setBuffered(getBuffered())
     }
 
     const changeTime = (value: number) => {
@@ -187,12 +191,11 @@ const Player = () => {
         const randomSongFromTrackList = (trackList:Array<TrackType>) => {
         return trackList[Math.floor((Math.random()*trackList.length))]
     }
-    
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
         setLikedSongsData( await fetchLikedSongs())
-        if (action === "liked") setMessage(`Track ${currentSong.title} added to Liked`, currentSong, "trackLiked");
-        if (action === "removed") setMessage(`Track ${currentSong.title} removed to Liked`, currentSong, "trackDisliked");
+        if (action === "liked") setTrackLikedMessage(`Track ${currentSong.title} added to Liked`, currentSong, "trackLiked");
+        if (action === "removed") setTrackLikedMessage(`Track ${currentSong.title} removed to Liked`, currentSong, "trackDisliked");
     }
 
     useEffect(() => {
@@ -212,12 +215,11 @@ const Player = () => {
                     //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
                         audioElem.current.volume = Number(mobilePlayerInitialVolume)
-                        audioElem.current.pause()
                         changeTime(0)
                         setPosition(0)
                     }
                     const changeTrack = async () => {
-                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = ""; console.log(e)}})
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = "";}})
                          if (trackLink && audioElem.current) {
                             audioElem.current.setAttribute('src',trackLink)
                          }
@@ -238,15 +240,14 @@ const Player = () => {
                 }
         }, [currentSong]);
 
-    //TODO: Под вопросом, лагает.
-    //useEffect(()=>{
-    //    if (audioElem.current) {
-    //  navigator.mediaSession.setPositionState({
-    //        duration: duration,
-    //                position: audioElem.current.currentTime,
-    //                  })
-    //                }
-    //},[position])
+    useEffect(()=>{
+       if (audioElem.current) {
+     navigator.mediaSession.setPositionState({
+                    duration: duration,
+                   position: audioElem.current.currentTime,
+                     })
+                   }
+    },[position])
 
     useEffect(() => {
         if (!playerFolded) {
@@ -364,13 +365,13 @@ const Player = () => {
                                     <div className="player-full-top-wrapper">
                                              <div className="player-track-cover-row-wrapper-full" key={currentSong.id} onClick={(e)=>{e.stopPropagation()}}>
                                             <div key={String(playerState.shuffle)} className="player-track-cover-wrapper-full animated-translate prev" onClick={()=>{skipBack()}}>
-                                                <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                                <TrackCover  coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri} size={"600x600"} imageSize={"1000x1000"} unWrapped/>
                                             </div>
                                             <div className={`player-track-cover-wrapper-full ${playerState.playing ? "active" : ""}`} onClick={()=>{!playerState.playing ? startPlayerFunc() : stopPlayerFunc()}}>
-                                                <img src={getImageLink(currentSong.coverUri, "600x600")} alt=""/>
+                                                <TrackCover placeholder={<ImagePlaceholder size='large'/>} coverUri={currentSong.coverUri} size={"600x600"} imageSize={"1000x1000"} unWrapped/>
                                             </div>
                                             <div key={String(playerState.shuffle) + 1} className="player-track-cover-wrapper-full animated-translate-right next" onClick={()=>{skipForward()}}>
-                                                <img src={getImageLink(queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri, "600x600") ?? ""} alt=""/>
+                                                <TrackCover coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri} size={"600x600"} imageSize={"1000x1000"} unWrapped/>
                                             </div>
                                     </div>
                                     {/*track title and artists*/}
@@ -481,9 +482,10 @@ const Player = () => {
                     //   startPlayerFunc()
                    }}
                    onPause={() => {
-                     //  stopPlayerFunc()
+                     if (playerState.playing) stopPlayerFunc()
                    }} onEnded={(e) => {
                 skipForward()
+                startPlayerFunc()
             }} onTimeUpdate={onPlaying}></audio>
         </>
     )
