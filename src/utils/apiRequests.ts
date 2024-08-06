@@ -12,6 +12,7 @@ export const fetchYaSongLink = async (id:string | number) => {
         return response.data
     } catch (err:any) {
         setMessage(err.message,"error")
+        console.log("Error while getting download link: " + err)
     }
 };
 
