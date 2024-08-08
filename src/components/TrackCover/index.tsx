@@ -7,7 +7,7 @@ export type CoverSizeT = "50x50" | "100x100" | "150x150" | "200x200" | "300x300"
 
 interface TrackCoverProps {
     coverUri: string,
-    size: CoverSizeT
+    size: string
     imageSize?: CoverSizeT
     unWrapped?: boolean
     placeholder?: any
@@ -18,7 +18,11 @@ const TrackCover = memo(({ coverUri, size, imageSize, unWrapped,placeholder}: Tr
     const link = getImageLink(coverUri, imageSize ?? size)
 
     if (!unWrapped) {
-        if (!link) return <div style={{ minWidth: width + "px", height: height + "px",background:"red"}}></div>
+        if (!link) return (
+        <div style={{ minWidth: width + "px", height: height + "px" }} className="cover-wrapper">
+                {placeholder ?? <ImagePlaceholder/>}
+        </div>
+        )
         return (
             <div style={{ minWidth: width + "px", height: height + "px" }} className="cover-wrapper">
                 <img style={{ minWidth: width + "px", height: height + "px"}} src={link} loading="lazy" alt="" />

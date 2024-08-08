@@ -287,9 +287,10 @@ html,body {
 .cover-wrapper {
     position: relative;
     display: flex;
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
     aspect-ratio: 1/1;
+    background-color: var(--bg-color-secondary_hover);
 }
 
 .navbar-button {
@@ -492,10 +493,10 @@ html,body {
     bottom: 0;
     width: 100%;
     padding: 10px;
-        background: var(--bg-color-main);
-        border-radius: 0 16px 0 16px;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(2.6px);
+    background: var(--bg-color-main);
+    border-radius: 0 16px 0 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(2.6px);
     gap: 40px;
     transition: all .4s ease-in;
 }
@@ -1397,7 +1398,6 @@ html,body {
     align-items: center;
     flex-grow: 1;
 }
-
 
 .queue-title {
     display: flex;

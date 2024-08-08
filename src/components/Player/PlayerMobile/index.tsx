@@ -308,17 +308,15 @@ const Player = () => {
         <>
             {playerFolded &&
                 <div className="player-wrapper" onClick={() => { setPlayerFolded(!playerFolded) }} style={{ marginBottom: "49px", gap: "0" }}>
-                    <div className="player-track-info-wrapper mobile" key={currentSong.id}>
-                        <div className="player-track-cover-wrapper">
-                            <TrackCover unWrapped placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri} size="200x200" />
-                        </div>
+                    <div className="player-track-info-wrapper mobile" key={currentSong.id}>      
+                            <TrackCover placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri} size="50x50" imageSize="100x100" />
                         <div className="player-track-info">
                             {currentSong.title ? (
                                 <div className="player-track-info-title">
                                     {currentSong.title}
                                 </div>
                             ) : (
-                                <Skeleton variant="rounded" sx={{ bgcolor: 'grey.900' }} animation={false} width={50} height={10}></Skeleton>
+                                <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false} width={50} height={10}></Skeleton>
                             )}
                             {currentSong.artists.length !== 0 ? (
                                 <div className="player-track-info-artists-wrapper">
@@ -331,7 +329,7 @@ const Player = () => {
                                     </span>
                                 </div>
                             ) : (
-                                <Skeleton variant="rounded" sx={{ bgcolor: 'grey.900', marginTop: "5px" }} animation={false} width={100} height={10}></Skeleton>
+                                <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f', marginTop: "5px" }} animation={false} width={100} height={10}></Skeleton>
                             )}
                         </div>
                     </div>
@@ -395,7 +393,7 @@ const Player = () => {
                                                 {currentSong.title}
                                             </div>
                                         ) : (
-                                            <Skeleton variant="rounded" sx={{ bgcolor: 'grey.800' }} animation={false} width={150} height={15}></Skeleton>
+                                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false} width={150} height={15}></Skeleton>
                                         )}
                                         {currentSong.artists.length !== 0 ? (
                                             <div className="player-track-info-artists-wrapper">
@@ -408,7 +406,7 @@ const Player = () => {
                                                 </span>
                                             </div>
                                         ) : (
-                                            <Skeleton variant="rounded" sx={{ bgcolor: 'grey.800', marginTop: "5px" }} animation={false} width={200} height={15}></Skeleton>
+                                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f', marginTop: "5px" }} animation={false} width={200} height={15}></Skeleton>
                                         )}
                                     </div>
                                     <div className="player-track-info-controls" onClick={(e) => { e.stopPropagation() }}>
