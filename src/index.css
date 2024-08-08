@@ -4,6 +4,7 @@
     --bg-color-main: rgba(0, 0, 0, 0.5);
     --bg-color-secondary: rgba(255, 255, 255, 0.08);
     --bg-color-secondary_hover: rgba(255, 247, 247, 0.19);
+    --font: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
 
 }
 html,body {
@@ -1747,6 +1748,22 @@ html,body {
 
 .playlist-filter-info {
 
+}
+
+.devLog {
+    outline: none;
+    box-sizing: border-box;
+    padding: 5px;
+    height: 600px;
+    width: 100%;
+    resize: vertical;
+    overflow: auto;
+    font: var(--font);
+    color: var(--font-color-main);
+    background: #000;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 12px;
 }
 
 

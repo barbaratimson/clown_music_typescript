@@ -2,6 +2,8 @@ import {Typography} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
+import PopUpModal from "../../PopUpModal";
+import DevLog from "../../DevLog";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const token = localStorage.getItem("Authorization")
@@ -10,6 +12,7 @@ const User = () => {
     const [userId, setUserId] = useState<string>(localUserId)
     const [accessToken, setAccessToken] = useState<string>(localAccessToken)
     const [userData, setUserData] = useState<any>()
+    const [devlogActive, setDevLogActive] = useState(false)
     const fetchUser = async () => {
         try {
             const response = await axios.get(
@@ -39,6 +42,10 @@ const User = () => {
                     setAccessToken(e.target.value)
                 }}/>
             </div>
+            <button onClick={()=>{setDevLogActive(!devlogActive)}}/>
+                <PopUpModal active={devlogActive} setActive={setDevLogActive}>
+                    <DevLog/>
+                </PopUpModal>
             {/*<TextField id="outlined-basic" label="User ID" value={userId} onChange={(e) => {*/}
             {/*    setUserId(e.target.value)*/}
             {/*}} variant="outlined"/>*/}

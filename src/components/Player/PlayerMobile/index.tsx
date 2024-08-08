@@ -47,6 +47,7 @@ import QueueMobile from "../../Queue/QueueMobile";
 import track from "../../Track/Track";
 import { match } from 'assert';
 import TrackCover, { ImagePlaceholder } from '../../TrackCover';
+import { logMessage } from '../../../store/devLogSlice';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -83,6 +84,7 @@ const Player = () => {
     const mobilePlayerFull = useRef<HTMLDivElement>(null)
     const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
     const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
+    const devLog = (message:string) => dispatch(logMessage(message))
     const { data, loading, error } = usePalette(currentSong && currentSong.coverUri ? `http://${currentSong.coverUri.substring(0, currentSong.coverUri.lastIndexOf('/'))}/800x800` : "")
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
@@ -211,6 +213,7 @@ const Player = () => {
     }, [playerState]);
 
         useEffect(() => {
+            devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
             setIsLoading(true)
                     //TODO: Error handling
                     if (currentSong.available && currentSong && audioElem.current) {
@@ -219,13 +222,15 @@ const Player = () => {
                         setPosition(0)
                     }
                     const changeTrack = async () => {
-                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) {audioElem.current.src = "";}})
-                         if (trackLink && audioElem.current) {
+                        devLog(`start fetching song link`)
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{ if (audioElem.current) {audioElem.current.src = "";}})
+                        devLog(`song link ready ${trackLink}`)
+                            if (trackLink && audioElem.current) {
                             audioElem.current.setAttribute('src',trackLink)
                          }
                         }
 
-                changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
+                changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> {console.log(e)})})
 
 
             if (queue.length !== 0 && currentSong.id !== 0) {
@@ -469,11 +474,15 @@ const Player = () => {
                 </Slide>
             <audio key={currentSong.id + "_player"} crossOrigin="anonymous"
                    ref={audioElem}
+                   onPlay={(e)=>{
+                    devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
+                   }}   
                    onLoadStart={(e) => {
                        setLoading(true)
                    }}
                    onError={(e) => {
                     //   stopPlayerFunc()
+                        devLog(`player error`)
                        setLoading(false)
                    }}
                    onCanPlay={() => {
@@ -483,6 +492,7 @@ const Player = () => {
                    }}
                    onPause={() => {
                      if (playerState.playing) stopPlayerFunc()
+                        devLog(`player paused`)
                    }} onEnded={(e) => {
                 skipForward()
                 startPlayerFunc()

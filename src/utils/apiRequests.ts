@@ -3,8 +3,10 @@ import axios, { AxiosError } from "axios";
 import {TrackId, TrackT} from "./types/types";
 import { MessageType, showMessage } from "../store/MessageSlice";
 import { store, useAppDispatch } from "../store";
+import { logMessage } from "../store/devLogSlice";
 const link = process.env.REACT_APP_YMAPI_LINK
 const setMessage = (message:string,type:MessageType) => store.dispatch(showMessage({message:message,type:type}))
+const devLog = (message:string) => store.dispatch(logMessage(message))
 export const fetchYaSongLink = async (id:string | number) => {
     try {
         const response = await axios.get(
@@ -12,6 +14,7 @@ export const fetchYaSongLink = async (id:string | number) => {
         return response.data
     } catch (err:any) {
         setMessage(err.message,"error")
+        devLog(`error while fetching song link ${JSON.parse(err)}`);
         console.log("Error while getting download link: " + err)
     }
 };
