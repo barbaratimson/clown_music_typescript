@@ -223,7 +223,7 @@ const Player = () => {
                     }
                     const changeTrack = async () => {
                         devLog(`start fetching song link`)
-                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{ if (audioElem.current) {audioElem.current.src = "";}})
+                        const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{ devLog(`error while fetching link: ${JSON.parse(e)}`);if (audioElem.current) {audioElem.current.src = "";}})
                         devLog(`song link ready ${trackLink}`)
                             if (trackLink && audioElem.current) {
                             audioElem.current.setAttribute('src',trackLink)
