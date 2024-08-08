@@ -85,6 +85,10 @@ const Playlist = ({playlist}: PlaylistProps) => {
                         <img src={getImageLink(playlist.cover.uri, "600x600") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
                     </div>
                     <div className="playlist-info-wrapper">
+                    <div className="playlist-info-section">
+                    {/* <div className="playlist-info-title main">
+                            Плейлист
+                        </div> */}
                         <div className="playlist-info-title">
                             {playlist.title}
                         </div>
@@ -96,9 +100,12 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                 <img className="playlist-sign" src={signImage} alt=""/>
                             </div>
                         ) : null}
+                    </div>
+                    <div className="playlist-info-controls">
                         <div className="playlist-filter-info">
                             <FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>
                         </div>
+                    </div>
                     </div>
                 </div>
                 <SongsList playlist={tracksFiltered ? {...playlist, tracks:tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : "" }`} : playlist} tracks={tracksFiltered ?? playlist.tracks}/>

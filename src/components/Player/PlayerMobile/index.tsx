@@ -223,14 +223,15 @@ const Player = () => {
         }
         const changeTrack = async () => {
             devLog(`start fetching song link`)
-            const trackLink = await fetchYaSongLink(currentSong.id).catch((e) => { devLog(`error while fetching link: ${JSON.parse(e)}`); if (audioElem.current) { audioElem.current.src = ""; } })
+            const trackLink = await fetchYaSongLink(currentSong.id).catch((e) => { devLog(`error while fetching link: ${JSON.parse(e)}`); audioElem.current?.pause()})
             devLog(`song link ready ${trackLink}`)
             if (trackLink && audioElem.current) {
                 audioElem.current.setAttribute('src', trackLink)
             }
         }
 
-        changeTrack().then(() => { if (audioElem.current && playerState.playing) audioElem.current.play().catch((e) => { console.log(e) }) })
+        changeTrack()
+        //.then(() => { if (audioElem.current && playerState.playing) audioElem.current.play().catch((e) => { console.log(e) }) })
 
 
         if (queue.length !== 0 && currentSong.id !== 0) {
@@ -503,9 +504,9 @@ const Player = () => {
                 }}
                 onCanPlay={() => {
                     setLoading(false)
-                    //  if (playerState.playing && audioElem.current) audioElem.current.play()
+                     if (playerState.playing && audioElem.current) audioElem.current.play()
                     //   startPlayerFunc()
-                }}
+                }}  
                 onPause={() => {
                     if (playerState.playing) stopPlayerFunc()
                     devLog(`player paused`)
