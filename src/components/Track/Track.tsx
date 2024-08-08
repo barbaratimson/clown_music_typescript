@@ -74,7 +74,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                             <PauseRounded/>
                         )}
                     </div>
-                    <TrackCover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="150x150"/>
+                    <TrackCover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
