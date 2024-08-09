@@ -222,6 +222,7 @@ const Player = () => {
                     audioElem.current.src = link;
                     return audioElem.current.play();
                 })
+                .then(_ => {})
                 .catch(e => {
                     console.log(e)
                     devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
