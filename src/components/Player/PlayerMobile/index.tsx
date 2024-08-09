@@ -494,6 +494,7 @@ const Player = () => {
                 </div>
             </Slide>
             <audio key={currentSong.id + "_player"} crossOrigin="anonymous"
+                preload="auto"
                 ref={audioElem}
                 onPlay={(e) => {
                     devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
