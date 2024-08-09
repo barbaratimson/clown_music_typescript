@@ -70,7 +70,7 @@ const Player = () => {
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const volumeMultiplier = 1
-    const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME
+    const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME ?? '1'
     const setTrackInfoState = (track: TrackT) => dispatch(setTrackInfo(track))
     const setTrackInfoShowState = (active: boolean) => dispatch(setActiveState(active))
     const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
@@ -213,25 +213,29 @@ const Player = () => {
     }, [playerState]);
 
     useEffect(() => {
+        const fetchAudioAndPlay = () => {
+                devLog(`start fetching song link`)
+                fetchYaSongLink(currentSong.id)
+                .then(link => {
+                    devLog(`song link ready ${link}`)
+                    if (!audioElem.current) return
+                    audioElem.current.src = link;
+                    return audioElem.current.play();
+                })
+                .catch(e => {
+                    console.log(e)
+                    devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
+                })
+        }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         setIsLoading(true)
-        //TODO: Error handling
         if (currentSong.available && currentSong && audioElem.current) {
-            audioElem.current.volume = Number(mobilePlayerInitialVolume)
+            audioElem.current.volume = parseFloat(mobilePlayerInitialVolume)
             changeTime(0)
             setPosition(0)
         }
-        const changeTrack = async () => {
-            devLog(`start fetching song link`)
-            const trackLink = await fetchYaSongLink(currentSong.id).catch((e) => { devLog(`error while fetching link: ${JSON.parse(e)}`); audioElem.current?.pause()})
-            devLog(`song link ready ${trackLink}`)
-            if (trackLink && audioElem.current) {
-                audioElem.current.setAttribute('src', trackLink)
-            }
-        }
 
-        changeTrack()
-        //.then(() => { if (audioElem.current && playerState.playing) audioElem.current.play().catch((e) => { console.log(e) }) })
+        fetchAudioAndPlay()
 
 
         if (queue.length !== 0 && currentSong.id !== 0) {
