@@ -226,6 +226,7 @@ const Player = () => {
                     audioElem.current.src = link;
                     return audioElem.current.play();
                 })
+                .then(_ => {})
                 .catch(e => {
                     console.log(e)
                     devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
@@ -572,30 +573,31 @@ const Player = () => {
                 </div>
             </Slide>
             <audio key={currentSong.id + "_player"} crossOrigin="anonymous"
-                   ref={audioElem}
-                   onPlay={(e) => {
-                       devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
-                   }}
-                   onLoadStart={(e) => {
-                       setLoading(true)
-                   }}
-                   onError={(e) => {
-                       //   stopPlayerFunc()
-                       devLog(`player error`)
-                       setLoading(false)
-                   }}
-                   onCanPlay={() => {
-                       setLoading(false)
-                       if (playerState.playing && audioElem.current) audioElem.current.play()
-                       //   startPlayerFunc()
-                   }}
-                   onPause={() => {
-                       if (playerState.playing) stopPlayerFunc()
-                       devLog(`player paused`)
-                   }} onEnded={(e) => {
-                skipForward()
-                startPlayerFunc()
-            }} onTimeUpdate={onPlaying}></audio>
+                preload="auto"
+                ref={audioElem}
+                onPlay={(e) => {
+                    devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
+                }}
+                onLoadStart={(e) => {
+                    setLoading(true)
+                }}
+                onError={(e) => {
+                    //   stopPlayerFunc()
+                    devLog(`player error`)
+                    setLoading(false)
+                }}
+                onCanPlay={() => {
+                    setLoading(false)
+                     if (playerState.playing && audioElem.current) audioElem.current.play()
+                    //   startPlayerFunc()
+                }}  
+                onPause={() => {
+                    if (playerState.playing) stopPlayerFunc()
+                    devLog(`player paused`)
+                }} onEnded={(e) => {
+                    skipForward()
+                    startPlayerFunc()
+                }} onTimeUpdate={onPlaying}></audio>
         </>
     )
 }
