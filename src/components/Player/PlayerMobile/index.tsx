@@ -242,7 +242,8 @@ const Player = () => {
 
         fetchAudioAndPlay()
 
-        if (playerState.shuffle) {
+        const index = queue.findIndex(x => x.id == currentSong.id);
+        if (playerState.shuffle && index === queue.length-1) {
             const newSong = getUniqueRandomTrackFromPlaylist(queueCurrentPlaylist.tracks,queue,currentSong)
             if (!newSong) return
             if (queueCurrentPlaylist.tracks.length !== queue.length) {
