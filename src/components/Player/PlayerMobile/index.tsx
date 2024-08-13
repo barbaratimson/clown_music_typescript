@@ -259,7 +259,7 @@ const Player = () => {
         let newSong: TrackType;
             if (queueToAdd.length !== 0 && currentSong.id !== 0) {
                 const index = queueToAdd.findIndex(x => x.id == currentSong.id);
-                if (index === queueToAdd.length - 1 && queueToAdd.length !== referencePlaylist.length) {
+                if (queueToAdd.length !== referencePlaylist.length) {
                     do {
                         newSong = randomSongFromTrackList(referencePlaylist)
                     } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
