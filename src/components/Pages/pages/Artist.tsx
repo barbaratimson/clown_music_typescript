@@ -66,11 +66,18 @@ const Artist = () => {
     },[artistId])
 
 
+  //  useEffect(() => {
+    //    getIsMobileInfo()
+   //     document.addEventListener("scroll",a)
+    //    return ()=>{document.removeEventListener("scroll",a);setHeaderOff()}
+  //  }, []);
+
     useEffect(() => {
         getIsMobileInfo()
         document.addEventListener("scroll",a)
         return ()=>{document.removeEventListener("scroll",a);setHeaderOff()}
-    }, []);
+    }, [artistResult]);
+
 
     if (isLoading) return <Loader />
     return (

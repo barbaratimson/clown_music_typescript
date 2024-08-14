@@ -1884,6 +1884,9 @@ html,body {
         height: 45px;
         border-radius: 12px;
     }
+    .track-wrapper:not(.track-current) .track-playing-status{
+        display:none;
+    }
     .track-wrapper:hover .track-playing-status {
         backdrop-filter: none;
     }

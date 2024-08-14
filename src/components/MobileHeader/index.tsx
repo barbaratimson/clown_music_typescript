@@ -15,7 +15,7 @@ const MobileHeader = () => {
             <div className={`header-mobile ${headerInfo.active ? "dim" : null}`}>
                 <div className="button-wrapper-header-mobile">
                     <IconButton onClick={()=>{navigate(-1)}} className="navbar-button"><ArrowBackIosNew/></IconButton>
-                    <Fade in={headerInfo.active}>
+                    <Fade unmountOnExit in={headerInfo.active}>
                             <div className="header-mobile-title">{headerInfo.title}</div>
                         </Fade>
                     <Link className={`${path.pathname === "/search" ? "navLink-active" : ""}`} to={"/search"}><IconButton className="navbar-button"><SearchIcon/></IconButton></Link>
