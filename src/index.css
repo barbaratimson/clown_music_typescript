@@ -1053,6 +1053,7 @@ html,body {
     padding: 5px;
 }
 
+
 .playlist-card-wrapper:hover {
     background: rgba(255, 255, 255, 0.3);
 }
@@ -1082,9 +1083,26 @@ html,body {
     align-items: center;
     height: 30px;
     width: 150px;
+    font-size: 20px;
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
 }
+
+.playlist-card-line-wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+}
+
+.playlist-card-line-icon {
+    flex-grow: 1;
+}
+
 
 .playlist-card-title {
     font-size: 14px;
@@ -1379,12 +1397,19 @@ html,body {
     flex-grow: 1;
 }
 
-.playlists-wrapper {
+.playlists-wrapper-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, 160px);
     justify-content: space-evenly;
     gap: 10px;
     width: 100%;
+}
+
+.playlists-wrapper-flex {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .queue-wrapper {
@@ -1795,7 +1820,7 @@ html,body {
 
 .queue-mobile {
     position: fixed;
-    max-height: 100%;
+    max-height: 90%;
     min-height: 45%;
     border-radius: 12px 12px 0 0;
     display: flex;
@@ -1857,7 +1882,7 @@ html,body {
     width: 100%;
     color: var(--font-color-main);
     height: 100%;
-    padding: 10px;
+    padding: 20px;
     background-color: var(--bg-color-secondary);
     background: linear-gradient(45deg, rgba(0, 0, 0, .6), rgba(0, 0, 0, .595) 6.67%, rgba(0, 0, 0, .579) 13.33%, rgba(0, 0, 0, .551) 20%, rgba(0, 0, 0, .512) 26.67%, rgba(0, 0, 0, .461) 33.33%, rgba(0, 0, 0, .401) 40%, rgba(0, 0, 0, .334) 46.67%, rgba(0, 0, 0, .266) 53.33%, rgba(0, 0, 0, .199) 60%, rgba(0, 0, 0, .139) 66.67%, rgba(0, 0, 0, .088) 73.33%, rgba(0, 0, 0, .049) 80%, rgba(0, 0, 0, .021) 86.67%, rgba(0, 0, 0, .005) 93.33%, transparent);
 }

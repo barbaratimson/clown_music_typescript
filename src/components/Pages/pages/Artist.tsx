@@ -12,6 +12,7 @@ import { deviceState, getIsMobile, handleSubscribe, onSubscribe } from "../../..
 import { hideHeader, showHeader } from "../../../store/mobile/mobileHeaderSlice";
 import { useAppDispatch } from "../../../store";
 import PageHeader from "../../PageHeader";
+import PageBlock from "../../PageBlock";
 
 interface ArtistResultT {
     artist: ArtistT,
@@ -66,13 +67,6 @@ const Artist = () => {
         }
     }, [artistId])
 
-
-    //  useEffect(() => {
-    //    getIsMobileInfo()
-    //     document.addEventListener("scroll",a)
-    //    return ()=>{document.removeEventListener("scroll",a);setHeaderOff()}
-    //  }, []);
-
     useEffect(() => {
         getIsMobileInfo()
         document.addEventListener("scroll", a)
@@ -86,30 +80,19 @@ const Artist = () => {
             {artistResult ? (
                 <>
                     <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult.artist.cover.uri} />
-                    {/* <div ref={playlistInfo} className="playlist">
-                            <div className="playlist-cover-wrapper">
-                                <img
-                                    src={getImageLink(artistResult?.artist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
-                                    alt="" loading="lazy"/>
-                            </div>
-                            <div className="playlist-info-wrapper">
-                                <div className="artist-card-name">{artistResult?.artist.name}</div>
-                                <div
-                                    className="artist-card-likes-count">Нравится: {artistResult?.artist.likesCount}</div>
-                            </div>
-                        </div> */}
-                    <div className="artist-block-title">Popular tracks:</div>
-                    <div
-                        className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                        <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult.artist.cover.uri }, uid: 0, ogImage: artistResult.artist.cover.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
-                    </div>
-                    <div className="artist-block-title">Albums:</div>
-                    <div className="playlists-wrapper">
-                        {/*TODO:: Slice array and create button "see all"*/}
-                        {artistResult.albums.map((album) => (
-                            <AlbumCard key={album.id} album={album} />
-                        ))}
-                    </div>
+                    <PageBlock title="Popular tracks: ">
+                        <div className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
+                            <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult.artist.cover.uri }, uid: 0, ogImage: artistResult.artist.cover.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
+                        </div>
+                    </PageBlock>
+                    <PageBlock title="Albums: ">
+                        <div className="playlists-wrapper">
+                            {/*TODO:: Slice array and create button "see all"*/}
+                            {artistResult.albums.map((album) => (
+                                <AlbumCard key={album.id} album={album} />
+                            ))}
+                        </div>
+                    </PageBlock>
                 </>
             ) : null}
         </div>

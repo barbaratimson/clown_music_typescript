@@ -64,7 +64,7 @@ const Collection = () => {
         <div className="page-default animated-opacity">
             <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
             <PageBlock title="Playlists" controls={<Add fontSize="large"/>}>
-                <div className="playlists-wrapper">
+                <div className="playlists-wrapper-grid">
                     <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
                         <div className="playlist-card-wrapper">
                             <div className="playlist-card-image">
@@ -76,7 +76,7 @@ const Collection = () => {
                         </div>
                     </Link>
                     {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
-                        <PlaylistCard playlist={playlist} />
+                        <PlaylistCard type="block" playlist={playlist} />
                     ) : null
                     ) : null}
                 </div>

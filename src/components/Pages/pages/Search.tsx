@@ -88,7 +88,7 @@ const Search = () => {
                                 <div className="playlists-wrapper">
                                     {searchResults?.playlists?.results ? (
                                         searchResults.playlists.results.map((playlist) => (
-                                            <PlaylistCard playlist={playlist} />
+                                            <PlaylistCard type="line" playlist={playlist} />
                                         ))
                                     ) : null}
                                 </div>

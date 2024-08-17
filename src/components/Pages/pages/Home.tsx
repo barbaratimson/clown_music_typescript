@@ -34,7 +34,7 @@ const Home = () => {
             <PageBlock title="Daily playlists">
                 <div className="playlists-wrapper">
                     {generatedPlaylists ? generatedPlaylists.map((playlist) => (
-                        <PlaylistCard playlist={playlist.data}/>
+                        <PlaylistCard type="block" playlist={playlist.data}/>
                     )) : null}
                 </div>
             </PageBlock>
