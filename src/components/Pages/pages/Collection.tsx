@@ -59,28 +59,28 @@ const Collection = () => {
     if (isLoading) return <Loader />
 
     return (
-<>
-                       <PageHeader titleText="Коллекция" descText="Ваша музыка" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/"/>
-            <div className="collection-user-playlists-wrapper">
-                <div className="collection-title">Плейлисты</div>
-                <div className="playlists-wrapper">
-                    <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
-                        <div className="playlist-card-wrapper">
-                            <div className="playlist-card-image">
-                                <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
+            <div className="page-default animated-opacity">
+                <PageHeader titleText="Коллекция" descText="Ваша музыка" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
+                <div className="collection-user-playlists-wrapper">
+                    <div className="collection-title">Плейлисты</div>
+                    <div className="playlists-wrapper">
+                        <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
+                            <div className="playlist-card-wrapper">
+                                <div className="playlist-card-image">
+                                    <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
+                                </div>
+                                <div className="playlist-card-title-wrapper">
+                                    <div className="playlist-card-title">Favourites</div>
+                                </div>
                             </div>
-                            <div className="playlist-card-title-wrapper">
-                                <div className="playlist-card-title">Favourites</div>
-                            </div>
-                        </div>
-                    </Link>
-                    {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
-                        <PlaylistCard playlist={playlist} />
-                    ) : null
-                ) : null}
+                        </Link>
+                        {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
+                            <PlaylistCard playlist={playlist} />
+                        ) : null
+                        ) : null}
+                    </div>
                 </div>
             </div>
-</>
 
     )
 }

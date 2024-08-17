@@ -57,7 +57,8 @@ const Search = () => {
 
 
     return (
-        <>
+        <div className="page-default animated-opacity">
+
             <div className="searchbar">
                 <div className="nav-search-icon"><SearchIcon /></div>
                 <input ref={input} value={search ?? ""} className="nav-search-input" type='text'
@@ -97,7 +98,7 @@ const Search = () => {
                 </div>
             ) : <div className="search-no-search">Начните поиск</div>}
 
-        </>
+        </div>
     )
 }
 

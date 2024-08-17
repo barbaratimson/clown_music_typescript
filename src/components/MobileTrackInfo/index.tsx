@@ -127,11 +127,11 @@ const MobileTrackInfo = () => {
                                     </div>
                                 </div>
 
-                                <div className="track-info-mobile-control-button">
+                                <div className="track-info-mobile-control-button" onClick={() => { playNext(currentSong, trackInfoState.track); closeAll() }}>
                                     <div className="track-info-mobile-control-icon">
                                         <PlaylistAdd />
                                     </div>
-                                    <div className="track-info-mobile-control-label" onClick={() => { playNext(currentSong, trackInfoState.track); closeAll() }}>
+                                    <div className="track-info-mobile-control-label">
                                         Play next
                                     </div>
                                 </div>
