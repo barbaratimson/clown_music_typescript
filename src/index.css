@@ -1023,12 +1023,16 @@ html,body {
     height: 100%;
     justify-content: center;
     align-items: center;
-    /* position: absolute;
-    top: 45%;
-    left: 48%;
-    transform: translate(50%,-50%);
-    z-index: 9999; */
 }
+
+.page-loader-wrapper {
+    display: flex;
+    width: 100vw;
+    height: 70vh;
+    justify-content: center;
+    align-items: center;
+}
+
 .loader {
     color: var(--font-color-main) !important;
 }
@@ -1327,15 +1331,10 @@ html,body {
 }
 
 .search-no-search {
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
-    /*width: 100%;*/
-    /*height: 75dvh;*/
-    position: absolute;
-    top: 45%;
-    left: 43%;
-    transform: translate(50%,-50%);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     z-index: 9999;
     color: var(--font-color-main);
 }

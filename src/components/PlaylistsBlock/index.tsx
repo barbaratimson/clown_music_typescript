@@ -1,3 +1,4 @@
+import { GridView, ViewAgenda } from "@mui/icons-material"
 import { AlbumT, EmptyAlbumT, PlaylistT } from "../../utils/types/types"
 import PlaylistCard from "../PlaylistCard"
 
@@ -9,6 +10,11 @@ interface PlaylistsBlockT {
 interface AlbumsBlockT {
     type: "grid" | "flex"
     albums: Array<EmptyAlbumT>
+}
+
+interface ControlsProps {
+    active:boolean,
+    setActive:Function
 }
 
 export const PlaylistsBlock = ({playlists, type}:PlaylistsBlockT) => {
@@ -29,6 +35,14 @@ export const AlbumsBlock = ({albums, type}:AlbumsBlockT) => {
             <PlaylistCard type={type === "grid" ? "block" : "line"} key={album.id} title={album.title} coverUri={album.coverUri} link={`/artist/${album.artists[0].id}/album/${album.id}`} />
         )) : null}
         </div>
+    )
+}
+
+export const PlaylistArrangeControls = ({active, setActive}:ControlsProps) => {
+    return (
+                <div key={"controls_" + active} className="change-playlist-orient" onClick={()=>{setActive(!active)}}>
+                    {active ? <ViewAgenda/> : <GridView/>}
+                </div>
     )
 }
 

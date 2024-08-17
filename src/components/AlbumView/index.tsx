@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../Loader";
+import Loader, { PageLoader } from "../Loader";
 import Album from "../Album";
 import {AlbumT} from "../../utils/types/types";
 
@@ -36,7 +36,7 @@ const AlbumView = () => {
     //     setAlbum({...album,volumes:formattedVolumes})
     // }, [album]);
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <PageLoader />
     return (
         <>
             {album ? (

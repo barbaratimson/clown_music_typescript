@@ -15,4 +15,13 @@ const Loader = ({size}:LoaderProps) => {
     )
 }
 
+export const PageLoader = ({size}:LoaderProps) => {
+
+    return (
+        <div className="page-loader-wrapper">
+            <CircularProgress size={size} className="loader" />
+        </div>
+    )
+}
+
 export default Loader

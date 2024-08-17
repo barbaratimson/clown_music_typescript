@@ -4,12 +4,14 @@ import SearchIcon from "@mui/icons-material/Search";
 import { SearchT } from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { trackArrayWrap } from "../../../utils/trackWrap";
-import Loader from "../../Loader";
+import Loader, { PageLoader } from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Artist from "./Artist";
 import Track from "../../Track/Track";
 import { getImageLink } from "../../../utils/utils";
+import { AlbumsBlock, PlaylistArrangeControls, PlaylistsBlock } from "../../PlaylistsBlock";
+import PageBlock from "../../PageBlock";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
@@ -70,31 +72,28 @@ const Search = () => {
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (
                         <>
-                            <div className="nav-search-block">
-                                <div className="nav-search-line">Best</div>
-                                <BestResult bestResult={searchResults?.best} />
-                            </div>
-                            <div className="nav-search-block">
-                                <div className="nav-search-line">Tracks</div>
-                                {searchResults?.tracks?.results ? (
+                            {searchResults?.best &&
+                                <PageBlock title="Best">
+                                    <BestResult bestResult={searchResults?.best} />
+                                </PageBlock>
+                            }
+
+                            {searchResults?.tracks?.results &&
+                                <PageBlock title="Tracks">
                                     <div
                                         className={searchResults.tracks.results.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
                                         <SongsList playlist={{ kind: -1, cover: { uri: searchResults.tracks.results[0].coverUri }, uid: 0, ogImage: searchResults.tracks.results[0].coverUri, available: true, owner: { uid: searchResults.tracks.results[0].artists[0].id, name: searchResults.tracks.results[0].artists[0].name, verified: true }, title: `${" "}: Результаты`, description: "", tracks: trackArrayWrap(searchResults.tracks.results) }} tracks={trackArrayWrap(searchResults.tracks.results)} />
                                     </div>
-                                ) : null}
-                            </div>
-                            <div className="nav-search-block">
-                                <div className="nav-search-line">Albums</div>
-                                <div className="playlists-wrapper">
-                                    {searchResults?.playlists?.results ? (
-                                        searchResults.playlists.results.map((playlist) => (
-                                            <PlaylistCard type="line" playlist={playlist} />
-                                        ))
-                                    ) : null}
-                                </div>
-                            </div>
+                                </PageBlock>
+                            }
+
+                            {searchResults?.playlists &&
+                                <PageBlock title="Playlists">
+                                    <PlaylistsBlock type="flex" playlists={searchResults?.playlists.results} />
+                                </PageBlock>
+                            }
                         </>
-                    ) : <Loader />}
+                    ) : <PageLoader/>}
                 </div>
             ) : <div className="search-no-search">Начните поиск</div>}
 
@@ -124,6 +123,9 @@ const BestResult = ({ bestResult }: any) => {
             }
             case "track": {
                 return <Track track={bestResult.result} />
+            }
+            case "playlist": {
+                return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={`/users/${bestResult.result.owner.id}/playlists/${bestResult.result.kind}`}/>
             }
         }
 

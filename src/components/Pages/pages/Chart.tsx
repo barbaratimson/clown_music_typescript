@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ChartT, QueueT, TrackType } from "../../../utils/types/types";
-import Loader from "../../Loader";
+import Loader, { PageLoader } from "../../Loader";
 import { getImageLink, isElementInViewport } from "../../../utils/utils";
 import { setQueue } from "../../../store/playingQueueSlice";
 import { RootState, useAppDispatch, useAppSelector } from "../../../store";
@@ -54,7 +54,7 @@ const Chart = () => {
         return () => { document.removeEventListener("scroll", a); setHeaderOff() }
     }, []);
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <PageLoader />
 
     return (
         <div className="page-default animated-opacity">

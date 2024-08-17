@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../Loader";
+import Loader, { PageLoader } from "../Loader";
 import Playlist from "../Playlist";
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -26,7 +26,7 @@ const PlaylistView = () => {
         fetchPlaylistSongs(playlistId,userId)
     }, [playlistId]);
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <PageLoader />
     return (
         <>
             {playlistState ? (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { PlaylistT } from "../../../utils/types/types";
-import Loader from "../../Loader";
+import Loader, { PageLoader } from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
 import { getImageLink } from "../../../utils/utils";
 import { Link } from "react-router-dom";
@@ -59,7 +59,7 @@ const Collection = () => {
     }, [])
 
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <PageLoader />
     return (
         <div className="page-default animated-opacity">
             <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />

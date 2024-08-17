@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Loader from "../../Loader";
+import Loader, { PageLoader } from "../../Loader";
 import { ArtistT, EmptyAlbumT, TrackT } from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { getImageLink, isElementInViewport } from "../../../utils/utils";
@@ -13,7 +13,7 @@ import { hideHeader, showHeader } from "../../../store/mobile/mobileHeaderSlice"
 import { useAppDispatch } from "../../../store";
 import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
-import { AlbumsBlock } from "../../PlaylistsBlock";
+import { AlbumsBlock, PlaylistArrangeControls } from "../../PlaylistsBlock";
 import { GridView, Scale, ViewAgenda } from "@mui/icons-material";
 import { Zoom } from "@mui/material";
 
@@ -77,7 +77,7 @@ const Artist = () => {
     }, [artistResult]);
 
 
-    if (isLoading) return <Loader />
+    if (isLoading) return <PageLoader />
     return (
         <div className="page-default animated-opacity">
             {artistResult ? (
@@ -88,7 +88,7 @@ const Artist = () => {
                             <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult.artist.cover.uri }, uid: 0, ogImage: artistResult.artist.cover.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
-                    <PageBlock title="Albums" controls={<Controls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
+                    <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
                         <AlbumsBlock type={changePlaylistView ? "flex" : "grid"} albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
@@ -97,17 +97,6 @@ const Artist = () => {
     )
 }
 
-interface ControlsProps {
-    active:boolean,
-    setActive:Function
-}
 
-const Controls = ({active, setActive}:ControlsProps) => {
-    return (
-                <div key={"controls_" + active} className="change-playlist-orient" onClick={()=>{setActive(!active)}}>
-                    {active ? <ViewAgenda/> : <GridView/>}
-                </div>
-    )
-}
 
 export default Artist
