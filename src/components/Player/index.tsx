@@ -287,7 +287,7 @@ const Player = () => {
                         </div>
                     </div>
                     <div className="player-track-controls">
-                        <div className="player-track-controls-border">
+                        <div key={currentSong.id} className="player-track-controls-border">
                             {isLiked(currentSong.id) ? (
                                 <div className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`} onClick={()=>{dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))}}>
                                     <Favorite/>

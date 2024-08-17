@@ -136,7 +136,14 @@ html,body {
         rotate: 0;
     }
 }
-
+@keyframes scale-in {
+     0% {
+        scale:0;
+     }
+     100% {
+        scale: 1;
+     }
+}
 @keyframes scale {
     0%{
         scale: 0.5;
@@ -213,6 +220,11 @@ html,body {
     width: 100%;
     top: 0;
     z-index: 99999;
+}
+.header-mobile-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
 }
 .header-mobile-title {
     font-size: 17px;
@@ -1089,6 +1101,7 @@ html,body {
     overflow: hidden;
 }
 
+
 .playlist-card-line-wrapper {
     display: flex;
     align-items: center;
@@ -1097,21 +1110,36 @@ html,body {
     white-space: nowrap;
     overflow: hidden;
     width: 100%;
+
+}
+
+.playlist-card-line-title-wrapper {
+    width: 100%;
+    overflow: hidden;
+
 }
 
 .playlist-card-line-icon {
-    flex-grow: 1;
+    margin-left: auto;
+    color: var(--bg-color-secondary_hover);
 }
 
 
 .playlist-card-title {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--font-color-main);
     text-overflow: ellipsis;
     overflow: hidden;
     padding: 0 10px;
     font-weight: 600;
     margin: 0 auto;
+}
+.playlist-card-line-title {
+    font-size: 18px;
+    color: var(--font-color-main);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 10px;
 }
 
 .collection-title {
@@ -1876,7 +1904,6 @@ html,body {
     position: absolute;
     display: flex;
     flex-direction: column;
-    gap: 10px;
     top: 0;
     left: 0;
     width: 100%;
@@ -1893,10 +1920,10 @@ html,body {
     align-items: center;
     font-size: 40px;
     font-weight: 500;
-    line-height: 0.8;
     overflow : hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+    line-height: 1.5;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
@@ -1963,6 +1990,11 @@ html,body {
     align-items: center;
     justify-content: end;
     color: var(--font-color-main);
+}
+
+.change-playlist-orient {
+    margin-right: 10px;
+    animation: scale-in .2s ease;
 }
 
 @media (max-width: 575px) {

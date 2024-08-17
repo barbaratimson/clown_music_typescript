@@ -13,6 +13,9 @@ import { hideHeader, showHeader } from "../../../store/mobile/mobileHeaderSlice"
 import { useAppDispatch } from "../../../store";
 import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
+import { AlbumsBlock } from "../../PlaylistsBlock";
+import { GridView, Scale, ViewAgenda } from "@mui/icons-material";
+import { Zoom } from "@mui/material";
 
 interface ArtistResultT {
     artist: ArtistT,
@@ -29,6 +32,7 @@ const Artist = () => {
     const [artistResult, setArtistResult] = useState<ArtistResultT>()
     const [isMobile, setIsMobile] = useState(false)
     const playlistInfo = useRef(null)
+    const [changePlaylistView, setChangePlaylistView] = useState(false)
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const fetchArtist = async (artistId: string) => {
@@ -48,8 +52,7 @@ const Artist = () => {
 
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && artistResult) {
-            console.log({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover })
-            setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover })
+            setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover.uri })
         } else {
             setHeaderOff()
         }
@@ -80,22 +83,30 @@ const Artist = () => {
             {artistResult ? (
                 <>
                     <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult.artist.cover.uri} />
-                    <PageBlock title="Popular tracks: ">
+                    <PageBlock title="Popular tracks">
                         <div className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
                             <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult.artist.cover.uri }, uid: 0, ogImage: artistResult.artist.cover.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
-                    <PageBlock title="Albums: ">
-                        <div className="playlists-wrapper">
-                            {/*TODO:: Slice array and create button "see all"*/}
-                            {artistResult.albums.map((album) => (
-                                <AlbumCard key={album.id} album={album} />
-                            ))}
-                        </div>
+                    <PageBlock title="Albums" controls={<Controls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
+                        <AlbumsBlock type={changePlaylistView ? "flex" : "grid"} albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
             ) : null}
         </div>
+    )
+}
+
+interface ControlsProps {
+    active:boolean,
+    setActive:Function
+}
+
+const Controls = ({active, setActive}:ControlsProps) => {
+    return (
+                <div key={"controls_" + active} className="change-playlist-orient" onClick={()=>{setActive(!active)}}>
+                    {active ? <ViewAgenda/> : <GridView/>}
+                </div>
     )
 }
 

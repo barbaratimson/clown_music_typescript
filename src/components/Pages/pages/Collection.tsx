@@ -11,6 +11,7 @@ import { Add } from "@mui/icons-material";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
+
 const Collection = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [userTracks, setUserTracks] = useState<PlaylistT>()
@@ -59,24 +60,14 @@ const Collection = () => {
 
 
     if (isLoading) return <Loader />
-
     return (
         <div className="page-default animated-opacity">
             <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
             <PageBlock title="Playlists" controls={<Add fontSize="large"/>}>
-                <div className="playlists-wrapper-grid">
-                    <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
-                        <div className="playlist-card-wrapper">
-                            <div className="playlist-card-image">
-                                <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
-                            </div>
-                            <div className="playlist-card-title-wrapper">
-                                <div className="playlist-card-title">Favourites</div>
-                            </div>
-                        </div>
-                    </Link>
+                <div className="playlists-wrapper-flex">
+                <PlaylistCard type="line" key={3} title="Мне нравится" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" link={`/users/${userData.account.uid}/playlist/3`} />
                     {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
-                        <PlaylistCard type="block" playlist={playlist} />
+                        <PlaylistCard type="line" key={playlist.kind} title={playlist.title} coverUri={playlist.cover.uri} link={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`} />
                     ) : null
                     ) : null}
                 </div>

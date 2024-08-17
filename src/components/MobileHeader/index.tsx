@@ -4,6 +4,7 @@ import {Fade, IconButton} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {ArrowBackIosNew} from "@mui/icons-material";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import Cover from "../Cover";
 
 
 const MobileHeader = () => {
@@ -15,8 +16,11 @@ const MobileHeader = () => {
             <div className={`header-mobile ${headerInfo.active ? "dim" : null}`}>
                 <div className="button-wrapper-header-mobile">
                     <IconButton onClick={()=>{navigate(-1)}} className="navbar-button"><ArrowBackIosNew/></IconButton>
-                    <Fade unmountOnExit in={headerInfo.active}>
+                    <Fade in={headerInfo.active}>
+                        <div className="header-mobile-title-wrapper">
+                            {headerInfo.imgUrl && <Cover coverUri={headerInfo.imgUrl} size="25x25" imageSize="50x50"/>}
                             <div className="header-mobile-title">{headerInfo.title}</div>
+                        </div>
                         </Fade>
                     <Link className={`${path.pathname === "/search" ? "navLink-active" : ""}`} to={"/search"}><IconButton className="navbar-button"><SearchIcon/></IconButton></Link>
                 </div>

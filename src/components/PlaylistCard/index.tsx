@@ -1,36 +1,38 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {PlaylistT} from "../../utils/types/types";
+import {CoverT, PlaylistT} from "../../utils/types/types";
 import {getImageLink} from "../../utils/utils";
 import Cover from "../Cover";
-import { ArrowForward } from "@mui/icons-material";
+import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
 
 interface PlaylistCardProps {
-    playlist: PlaylistT
+    title: string,
+    link: string,
+    coverUri: string
     type: "line" | "block"
 }
 
-const PlaylistCard = ({playlist,type}:PlaylistCardProps) => {
+const PlaylistCard = ({title,link,coverUri,type}:PlaylistCardProps) => {
 
     switch (type) {
         case "block": {
-            return <PlaylistCardBlock playlist={playlist}/>
+            return <PlaylistCardBlock title={title} link={link} coverUri={coverUri}/>
         }
         case "line": {
-            return <PlaylistCardLine playlist={playlist}/>
+            return <PlaylistCardLine title={title} link={link} coverUri={coverUri}/>
         }
     }
   
 }
 
-const PlaylistCardBlock = ({playlist}:Omit<PlaylistCardProps,"type">) => {
+const PlaylistCardBlock = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">) => {
     return (
         <>
-        <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`}>
-            <div key={playlist.kind} className="playlist-card-wrapper">
-                <Cover coverUri={playlist.cover.uri} size="200x200" imageSize="400x400"/>
+        <Link style = {{textDecoration:"none",width:"fit-content"}} to={link}>
+            <div className="playlist-card-wrapper">
+                <Cover coverUri={coverUri} size="150x150" imageSize="200x200"/>
                 <div className="playlist-card-title-wrapper">
-                    <div className="playlist-card-title">{playlist.title}</div>
+                    <div className="playlist-card-title">{title}</div>
                 </div>
             </div>
         </Link>
@@ -39,16 +41,16 @@ const PlaylistCardBlock = ({playlist}:Omit<PlaylistCardProps,"type">) => {
 }
 
 
-const PlaylistCardLine = ({playlist}:Omit<PlaylistCardProps,"type">) => {
+const PlaylistCardLine = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">) => {
     return (
         <>
-        <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`}>
-            <div key={playlist.kind} className="playlist-card-line-wrapper">
-                <Cover coverUri={playlist.cover.uri} size="75x75" imageSize="100x100"/>
+        <Link style = {{textDecoration:"none",width:"auto"}} to={link}>
+            <div className="playlist-card-line-wrapper">
+                <Cover coverUri={coverUri} size="75x75" imageSize="100x100"/>
                 <div className="playlist-card-line-title-wrapper">
-                    <div className="playlist-card-title">{playlist.title}</div>
+                    <div className="playlist-card-line-title">{title}</div>
                 </div>
-                <div className="playlist-card-line-icon"><ArrowForward fontSize="medium"/></div>
+                <div className="playlist-card-line-icon"><ArrowForwardIos fontSize="medium"/></div>
             </div>
         </Link>
         </>
