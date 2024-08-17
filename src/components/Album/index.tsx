@@ -6,7 +6,7 @@ import {useAppDispatch} from "../../store";
 import {trackArrayWrap} from "../../utils/trackWrap";
 import {Link} from "react-router-dom";
 import PageHeader from "../PageHeader";
-import TrackCover from "../TrackCover";
+import Cover from "../Cover";
 
 interface AlbumProps {
     album: AlbumT
@@ -26,7 +26,7 @@ const Album = ({album}: AlbumProps) => {
                      <Link style = {{textDecoration:"none"}} to={`/artist/${artist.id}`}>
                      <div className="album-artist-info">
                          <div className="album-artist-avatar-wrapper">
-                            <TrackCover coverUri={artist.cover.uri} size="50x50" unWrapped/>
+                            <Cover coverUri={artist.cover.uri} size="50x50" unWrapped/>
                          </div>
                          <div className="album-artist-info-name">{artist.name}</div>
                      </div>

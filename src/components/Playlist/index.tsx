@@ -1,17 +1,17 @@
-import React, {useEffect, useRef, useState} from "react";
-import {PlaylistT, TrackType} from "../../utils/types/types";
-import {getImageLink, isElementInViewport} from "../../utils/utils";
+import React, { useEffect, useRef, useState } from "react";
+import { PlaylistT, TrackType } from "../../utils/types/types";
+import { getImageLink, isElementInViewport } from "../../utils/utils";
 import SongsList from "../SongsList";
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {setQueue} from "../../store/playingQueueSlice";
-import {useSearchParams} from "react-router-dom";
-import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
+import { RootState, useAppDispatch, useAppSelector } from "../../store";
+import { setQueue } from "../../store/playingQueueSlice";
+import { useSearchParams } from "react-router-dom";
+import { hideHeader, showHeader } from "../../store/mobile/mobileHeaderSlice";
 import { signImage } from "../../assets/sign";
 import PopUpModal from "../PopUpModal";
-import {ExpandMore, FilterAlt} from "@mui/icons-material";
-import TrackCover, { ImagePlaceholder } from "../TrackCover";
+import { ExpandMore, FilterAlt } from "@mui/icons-material";
+import Cover, { ImagePlaceholder } from "../Cover";
 import ListIcon from '@mui/icons-material/List';
-import PageHeader  from "../PageHeader";
+import PageHeader from "../PageHeader";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -23,15 +23,15 @@ interface GenreCountT {
     genre: string,
     amount: number
 }
-const Playlist = ({playlist}: PlaylistProps) => {
+const Playlist = ({ playlist }: PlaylistProps) => {
     const dispatch = useAppDispatch()
-    const setHeaderActive = (state:any) => dispatch(showHeader(state))
+    const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
     const [genres, setGenres] = useState<GenreCountT[]>()
     const [genre, setGenre] = useState<GenreCountT>()
     const [tracksFiltered, setTracksFiltered] = useState<Array<TrackType>>()
-    const [filterQuery,setFilterQuery] = useSearchParams("")
+    const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
 
     useEffect(() => {
@@ -45,16 +45,16 @@ const Playlist = ({playlist}: PlaylistProps) => {
         const uniqueGenres = Array.from(new Set(genres))
         const countAmount = uniqueGenres.map((genre) => {
             const amountOfGenre = genres.filter(elem => elem == genre)
-            return {genre:genre,amount:amountOfGenre.length}
+            return { genre: genre, amount: amountOfGenre.length }
         })
-        setGenres(countAmount.sort((a,b) => b.amount-a.amount))
+        setGenres(countAmount.sort((a, b) => b.amount - a.amount))
     }, []);
 
     useEffect(() => {
         const filter = filterQuery.get("genre")
         if (filter === "Unknown") {
             setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
-        } else if (filter){
+        } else if (filter) {
             setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === filter))
         } else {
             setTracksFiltered(playlist.tracks)
@@ -64,60 +64,36 @@ const Playlist = ({playlist}: PlaylistProps) => {
     useEffect(() => {
         const a = () => {
             if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
-                 setHeaderActive({title:playlist.title})
+                setHeaderActive({ title: playlist.title })
             } else {
                 setHeaderOff()
             }
         }
-        document.addEventListener("scroll",a)
-        return ()=>{document.removeEventListener("scroll",a);setHeaderOff()}
+        document.addEventListener("scroll", a)
+        return () => { document.removeEventListener("scroll", a); setHeaderOff() }
     }, []);
 
     useEffect(() => {
         if (filterMenuActive) {
             document.body.style.overflow = "hidden"
         }
-        return () => {document.body.style.overflow = "unset"}
+        return () => { document.body.style.overflow = "unset" }
     }, [filterMenuActive]);
 
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                {/* <div ref={playlistInfo} className="playlist">
-                        <TrackCover coverUri={playlist.cover.uri} placeholder={<ImagePlaceholder><ListIcon fontSize="large"/></ImagePlaceholder>} size="150x150" imageSize="800x800"/>
-                    <div className="playlist-info-wrapper">
-                    <div className="playlist-info-section">
-                        <div className="playlist-info-title">
-                            {playlist.title}
-                        </div>
-                        <div className="playlist-info-desc">
-                            {playlist.description}
-                        </div>
-                        {playlist.kind=== 3 && false ? (
-                            <div className="playlist-sign-wrapper">
-                                <img className="playlist-sign" src={signImage} alt=""/>
-                            </div>
-                        ) : null}
-                    </div>
-                    <div className="playlist-info-controls">
-                        <div className="playlist-filter-info">
-                            <FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>
-                        </div>
-                    </div>
-                    </div>
-                </div> */}
-                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={<FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>}/>
-                <SongsList playlist={tracksFiltered ? {...playlist, tracks:tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : "" }`} : playlist} tracks={tracksFiltered ?? playlist.tracks}/>
+                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={<FilterAlt onClick={() => { setFilterMenuActive(!filterMenuActive) }} />} />
+                <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
             </div>
-
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
                 <>
-                         <div className="playlist-filter-title"><ExpandMore/></div>
+                    <div className="playlist-filter-title"><ExpandMore /></div>
                     <div className="playlist-filter-wrapper">
                         {genres ? genres.map(genreRender => (
-                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={()=>{filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({genre:genreRender.genre}) : setFilterQuery(undefined)}}>
+                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={() => { filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({ genre: genreRender.genre }) : setFilterQuery(undefined) }}>
                                 <div className="playlist-filter-button-text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
-                                <div className="playlist-filter-button-amount"  style={{width:genreRender.amount + "%"}}>
+                                <div className="playlist-filter-button-amount" style={{ width: genreRender.amount + "%" }}>
                                     <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
                                 </div>
                             </div>

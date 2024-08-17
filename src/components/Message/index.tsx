@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { RootState, useAppDispatch, useAppSelector } from "../../store";
 import { Fade, Modal } from "@mui/material";
 import { hideMessage, showMessage } from "../../store/MessageSlice";
-import TrackCover from "../TrackCover";
+import Cover from "../Cover";
 import { Favorite, HeartBroken } from "@mui/icons-material";
 
 
@@ -24,7 +24,7 @@ const Message = () => {
                 <div className="message-wrapper track">
                     <div className="message-cover-animation">
                         <div className={`message-cover-animation-icon`}>{message.type === "trackLiked" ? <Favorite /> : <HeartBroken />}</div>
-                        <TrackCover coverUri={message.track.coverUri} size={"150x150"} imageSize="100x100" />
+                        <Cover coverUri={message.track.coverUri} size={"150x150"} imageSize="100x100" />
                     </div>
                     <div style={{textDecoration:message.type === "trackDisliked" ? "line-through" : "none"}} className="message-track-title">{message.track.title}</div>
                 </div>

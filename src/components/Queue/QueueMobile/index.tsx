@@ -11,7 +11,7 @@ import { trackWrap } from "../../../utils/trackWrap";
 import {Collapse, Fade, Slide} from "@mui/material";
 import {useLocation, useSearchParams} from "react-router-dom";
 import {getImageLink} from "../../../utils/utils";
-import TrackCover from "../../TrackCover";
+import Cover from "../../Cover";
 
 interface QueueMobileProps {
     active : boolean,
@@ -31,7 +31,7 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
         <Slide direction={"up"} in={active}>
             <div className="queue-mobile" onClick={()=>{setActive(false)}}>
                 <div className="queue-mobile-header animated-opacity-4ms">
-                    <TrackCover coverUri={currentQueue.playlist.cover.uri} size="75x75" imageSize="100x100"/>
+                    <Cover coverUri={currentQueue.playlist.cover.uri} size="75x75" imageSize="100x100"/>
                     <div className="track-info-wrapper">
                         <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.title}</div>
                     </div>

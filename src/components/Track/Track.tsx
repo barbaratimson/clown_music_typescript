@@ -13,7 +13,7 @@ import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {showMessage} from "../../store/MessageSlice";
 import { trackWrap } from "../../utils/trackWrap";
 import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
-import TrackCover, { ImagePlaceholder } from "../TrackCover";
+import Cover, { ImagePlaceholder } from "../Cover";
 
 
 interface TrackProps {
@@ -77,7 +77,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                             <PauseRounded/>
                         )}
                     </div>
-                    <TrackCover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
+                    <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>

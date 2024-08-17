@@ -1,6 +1,6 @@
 import { forwardRef } from "react"
 import Track from "../Track/Track"
-import TrackCover from "../TrackCover"
+import Cover from "../Cover"
 import { getIsMobileInfo } from "../../utils/deviceHandler"
 
 interface PageHeaderT {
@@ -17,7 +17,7 @@ const PageHeader = forwardRef<HTMLDivElement, PageHeaderT>((props,ref) => {
     return (
         <div ref={ref} className="page-header-wrapper">
             <div className="page-header-image-wrapper">
-                <TrackCover coverUri={props.coverUri} placeholder={null} unWrapped size={mobile ? "600x600" : "1000x1000"} />
+                <Cover coverUri={props.coverUri} placeholder={null} unWrapped size={mobile ? "600x600" : "1000x1000"} />
             </div>
             <div className="page-header-info">
                 <div className="page-header-info-title">{props.titleText}</div>

@@ -32,7 +32,7 @@ import { setActiveState } from "../../store/trackInfoSlice";
 import CurrentSongSlice from "../../store/CurrentSongSlice";
 import { addTrackToQueuePosition } from "../../store/playingQueueSlice";
 import PopUpModal from "../PopUpModal";
-import TrackCover, { ImagePlaceholder } from "../TrackCover";
+import Cover, { ImagePlaceholder } from "../Cover";
 
 interface SimilarTracksT {
     track: TrackT
@@ -101,7 +101,7 @@ const MobileTrackInfo = () => {
                     {trackInfoState.track.id ? (
                         <>
                             <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
-                                <TrackCover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
+                                <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
                                 <div className="track-info-wrapper">
                                     <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
                                     <div style={{ marginTop: "5px" }} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
