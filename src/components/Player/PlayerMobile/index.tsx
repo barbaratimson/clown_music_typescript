@@ -43,10 +43,7 @@ import { usePalette } from 'react-palette';
 import { useLocation } from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
-import QueueMobile from "../../Queue/QueueMobile";
-import track from "../../Track/Track";
-import { match } from 'assert';
-import , { ImagePlaceholder } from '../../Cover';
+import Cover, { ImagePlaceholder } from '../../Cover';
 import { logMessage } from '../../../store/devLogSlice';
 
 
@@ -340,7 +337,7 @@ const Player = () => {
                     setPlayerFolded(!playerFolded)
                 }} style={{ marginBottom: "49px", gap: "0" }}>
                     <div className="player-track-info-wrapper mobile" key={currentSong.id}>
-                        < placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri}
+                        <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri}
                             size="50x50" imageSize="200x200" />
                         <div className="player-track-info">
                             {currentSong.title ? (
@@ -431,7 +428,7 @@ const Player = () => {
                                         onClick={() => {
                                             skipBack()
                                         }}>
-                                        <
+                                        <Cover
                                             coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri}
                                             size={"600x600"} imageSize={"1000x1000"} unWrapped />
                                     </div>
@@ -440,7 +437,7 @@ const Player = () => {
                                         onClick={() => {
                                             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
                                         }}>
-                                        < placeholder={<ImagePlaceholder size='large' />}
+                                        <Cover placeholder={<ImagePlaceholder size='large' />}
                                             coverUri={currentSong.coverUri} size={"600x600"}
                                             imageSize={"1000x1000"} unWrapped />
                                     </div>
@@ -449,7 +446,7 @@ const Player = () => {
                                         onClick={() => {
                                             skipForward()
                                         }}>
-                                        <
+                                        <Cover
                                             coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri}
                                             size={"600x600"} imageSize={"1000x1000"} unWrapped />
                                     </div>
