@@ -948,7 +948,7 @@ html,body {
 }
 
 .track-info-artist:not(:last-child)::after {
-    content: ",";
+    content: ", ";
 }
 .track-chart-wrapper {
     display: flex;
