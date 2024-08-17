@@ -9,6 +9,9 @@ import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
 import { signImage } from "../../assets/sign";
 import PopUpModal from "../PopUpModal";
 import {ExpandMore, FilterAlt} from "@mui/icons-material";
+import TrackCover, { ImagePlaceholder } from "../TrackCover";
+import ListIcon from '@mui/icons-material/List';
+import PageHeader  from "../PageHeader";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -80,15 +83,10 @@ const Playlist = ({playlist}: PlaylistProps) => {
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <div ref={playlistInfo} className="playlist">
-                    <div className="playlist-cover-wrapper">
-                        <img src={getImageLink(playlist.cover.uri, "600x600") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
-                    </div>
+                {/* <div ref={playlistInfo} className="playlist">
+                        <TrackCover coverUri={playlist.cover.uri} placeholder={<ImagePlaceholder><ListIcon fontSize="large"/></ImagePlaceholder>} size="150x150" imageSize="800x800"/>
                     <div className="playlist-info-wrapper">
                     <div className="playlist-info-section">
-                    {/* <div className="playlist-info-title main">
-                            Плейлист
-                        </div> */}
                         <div className="playlist-info-title">
                             {playlist.title}
                         </div>
@@ -107,7 +105,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
                         </div>
                     </div>
                     </div>
-                </div>
+                </div> */}
+                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={<FilterAlt onClick={()=>{setFilterMenuActive(!filterMenuActive)}}/>}/>
                 <SongsList playlist={tracksFiltered ? {...playlist, tracks:tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : "" }`} : playlist} tracks={tracksFiltered ?? playlist.tracks}/>
             </div>
 
@@ -116,8 +115,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
                          <div className="playlist-filter-title"><ExpandMore/></div>
                     <div className="playlist-filter-wrapper">
                         {genres ? genres.map(genreRender => (
-                            <div className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={()=>{filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({genre:genreRender.genre}) : setFilterQuery(undefined)}}>
-                                <div className="playlist-filter-button-text" key={genreRender.genre}>{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
+                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={()=>{filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({genre:genreRender.genre}) : setFilterQuery(undefined)}}>
+                                <div className="playlist-filter-button-text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
                                 <div className="playlist-filter-button-amount"  style={{width:genreRender.amount + "%"}}>
                                     <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
                                 </div>

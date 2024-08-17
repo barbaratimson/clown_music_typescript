@@ -131,6 +131,7 @@ export interface PlaylistT {
     ogImage:string
     description:string
     cover:CoverT
+    coverWithoutText?:CoverT
     available: boolean
     owner: OwnerT
     kind:number

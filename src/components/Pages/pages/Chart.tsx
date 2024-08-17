@@ -8,6 +8,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import Track from "../../Track/Track";
 import {ErrCodeT, showMessage} from "../../../store/MessageSlice";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
+import SongsList from "../../SongsList";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -56,12 +57,12 @@ const Chart = () => {
     if (isLoading) return <Loader />
 
     return (
-        <div className="playlist-wrapper animated-opacity">
+        <>
             {chartResult ? (
                 <>
             <div ref={playlistInfo} className="playlist">
                 <div className="playlist-cover-wrapper">
-                    <img src={getImageLink(chartResult?.chart.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/>
+                    {/* <img src={getImageLink(chartResult?.chart.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/> */}
                 </div>
                 <div className="playlist-info-wrapper">
                     <div className="playlist-info-title">
@@ -72,21 +73,19 @@ const Chart = () => {
                     </div>
                 </div>
             </div>
-            <div className="songs-wrapper">
-                {chartResult.chart.tracks.map((song) => (
-                    <div onClick={()=>{if (currentQueue.playlist.kind!== chartResult?.chart.kind) setPlayingQueue({playlist:chartResult?.chart,queueTracks:chartResult?.chart.tracks})}} className="track-chart-wrapper">
-                        <div className="track-chart-position-wrapper">
-                            <div className="track-chart-position">
-                                {song.track.chart?.position}
-                            </div>
-                        </div>
-                        <Track key={song.id} track={song.track}/>
-                    </div>
-                ))}
-            </div>
+                
+                {/* <div className="track-chart-position-wrapper">
+                    {chartResult.chart.tracks.map((song) => (
+                                <div className="track-chart-position">
+                                    {song.track.chart?.position}
+                                </div>
+                    ))} 
+                </div> */}
+                <SongsList playlist={chartResult.chart} tracks={chartResult.chart.tracks}/>
+                
             </>
                 ): null}
-        </div>
+        </>
     )
 }
 

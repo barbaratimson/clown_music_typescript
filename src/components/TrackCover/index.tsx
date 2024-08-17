@@ -6,7 +6,7 @@ import { MusicNote } from "@mui/icons-material"
 export type CoverSizeT = "50x50" | "100x100" | "150x150" | "200x200" | "300x300" | "400x400" | "500x500" | "600x600" | "700x700" | "800x800" | "900x900" | "1000x1000"
 
 interface TrackCoverProps {
-    coverUri: string,
+    coverUri: string | undefined,
     size: string
     imageSize?: CoverSizeT
     unWrapped?: boolean

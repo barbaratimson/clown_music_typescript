@@ -28,7 +28,7 @@ const User = () => {
         fetchUser()
     }, [userId, accessToken])
     return (
-        <div className="user-page-wrapper animated-opacity" style={{color:"white"}}>
+        <>
             <div>{userData?.account?.displayName}</div>
             <div>
                 <div>USER ID:</div>
@@ -52,7 +52,7 @@ const User = () => {
             {/*<TextField id="outlined-basic" label="Token" value={accessToken} onChange={(e) => {*/}
             {/*    setAccessToken(e.target.value)*/}
             {/*}} variant="outlined"/>*/}
-        </div>
+        </>
     )
 }
 

@@ -31,11 +31,11 @@ const Track = ({track,queueFunc}:TrackProps) => {
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const playerState = useAppSelector((state: RootState) => state.player)
     const setCurrentSong = (track:TrackT) =>dispatch(changeCurrentSong(track))
-    const [menuActive, setMenuActive] = useState(false)
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setTrackInfoState = (track:TrackT) => dispatch(setTrackInfo(track))
     const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
+    const [isCurrentSong, setIsCurrentSong] = useState(false)
     const changeSong = (song:TrackT) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song);
@@ -61,11 +61,14 @@ const Track = ({track,queueFunc}:TrackProps) => {
         if (action === "removed") trackAddedMessage(`Track ${track.title} removed to Liked`);
     }
 
+    useEffect(()=>{
+        setIsCurrentSong(currentSong.id === track.id)
+    },[currentSong])
 
     return (
-            <div className={`track-wrapper animated-opacity-4ms ${currentSong.id == track.id ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
+            <div className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
-                    <div className={`track-playing-status ${currentSong.id == track.id ? "show" : ""}`}>
+                    <div className={`track-playing-status ${isCurrentSong ? "show" : ""}`}>
                         {currentSong.id != track.id ? (
                             <PlayArrowRounded/>
                         ) : playerState.playing ? (

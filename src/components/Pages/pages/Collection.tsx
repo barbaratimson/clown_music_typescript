@@ -1,22 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {PlaylistT} from "../../../utils/types/types";
+import { PlaylistT } from "../../../utils/types/types";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
-import {getImageLink} from "../../../utils/utils";
-import {Link} from "react-router-dom";
+import { getImageLink } from "../../../utils/utils";
+import { Link } from "react-router-dom";
+import PageHeader from "../../PageHeader";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Collection = () => {
-    const [isLoading,setIsLoading] = useState(true)
-    const [userTracks,setUserTracks] = useState<PlaylistT>()
-    const [userPlaylists,setUserPlaylists] = useState<Array<PlaylistT>>()
+    const [isLoading, setIsLoading] = useState(true)
+    const [userTracks, setUserTracks] = useState<PlaylistT>()
+    const [userPlaylists, setUserPlaylists] = useState<Array<PlaylistT>>()
     const [userData, setUserData] = useState<any>()
     const fetchUserPlaylists = async () => {
         try {
             const response = await axios.get(
-                `${link}/ya/playlists`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+                `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setUserPlaylists(response.data)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -26,7 +27,7 @@ const Collection = () => {
     const fetchYaMusicSongs = async () => {
         try {
             const response = await axios.get(
-                `${link}/ya/myTracks`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+                `${link}/ya/myTracks`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setUserTracks(response.data)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -36,7 +37,7 @@ const Collection = () => {
     const fetchUser = async () => {
         try {
             const response = await axios.get(
-                `${link}/ya/user`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
+                `${link}/ya/user`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setUserData(response.data)
             console.log(response.data)
         } catch (err) {
@@ -44,51 +45,42 @@ const Collection = () => {
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         const a = async () => {
             setIsLoading(true)
             await fetchYaMusicSongs()
             await fetchUserPlaylists()
             await fetchUser()
         }
-        a().then(()=>{setIsLoading(false)})
-    },[])
+        a().then(() => { setIsLoading(false) })
+    }, [])
 
 
     if (isLoading) return <Loader />
 
     return (
-            <div className="collection-wrapper animated-opacity">
-                <div className="user-card-wrapper">
-                    <div className="user-card-avatar-wrapper">
-                        <img
-                            src={"https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
-                            alt="" loading="lazy"/>
-                    </div>
-                    <div className="user-card-info-wrapper">
-                        <div className="user-card-title">Коллекция</div>
-                    </div>
-                </div>
-                <Link style = {{textDecoration:"none",width:"fit-content"}} to={`/users/${userData.account.uid}/playlist/3`}>
-                    <div className="playlist-card-wrapper">
-                        <div className="playlist-card-image">
-                            <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy"/>
-                        </div>
-                        <div className="playlist-card-title-wrapper">
-                            <div className="playlist-card-title">Favourites</div>
-                        </div>
-                    </div>
-                </Link>
-                <div className="collection-user-playlists-wrapper">
+<>
+                       <PageHeader titleText="Коллекция" descText="Ваша музыка" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/"/>
+            <div className="collection-user-playlists-wrapper">
                 <div className="collection-title">Плейлисты</div>
                 <div className="playlists-wrapper">
-                    {userPlaylists ? userPlaylists.map((playlist)=> playlist.kind !== 0 ? (
-                            <PlaylistCard playlist={playlist}/>
-                        ):null
-                    ) : null}
+                    <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
+                        <div className="playlist-card-wrapper">
+                            <div className="playlist-card-image">
+                                <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
+                            </div>
+                            <div className="playlist-card-title-wrapper">
+                                <div className="playlist-card-title">Favourites</div>
+                            </div>
+                        </div>
+                    </Link>
+                    {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
+                        <PlaylistCard playlist={playlist} />
+                    ) : null
+                ) : null}
                 </div>
             </div>
-                </div>
+</>
 
     )
 }

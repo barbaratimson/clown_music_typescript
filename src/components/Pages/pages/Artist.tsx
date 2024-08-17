@@ -11,6 +11,7 @@ import {fetchLikedSongs} from "../../../utils/apiRequests";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../utils/deviceHandler";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import {useAppDispatch} from "../../../store";
+import PageHeader from "../../PageHeader";
 
 interface ArtistResultT {
     artist:ArtistT,
@@ -81,10 +82,11 @@ const Artist = () => {
 
     if (isLoading) return <Loader />
     return (
-            <div className="artist-wrapper animated-opacity">
+            <>
                 {artistResult ? (
                     <>
-                        <div ref={playlistInfo} className="playlist">
+                        <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult.artist.cover.uri}/>
+                        {/* <div ref={playlistInfo} className="playlist">
                             <div className="playlist-cover-wrapper">
                                 <img
                                     src={getImageLink(artistResult?.artist.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
@@ -95,7 +97,7 @@ const Artist = () => {
                                 <div
                                     className="artist-card-likes-count">Нравится: {artistResult?.artist.likesCount}</div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="artist-block-title">Popular tracks:</div>
                         <div
                             className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
@@ -110,7 +112,7 @@ const Artist = () => {
                         </div>
                     </>
                 ) : null}
-            </div>
+            </>
     )
 }
 

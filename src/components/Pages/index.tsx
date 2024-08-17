@@ -18,7 +18,7 @@ interface PagePropsT {
 }
 const Page = ({isMobile}:PagePropsT) => {
     return (
-        <div className={`page-wrapper ${isMobile && "mobile"}`}>
+        <div className={`page-wrapper animated-opacity ${isMobile && "mobile"}`}>
             <Routes>
                 <Route path="collection" element={<Collection/>} />
                 <Route path="chart" element={<Chart/>} />
