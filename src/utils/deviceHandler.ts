@@ -30,3 +30,9 @@ export const getIsMobile = (state: uiStateT) => {
 }
 
 export const getIsDesktop = (state:uiStateT) => !getIsMobile(state)
+
+export const getIsMobileInfo = () => {
+    handleSubscribe()
+    onSubscribe()
+    return getIsMobile(deviceState)
+}

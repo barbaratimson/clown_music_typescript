@@ -1358,7 +1358,22 @@ html,body {
     background: rgba(255, 255, 255, 0.3);
 }
 .album-artist-info-name {
+    font-size: 15px;
+    font-weight: 500;
     color: var(--font-color-main);
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.album-artist-info-and {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    flex-grow: 1;
 }
 
 .playlists-wrapper {
@@ -1850,6 +1865,12 @@ html,body {
     align-items: center;
     font-size: 40px;
     font-weight: 500;
+    line-height: 0.8;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 .page-header-info-desc {
@@ -1877,13 +1898,12 @@ html,body {
 
 .page-header-image-wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .page-header-image-wrapper > img {
     width: 100%;
     aspect-ratio: 1/1;
+    transform: translate(0, -10%);
 }
 
 
@@ -1891,9 +1911,6 @@ html,body {
 @media (max-width: 575px) {
     * {
         -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
-    }
-    .album-artist-info-name {
-        font-size: 12px;
     }
     .album-info-wrapper {
         padding: 10px;
