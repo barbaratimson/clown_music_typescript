@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 interface ArtistNameProps {
     artist: ArtistT,
-    size: "15px" | "12px"
+    size: "15px" | "12px" | "14px"
 }
 
 const ArtistName = ({artist,size}:ArtistNameProps) => {
