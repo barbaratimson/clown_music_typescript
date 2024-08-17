@@ -32,7 +32,7 @@ const Artist = () => {
     const [artistResult, setArtistResult] = useState<ArtistResultT>()
     const [isMobile, setIsMobile] = useState(false)
     const playlistInfo = useRef(null)
-    const [changePlaylistView, setChangePlaylistView] = useState(false)
+    const [changePlaylistView, setChangePlaylistView] = useState(true)
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const fetchArtist = async (artistId: string) => {

@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {CoverT, PlaylistT} from "../../utils/types/types";
 import {getImageLink} from "../../utils/utils";
-import Cover from "../Cover";
+import Cover, { ImagePlaceholder } from "../Cover";
 import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
+import ListIcon from '@mui/icons-material/List';
 
 interface PlaylistCardProps {
     title: string,
@@ -30,7 +31,7 @@ const PlaylistCardBlock = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">)
         <>
         <Link style = {{textDecoration:"none",width:"fit-content"}} to={link}>
             <div className="playlist-card-wrapper">
-                <Cover coverUri={coverUri} size="150x150" imageSize="200x200"/>
+                <Cover coverUri={coverUri} placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} size="150x150" imageSize="200x200"/>
                 <div className="playlist-card-title-wrapper">
                     <div className="playlist-card-title">{title}</div>
                 </div>
@@ -46,7 +47,7 @@ const PlaylistCardLine = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">) 
         <>
         <Link style = {{textDecoration:"none",width:"auto"}} to={link}>
             <div className="playlist-card-line-wrapper">
-                <Cover coverUri={coverUri} size="75x75" imageSize="100x100"/>
+                <Cover coverUri={coverUri} size="75x75" placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} imageSize="100x100"/>
                 <div className="playlist-card-line-title-wrapper">
                     <div className="playlist-card-line-title">{title}</div>
                 </div>
