@@ -1382,7 +1382,7 @@ html,body {
 .playlists-wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fill, 160px);
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 10px;
     width: 100%;
 }
@@ -1909,7 +1909,36 @@ html,body {
     transform: translate(0, -10%);
 }
 
-
+.page-block-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.page-block-title {
+    width: 100%;
+    padding: 10px;
+    color: var(--font-color-main);
+    font-size: 25px;
+    font-weight: 500;
+}
+.page-block-contents {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.page-block-header {
+    display: flex;
+    flex-direction: row;
+}
+.page-block-controls {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    color: var(--font-color-main);
+}
 
 @media (max-width: 575px) {
     * {

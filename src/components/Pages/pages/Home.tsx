@@ -3,6 +3,7 @@ import PlaylistCard from "../../PlaylistCard";
 import Loader from "../../Loader";
 import axios from "axios";
 import {GeneratedPlaylistT} from "../../../utils/types/types";
+import PageBlock from "../../PageBlock";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Home = () => {
@@ -30,11 +31,13 @@ const Home = () => {
 
     return (
         <div className="page-default animated-opacity">
-            <div className="playlists-wrapper">
-                {generatedPlaylists ? generatedPlaylists.map((playlist) => (
-                    <PlaylistCard playlist={playlist.data}/>
-                )) : null}
-            </div>
+            <PageBlock title="Daily playlists">
+                <div className="playlists-wrapper">
+                    {generatedPlaylists ? generatedPlaylists.map((playlist) => (
+                        <PlaylistCard playlist={playlist.data}/>
+                    )) : null}
+                </div>
+            </PageBlock>
         </div>
     )
 }

@@ -8,7 +8,7 @@ interface PageHeaderT {
     descText?: string,
     coverUri?: string
     controls?: any
-    info?:any
+    children?:any
     ref?: any
 }
 
@@ -22,7 +22,7 @@ const PageHeader = forwardRef<HTMLDivElement, PageHeaderT>((props,ref) => {
             <div className="page-header-info">
                 <div className="page-header-info-title">{props.titleText}</div>
                 <div className="page-header-info-desc">{props.descText}</div>
-                {props.info}
+                {props.children}
             </div>
             <div className="page-header-info-controls">
                 {props.controls}

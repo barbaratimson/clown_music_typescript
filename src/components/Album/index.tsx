@@ -19,7 +19,7 @@ const Album = ({album}: AlbumProps) => {
 
     return (
         <div className="playlist-wrapper animated-opacity">
-            <PageHeader ref={playlistInfo} descText="by" titleText={album.title} coverUri={album.coverUri} info={
+            <PageHeader ref={playlistInfo} descText="by" titleText={album.title} coverUri={album.coverUri}>
                  <>
                  <div className="album-artist-info-wrapper">
                  {album.artists.slice(0,2).map((artist) => (
@@ -33,11 +33,11 @@ const Album = ({album}: AlbumProps) => {
                      </Link>
                  ))}
              </div>
-                 {/* {album.artists.length > 2 ? (
+                 {album.artists.length > 2 ? (
                      <div className="album-artist-info-and">And others...</div>
-                 ):null} */}
+                 ):null}
             </>
-            }/>
+            </PageHeader>
             {album.volumes.map((volume)=>(
              <SongsList playlist={{kind:album.id,cover:{uri:album.coverUri},uid:0,ogImage:album.coverUri,available:true,owner:{uid:album.artists[0].id,name:album.artists[0].name,verified:true},title:album.title,description:"",tracks:trackArrayWrap(volume)}} tracks={trackArrayWrap(volume)}/>
             ))}

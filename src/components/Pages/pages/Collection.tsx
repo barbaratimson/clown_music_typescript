@@ -6,6 +6,8 @@ import PlaylistCard from "../../PlaylistCard";
 import { getImageLink } from "../../../utils/utils";
 import { Link } from "react-router-dom";
 import PageHeader from "../../PageHeader";
+import PageBlock from "../../PageBlock";
+import { Add } from "@mui/icons-material";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -59,28 +61,27 @@ const Collection = () => {
     if (isLoading) return <Loader />
 
     return (
-            <div className="page-default animated-opacity">
-                <PageHeader titleText="Коллекция" descText="Ваша музыка" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
-                <div className="collection-user-playlists-wrapper">
-                    <div className="collection-title">Плейлисты</div>
-                    <div className="playlists-wrapper">
-                        <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
-                            <div className="playlist-card-wrapper">
-                                <div className="playlist-card-image">
-                                    <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
-                                </div>
-                                <div className="playlist-card-title-wrapper">
-                                    <div className="playlist-card-title">Favourites</div>
-                                </div>
+        <div className="page-default animated-opacity">
+            <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
+            <PageBlock title="Playlists" controls={<Add fontSize="large"/>}>
+                <div className="playlists-wrapper">
+                    <Link style={{ textDecoration: "none", width: "fit-content" }} to={`/users/${userData.account.uid}/playlist/3`}>
+                        <div className="playlist-card-wrapper">
+                            <div className="playlist-card-image">
+                                <img src={"http://avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/600x600"} alt="" loading="lazy" />
                             </div>
-                        </Link>
-                        {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
-                            <PlaylistCard playlist={playlist} />
-                        ) : null
-                        ) : null}
-                    </div>
+                            <div className="playlist-card-title-wrapper">
+                                <div className="playlist-card-title">Favourites</div>
+                            </div>
+                        </div>
+                    </Link>
+                    {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
+                        <PlaylistCard playlist={playlist} />
+                    ) : null
+                    ) : null}
                 </div>
-            </div>
+            </PageBlock>
+        </div>
 
     )
 }
