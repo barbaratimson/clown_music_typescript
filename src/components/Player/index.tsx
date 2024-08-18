@@ -1,11 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {QueueT, TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
-import {Box, IconButton, LinearProgress} from "@mui/material";
+import {Box, IconButton, LinearProgress, Skeleton} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../store/PlayerSlice";
-import {getImageLink, secToMinutesAndSeconds} from "../../utils/utils";
+import {
+    getImageLink,
+    getUniqueRandomTrackFromPlaylist,
+    randomSongFromTrackList,
+    secToMinutesAndSeconds
+} from "../../utils/utils";
 import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
 import {
@@ -28,6 +33,8 @@ import {setLikedSongs} from '../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
 import { trackArrayWrap, trackWrap } from '../../utils/trackWrap';
 import SeekSlider from "./components/SeekSlider";
+import Cover, {ImagePlaceholder} from "../Cover";
+import {logMessage} from "../../store/devLogSlice";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -60,6 +67,8 @@ const Player = () => {
 
     const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
     const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
+
+    const devLog = (message: string) => dispatch(logMessage(message))
 
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
@@ -138,7 +147,7 @@ const Player = () => {
         if (audioElem.current.currentTime >= 10) {
             audioElem.current.currentTime = 0
         } else if (index !== 0) {
-            setCurrentSong(queue[index -1].track)
+            setCurrentSong(queue[index - 1].track)
         } else {
             changeTime(0)
         }
@@ -149,25 +158,16 @@ const Player = () => {
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
-            startPlayerFunc()
-        } else if (index === queue.length - 1 ) {
+            audioElem.current.play()
+        } else if (index === queue.length - 1) {
             if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
-                let newSong:TrackType;
-                do {
-                    newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-                } while (currentSong.id == newSong.track.id)
-                setPlayingQueue([trackWrap(currentSong), newSong])
+                setPlayingQueue([trackWrap(currentSong)])
             } else {
                 setCurrentSong(queue[0].track)
             }
         } else {
             setCurrentSong(queue[index + 1].track)
         }
-    }
-
-
-    const randomSongFromTrackList = (trackList:Array<TrackType>) => {
-        return trackList[Math.floor((Math.random()*trackList.length))]
     }
 
     const updateLikedSongs = async (action:"liked" | "removed") => {
@@ -190,31 +190,43 @@ const Player = () => {
 
 
     useEffect(() => {
+        const fetchAudioAndPlay = () => {
+            devLog(`start fetching song link`)
+            fetchYaSongLink(currentSong.id)
+                .then(link => {
+                    devLog(`song link ready ${link}`)
+                    if (!audioElem.current) return
+                    audioElem.current.src = link;
+                    return audioElem.current.play();
+                })
+                .then(_ => { })
+                .catch(e => {
+                    console.log(e)
+                    devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
+                })
+        }
+        devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         setIsLoading(true)
-        //TODO: Error handling
-        if (currentSong.available && currentSong && audioElem.current) {
-            audioElem.current.pause()
+        if (currentSong.available && currentSong && audioElem.current && savedVolume) {
+            audioElem.current.volume = (parseFloat(savedVolume) * volumeMultiplier) / 100
+
             changeTime(0)
             setPosition(0)
         }
-        const changeTrack = async () => {
-            const trackLink = await fetchYaSongLink(currentSong.id).catch((e)=>{if (audioElem.current) audioElem.current.src = ""})
-            if (trackLink && audioElem.current) {
-                audioElem.current.setAttribute('src',trackLink)
+
+        fetchAudioAndPlay()
+
+        const index = queue.findIndex(x => x.id == currentSong.id);
+        if (playerState.shuffle && index === queue.length - 1 && queueCurrentPlaylist.tracks.length !== 1) {
+            const newSong = getUniqueRandomTrackFromPlaylist(queueCurrentPlaylist.tracks, queue, currentSong)
+            if (!newSong) return
+            if (queueCurrentPlaylist.tracks.length !== queue.length) {
+                addToQueue(newSong)
+            } else {
+                setPlayingQueue([trackWrap(currentSong), newSong])
             }
         }
 
-        changeTrack().then(()=>{if (audioElem.current && playerState.playing) audioElem.current.play().catch((e)=> console.log(e))})
-        if (queue.length !== 0 && currentSong.id !== 0) {
-            const index = queue.findIndex(x => x.id == currentSong.id);
-            if (playerState.shuffle && index === queue.length - 1 && queue.length !== queueCurrentPlaylist.tracks.length) {
-                let newSong: TrackType;
-                do {
-                    newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-                } while (queue.findIndex(x => x.track.id === newSong.track.id) !== -1)
-                addToQueue(newSong)
-            }
-        }
     }, [currentSong]);
 
     useEffect(() => {
@@ -271,20 +283,33 @@ const Player = () => {
         <>
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
-                    <div className="player-track-cover-wrapper">
-                        <img src={getImageLink(currentSong.coverUri, "200x200")} loading="lazy" alt=""/>
-                    </div>
+                    <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri}
+                           size="60x60" imageSize="200x200" />
                     <div className="player-track-info">
-                        <div className="player-track-info-title">
-                            {currentSong.title}
-                        </div>
-                        <div className="player-track-info-artists-wrapper">
-                            <span className="track-info-artist-span">
-                        {currentSong.artists.map(artist => (
-                           <ArtistName size={"15px"} artist={artist}/>
-                            ))}
-                            </span>
-                        </div>
+                        {currentSong.title ? (
+                            <div className="player-track-info-title">
+                                {currentSong.title}
+                            </div>
+                        ) : (
+                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false} width={50}
+                                      height={10}></Skeleton>
+                        )}
+                        {currentSong.artists.length !== 0 ? (
+                            <div className="player-track-info-artists-wrapper">
+                                    <span onClick={(e) => {
+                                        e.stopPropagation()
+                                    }} className="track-info-artist-span">
+
+                                        {currentSong.artists.map(artist => (
+                                            <ArtistName size={"15px"} artist={artist} />
+                                        ))}
+
+                                    </span>
+                            </div>
+                        ) : (
+                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f', marginTop: "5px" }}
+                                      animation={false} width={100} height={10}></Skeleton>
+                        )}
                     </div>
                     <div className="player-track-controls">
                         <div key={currentSong.id} className="player-track-controls-border">
@@ -386,23 +411,31 @@ const Player = () => {
                     </div>
                 </div>
             </div>
-            <audio preload={"auto"} crossOrigin="anonymous"
-                   src={playerState.src} ref={audioElem}
-                   onLoadStart={() => {
+            <audio key={currentSong.id + "_player"} crossOrigin="anonymous"
+                   preload="auto"
+                   ref={audioElem}
+                   onPlay={(e) => {
+                       devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
+                   }}
+                   onLoadStart={(e) => {
                        setLoading(true)
                    }}
                    onError={(e) => {
-                       stopPlayerFunc()
+                       //   stopPlayerFunc()
+                       devLog(`player error`)
                        setLoading(false)
                    }}
                    onCanPlay={() => {
                        setLoading(false)
-                       startPlayerFunc()
+                       if (playerState.playing && audioElem.current) audioElem.current.play()
+                       //   startPlayerFunc()
                    }}
                    onPause={() => {
-                       stopPlayerFunc()
+                       if (playerState.playing) stopPlayerFunc()
+                       devLog(`player paused`)
                    }} onEnded={(e) => {
                 skipForward()
+                startPlayerFunc()
             }} onTimeUpdate={onPlaying}></audio>
         </>
     )

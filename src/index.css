@@ -933,9 +933,13 @@ html,body {
 
 .track-current {
     background: rgba(255, 255, 255, 0.1);
-    transform: translateX(-5px);
-
+    transform: translateX(-4px);
 }
+
+.track-current.active {
+    transform: none;
+}
+
 
 .track-info-artists-wrapper {
     display: flex;
@@ -1202,7 +1206,6 @@ html,body {
 }
 
 .artist-popular-tracks-grid > * {
-    padding: 0 40px;
     display: block;
     gap: 20px;
     column-count: 2;
@@ -1964,7 +1967,7 @@ html,body {
 .page-header-image-wrapper > img {
     width: 100%;
     aspect-ratio: 1/1;
-    transform: translate(0, -10%);
+    transform: translate(0, -20%);
 }
 
 .page-block-wrapper {

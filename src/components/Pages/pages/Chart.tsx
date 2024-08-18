@@ -9,6 +9,8 @@ import Track from "../../Track/Track";
 import { ErrCodeT, showMessage } from "../../../store/MessageSlice";
 import { hideHeader, showHeader } from "../../../store/mobile/mobileHeaderSlice";
 import SongsList from "../../SongsList";
+import PageHeader from "../../PageHeader";
+import {getIsMobileInfo} from "../../../utils/deviceHandler";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -16,7 +18,6 @@ const Chart = () => {
     const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(true)
     const [chartResult, setChartResult] = useState<ChartT>()
-    const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue)
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
@@ -38,18 +39,21 @@ const Chart = () => {
         }
     };
 
+    const a = () => {
+        if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && chartResult) {
+            setHeaderActive({ title: chartResult?.chart.title })
+        } else {
+            setHeaderOff()
+        }
+    }
+
     useEffect(() => {
         fetchChart()
     }, [])
 
+
     useEffect(() => {
-        const a = () => {
-            if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
-                setHeaderActive({ title: "Чарт" })
-            } else {
-                setHeaderOff()
-            }
-        }
+        getIsMobileInfo()
         document.addEventListener("scroll", a)
         return () => { document.removeEventListener("scroll", a); setHeaderOff() }
     }, []);
@@ -60,27 +64,8 @@ const Chart = () => {
         <div className="page-default animated-opacity">
             {chartResult ? (
                 <>
-                    <div ref={playlistInfo} className="playlist">
-                        <div className="playlist-cover-wrapper">
-                            {/* <img src={getImageLink(chartResult?.chart.cover.uri, "200x200") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"} alt="" loading="lazy"/> */}
-                        </div>
-                        <div className="playlist-info-wrapper">
-                            <div className="playlist-info-title">
-                                {chartResult?.chart.title}
-                            </div>
-                            <div className="playlist-info-desc">
-                                {chartResult?.chart.description}
-                            </div>
-                        </div>
-                    </div>
+                    <PageHeader ref={playlistInfo} titleText={chartResult?.chart.title} descText={chartResult?.chart.description} coverUri={chartResult?.chart.cover.uri}/>
 
-                    {/* <div className="track-chart-position-wrapper">
-                    {chartResult.chart.tracks.map((song) => (
-                                <div className="track-chart-position">
-                                    {song.track.chart?.position}
-                                </div>
-                    ))} 
-                </div> */}
                     <SongsList playlist={chartResult.chart} tracks={chartResult.chart.tracks} />
 
                 </>

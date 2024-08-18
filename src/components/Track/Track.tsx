@@ -66,7 +66,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
     },[currentSong])
 
     return (
-            <div className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""}`}   onClick={()=>{changeSong(track)}}>
+            <div className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""} ${!playerState.playing ? "active" : ""}`} onClick={()=>{changeSong(track)}}>
                 <div className="track-cover-wrapper">
                     <div className={`track-playing-status ${isCurrentSong ? "show" : ""}`}>
                         {currentSong.id != track.id ? (
@@ -80,7 +80,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                     <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">
-                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+                    <div className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
                         <span className="track-info-artist-span">
                             {track.artists.map(artist => (

@@ -1,3 +1,5 @@
+import {TrackT, TrackType} from "./types/types";
+
 export function addAlpha(color:string, opacity:number) {
     var _opacity = Math.round(Math.min(Math.max(opacity ?? 1, 0), 1) * 255);
     return color + _opacity.toString(16).toUpperCase();
@@ -16,6 +18,27 @@ export function secToMinutesAndSeconds(time:number | undefined) {
     } else {
         return '0:00'
     }
+}
+
+export const getUniqueRandomTrackFromPlaylist = (referencePlaylist: Array<TrackType>, queueToAdd: Array<TrackType>, currentSong: TrackT) => {
+    let newSong: TrackType;
+    if (queueToAdd.length !== 0 && currentSong.id !== 0) {
+        const index = queueToAdd.findIndex(x => x.id == currentSong.id);
+        if (queueToAdd.length !== referencePlaylist.length) {
+            do {
+                newSong = randomSongFromTrackList(referencePlaylist)
+            } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
+        } else {
+            do {
+                newSong = randomSongFromTrackList(referencePlaylist)
+            } while (currentSong.id == newSong.track.id)
+        }
+        return newSong
+    }
+}
+
+export const randomSongFromTrackList = (trackList: Array<TrackType>) => {
+    return trackList[Math.floor((Math.random() * trackList.length))]
 }
 
 export function isElementInViewport (el:HTMLElement) {

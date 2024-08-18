@@ -12,7 +12,13 @@ import {
     setShuffle,
     setSrc
 } from "../../../store/PlayerSlice";
-import { addAlpha, getImageLink, secToMinutesAndSeconds } from "../../../utils/utils";
+import {
+    addAlpha,
+    getImageLink,
+    getUniqueRandomTrackFromPlaylist,
+    randomSongFromTrackList,
+    secToMinutesAndSeconds
+} from "../../../utils/utils";
 import { dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong } from '../../../utils/apiRequests';
 import ArtistName from '../../ArtistName';
 import {
@@ -191,9 +197,6 @@ const Player = () => {
             setCurrentSong(queue[index + 1].track)
         }
     }
-    const randomSongFromTrackList = (trackList: Array<TrackType>) => {
-        return trackList[Math.floor((Math.random() * trackList.length))]
-    }
 
     const updateLikedSongs = async (action: "liked" | "removed") => {
         setLikedSongsData(await fetchLikedSongs())
@@ -252,22 +255,6 @@ const Player = () => {
 
     }, [currentSong]);
 
-    const getUniqueRandomTrackFromPlaylist = (referencePlaylist: Array<TrackType>, queueToAdd: Array<TrackType>, currentSong: TrackT) => {
-        let newSong: TrackType;
-        if (queueToAdd.length !== 0 && currentSong.id !== 0) {
-            const index = queueToAdd.findIndex(x => x.id == currentSong.id);
-            if (queueToAdd.length !== referencePlaylist.length) {
-                do {
-                    newSong = randomSongFromTrackList(referencePlaylist)
-                } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
-            } else {
-                do {
-                    newSong = randomSongFromTrackList(referencePlaylist)
-                } while (currentSong.id == newSong.track.id)
-            }
-            return newSong
-        }
-    }
 
     // useEffect(() => {
     //     if (audioElem.current) {
