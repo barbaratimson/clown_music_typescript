@@ -125,7 +125,7 @@ const BestResult = ({ bestResult }: any) => {
                 return <Track track={bestResult.result} />
             }
             case "playlist": {
-                return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={`/users/${bestResult.result.owner.id}/playlist/${bestResult.result.kind}`}/>
+                return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={`/users/${bestResult?.result.owner.uid}/playlist/${bestResult?.result.kind}`}/>
             }
         }
 

@@ -1067,7 +1067,7 @@ html,body {
 .page-loader-wrapper {
     display: flex;
     width: 100vw;
-    height: 70vh;
+    height: 67vh;
     justify-content: center;
     align-items: center;
 }
@@ -1946,6 +1946,8 @@ html,body {
     top: 0;
     left: 0;
     width: 100%;
+    overflow:hidden;
+    text-overflow: ellipsis;
     color: var(--font-color-main);
     height: 100%;
     padding: 20px;
@@ -1954,21 +1956,16 @@ html,body {
 }
 
 .page-header-info-title {
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    font-size: 40px;
+    font-size: 35px;
     font-weight: 500;
     overflow : hidden;
     text-overflow: ellipsis;
-    display: -webkit-box;
     line-height: 1.5;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
 }
 
 .page-header-info-desc {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 500;
     margin-right: 25px;
     margin-left: 5px;
