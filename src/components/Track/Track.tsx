@@ -81,7 +81,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                 </div>
                 <div className="track-info-wrapper">
                     <div className="track-info-title-wrapper">
-                        <PositionInChart position={track.chart.position} progress={track.chart.progress}/>
+                        {track.chart && <PositionInChart position={track.chart.position} progress={track.chart.progress}/>}
                         <div className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                     </div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
