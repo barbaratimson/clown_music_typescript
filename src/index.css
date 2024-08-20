@@ -1775,7 +1775,7 @@ html,body {
     align-items: center;
 }
 .track-info-mobile-control-label {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
 }
 .track-info-mobile-similar-tracks {
@@ -1913,6 +1913,7 @@ html,body {
     color: var(--font-color-main);
     height: 100%;
     padding: 20px;
+    gap: 10px;
     background-color: var(--bg-color-secondary);
     background: linear-gradient(45deg, rgba(0, 0, 0, .6), rgba(0, 0, 0, .595) 6.67%, rgba(0, 0, 0, .579) 13.33%, rgba(0, 0, 0, .551) 20%, rgba(0, 0, 0, .512) 26.67%, rgba(0, 0, 0, .461) 33.33%, rgba(0, 0, 0, .401) 40%, rgba(0, 0, 0, .334) 46.67%, rgba(0, 0, 0, .266) 53.33%, rgba(0, 0, 0, .199) 60%, rgba(0, 0, 0, .139) 66.67%, rgba(0, 0, 0, .088) 73.33%, rgba(0, 0, 0, .049) 80%, rgba(0, 0, 0, .021) 86.67%, rgba(0, 0, 0, .005) 93.33%, transparent);
 }
