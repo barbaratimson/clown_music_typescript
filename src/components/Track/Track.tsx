@@ -4,7 +4,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop} from "../../store/PlayerSlice";
 import {getImageLink, msToMinutesAndSeconds, secToMinutesAndSeconds} from "../../utils/utils";
-import {Favorite, FavoriteBorder, MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import {ArrowDropDown, ArrowDropUp, Favorite, FavoriteBorder, HorizontalRule, MoreVert, PauseRounded, PlayArrowRounded, Remove} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
 import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
@@ -80,7 +80,10 @@ const Track = ({track,queueFunc}:TrackProps) => {
                     <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri} size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">
-                    <div className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+                    <div className="track-info-title-wrapper">
+                        <PositionInChart position={track.chart.position} progress={track.chart.progress}/>
+                        <div className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+                    </div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
                         <span className="track-info-artist-span">
                             {track.artists.map(artist => (
@@ -108,6 +111,21 @@ const Track = ({track,queueFunc}:TrackProps) => {
                 </div>
         </div>
 )
+}
+
+interface PositionInChartProps {
+    position: number,
+    progress?: "up" | "down" | "same"
+}
+
+
+const PositionInChart = ({position, progress}:PositionInChartProps) => {
+    return (
+        <div className="track-info-position-wrapper">
+            <div className="track-info-position">{"# " + position}</div>
+            <div className="track-info-progress">{progress === "up" ? <ArrowDropUp/> : progress === "down" ? <ArrowDropDown/> : <Remove/>}</div>
+        </div>
+    )
 }
 
 

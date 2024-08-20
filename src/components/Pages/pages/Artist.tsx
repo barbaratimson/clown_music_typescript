@@ -52,7 +52,7 @@ const Artist = () => {
 
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && artistResult) {
-            setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover.uri })
+            setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover?.uri })
         } else {
             setHeaderOff()
         }
@@ -83,10 +83,10 @@ const Artist = () => {
         <div className="page-default animated-opacity">
             {artistResult ? (
                 <>
-                    <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult.artist.cover.uri} />
+                    <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult?.artist?.cover?.uri} />
                     <PageBlock title="Popular tracks">
                         <div className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult.artist.cover.uri }, uid: 0, ogImage: artistResult.artist.cover.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
+                            <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult?.artist.cover?.uri }, uid: 0, ogImage: artistResult?.artist.cover?.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>

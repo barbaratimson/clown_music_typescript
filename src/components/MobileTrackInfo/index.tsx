@@ -211,9 +211,7 @@ const MobileTrackInfo = () => {
                         <Link style={{ textDecoration: "none" }} to={`/artist/${artist.id}`}>
                             <div className="track-info-artist-info">
                                 <div className="track-info-artist-avatar-wrapper">
-                                    <img
-                                        src={getImageLink(artist.cover?.uri, "50x50") ?? "https://music.yandex.ru/blocks/playlist-cover/playlist-cover_no_cover3.png"}
-                                        alt="" loading="lazy" />
+                                    <Cover coverUri={artist.cover?.uri} size="50x50" placeholder={<ImagePlaceholder size="small"/>} unWrapped/>
                                 </div>
                                 <div className="track-info-artist-info-name">{artist.name}</div>
                             </div>
