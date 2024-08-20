@@ -188,8 +188,8 @@ const MobileTrackInfo = () => {
                                     ):null}
                                 </>
                                 ) : (
-                                        <div style={{ width: "100%", height: "45px" }}>
-                                            <Loader size={50} />
+                                        <div style={{ width: "100%", height: "50px" }}>
+                                            <Loader size={30} />
                                         </div>
                                 )}
 

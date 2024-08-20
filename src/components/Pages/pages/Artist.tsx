@@ -71,6 +71,7 @@ const Artist = () => {
     }, [artistId])
 
     useEffect(() => {
+        if (artistResult?.albums && artistResult?.albums.length <= 2) setChangePlaylistView(false)
         getIsMobileInfo()
         document.addEventListener("scroll", a)
         return () => { document.removeEventListener("scroll", a); setHeaderOff() }
