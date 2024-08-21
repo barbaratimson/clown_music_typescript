@@ -51,6 +51,7 @@ import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
 import Cover, { ImagePlaceholder } from '../../Cover';
 import { logMessage } from '../../../store/devLogSlice';
+import { PositionInChart } from '../../Track/Track';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -328,8 +329,11 @@ const Player = () => {
                             size="50x50" imageSize="200x200" />
                         <div className="player-track-info">
                             {currentSong.title ? (
-                                <div className="player-track-info-title">
-                                    {currentSong.title}
+                                <div className='track-info-title-wrapper'>
+                                    {currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}
+                                    <div className="player-track-info-title">
+                                        {currentSong.title}
+                                    </div>
                                 </div>
                             ) : (
                                 <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false} width={50}
@@ -442,8 +446,11 @@ const Player = () => {
                                 <div className="player-full-track-info-wrapper">
                                     <div className="player-track-info full">
                                         {currentSong.title ? (
-                                            <div className="player-track-info-title">
+                                            <div className='track-info-title-wrapper full'>
+                                            {currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}
+                                            <div className="player-track-info-title" style={{fontSize:"20px !important"}}>
                                                 {currentSong.title}
+                                            </div>
                                             </div>
                                         ) : (
                                             <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false}

@@ -81,7 +81,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                 </div>
                 <div className="track-info-wrapper">
                     <div className="track-info-title-wrapper">
-                        {track.chart && <PositionInChart position={track.chart.position} progress={track.chart.progress}/>}
+                        {track.chart && <PositionInChart position={track.chart.position}/>}
                         <div className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                     </div>
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
@@ -115,16 +115,13 @@ const Track = ({track,queueFunc}:TrackProps) => {
 
 interface PositionInChartProps {
     position: number,
-    progress?: "up" | "down" | "same"
+    text?: string
 }
 
 
-const PositionInChart = ({position, progress}:PositionInChartProps) => {
+export const PositionInChart = ({position, text}:PositionInChartProps) => {
     return (
-        <div className="track-info-position-wrapper">
-            <div className="track-info-position">{"# " + position}</div>
-            <div className="track-info-progress">{progress === "up" ? <ArrowDropUp/> : progress === "down" ? <ArrowDropDown/> : <Remove/>}</div>
-        </div>
+            <div className="track-info-position">{text ?? "#" + position}</div>
     )
 }
 

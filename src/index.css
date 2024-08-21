@@ -951,24 +951,24 @@ html,body {
 .track-info-title-wrapper {
     display: flex;
     flex-direction: row;
-    gap: 5px;
+    align-items: center;
+    gap: 3px;
 } 
+.track-info-title-wrapper.full > .player-track-info-title{
+    font-size: 20px;
+}
 
-.track-info-position-wrapper {
+
+.track-info-position {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     padding: 2px;
+    min-width: 30px;
+    height:fit-content;
     border-radius: 3px;
     background-color: var(--bg-color-secondary);
     color: var(--font-color-main);
-}
-
-.track-info-progress {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .track-info-progress > svg {
@@ -977,7 +977,7 @@ html,body {
     height: 10px;
 }
 
-.track-info-position-wrapper {
+.track-info-position {
     font-size: 10px;
 }
 
