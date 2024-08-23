@@ -30,7 +30,7 @@ const Page = ({isMobile}:PagePropsT) => {
                 <Route path="users/:userId/playlist/:playlistId" element={<PlaylistView />} />
                 <Route path="artist/:artistId" element={<Artist/>}></Route>
                 <Route path="artist/:artistId/album/:albumId" element={<AlbumView/>}></Route>
-                <Route path = '*' element = {<div>Страница не найдена</div>} />
+                <Route path = '*' element = {<div style={{color:"white"}}>Страница не найдена</div>} />
             </Routes>
         </div>
     )

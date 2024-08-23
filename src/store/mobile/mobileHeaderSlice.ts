@@ -3,6 +3,7 @@ import { HeaderInitState } from "../initialStates";
 interface HeaderT {
     title:string
     imgUrl?: string
+    linkTo?: string,
     active:boolean
 }
 

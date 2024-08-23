@@ -29,4 +29,11 @@ const MobileHeader = () => {
     )
 }
 
+interface headerTitleProps {
+    title: string,
+    imgUrl: string,
+    linkTo: string
+}
+
+
 export default MobileHeader

@@ -46,7 +46,7 @@ import { addTrackToQueue, setOpeningState, setQueue } from "../../../store/playi
 import { trackWrap } from '../../../utils/trackWrap';
 import { setActiveState, setTrackInfo } from "../../../store/trackInfoSlice";
 import { usePalette } from 'react-palette';
-import { useLocation } from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
 import Cover, { ImagePlaceholder } from '../../Cover';
@@ -395,11 +395,11 @@ const Player = () => {
                     {!playerFolded ? (
                         <>
                             <div className="player-navbar-full">
-                                <div className="player-navbar-button close">
-                                    <ExpandMore />
-                                </div>
+                                    <div className="player-navbar-button close">
+                                        <ExpandMore />
+                                    </div> 
                                 <div className="player-header-mobile-title" onClick={(e) => {
-                                    e.stopPropagation()
+                                    e.stopPropagation();
                                 }}>{queueCurrentPlaylist.title}</div>
                                 <div className="player-navbar-button queue" onClick={(e) => {
                                     setQueueOpen(!queueOpen);

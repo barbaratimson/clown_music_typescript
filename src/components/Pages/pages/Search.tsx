@@ -9,7 +9,7 @@ import PlaylistCard from "../../PlaylistCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Artist from "./Artist";
 import Track from "../../Track/Track";
-import { getImageLink } from "../../../utils/utils";
+import {getImageLink, getPlaylistLink} from "../../../utils/utils";
 import { AlbumsBlock, PlaylistArrangeControls, PlaylistsBlock } from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 
@@ -125,7 +125,7 @@ const BestResult = ({ bestResult }: any) => {
                 return <Track track={bestResult.result} />
             }
             case "playlist": {
-                return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={`/users/${bestResult?.result.owner.uid}/playlist/${bestResult?.result.kind}`}/>
+                return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={getPlaylistLink(bestResult?.result.owner.uid,bestResult?.result.kind)}/>
             }
         }
 

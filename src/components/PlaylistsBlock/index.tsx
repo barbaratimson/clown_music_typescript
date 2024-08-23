@@ -1,6 +1,7 @@
 import { GridView, ViewAgenda } from "@mui/icons-material"
 import { AlbumT, EmptyAlbumT, PlaylistT } from "../../utils/types/types"
 import PlaylistCard from "../PlaylistCard"
+import {getAlbumLink} from "../../utils/utils";
 
 interface PlaylistsBlockT {
     type: "grid" | "flex"
@@ -32,7 +33,7 @@ export const AlbumsBlock = ({albums, type}:AlbumsBlockT) => {
     return (
         <div key={type} className={`animated-opacity-4ms ${type === "grid" ? "playlists-wrapper-grid" : "playlists-wrapper-flex"}`}>
         {albums ? albums.map(album => (
-            <PlaylistCard type={type === "grid" ? "block" : "line"} key={album.id} title={album.title} coverUri={album.coverUri} link={`/artist/${album.artists[0].id}/album/${album.id}`} />
+            <PlaylistCard type={type === "grid" ? "block" : "line"} key={album.id} title={album.title} coverUri={album.coverUri} link={getAlbumLink(album.artists[0].id,album.id)} />
         )) : null}
         </div>
     )

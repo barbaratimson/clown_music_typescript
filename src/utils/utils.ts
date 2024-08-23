@@ -60,3 +60,10 @@ export function msToMinutesAndSeconds(time:number | undefined) {
         return '0:00'
     }
 }
+
+export const getPlaylistLink = (ownerId:number,kind:number) => {
+    return `/users/${ownerId}/playlist/${kind}`
+}
+export const getAlbumLink = (atistId:number,albumId:number) => {
+    return `/artist/${atistId}/album/${albumId}`
+}
