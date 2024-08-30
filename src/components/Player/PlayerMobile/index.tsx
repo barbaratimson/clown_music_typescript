@@ -52,6 +52,7 @@ import PlayButton from '../components/PlayButton';
 import Cover, { ImagePlaceholder } from '../../Cover';
 import { logMessage } from '../../../store/devLogSlice';
 import { PositionInChart } from '../../Track/Track';
+import LikeButton from '../../LikeButton';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -253,7 +254,6 @@ const Player = () => {
                 setPlayingQueue([trackWrap(currentSong), newSong])
             }
         }
-
     }, [currentSong]);
 
 
@@ -476,7 +476,8 @@ const Player = () => {
                                     <div className="player-track-info-controls" onClick={(e) => {
                                         e.stopPropagation()
                                     }}>
-                                        {isLiked(currentSong.id) ? (
+                                        <LikeButton className='hidden' track={currentSong}/>
+                                        {/* {isLiked(currentSong.id) ? (
                                             <div
                                                 className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
                                                 onClick={() => {
@@ -490,7 +491,7 @@ const Player = () => {
                                             }}>
                                                 <FavoriteBorder />
                                             </div>
-                                        )}
+                                        )} */}
                                         <div className="track-controls-button" onClick={() => {
                                             setTrackInfoShowState(true);
                                             setTrackInfoState(currentSong)

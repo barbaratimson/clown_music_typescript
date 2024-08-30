@@ -36,6 +36,7 @@ import SeekSlider from "./components/SeekSlider";
 import Cover, {ImagePlaceholder} from "../Cover";
 import {logMessage} from "../../store/devLogSlice";
 import { PositionInChart } from '../Track/Track';
+import LikeButton from '../LikeButton';
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -317,7 +318,8 @@ const Player = () => {
                     </div>
                     <div className="player-track-controls">
                         <div key={currentSong.id} className="player-track-controls-border">
-                            {isLiked(currentSong.id) ? (
+                            <LikeButton track={currentSong}/>
+                            {/* {isLiked(currentSong.id) ? (
                                 <div className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`} onClick={()=>{dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))}}>
                                     <Favorite/>
                                 </div>
@@ -325,7 +327,7 @@ const Player = () => {
                                 <div className={`player-track-controls-likeButton`} onClick={()=>{likeSong(currentSong).then((response) => updateLikedSongs("liked"))}}>
                                     <FavoriteBorder/>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>

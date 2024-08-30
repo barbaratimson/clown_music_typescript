@@ -14,6 +14,7 @@ import {showMessage} from "../../store/MessageSlice";
 import { trackWrap } from "../../utils/trackWrap";
 import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
 import Cover, { ImagePlaceholder } from "../Cover";
+import LikeButton from "../LikeButton";
 
 
 interface TrackProps {
@@ -93,15 +94,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
                     </div>
                 </div>
                 <div onClick={(e)=>{e.stopPropagation()}} className="track-controls-wrapper">
-                        {isLiked(track.id) ? (
-                            <div className={`track-controls-button like`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
-                                <Favorite/>
-                            </div>
-                        ) : (
-                            <div className={`track-controls-button like`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
-                                <FavoriteBorder/>
-                            </div>
-                        )}
+                       <LikeButton className="mobile-hidden" track={track}/>
                     <div className="track-controls-info-time">
                         {msToMinutesAndSeconds(track.durationMs)}
                     </div>
