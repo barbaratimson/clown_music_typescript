@@ -221,7 +221,7 @@ const Player = () => {
     useEffect(() => {
         const fetchAudioAndPlay = () => {
             devLog(`start fetching song link`)
-            fetchYaSongLink(currentSong.id)
+            const a = fetchYaSongLink(currentSong.id)
                 .then(link => {
                     devLog(`song link ready ${link}`)
                     if (!audioElem.current) return
@@ -256,15 +256,6 @@ const Player = () => {
         }
     }, [currentSong]);
 
-
-    // useEffect(() => {
-    //     if (audioElem.current) {
-    //         navigator.mediaSession.setPositionState({
-    //             duration: duration,
-    //             position: audioElem.current.currentTime,
-    //         })
-    //     }
-    // }, [position])
 
     useEffect(() => {
         if (!playerFolded) {
@@ -476,7 +467,7 @@ const Player = () => {
                                     <div className="player-track-info-controls" onClick={(e) => {
                                         e.stopPropagation()
                                     }}>
-                                        <LikeButton className='hidden' track={currentSong}/>
+                                        <LikeButton silent className='hidden' track={currentSong}/>
                                         {/* {isLiked(currentSong.id) ? (
                                             <div
                                                 className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}

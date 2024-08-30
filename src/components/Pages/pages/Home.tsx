@@ -31,12 +31,18 @@ const Home = () => {
     if (isLoading) return <PageLoader />
 
     return (
-        <div className="page-default animated-opacity">
-            {generatedPlaylists &&
-                <PageBlock title="Daily playlists">
-                    <PlaylistsBlock type="grid" playlists={generatedPlaylists?.map(playlist => playlist.data)}/>
-                </PageBlock>
-            }
+        <div className="page-default home-page animated-opacity">
+            <div className="home-page-block">
+                <div className="home-page-block-title">ClownMusic -</div>
+                <div className="home-page-block-desc">Yandex Music API Frontend</div>
+            </div>
+            <div className="home-page-block" style={{padding:"10px"}}>
+                {generatedPlaylists &&
+                    <PageBlock title="Daily playlists">
+                        <PlaylistsBlock type="flex" playlists={generatedPlaylists?.map(playlist => playlist.data)}/>
+                    </PageBlock>
+                }
+            </div>
         </div>
     )
 }

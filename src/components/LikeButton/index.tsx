@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux"
 import { RootState, useAppDispatch, useAppSelector } from "../../store"
 import { MessageType, showMessage } from "../../store/MessageSlice"
 import { dislikeSong, fetchLikedSongs, likeSong } from "../../utils/apiRequests"
@@ -11,9 +10,10 @@ import Loader from "../Loader"
 interface LikeButtonProps {
     track:TrackT,
     className?:string
+    silent?: boolean
 }
 
-const LikeButton = ({track, className}:LikeButtonProps) => {
+const LikeButton = ({track, className, silent}:LikeButtonProps) => {
     const dispatch = useAppDispatch()
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
@@ -26,7 +26,6 @@ const LikeButton = ({track, className}:LikeButtonProps) => {
     
     const isLiked = (id: number | string) => {
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
-        console.log(!!likedSong)
         return !!likedSong
     }
 
@@ -37,20 +36,22 @@ const LikeButton = ({track, className}:LikeButtonProps) => {
             setLikedSongsData(likedSongsR)
             setIsLoading(false)
         }
-        if (action === "liked") setTrackLikedMessage(`Track ${track.title} added to Liked`, track, "trackLiked");
-        if (action === "removed") setTrackLikedMessage(`Track ${track.title} removed to Liked`, track, "trackDisliked");
+        if (!silent) {
+            if (action === "liked") setTrackLikedMessage(`Track ${track.title} added to Liked`, track, "trackLiked");
+            if (action === "removed") setTrackLikedMessage(`Track ${track.title} removed to Liked`, track, "trackDisliked");
+        }
     }
 
-    if (loading) return <div className={`track-controls-button like ${className}`}><Loader size={20}/></div>
+    if (loading) return <div className={`track-controls-button ${className}`}><Loader size={20}/></div>
 
     return (
         <>
               {isLiked(track.id) ? (
-                            <div className={`track-controls-button like ${className}`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
+                            <div className={`track-controls-button ${className}`} onClick={()=>{dislikeSong(track).then((response) => updateLikedSongs("removed"))}}>
                                 <Favorite/>
                             </div>
                         ) : (
-                            <div className={`track-controls-button like ${className}`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
+                            <div className={`track-controls-button ${className}`} onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}>
                                 <FavoriteBorder/>
                             </div>
                         )}

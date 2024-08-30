@@ -31,7 +31,7 @@ const PlaylistCardBlock = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">)
         <>
         <Link style = {{textDecoration:"none",width:"fit-content"}} to={link}>
             <div className="playlist-card-wrapper">
-                <Cover coverUri={coverUri} placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} size="150x150" imageSize="200x200"/>
+                <Cover coverUri={coverUri} placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} size="150x150" imageSize="300x300"/>
                 <div className="playlist-card-title-wrapper">
                     <div className="playlist-card-title">{title}</div>
                 </div>
