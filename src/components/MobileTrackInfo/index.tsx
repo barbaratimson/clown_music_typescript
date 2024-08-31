@@ -70,6 +70,16 @@ const MobileTrackInfo = () => {
         }
     };
 
+    const addToPlaylist = async (id: any) => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlist/${id}/add`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+            console.log(err)
+        }
+    };
+
     const closeAll = () => {
         setArtistsOpen(false);
         setTrackInfoShowState(false);

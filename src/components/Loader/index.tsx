@@ -4,12 +4,13 @@ import {CircularProgress} from "@mui/material";
 
 interface LoaderProps {
     size?:number
+    height?: number
 }
 
-const Loader = ({size}:LoaderProps) => {
+const Loader = ({size,height}:LoaderProps) => {
 
     return (
-        <div className="loader-wrapper">
+        <div className="loader-wrapper" style={{height: height + "px"}}>
             <CircularProgress size={size} className="loader" />
         </div>
     )

@@ -193,7 +193,7 @@ html,body {
     }
     100%{
         opacity:1;
-        transform:translate(0),
+        transform:translate(0)
     }
 }
 
@@ -746,7 +746,7 @@ html,body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-right: 10px;
+    width: 50px;
     border-right: 1px solid rgba(241, 241, 241, 0.1);
     height: 100%;
 }
@@ -881,6 +881,7 @@ html,body {
     background: rgba(255, 255, 255, 0.12);
     cursor: pointer;
 }
+
 
 .track-cover-wrapper {
     position: relative;
@@ -1028,10 +1029,12 @@ html,body {
     height: 50px;
     color: var(--font-color-main);
 }
+
 .track-wrapper:hover .track-playing-status {
     opacity: 1;
     backdrop-filter: blur(0.5px);
 }
+
 .track-playing-status > svg {
     color: var(--font-color-main) !important;
     stroke: black;
@@ -1053,7 +1056,7 @@ html,body {
 }
 .track-playing-status.show {
     opacity: 1;
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(0.5px);
 }
 
 .songs-wrapper {

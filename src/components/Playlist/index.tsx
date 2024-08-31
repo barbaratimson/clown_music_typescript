@@ -4,14 +4,15 @@ import { getImageLink, isElementInViewport } from "../../utils/utils";
 import SongsList from "../SongsList";
 import { RootState, useAppDispatch, useAppSelector } from "../../store";
 import { setQueue } from "../../store/playingQueueSlice";
-import { useSearchParams } from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import { hideHeader, showHeader } from "../../store/mobile/mobileHeaderSlice";
 import { signImage } from "../../assets/sign";
 import PopUpModal from "../PopUpModal";
-import { ExpandMore, FilterAlt } from "@mui/icons-material";
+import {Delete, ExpandMore, FilterAlt} from "@mui/icons-material";
 import Cover, { ImagePlaceholder } from "../Cover";
 import ListIcon from '@mui/icons-material/List';
 import PageHeader from "../PageHeader";
+import axios from "axios";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -33,6 +34,21 @@ const Playlist = ({ playlist }: PlaylistProps) => {
     const [tracksFiltered, setTracksFiltered] = useState<Array<TrackType>>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
+    const navigate = useNavigate()
+
+    const removePlaylist = async (playlistId:number) => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlist/${playlistId}/remove`, {headers: { "Authorization": localStorage.getItem("Authorization") } });
+            console.log(response.data)
+            if (response.data === "ok") {
+                navigate(-1)
+            }
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    }
+
 
     useEffect(() => {
         const genres = playlist.tracks.map((track) => {
@@ -83,7 +99,12 @@ const Playlist = ({ playlist }: PlaylistProps) => {
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={<FilterAlt onClick={() => { setFilterMenuActive(!filterMenuActive) }} />} />
+                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={
+                    <>
+                        <Delete onClick={()=>{removePlaylist(playlist.kind)}}/>
+                        <FilterAlt onClick={() => { setFilterMenuActive(!filterMenuActive) }} />
+                    </>
+                } />
                 <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
             </div>
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
