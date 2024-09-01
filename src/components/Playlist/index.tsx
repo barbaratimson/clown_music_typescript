@@ -101,7 +101,10 @@ const Playlist = ({ playlist }: PlaylistProps) => {
             <div className="playlist-wrapper mobile-folded animated-opacity">
                 <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={
                     <>
-                        <Delete onClick={()=>{removePlaylist(playlist.kind)}}/>
+                        <Delete onClick={()=>{
+                            //removePlaylist(playlist.kind)
+                            console.log("Delete playlist")
+                            }}/>
                         <FilterAlt onClick={() => { setFilterMenuActive(!filterMenuActive) }} />
                     </>
                 } />
