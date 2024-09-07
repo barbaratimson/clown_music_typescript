@@ -1,21 +1,17 @@
-import { useParams } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
+import {useParams} from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import Loader, { PageLoader } from "../../Loader";
-import { ArtistT, EmptyAlbumT, TrackT } from "../../../utils/types/types";
+import {PageLoader} from "../../Loader";
+import {ArtistT, EmptyAlbumT, TrackT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
-import { getImageLink, isElementInViewport } from "../../../utils/utils";
-import { trackArrayWrap } from "../../../utils/trackWrap";
-import AlbumCard from "../../AlbumCard";
-import { fetchLikedSongs } from "../../../utils/apiRequests";
-import { deviceState, getIsMobile, handleSubscribe, onSubscribe } from "../../../utils/deviceHandler";
-import { hideHeader, showHeader } from "../../../store/mobile/mobileHeaderSlice";
-import { useAppDispatch } from "../../../store";
+import {isElementInViewport} from "../../../utils/utils";
+import {trackArrayWrap} from "../../../utils/trackWrap";
+import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../utils/deviceHandler";
+import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
+import {useAppDispatch} from "../../../store";
 import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
-import { AlbumsBlock, PlaylistArrangeControls } from "../../PlaylistsBlock";
-import { GridView, Scale, ViewAgenda } from "@mui/icons-material";
-import { Zoom } from "@mui/material";
+import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
 
 interface ArtistResultT {
     artist: ArtistT,

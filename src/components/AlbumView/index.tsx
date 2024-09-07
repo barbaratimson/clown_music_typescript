@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import Loader, { PageLoader } from "../Loader";
+import {PageLoader} from "../Loader";
 import Album from "../Album";
 import {AlbumT} from "../../utils/types/types";
 

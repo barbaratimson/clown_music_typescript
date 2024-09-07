@@ -1,7 +1,7 @@
-import { memo, Suspense, useEffect, useMemo, useRef, useState } from "react"
-import { getImageLink } from "../../utils/utils"
-import Loader from "../Loader"
-import { MusicNote } from "@mui/icons-material"
+import {memo} from "react"
+import {getImageLink} from "../../utils/utils"
+import './style.scss'
+import {MusicNote} from "@mui/icons-material"
 
 export type CoverSizeT = "50x50" | "100x100" | "150x150" | "200x200" | "300x300" | "400x400" | "500x500" | "600x600" | "700x700" | "800x800" | "900x900" | "1000x1000"
 

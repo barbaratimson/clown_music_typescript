@@ -4,27 +4,19 @@ import Navbar from "../Navbar";
 import Page from "../Pages";
 import Message from "../Message";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {TrackId, TrackT} from "../../utils/types/types";
+import {TrackId} from "../../utils/types/types";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {fetchLikedSongs} from "../../utils/apiRequests";
-import {userId} from "../../utils/constants";
 import Queue from "../Queue/queue";
-import {
-    deviceState,
-    getIsDesktop,
-    getIsMobile,
-    handleSubscribe,
-    offSubscribe,
-    onSubscribe
-} from "../../utils/deviceHandler";
+import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import NavbarMobile from "../Navbar/NavbarMobile";
 import PlayerMobile from "../Player/PlayerMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
-import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
 import MobileTrackInfo from "../MobileTrackInfo";
 import QueueMobile from "../Queue/QueueMobile";
 import {setOpeningState} from "../../store/playingQueueSlice";
+import MobilePlaylistInfo from "../MobilePlaylistInfo";
 
 
 const Main = () => {
@@ -66,6 +58,7 @@ const Main = () => {
                 ) : (<QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>)}
 
                 <MobileTrackInfo/>
+                <MobilePlaylistInfo/>
             </div>
     )
 }

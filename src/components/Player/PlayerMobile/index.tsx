@@ -1,17 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { PlaylistT, TrackDefaultT, TrackId, TrackT, TrackType } from "../../../utils/types/types";
-import { Box, Fade, IconButton, LinearProgress, Skeleton, Slide } from "@mui/material";
-import Slider from '@mui/material/Slider';
-import { RootState, useAppDispatch, useAppSelector } from "../../../store";
-import { changeCurrentSong } from "../../../store/CurrentSongSlice";
-import {
-    playerStart,
-    playerStop,
-    setIsLoading,
-    setRepeat,
-    setShuffle,
-    setSrc
-} from "../../../store/PlayerSlice";
+import React, {useEffect, useRef, useState} from 'react';
+import {TrackDefaultT, TrackId, TrackT, TrackType} from "../../../utils/types/types";
+import {Box, IconButton, Skeleton, Slide} from "@mui/material";
+import {RootState, useAppDispatch, useAppSelector} from "../../../store";
+import {changeCurrentSong} from "../../../store/CurrentSongSlice";
+import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "../../../store/PlayerSlice";
 import {
     addAlpha,
     getImageLink,
@@ -19,39 +11,30 @@ import {
     randomSongFromTrackList,
     secToMinutesAndSeconds
 } from "../../../utils/utils";
-import { dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong } from '../../../utils/apiRequests';
+import {fetchLikedSongs, fetchYaSongLink} from '../../../utils/apiRequests';
 import ArtistName from '../../ArtistName';
 import {
+    ExpandLess,
+    ExpandMore,
     FastForwardRounded,
     FastRewindRounded,
-    Favorite,
-    FavoriteBorder,
-    PauseRounded,
-    PlayArrowRounded,
+    MoreVert,
     Repeat,
     Shuffle,
-    VolumeDown,
-    VolumeMute,
-    VolumeOff,
-    VolumeUp,
-    KeyboardArrowDown,
-    ArrowBackIosNew,
-    ExpandMore, ExpandLess, MoreVert,
-    MusicNote
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import { MessageType, showMessage } from '../../../store/MessageSlice';
-import { setLikedSongs } from '../../../store/LikedSongsSlice';
-import { addTrackToQueue, setOpeningState, setQueue } from "../../../store/playingQueueSlice";
-import { trackWrap } from '../../../utils/trackWrap';
-import { setActiveState, setTrackInfo } from "../../../store/trackInfoSlice";
-import { usePalette } from 'react-palette';
-import {Link, useLocation} from 'react-router-dom'
+import {MessageType, showMessage} from '../../../store/MessageSlice';
+import {setLikedSongs} from '../../../store/LikedSongsSlice';
+import {addTrackToQueue, setOpeningState, setQueue} from "../../../store/playingQueueSlice";
+import {trackWrap} from '../../../utils/trackWrap';
+import {setTrackInfo, setTrackInfoActiveState} from "../../../store/trackInfoSlice";
+import {usePalette} from 'react-palette';
+import {useLocation} from 'react-router-dom'
 import SeekSlider from '../components/SeekSlider';
 import PlayButton from '../components/PlayButton';
-import Cover, { ImagePlaceholder } from '../../Cover';
-import { logMessage } from '../../../store/devLogSlice';
-import { PositionInChart } from '../../Track/Track';
+import Cover, {ImagePlaceholder} from '../../Cover';
+import {logMessage} from '../../../store/devLogSlice';
+import {PositionInChart} from '../../Track';
 import LikeButton from '../../LikeButton';
 
 
@@ -77,7 +60,7 @@ const Player = () => {
     const volumeMultiplier = 1
     const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME ?? '1'
     const setTrackInfoState = (track: TrackT) => dispatch(setTrackInfo(track))
-    const setTrackInfoShowState = (active: boolean) => dispatch(setActiveState(active))
+    const setTrackInfoShowState = (active: boolean) => dispatch(setTrackInfoActiveState(active))
     const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const setTrackLikedMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({
         message: message,
@@ -467,22 +450,8 @@ const Player = () => {
                                     <div className="player-track-info-controls" onClick={(e) => {
                                         e.stopPropagation()
                                     }}>
-                                        <LikeButton silent className='hidden' track={currentSong}/>
-                                        {/* {isLiked(currentSong.id) ? (
-                                            <div
-                                                className={`player-track-controls-likeButton ${isLiked(currentSong.id) ? "heart-pulse" : null}`}
-                                                onClick={() => {
-                                                    dislikeSong(currentSong).then((response) => updateLikedSongs("removed"))
-                                                }}>
-                                                <Favorite />
-                                            </div>
-                                        ) : (
-                                            <div className={`player-track-controls-likeButton`} onClick={() => {
-                                                likeSong(currentSong).then((response) => updateLikedSongs("liked"))
-                                            }}>
-                                                <FavoriteBorder />
-                                            </div>
-                                        )} */}
+                                        <LikeButton silent track={currentSong}/>
+
                                         <div className="track-controls-button" onClick={() => {
                                             setTrackInfoShowState(true);
                                             setTrackInfoState(currentSong)

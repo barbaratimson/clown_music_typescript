@@ -135,6 +135,7 @@ export interface PlaylistT {
     available: boolean
     owner: OwnerT
     kind:number
+    revision?: number
 }
 
 export interface QueueT {

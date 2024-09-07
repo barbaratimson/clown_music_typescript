@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Loader, { PageLoader } from "../Loader";
+import {PageLoader} from "../Loader";
 import Playlist from "../Playlist";
 
 const link = process.env.REACT_APP_YMAPI_LINK

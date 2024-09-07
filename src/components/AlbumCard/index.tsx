@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import {AlbumT, EmptyAlbumT, PlaylistT} from "../../utils/types/types";
+import {Link} from "react-router-dom";
+import {AlbumT, EmptyAlbumT} from "../../utils/types/types";
 import {getImageLink} from "../../utils/utils";
 
 interface AlbumCardProps {

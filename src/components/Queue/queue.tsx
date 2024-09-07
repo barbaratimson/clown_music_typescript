@@ -1,13 +1,8 @@
-
-import React, {useEffect, useState} from "react";
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import Track from "../Track/Track";
-import SongsList from "../SongsList";
+import React from "react";
+import {RootState, useAppSelector} from "../../store";
+import Index from "../Track";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
-import {ExpandMore, Repeat} from "@mui/icons-material";
-import { setQueue } from "../../store/playingQueueSlice";
-import { TrackDefaultT } from "../../utils/types/types";
-import { trackWrap } from "../../utils/trackWrap";
+import {Repeat} from "@mui/icons-material";
 import Cover from "../Cover";
 
 const Queue = () => {
@@ -25,7 +20,7 @@ const Queue = () => {
             <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`}>
                 <div className="songs-wrapper">
                     {currentQueue ? currentQueue.queueTracks.map((song) => (
-                            <Track key={song.id} track={song.track}/>
+                            <Index key={song.id} track={song.track}/>
                     )) : null}
                 </div>
             </div>

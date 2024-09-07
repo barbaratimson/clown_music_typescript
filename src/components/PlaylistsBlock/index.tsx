@@ -1,5 +1,5 @@
-import { GridView, ViewAgenda } from "@mui/icons-material"
-import { AlbumT, EmptyAlbumT, PlaylistT } from "../../utils/types/types"
+import {GridView, ViewAgenda} from "@mui/icons-material"
+import {EmptyAlbumT, PlaylistT} from "../../utils/types/types"
 import PlaylistCard from "../PlaylistCard"
 import {getAlbumLink, getPlaylistLink} from "../../utils/utils";
 

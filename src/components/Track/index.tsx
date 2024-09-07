@@ -1,20 +1,20 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {TrackId, TrackT} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop} from "../../store/PlayerSlice";
-import {getImageLink, msToMinutesAndSeconds, secToMinutesAndSeconds} from "../../utils/utils";
-import {ArrowDropDown, ArrowDropUp, Favorite, FavoriteBorder, HorizontalRule, MoreVert, PauseRounded, PlayArrowRounded, Remove} from "@mui/icons-material";
+import {msToMinutesAndSeconds} from "../../utils/utils";
+import {MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
-import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
-import {userId} from "../../utils/constants";
+import {fetchLikedSongs} from "../../utils/apiRequests";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {showMessage} from "../../store/MessageSlice";
-import { trackWrap } from "../../utils/trackWrap";
-import {setActiveState, setTrackInfo} from "../../store/trackInfoSlice";
-import Cover, { ImagePlaceholder } from "../Cover";
+import {trackWrap} from "../../utils/trackWrap";
+import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice";
+import Cover, {ImagePlaceholder} from "../Cover";
 import LikeButton from "../LikeButton";
+import './style.scss'
 
 
 interface TrackProps {
@@ -24,7 +24,7 @@ interface TrackProps {
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({track,queueFunc}:TrackProps) => {
+const Index = ({track,queueFunc}:TrackProps) => {
     const dispatch = useAppDispatch()
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
@@ -35,7 +35,7 @@ const Track = ({track,queueFunc}:TrackProps) => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setTrackInfoState = (track:TrackT) => dispatch(setTrackInfo(track))
-    const setTrackInfoShowState = (active:boolean) => dispatch(setActiveState(active))
+    const setTrackInfoShowState = (active:boolean) => dispatch(setTrackInfoActiveState(active))
     const [isCurrentSong, setIsCurrentSong] = useState(false)
     const changeSong = (song:TrackT) => {
         if (song.id != currentSong.id) {
@@ -119,4 +119,4 @@ export const PositionInChart = ({position, text}:PositionInChartProps) => {
 }
 
 
-export default Track
+export default Index

@@ -1,0 +1,28 @@
+.track-controls-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--font-color-main);
+  transition: scale .4s;
+
+  &:hover {
+    scale: 1.2
+  }
+
+  &:active {
+    scale: 1
+  }
+
+  @media screen and (max-width: 575px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:0;
+    margin:0;
+
+    &.mobile-hidden {
+      display: none;
+    }
+
+  }
+}

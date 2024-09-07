@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {QueueT, TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
-import {Box, IconButton, LinearProgress, Skeleton} from "@mui/material";
+import {TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
+import {Box, IconButton, Skeleton} from "@mui/material";
 import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
@@ -11,13 +11,11 @@ import {
     randomSongFromTrackList,
     secToMinutesAndSeconds
 } from "../../utils/utils";
-import {dislikeSong, fetchLikedSongs, fetchYaSongLink, likeSong} from '../../utils/apiRequests';
+import {fetchLikedSongs, fetchYaSongLink} from '../../utils/apiRequests';
 import ArtistName from '../ArtistName';
 import {
     FastForwardRounded,
     FastRewindRounded,
-    Favorite,
-    FavoriteBorder,
     PauseRounded,
     PlayArrowRounded,
     Repeat,
@@ -31,11 +29,11 @@ import ListIcon from '@mui/icons-material/List';
 import {showMessage} from '../../store/MessageSlice';
 import {setLikedSongs} from '../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
-import { trackArrayWrap, trackWrap } from '../../utils/trackWrap';
+import {trackWrap} from '../../utils/trackWrap';
 import SeekSlider from "./components/SeekSlider";
 import Cover, {ImagePlaceholder} from "../Cover";
 import {logMessage} from "../../store/devLogSlice";
-import { PositionInChart } from '../Track/Track';
+import {PositionInChart} from '../Track';
 import LikeButton from '../LikeButton';
 
 

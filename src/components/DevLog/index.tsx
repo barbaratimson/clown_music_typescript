@@ -1,5 +1,4 @@
-import { useEffect } from "react"
-import { RootState, useAppSelector } from "../../store"
+import {RootState, useAppSelector} from "../../store"
 
 const DevLog = () => {
     const devLog = useAppSelector((state:RootState) => state.devLog.log)

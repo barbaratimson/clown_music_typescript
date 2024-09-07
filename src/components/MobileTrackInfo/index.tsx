@@ -1,38 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { ArtistT, TrackId, TrackT, TrackType } from "../../utils/types/types";
-import { Link, useNavigation, useSearchParams } from "react-router-dom";
-import { ClickAwayListener, Slide } from "@mui/material";
-import { RootState, useAppSelector } from "../../store";
-import { getImageLink } from "../../utils/utils";
+import React, {useEffect, useState} from "react";
+import {TrackId, TrackT} from "../../utils/types/types";
+import {Link, useSearchParams} from "react-router-dom";
+import {RootState, useAppSelector} from "../../store";
 import {
-    Add, Album,
+    Add,
+    Album,
     Favorite,
     FavoriteBorder,
     FilterAlt,
     KeyboardArrowDown,
-    KeyboardArrowLeft,
-    PauseRounded,
     PeopleAlt,
-    PlayArrowRounded,
     PlaylistAdd
 } from "@mui/icons-material";
-import EqualizerIcon from "../../assets/EqualizerIcon";
-import ArtistName from "../ArtistName";
-import { dislikeSong, fetchLikedSongs, likeSong } from "../../utils/apiRequests";
-import { MessageType, showMessage } from "../../store/MessageSlice";
-import { setLikedSongs } from "../../store/LikedSongsSlice";
-import { useDispatch } from "react-redux";
+import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
+import {MessageType, showMessage} from "../../store/MessageSlice";
+import {setLikedSongs} from "../../store/LikedSongsSlice";
+import {useDispatch} from "react-redux";
 import axios from "axios";
-import { link } from "../../utils/constants";
+import {link} from "../../utils/constants";
 import SongsList from "../SongsList";
-import { trackArrayWrap } from "../../utils/trackWrap";
+import {trackArrayWrap} from "../../utils/trackWrap";
 import Loader from "../Loader";
-import { useLocation } from 'react-router-dom'
-import { setActiveState } from "../../store/trackInfoSlice";
-import CurrentSongSlice from "../../store/CurrentSongSlice";
-import { addTrackToQueuePosition } from "../../store/playingQueueSlice";
+import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
+import {addTrackToQueuePosition} from "../../store/playingQueueSlice";
 import PopUpModal from "../PopUpModal";
-import Cover, { ImagePlaceholder } from "../Cover";
+import Cover, {ImagePlaceholder} from "../Cover";
+import track from "../Track";
 
 interface SimilarTracksT {
     track: TrackT
@@ -43,7 +36,7 @@ const MobileTrackInfo = () => {
     const dispatch = useDispatch()
     const [params, setParams] = useSearchParams("")
     const trackInfoState = useAppSelector((state: RootState) => state.trackInfo)
-    const setTrackInfoShowState = (active: boolean) => dispatch(setActiveState(active))
+    const setTrackInfoShowState = (active: boolean) => dispatch(setTrackInfoActiveState(active))
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
     const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({ currentSong, songToAdd }))
     const likedSongs = useAppSelector((state: RootState) => state.likedSongs.likedSongs)
@@ -70,10 +63,10 @@ const MobileTrackInfo = () => {
         }
     };
 
-    const addToPlaylist = async (id: any) => {
+    const addToPlaylist = async (playlistId: number | string, track: TrackT, revision: number) => {
         try {
             const response = await axios.get(
-                `${link}/ya/playlist/${id}/add`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+                `${link}/ya/playlist/${playlistId}/add`, { params:{tracks:[{id:track.id,albumId:track.albums[0].id}], revision: revision}, headers: { "Authorization": localStorage.getItem("Authorization") } });
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -125,7 +118,7 @@ const MobileTrackInfo = () => {
                                     <div className="track-info-mobile-control-icon">
                                         {isLiked(trackInfoState.track.id) ? (
                                             <div
-                                                className={`${isLiked(trackInfoState.track.id) ? "heart-pulse" : null}`}>
+                                                className={`track-controls-button ${isLiked(trackInfoState.track.id) ? "heart-pulse" : null}`}>
                                                 <Favorite />
                                             </div>
                                         ) : (
@@ -157,7 +150,7 @@ const MobileTrackInfo = () => {
                                     </div>
                                      </>
                                 ) : null}
-                                    <div className="track-info-mobile-control-button">
+                                    <div className="track-info-mobile-control-button" onClick={()=>{addToPlaylist(1040,trackInfoState.track,1)}}>
                                     <div className="track-info-mobile-control-icon">
                                         <Add />
                                     </div>

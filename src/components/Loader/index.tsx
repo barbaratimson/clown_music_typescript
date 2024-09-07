@@ -1,6 +1,6 @@
-
 import React from "react";
 import {CircularProgress} from "@mui/material";
+import './style.scss'
 
 interface LoaderProps {
     size?:number
@@ -19,7 +19,7 @@ const Loader = ({size,height}:LoaderProps) => {
 export const PageLoader = ({size}:LoaderProps) => {
 
     return (
-        <div className="page-loader-wrapper">
+        <div className="loader-wrapper page">
             <CircularProgress size={size} className="loader" />
         </div>
     )

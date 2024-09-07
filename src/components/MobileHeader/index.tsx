@@ -3,7 +3,7 @@ import React from "react";
 import {Fade, IconButton} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {ArrowBackIosNew} from "@mui/icons-material";
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
+import {RootState, useAppSelector} from "../../store";
 import Cover from "../Cover";
 
 
