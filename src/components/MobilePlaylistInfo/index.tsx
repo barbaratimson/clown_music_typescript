@@ -92,7 +92,7 @@ const MobilePlaylistInfo = () => {
                                         </div>
                                     </div>
                                     <div className="track-info-mobile-control-button" onClick={() => {
-                                        removePlaylist(playlistInfoState.playlist.kind)
+                                        // removePlaylist(playlistInfoState.playlist.kind)
                                         console.log("Delete playlist")
                                     }}>
                                         <div className="track-info-mobile-control-icon">
