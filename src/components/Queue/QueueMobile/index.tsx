@@ -27,6 +27,7 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
                     <Cover coverUri={currentQueue.playlist.cover.uri} size="75x75" imageSize="100x100"/>
                     <div className="track-info-wrapper">
                         <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.title}</div>
+                        <div style={{ marginTop: "5px" }} className="track-info-artist">{currentQueue.queueTracks.length + " tracks"}</div>
                     </div>
                     <div className="track-info-back-button">
                         <ExpandMore/>
