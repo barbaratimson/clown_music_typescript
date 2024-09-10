@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import PlaylistCard from "../../PlaylistCard";
-import Loader, { PageLoader } from "../../Loader";
+import Loader from "../../Loader";
 import axios from "axios";
 import {GeneratedPlaylistT} from "../../../utils/types/types";
 import PageBlock from "../../PageBlock";
@@ -28,7 +28,7 @@ const Home = () => {
         fetchFeedPlaylists()
     }, []);
 
-    if (isLoading) return <PageLoader />
+    if (isLoading) return <Loader.PageLoader />
 
     return (
         <div className="page-default home-page animated-opacity">

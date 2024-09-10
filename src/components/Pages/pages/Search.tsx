@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { SearchT } from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { trackArrayWrap } from "../../../utils/trackWrap";
-import Loader, { PageLoader } from "../../Loader";
+import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
 import { Link, useSearchParams } from "react-router-dom";
 import Artist from "./Artist";
@@ -93,7 +93,7 @@ const Search = () => {
                                 </PageBlock>
                             }
                         </>
-                    ) : <PageLoader/>}
+                    ) : <Loader.PageLoader/>}
                 </div>
             ) : <div className="search-no-search">Начните поиск</div>}
 

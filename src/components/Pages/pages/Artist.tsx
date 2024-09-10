@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import Loader, { PageLoader } from "../../Loader";
+import Loader from "../../Loader";
 import { ArtistT, EmptyAlbumT, TrackT } from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { getImageLink, isElementInViewport } from "../../../utils/utils";
@@ -78,7 +78,7 @@ const Artist = () => {
     }, [artistResult]);
 
 
-    if (isLoading) return <PageLoader />
+    if (isLoading) return <Loader.PageLoader />
     return (
         <div className="page-default animated-opacity">
             {artistResult ? (

@@ -2,12 +2,16 @@
 import React from "react";
 import {CircularProgress} from "@mui/material";
 
+interface LoaderTypeExtensions {
+    PageLoader?: typeof PageLoader
+}
+
 interface LoaderProps {
     size?:number
     height?: number
 }
 
-const Loader = ({size,height}:LoaderProps) => {
+const Loader = ({size,height}:LoaderProps & LoaderTypeExtensions) => {
 
     return (
         <div className="loader-wrapper" style={{height: height + "px"}}>
@@ -16,7 +20,7 @@ const Loader = ({size,height}:LoaderProps) => {
     )
 }
 
-export const PageLoader = ({size}:LoaderProps) => {
+const PageLoader = ({size}:LoaderProps) => {
 
     return (
         <div className="page-loader-wrapper">
@@ -24,5 +28,6 @@ export const PageLoader = ({size}:LoaderProps) => {
         </div>
     )
 }
+Loader.PageLoader = PageLoader
 
 export default Loader
