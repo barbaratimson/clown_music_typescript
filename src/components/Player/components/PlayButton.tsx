@@ -1,5 +1,5 @@
 import {IconButton} from "@mui/material";
-import { PauseRounded, PlayArrowRounded } from "@mui/icons-material";
+import {PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 
 interface PlayButtonProps {
     playing: boolean,

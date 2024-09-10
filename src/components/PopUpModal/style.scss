@@ -1,0 +1,16 @@
+.track-info-mobile {
+  position: fixed;
+  display: flex;
+  flex-direction:column;
+  width: 100%;
+  padding: 10px;
+  left: 0;
+  bottom: 0;
+  gap: 10px;
+  border-radius: 20px 20px 0 0;
+  background: rgb(82 82 82 / 50%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(2.6px);
+  transition: all .4s ease-in;
+  z-index: 99999;
+}

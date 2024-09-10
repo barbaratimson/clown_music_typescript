@@ -9,6 +9,7 @@ import mobileHeaderSlice from "./mobile/mobileHeaderSlice";
 import CurrentPlaylistSlice from "./CurrentPlaylistSlice";
 import trackInfoSlice from "./trackInfoSlice";
 import devLogSlice from "./devLogSlice"
+import playlistInfoSlice from "./playlistInfoSlice";
 
 export const store = configureStore({
     reducer:{
@@ -20,8 +21,8 @@ export const store = configureStore({
         likedSongs:LikedSongsSlice,
         header:mobileHeaderSlice,
         trackInfo:trackInfoSlice,
-        devLog: devLogSlice 
-
+        devLog: devLogSlice,
+        playlistInfo: playlistInfoSlice
     }
 });
 

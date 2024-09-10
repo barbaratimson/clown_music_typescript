@@ -1,7 +1,6 @@
-import { forwardRef } from "react"
-import Track from "../Track/Track"
+import {forwardRef} from "react"
 import Cover from "../Cover"
-import { getIsMobileInfo } from "../../utils/deviceHandler"
+import {getIsMobileInfo} from "../../utils/deviceHandler"
 
 interface PageHeaderT {
     titleText: string,

@@ -1,18 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { PlaylistT, TrackType } from "../../utils/types/types";
-import { getImageLink, isElementInViewport } from "../../utils/utils";
+import React, {useEffect, useRef, useState} from "react";
+import {PlaylistT, TrackT, TrackType} from "../../utils/types/types";
+import {isElementInViewport} from "../../utils/utils";
 import SongsList from "../SongsList";
-import { RootState, useAppDispatch, useAppSelector } from "../../store";
-import { setQueue } from "../../store/playingQueueSlice";
+import {useAppDispatch} from "../../store";
 import {useNavigate, useSearchParams} from "react-router-dom";
-import { hideHeader, showHeader } from "../../store/mobile/mobileHeaderSlice";
-import { signImage } from "../../assets/sign";
+import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
 import PopUpModal from "../PopUpModal";
-import {Delete, ExpandMore, FilterAlt} from "@mui/icons-material";
-import Cover, { ImagePlaceholder } from "../Cover";
-import ListIcon from '@mui/icons-material/List';
+import {Delete, ExpandMore, FilterAlt, MoreHoriz} from "@mui/icons-material";
 import PageHeader from "../PageHeader";
 import axios from "axios";
+import {setPlaylistInfo, setPlaylistInfoActiveState} from "../../store/playlistInfoSlice";
+import {setTrackInfo} from "../../store/trackInfoSlice";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -20,51 +18,16 @@ interface PlaylistProps {
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-interface GenreCountT {
-    genre: string,
-    amount: number
-}
 const Playlist = ({ playlist }: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
-    const [genres, setGenres] = useState<GenreCountT[]>()
-    const [genre, setGenre] = useState<GenreCountT>()
     const [tracksFiltered, setTracksFiltered] = useState<Array<TrackType>>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
-    const navigate = useNavigate()
-
-    const removePlaylist = async (playlistId:number) => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlist/${playlistId}/remove`, {headers: { "Authorization": localStorage.getItem("Authorization") } });
-            console.log(response.data)
-            if (response.data === "ok") {
-                navigate(-1)
-            }
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    }
-
-
-    useEffect(() => {
-        const genres = playlist.tracks.map((track) => {
-            if (track.track.albums[0]?.genre !== undefined) {
-                return track.track.albums[0]?.genre
-            } else {
-                return "Unknown"
-            }
-        })
-        const uniqueGenres = Array.from(new Set(genres))
-        const countAmount = uniqueGenres.map((genre) => {
-            const amountOfGenre = genres.filter(elem => elem == genre)
-            return { genre: genre, amount: amountOfGenre.length }
-        })
-        setGenres(countAmount.sort((a, b) => b.amount - a.amount))
-    }, []);
+    const setPlaylistInfoShow = (active: boolean) => dispatch(setPlaylistInfoActiveState(active))
+    const setPlaylistInfoState = (playlist:PlaylistT) => dispatch(setPlaylistInfo(playlist))
 
     useEffect(() => {
         const filter = filterQuery.get("genre")
@@ -101,30 +64,11 @@ const Playlist = ({ playlist }: PlaylistProps) => {
             <div className="playlist-wrapper mobile-folded animated-opacity">
                 <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={
                     <>
-                        <Delete onClick={()=>{
-                            //removePlaylist(playlist.kind)
-                            console.log("Delete playlist")
-                            }}/>
-                        <FilterAlt onClick={() => { setFilterMenuActive(!filterMenuActive) }} />
+                        <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />
                     </>
                 } />
                 <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
             </div>
-            <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
-                <>
-                    <div className="playlist-filter-title"><ExpandMore /></div>
-                    <div className="playlist-filter-wrapper">
-                        {genres ? genres.map(genreRender => (
-                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={() => { filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({ genre: genreRender.genre }) : setFilterQuery(undefined) }}>
-                                <div className="playlist-filter-button-text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
-                                <div className="playlist-filter-button-amount" style={{ width: genreRender.amount + "%" }}>
-                                    <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
-                                </div>
-                            </div>
-                        )) : null}
-                    </div>
-                </>
-            </PopUpModal>
         </>
     )
 }

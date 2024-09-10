@@ -17,7 +17,7 @@ const TrackInfo = createSlice({
     name: 'TrackInfo',
     initialState,
     reducers:{
-        setActiveState(state, action) {
+        setTrackInfoActiveState(state, action) {
             state.active = action.payload
         },
         setTrackInfo(state, action) {
@@ -28,5 +28,5 @@ const TrackInfo = createSlice({
 })
 
 
-export const { setActiveState,setTrackInfo } = TrackInfo.actions
+export const { setTrackInfoActiveState,setTrackInfo } = TrackInfo.actions
 export default TrackInfo.reducer

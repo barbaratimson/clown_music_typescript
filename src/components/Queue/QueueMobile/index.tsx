@@ -1,16 +1,9 @@
-
-import React, {useEffect, useState} from "react";
-import {RootState, useAppDispatch, useAppSelector} from "../../../store";
-import Track from "../../Track/Track";
-import SongsList from "../../SongsList";
-import ShuffleIcon from '@mui/icons-material/Shuffle';
-import {ExpandLess, ExpandMore, KeyboardArrowDown, Repeat} from "@mui/icons-material";
-import { setQueue } from "../../../store/playingQueueSlice";
-import { TrackDefaultT } from "../../../utils/types/types";
-import { trackWrap } from "../../../utils/trackWrap";
-import {Collapse, Fade, Slide} from "@mui/material";
-import {useLocation, useSearchParams} from "react-router-dom";
-import {getImageLink} from "../../../utils/utils";
+import React, {useEffect} from "react";
+import {RootState, useAppSelector} from "../../../store";
+import Index from "../../Track";
+import {ExpandMore} from "@mui/icons-material";
+import {Slide} from "@mui/material";
+import {useLocation} from "react-router-dom";
 import Cover from "../../Cover";
 
 interface QueueMobileProps {
@@ -34,6 +27,7 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
                     <Cover coverUri={currentQueue.playlist.cover.uri} size="75x75" imageSize="100x100"/>
                     <div className="track-info-wrapper">
                         <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.title}</div>
+                        <div style={{ marginTop: "5px" }} className="track-info-artist">{currentQueue.queueTracks.length + " tracks"}</div>
                     </div>
                     <div className="track-info-back-button">
                         <ExpandMore/>
@@ -42,7 +36,7 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
             <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`} onClick={(e)=>{e.stopPropagation()}}>
                 <div className="songs-wrapper">
                     {currentQueue ? currentQueue.queueTracks.map((song) => (
-                            <Track key={song.id} track={song.track}/>
+                            <Index key={song.id} track={song.track}/>
                     )) : null}
                 </div>
             </div>

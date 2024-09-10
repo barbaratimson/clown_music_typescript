@@ -1,9 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import {CoverT, PlaylistT} from "../../utils/types/types";
-import {getImageLink} from "../../utils/utils";
-import Cover, { ImagePlaceholder } from "../Cover";
-import { ArrowForward, ArrowForwardIos } from "@mui/icons-material";
+import {Link} from "react-router-dom";
+import Cover, {ImagePlaceholder} from "../Cover";
+import {ArrowForwardIos} from "@mui/icons-material";
 import ListIcon from '@mui/icons-material/List';
 
 interface PlaylistCardProps {

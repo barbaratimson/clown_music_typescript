@@ -1,6 +1,5 @@
 import React, {useRef} from "react";
 import {AlbumT} from "../../utils/types/types";
-import {getImageLink} from "../../utils/utils";
 import SongsList from "../SongsList";
 import {useAppDispatch} from "../../store";
 import {trackArrayWrap} from "../../utils/trackWrap";
@@ -14,7 +13,6 @@ interface AlbumProps {
 
 
 const Album = ({album}: AlbumProps) => {
-    const dispatch = useAppDispatch()
     const playlistInfo = useRef(null)
 
     return (

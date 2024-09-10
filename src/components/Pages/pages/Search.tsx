@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
-import { SearchT } from "../../../utils/types/types";
+import {SearchT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { trackArrayWrap } from "../../../utils/trackWrap";
 import Loader from "../../Loader";
 import PlaylistCard from "../../PlaylistCard";
-import { Link, useSearchParams } from "react-router-dom";
-import Artist from "./Artist";
-import Track from "../../Track/Track";
+import {Link, useSearchParams} from "react-router-dom";
+import Index from "../../Track";
 import {getImageLink, getPlaylistLink} from "../../../utils/utils";
-import { AlbumsBlock, PlaylistArrangeControls, PlaylistsBlock } from "../../PlaylistsBlock";
+import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -122,7 +121,7 @@ const BestResult = ({ bestResult }: any) => {
                 )
             }
             case "track": {
-                return <Track track={bestResult.result} />
+                return <Index track={bestResult.result} />
             }
             case "playlist": {
                 return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={getPlaylistLink(bestResult?.result.owner.uid,bestResult?.result.kind)}/>

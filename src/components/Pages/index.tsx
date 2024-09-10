@@ -1,6 +1,4 @@
-import Player from "../Player";
 import React, {useEffect} from "react";
-import Navbar from "../Navbar";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Collection from "./pages/Collection";
 import Chart from "./pages/Chart";
@@ -8,7 +6,6 @@ import Home from "./pages/Home";
 import Search from "./pages/Search";
 import User from "./pages/User";
 import Settings from "./pages/Settings";
-import Playlist from "../Playlist";
 import PlaylistView from "../PlaylistView";
 import Artist from "./pages/Artist";
 import AlbumView from "../AlbumView";

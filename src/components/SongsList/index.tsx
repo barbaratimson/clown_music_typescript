@@ -1,11 +1,9 @@
-import React, { memo, useEffect, useState } from "react";
-import { PlaylistT, QueueT, TrackType } from "../../utils/types/types";
-import Track from "../Track/Track";
-import { initQueue } from "../../store/playingQueueSlice";
-import { RootState, useAppDispatch, useAppSelector } from "../../store";
-import { setCurrentPlaylist } from "../../store/CurrentPlaylistSlice";
-import { trackWrap } from "../../utils/trackWrap";
-import playlist from "../Playlist";
+import React from "react";
+import {PlaylistT, QueueT, TrackType} from "../../utils/types/types";
+import Index from "../Track";
+import './style.scss'
+import {initQueue} from "../../store/playingQueueSlice";
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
 
 interface SongsListProps {
     tracks: Array<TrackType>
@@ -29,7 +27,7 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     return (
         <div style={style} className="songs-wrapper">
             {tracks ? tracks.map((song) => song.track.available ? (   
-                        <Track key={song.track.id} queueFunc={setInitQueue} track={song.track} />
+                        <Index key={song.track.id} queueFunc={setInitQueue} track={song.track} />
             ) : null) : null}
         </div>
     )
