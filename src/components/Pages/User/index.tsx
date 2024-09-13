@@ -6,18 +6,20 @@ import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { setUser } from "./userSlice";
 import { UserT } from "./user.types";
 import AuthCard from "./AuthCard/AuthCard";
+import AuthModal from "./AuthModal/AuthModal";
 
 const link = process.env.REACT_APP_YMAPI_LINK
-const token = localStorage.getItem("Authorization")
-const [localUserId, localAccessToken] = token ? token.split(":") : []
 const User = () => {
     const dispatch = useAppDispatch()
+    const token = localStorage.getItem("Authorization")
+    const [localUserId, localAccessToken] = token ? token.split(":") : []
     const [userId, setUserId] = useState<string>(localUserId)
     const [accessToken, setAccessToken] = useState<string>(localAccessToken)
     const [devlogActive, setDevLogActive] = useState(false)
     const setCurrentUser = (user:UserT) => dispatch(setUser(user))
     const currentUser = useAppSelector((state:RootState)=> state.user)
     const [isYandexLoading, setIsYandexLoading] = useState(false)
+    const [modalActive, setModalActive] = useState(false)
 
     const fetchUser = async () => {
         setIsYandexLoading(true)
@@ -25,6 +27,7 @@ const User = () => {
             const response = await axios.get(
                 `${link}/ya/user`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setCurrentUser(response.data)
+            console.log(response.data)
             setIsYandexLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -32,30 +35,26 @@ const User = () => {
     };
 
     useEffect(() => {
-        localStorage.setItem("Authorization", userId + ":" + accessToken)
+        localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
         fetchUser()
-    }, [userId, accessToken])
+    }, [accessToken])
+
+    useEffect(() => {
+        localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
+    }, [currentUser,accessToken])
+
     
     return (
+        <>
         <div className="page-default animated-opacity" style={{color:"white"}}>
-            <div>
-                <div>USER ID:</div>
-                <input value={userId} onChange={(e) => {
-                    setUserId(e.target.value)
-                }} />
-            </div>
-            <div>
-                <div>ACCESS TOKEN:</div>
-                <input value={accessToken} onChange={(e) => {
-                    setAccessToken(e.target.value)
-                }} />
-            </div>
-            <button onClick={() => { setDevLogActive(!devlogActive) }} />
+            <AuthCard onClick={()=>{setModalActive(true)}} status={isYandexLoading ? "loading" : currentUser.user ? "success" : "failed"} user={currentUser.user} service="YandexMusic"/>
+            <button className="button" onClick={() => { setDevLogActive(!devlogActive) }}  >Dev log</button>
+        </div>
             <PopUpModal active={devlogActive} setActive={setDevLogActive}>
                 <DevLog />
             </PopUpModal>
-            <AuthCard status={isYandexLoading ? "loading" : currentUser.user ? "success" : "failed"} user={currentUser.user} service="YandexMusic"/>
-        </div>
+            <AuthModal active={modalActive} setActive={setModalActive} data={accessToken} setData={setAccessToken} user={currentUser.user}/>
+        </>
     )
 }
 

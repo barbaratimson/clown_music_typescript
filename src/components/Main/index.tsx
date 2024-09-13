@@ -44,6 +44,7 @@ const Main = () => {
     useEffect(() => {
         async function fetchData () {
             setLikedSongsData( await fetchLikedSongs())
+            fetchUser()
         }
         fetchData()
         const getIsMobileInfo = () => {

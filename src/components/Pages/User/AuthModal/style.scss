@@ -1,0 +1,27 @@
+@import "src/styles/vars";
+
+.auth-modal__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: $font-color-main-light;
+}
+.auth-modal__input{
+  background-color: transparent;
+  border-radius: 16px;
+  color: var(--font-color-main);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.auth-modal__close {
+  display: flex;
+  justify-content: center;
+  width: auto;
+  border-bottom: 1px solid var(--font-color-main);
+}

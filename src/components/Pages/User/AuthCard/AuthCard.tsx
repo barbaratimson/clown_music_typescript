@@ -11,8 +11,9 @@ interface AuthCardProps {
     user: UserT,
     service: ServiceT
     status: AuthCardStatusT
+    onClick: () => void
 }
-const AuthCard = ({user,service,status}:AuthCardProps) => {
+const AuthCard = ({user,service,status, onClick}:AuthCardProps) => {
 
     const formatStatusReturn = (status:AuthCardStatusT) => {
         switch(status) {
@@ -40,7 +41,7 @@ const AuthCard = ({user,service,status}:AuthCardProps) => {
     }
 
     return (
-        <div className="auth-card__wrapper">
+        <div className="auth-card__wrapper" onClick={onClick}>
             <div className="auth-card__service-logo">{formatServiceReturn(service)}</div>
             <div className="auth-card__user-account-name">{user.account?.displayName}</div>
             <div className="auth-card__status">

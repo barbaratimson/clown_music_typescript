@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit"
 import { UserT } from "./user.types"
 import { userInitialState } from "../../../store/initialStates"
 
-export interface UserState {
+interface UserState {
     user: UserT
 }
 

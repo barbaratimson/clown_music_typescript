@@ -12,7 +12,7 @@ interface SeekSliderProps {
 const SeekSlider = ({loadingState,position,duration,changeTime}:SeekSliderProps)=>{
     return (
         <>
-            {!loadingState ? (
+            {!loadingState? (
                 <Slider
                     aria-label="time-indicator"
                     size="small"
@@ -37,12 +37,10 @@ const SeekSlider = ({loadingState,position,duration,changeTime}:SeekSliderProps)
                 <LinearProgress sx={{
                     color: '#fff',
                     height:4,
+                    backgroundColor: 'rgb(255,255,255, 0.28) !important',
                     '& .MuiLinearProgress-bar1': {
                         display: "none"
                     },
-                    '& .MuiLinearProgress-root': {
-                        
-                    }
                 }} className="player-loader"/>
             )}
         </>
