@@ -16,7 +16,11 @@ import MobileTrackInfo from "../MobileTrackInfo";
 import QueueMobile from "../Queue/QueueMobile";
 import {setOpeningState} from "../../store/playingQueueSlice";
 import MobilePlaylistInfo from "../MobilePlaylistInfo";
+import { UserT } from "../Pages/User/user.types";
+import { setUser } from "../Pages/User/userSlice";
+import axios from "axios";
 
+const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     const dispatch = useAppDispatch()
@@ -24,6 +28,19 @@ const Main = () => {
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
+    const setCurrentUser = (user:UserT) => dispatch(setUser(user))
+
+    const fetchUser = async () => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/user`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+            setCurrentUser(response.data)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    };
+
+    
     useEffect(() => {
         async function fetchData () {
             setLikedSongsData( await fetchLikedSongs())

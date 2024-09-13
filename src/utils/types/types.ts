@@ -1,5 +1,3 @@
-import exp from "constants";
-
 export declare type ProgressT = "same" | "up" | "down"
 
 export interface ChartPosT {

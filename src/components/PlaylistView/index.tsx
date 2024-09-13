@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import Loader from "../Loader";
 import Playlist from "../Playlist";
+import { Skeleton } from "@mui/material";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const PlaylistView = () => {
@@ -30,7 +31,7 @@ const PlaylistView = () => {
     return (
         <>
             {playlistState ? (
-                <Playlist playlist={playlistState}/>
+                    <Playlist playlist={playlistState}/>
                 ): null
             }
 

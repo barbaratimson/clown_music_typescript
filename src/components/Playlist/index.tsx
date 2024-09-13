@@ -11,6 +11,7 @@ import PageHeader from "../PageHeader";
 import axios from "axios";
 import {setPlaylistInfo, setPlaylistInfoActiveState} from "../../store/playlistInfoSlice";
 import {setTrackInfo} from "../../store/trackInfoSlice";
+import { Skeleton } from "@mui/material";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -67,7 +68,7 @@ const Playlist = ({ playlist }: PlaylistProps) => {
                         <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />
                     </>
                 } />
-                <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
+                    <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
             </div>
         </>
     )

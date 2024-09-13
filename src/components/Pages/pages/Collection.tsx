@@ -6,6 +6,7 @@ import PlaylistCard from "../../PlaylistCard";
 import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
 import {Add} from "@mui/icons-material";
+import { RootState, useAppSelector } from "../../../store";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -15,13 +16,13 @@ const Collection = () => {
     const [isPlaylistsLoading, setIsPlaylistsLoading] = useState(false)
     const [userTracks, setUserTracks] = useState<PlaylistT>()
     const [userPlaylists, setUserPlaylists] = useState<Array<PlaylistT>>()
-    const [userData, setUserData] = useState<any>()
+    const userData = useAppSelector((state:RootState)=> state.user)
+    
     const fetchUserPlaylists = async () => {
         try {
             const response = await axios.get(
                 `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setUserPlaylists(response.data)
-            console.log(response.data)
             setIsPlaylistsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
@@ -33,16 +34,6 @@ const Collection = () => {
             const response = await axios.get(
                 `${link}/ya/myTracks`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setUserTracks(response.data)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    };
-
-    const fetchUser = async () => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/user`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
-            setUserData(response.data)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
         }
@@ -66,7 +57,6 @@ const Collection = () => {
             setIsLoading(true)
             await fetchYaMusicSongs()
             await fetchUserPlaylists()
-            await fetchUser()
         }
         a().then(() => { setIsLoading(false) })
     }, [])
@@ -79,7 +69,7 @@ const Collection = () => {
             <PageBlock title="Playlists" controls={<div onClick={()=>{createPlaylist("abboba")}}><Add fontSize="large"/></div>}>
                 {!isPlaylistsLoading ? (
                     <div className="playlists-wrapper-flex">
-                    <PlaylistCard type="line" key={3} title="Мне нравится" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" link={`/users/${userData.account.uid}/playlist/3`} />
+                    <PlaylistCard type="line" key={3} title="Мне нравится" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" link={`/users/${userData.user?.account.uid}/playlist/3`} />
                         {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
                             <PlaylistCard type="line" key={playlist.kind} title={playlist.title} coverUri={playlist.cover.uri} link={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`} />
                         ) : null

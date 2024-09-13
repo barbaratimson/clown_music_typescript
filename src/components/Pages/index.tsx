@@ -4,7 +4,7 @@ import Collection from "./pages/Collection";
 import Chart from "./pages/Chart";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import User from "./pages/User";
+import User from "./User/UserPage";
 import Settings from "./pages/Settings";
 import PlaylistView from "../PlaylistView";
 import Artist from "./pages/Artist";

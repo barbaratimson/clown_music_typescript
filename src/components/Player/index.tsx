@@ -31,7 +31,7 @@ import {MessageType, showMessage} from '../../store/MessageSlice';
 import {setLikedSongs} from '../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
 import {trackWrap} from '../../utils/trackWrap';
-import SeekSlider from "./PlayerUI/components/SeekSlider";
+import SeekSlider from "./PlayerUI/SeekSlider";
 import Cover, {ImagePlaceholder} from "../Cover";
 import {logMessage} from "../../store/devLogSlice";
 import {PositionInChart} from '../Track';

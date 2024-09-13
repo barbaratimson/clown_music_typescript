@@ -1,0 +1,34 @@
+@import '/src/styles/vars';
+
+.auth-card__wrapper {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: $bg-color-secondary;
+}
+
+.auth-card__service-logo {
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    width: 35px;
+    aspect-ratio: 1/1;
+}
+
+.auth-card__user-account-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: $font-color-main-light;
+}
+
+.auth-card__status {
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -14,16 +14,16 @@ import {
     VolumeUp
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
-import {RootState, useAppDispatch, useAppSelector} from "../../../../store";
-import {playerStart, playerStop, setRepeat, setShuffle} from "../../playerSlice";
-import {TrackT} from "../../../../utils/types/types";
-import {setOpeningState} from "../../../../store/playingQueueSlice";
-import Cover, {ImagePlaceholder} from '../../../Cover';
-import {PositionInChart} from "../../../Track";
-import ArtistName from "../../../ArtistName";
-import LikeButton from "../../../LikeButton";
-import {secToMinutesAndSeconds} from "../../../../utils/utils";
-import SeekSlider from "../components/SeekSlider";
+import {RootState, useAppDispatch, useAppSelector} from "../../../store";
+import {playerStart, playerStop, setRepeat, setShuffle} from "../playerSlice";
+import {TrackT} from "../../../utils/types/types";
+import {setOpeningState} from "../../../store/playingQueueSlice";
+import Cover, {ImagePlaceholder} from '../../Cover';
+import {PositionInChart} from "../../Track";
+import ArtistName from "../../ArtistName";
+import LikeButton from "../../LikeButton";
+import {secToMinutesAndSeconds} from "../../../utils/utils";
+import SeekSlider from "./SeekSlider";
 
 interface PlayerPropsT {
     currentSong: TrackT,

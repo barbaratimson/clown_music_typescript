@@ -1,3 +1,4 @@
+import { UserT } from "../components/Pages/User/user.types";
 import {ProgressT} from "../utils/types/types";
 import {ErrCodeT} from "./MessageSlice";
 import {MessageType} from "./MessageSlice"
@@ -9,3 +10,4 @@ export const MessageInitState= {message:"",code:200 as ErrCodeT,active:false, ty
 export const SongInitState = {id:0,title:"",artists:[],url:"",coverUri:"",chart:{bgColor:"",listeners:0,position:0,progress: "same" as ProgressT,shift:0},available: true, durationMs:0,albums:[]}
 export const HeaderInitState = {title:"",imgUrl:"",linkTo:"",active:false}
 export const LikedSongsInitState = [{id:0,albumId:0}]
+export const userInitialState:UserT = {account:{uid:0,firstName:"",secondName:"",registeredAt:"",login:"",displayName:""}}
