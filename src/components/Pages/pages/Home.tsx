@@ -27,7 +27,7 @@ const Home = () => {
         fetchFeedPlaylists()
     }, []);
 
-    if (isLoading) return <Loader.PageLoader />
+    if (isLoading) return <Loader.PageLoader/>
 
     return (
         <div className="page-default home-page animated-opacity">

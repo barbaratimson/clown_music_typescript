@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {TrackId, TrackT} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop} from "../../store/PlayerSlice";
+import {playerStart, playerStop} from "../Player/playerSlice";
 import {msToMinutesAndSeconds} from "../../utils/utils";
 import {MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";

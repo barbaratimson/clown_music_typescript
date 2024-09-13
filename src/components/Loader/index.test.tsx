@@ -18,7 +18,7 @@ describe('Render Loader', ()=>{
 describe('Render Page Loader', ()=>{
     test('is page loader rendered', async ()=>{
         render(<Loader.PageLoader/>)
-        const container = document.getElementsByClassName('page-loader-wrapper')[0]
+        const container = document.getElementsByClassName('page')[0]
         expect(container).toBeInTheDocument()
         expect(screen.getByRole('progressbar')).toBeInTheDocument()
     })

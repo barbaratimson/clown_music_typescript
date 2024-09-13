@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import React from "react";
-import {playerRepeatInit, playerShuffleInit} from "./initialStates";
+import {playerRepeatInit, playerShuffleInit} from "../../store/initialStates";
 
 interface playerState {
     currentTime:number

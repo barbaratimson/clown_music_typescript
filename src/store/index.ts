@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import CurrentSongSlice from "./CurrentSongSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import playerSlice from "./PlayerSlice";
+import playerSlice from "../components/Player/playerSlice";
 import playingQueueSlice from "./playingQueueSlice";
 import LikedSongsSlice from "./LikedSongsSlice";
 import MessageSlice from "./MessageSlice";

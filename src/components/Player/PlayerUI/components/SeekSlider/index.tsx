@@ -6,7 +6,7 @@ interface SeekSliderProps {
     loadingState: boolean,
     position: number,
     duration:number,
-    changeTime: Function
+    changeTime: (value:number)=>void,
 }
 
 const SeekSlider = ({loadingState,position,duration,changeTime}:SeekSliderProps)=>{

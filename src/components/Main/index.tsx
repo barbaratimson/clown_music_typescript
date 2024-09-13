@@ -10,7 +10,6 @@ import {fetchLikedSongs} from "../../utils/apiRequests";
 import Queue from "../Queue/queue";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import NavbarMobile from "../Navbar/NavbarMobile";
-import PlayerMobile from "../Player/PlayerMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
 import MobileTrackInfo from "../MobileTrackInfo";
@@ -45,7 +44,7 @@ const Main = () => {
                 {isMobile && <MobileHeader/>}
                 {!isMobile ? (<Navbar/>) : (<NavbarMobile/>)}
                 <Page isMobile={isMobile}/>
-                {!isMobile ? (<Player/>) : (<PlayerMobile/>)}
+                <Player/>
                 <Message/>
                 {!isMobile ? (
                     <>
