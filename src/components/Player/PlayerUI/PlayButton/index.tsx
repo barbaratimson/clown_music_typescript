@@ -3,9 +3,10 @@ import {PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 
 interface PlayButtonProps {
     playing: boolean,
-    startFunc: Function,
-    stopFunc: Function,
-    onKeyDown: Function
+    startFunc: ()=>void,
+    stopFunc: ()=>void,
+    //TODO: Change
+    onKeyDown: (e:any)=>void;
     className?: string
 }
 
