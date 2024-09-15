@@ -71,7 +71,7 @@ const Collection = () => {
                     <div className="playlists-wrapper-flex">
                     <PlaylistCard type="line" key={3} title="Мне нравится" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" link={`/users/${userData.user?.account?.uid}/playlist/3`} />
                         {userPlaylists ? userPlaylists.map((playlist) => playlist.kind !== 0 ? (
-                            <PlaylistCard type="line" key={playlist.kind} title={playlist.title} coverUri={playlist.cover.uri} link={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`} />
+                            <PlaylistCard type="line" key={playlist.kind} title={playlist.title} coverUri={playlist.ogImage} link={`/users/${playlist.owner.uid}/playlist/${playlist.kind}`} />
                         ) : null
                         ) : null}
                     </div>

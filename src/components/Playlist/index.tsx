@@ -63,7 +63,7 @@ const Playlist = ({ playlist }: PlaylistProps) => {
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.cover.uri} controls={
+                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.ogImage} controls={
                     <>
                         <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />
                     </>
