@@ -45,7 +45,7 @@ const PlaylistCardLine = ({title,link,coverUri}:Omit<PlaylistCardProps,"type">) 
         <>
         <Link style = {{textDecoration:"none",width:"auto"}} to={link}>
             <div className="playlist-card-line-wrapper">
-                <Cover coverUri={coverUri} size="75x75" placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} imageSize="100x100"/>
+                <Cover coverUri={coverUri} size="75x75" placeholder={<ImagePlaceholder children={<ListIcon fontSize="large"/>}/>} imageSize="200x200"/>
                 <div className="playlist-card-line-title-wrapper">
                     <div className="playlist-card-line-title">{title}</div>
                 </div>
