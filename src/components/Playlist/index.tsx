@@ -31,15 +31,13 @@ const Playlist = ({ playlist }: PlaylistProps) => {
     const setPlaylistInfoState = (playlist:PlaylistT) => dispatch(setPlaylistInfo(playlist))
 
     useEffect(() => {
-        const filter = filterQuery.get("genre")
-        if (filter === "Unknown") {
-            setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
-        } else if (filter) {
-            setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === filter))
+        const filter = filterQuery.getAll("genres")
+        if (filter.length !== 0) {
+            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.track.albums[0]?.genre)))
         } else {
             setTracksFiltered(playlist.tracks)
         }
-    }, [filterQuery.get("genre")]);
+    }, [filterQuery]);
 
     useEffect(() => {
         const a = () => {

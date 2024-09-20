@@ -11,11 +11,6 @@ interface PopUpModalProps {
 }
 
 const PopUpModal = ({children,active,setActive,unmount}:PopUpModalProps) => {
-    const location = useLocation()
-
-    useEffect(()=>{
-        setActive(false)
-    },[location])
 
     return (
         <>

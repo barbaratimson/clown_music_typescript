@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {TrackId, TrackT} from "../../utils/types/types";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useLocation, useSearchParams} from "react-router-dom";
 import {RootState, useAppSelector} from "../../store";
 import {
     Add,
@@ -34,6 +34,7 @@ interface SimilarTracksT {
 
 const MobileTrackInfo = () => {
     const dispatch = useDispatch()
+    const location = useLocation()
     const [params, setParams] = useSearchParams("")
     const trackInfoState = useAppSelector((state: RootState) => state.trackInfo)
     const setTrackInfoShowState = (active: boolean) => dispatch(setTrackInfoActiveState(active))
@@ -95,6 +96,10 @@ const MobileTrackInfo = () => {
     useEffect(() => {
         fetchSimilarTracks(trackInfoState.track.id)
     }, [trackInfoState.track]);
+
+    useEffect(() => {
+        closeAll()
+    }, [location]);
 
     return (
         <>

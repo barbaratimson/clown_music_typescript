@@ -27,6 +27,7 @@ const MobilePlaylistInfo = () => {
     const [genre, setGenre] = useState<GenreCountT>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const navigate = useNavigate()
+    const [genresToFilter, setGenresToFilter] = useState<string[]>([])
 
     const removePlaylist = async (playlistId:number) => {
         try {
@@ -41,6 +42,9 @@ const MobilePlaylistInfo = () => {
         }
     }
 
+    const genresHandler = () => {
+
+    }
 
     useEffect(() => {
         const genres = playlistInfoState.playlist.tracks.map((track) => {
@@ -57,6 +61,10 @@ const MobilePlaylistInfo = () => {
         })
         setGenres(countAmount.sort((a, b) => b.amount - a.amount))
     }, [playlistInfoState]);
+
+    useEffect(() => {
+        setFilterQuery({genres: genresToFilter})
+    }, [genresToFilter]);
 
     return (
         <>
@@ -83,7 +91,7 @@ const MobilePlaylistInfo = () => {
                                             Add playlist
                                         </div>
                                     </div>
-                                    <div className="track-info-mobile-control-button" onClick={() => {setFilterMenuActive(!filterMenuActive)}}>
+                                    <div className="track-info-mobile-control-button" onClick={() => {setFilterMenuActive(!filterMenuActive);setPlaylistInfoShow(false)}}>
                                         <div className="track-info-mobile-control-icon">
                                             <FilterAlt />
                                         </div>
@@ -115,9 +123,16 @@ const MobilePlaylistInfo = () => {
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
                 <>
                     <div className="playlist-filter-title"><ExpandMore /></div>
-                    <div className="playlist-filter-wrapper">
+                    <div className="playlist-filter-wrapper" onClick={(e)=>{e.stopPropagation()}}>
                         {genres ? genres.map(genreRender => (
-                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.get("genre") === genreRender.genre ? "playlist-filter-button-active" : ""}`} onClick={() => { filterQuery.get("genre") !== genreRender.genre && genreRender.genre ? setFilterQuery({ genre: genreRender.genre }) : setFilterQuery(undefined) }}>
+                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "playlist-filter-button-active" : ""}`}
+                                 onClick={() => {
+                                        !filterQuery.getAll("genres")?.includes(genreRender.genre) && genreRender.genre ?
+                                         // setFilterQuery({ genre: [genreRender.genre })
+                                         setGenresToFilter(genresToFilter?.concat(genreRender.genre))
+                                         :
+                                         setGenresToFilter(genresToFilter.filter(elem => elem !== genreRender.genre))
+                                 }}>
                                 <div className="playlist-filter-button-text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
                                 <div className="playlist-filter-button-amount" style={{ width: genreRender.amount + "%" }}>
                                     <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
