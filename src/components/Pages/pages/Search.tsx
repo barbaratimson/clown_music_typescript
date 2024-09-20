@@ -22,7 +22,6 @@ const Search = () => {
     const handleSearch = async () => {
         setIsLoading(true)
         if (searchQuery.get("query") !== null && searchQuery.get("query") !== "") {
-            console.log(searchQuery.get("query"))
             try {
                 const response = await axios.get(
                     `${link}/ya/search/${searchQuery.get("query")}`, { headers: { "Authorization": localStorage.getItem("Authorization") } });

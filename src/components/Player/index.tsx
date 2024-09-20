@@ -197,7 +197,7 @@ const Player = () => {
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         if (currentSong.available && currentSong && audioElem.current) {
-            audioElem.current.volume = parseFloat(mobilePlayerInitialVolume)
+            audioElem.current.volume = isMobile ? parseFloat(mobilePlayerInitialVolume) : parseFloat(savedVolume ? savedVolume : "0") / 100
             changeTime(0)
             setPosition(0)
         }
@@ -239,15 +239,12 @@ const Player = () => {
     });
 
     useEffect(() => {
+        if (!audioElem.current) return
         if (isMobile) {
-            if (audioElem.current) {
                 audioElem.current.volume = parseFloat(mobilePlayerInitialVolume)
-            }
         } else {
-            if (audioElem.current) {
                 audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
-            }
-            localStorage.setItem("player_volume",playerVolume.toString())
+                localStorage.setItem("player_volume",playerVolume.toString())
         }
     }, [playerVolume]);
 
