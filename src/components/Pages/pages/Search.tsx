@@ -28,7 +28,6 @@ const Search = () => {
                     `${link}/ya/search/${searchQuery.get("query")}`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
                 setSearchResults(response.data)
                 setIsLoading(false)
-                console.log(response.data)
             } catch (err) {
                 console.error('Ошибка при получении списка треков:', err);
                 console.log(err)

@@ -56,7 +56,6 @@ const MobileTrackInfo = () => {
             const response = await axios.get(
                 `${link}/ya/tracks/${id}/similar`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
             setSimilarTracks(response.data)
-            console.log(response.data)
             setIsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
