@@ -15,7 +15,7 @@ const PopUpModal = ({children,active,setActive,unmount}:PopUpModalProps) => {
     return (
         <>
             <Slide direction={"up"} in={active} unmountOnExit={unmount}>
-                    <div className="track-info-mobile" onClick={()=>{setActive(false)   }}>
+                    <div className="popup-modal" onClick={()=>{setActive(false)}}>
                         {children}
                     </div>
             </Slide>

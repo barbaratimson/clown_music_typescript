@@ -1,0 +1,15 @@
+@import "src/styles/vars";
+
+.track-info-artist {
+  font-size: 14px;
+  color: #e1e1e1;
+  transition: all .4s;
+}
+
+.track-info-artist:hover {
+  color: #b9b9b9
+}
+
+.track-info-artist:not(:last-child)::after {
+  content: ", ";
+}

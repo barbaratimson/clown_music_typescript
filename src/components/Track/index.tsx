@@ -88,7 +88,7 @@ const Index = ({track,queueFunc}:TrackProps) => {
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
                         <span className="track-info-artist-span">
                             {track.artists.map(artist => (
-                                <ArtistName key={artist.id} size={"14px"} artist={artist}/>
+                                <ArtistName key={artist.id} artist={artist}/>
                             ))}
                         </span>
                     </div>

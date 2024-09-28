@@ -48,6 +48,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setQueueOpen = (open: boolean) => dispatch(setOpeningState(open))
+    const queueCurrentFilter= useAppSelector((state: RootState) => state.playingQueue.queue.filteredBy)
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
@@ -167,9 +168,18 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                 <div className="player-navbar-button close">
                                     <ExpandMore />
                                 </div>
-                                <div className="player-header-mobile-title" onClick={(e) => {
-                                    e.stopPropagation();
-                                }}>{queueCurrentPlaylist.title}</div>
+                                <div className="player-header-mobile-title-wrapper">
+                                    <div className="player-header-mobile-title" onClick={(e) => {
+                                        e.stopPropagation();
+                                    }}>{queueCurrentPlaylist.title}</div>
+                                    <span className="player-header-mobile-filters">
+                                        {queueCurrentFilter.slice(0,3).map((filter)=> (
+                                            <a className="player-header-mobile-filters-filter">
+                                                {filter}
+                                            </a>
+                                        ))}
+                                    </span>
+                                </div>
                                 <div className="player-navbar-button queue" onClick={(e) => {
                                     setQueueOpen(!queueOpen);
                                     e.stopPropagation()

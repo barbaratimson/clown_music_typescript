@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {TrackId, TrackT} from "../../utils/types/types";
+import {TrackId, TrackT} from "../../../utils/types/types";
 import {Link, useLocation, useSearchParams} from "react-router-dom";
-import {RootState, useAppSelector} from "../../store";
+import {RootState, useAppSelector} from "../../../store";
 import {
     Add,
     Album,
@@ -12,20 +12,21 @@ import {
     PeopleAlt,
     PlaylistAdd
 } from "@mui/icons-material";
-import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests";
-import {MessageType, showMessage} from "../../store/MessageSlice";
-import {setLikedSongs} from "../../store/LikedSongsSlice";
+import {dislikeSong, fetchLikedSongs, likeSong} from "../../../utils/apiRequests";
+import {MessageType, showMessage} from "../../../store/MessageSlice";
+import {setLikedSongs} from "../../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
 import axios from "axios";
-import {link} from "../../utils/constants";
-import SongsList from "../SongsList";
-import {trackArrayWrap} from "../../utils/trackWrap";
-import Loader from "../Loader";
-import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
-import {addTrackToQueuePosition} from "../../store/playingQueueSlice";
-import PopUpModal from "../PopUpModal";
-import Cover, {ImagePlaceholder} from "../Cover";
-import track from "../Track";
+import {link} from "../../../utils/constants";
+import SongsList from "../../SongsList";
+import {trackArrayWrap} from "../../../utils/trackWrap";
+import Loader from "../../Loader";
+import {setTrackInfoActiveState} from "../../../store/trackInfoSlice";
+import {addTrackToQueuePosition} from "../../../store/playingQueueSlice";
+import PopUpModal from "../index";
+import Cover, {ImagePlaceholder} from "../../Cover";
+import track from "../../Track";
+import {ClickAwayListener} from "@mui/material";
 
 interface SimilarTracksT {
     track: TrackT
@@ -105,9 +106,8 @@ const MobileTrackInfo = () => {
 
             <PopUpModal active={trackInfoState.active} setActive={closeCondArtists}>
                 <>
-                    {trackInfoState.track.id ? (
                         <>
-                            <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
+                            <div className="track-info-mobile-about-wrapper">
                                 <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
                                 <div className="track-info-wrapper">
                                     <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
@@ -175,7 +175,7 @@ const MobileTrackInfo = () => {
                                     </>
                                 ) : null}
                                 { trackInfoState.track.albums[0]?.genre ? (
-                                    <div className="track-info-mobile-control-button" onClick={() => { setParams({ genre: trackInfoState.track.albums[0]?.genre }) }}>
+                                    <div className="track-info-mobile-control-button" onClick={() => { setParams({ genres: trackInfoState.track.albums[0]?.genre }) }}>
                                     <div className="track-info-mobile-control-icon">
                                         <FilterAlt />
                                     </div>
@@ -202,13 +202,8 @@ const MobileTrackInfo = () => {
 
                             </div>
                         </>
-                    )
-                        : null
-
-                    }
                 </>
             </PopUpModal>
-
             <PopUpModal active={trackInfoState.active && artistsOpen} setActive={setArtistsOpen}>
                 <div onClick={() => { setArtistsOpen(false) }}>
                     <div className="track-info-artists-title-wrapper">

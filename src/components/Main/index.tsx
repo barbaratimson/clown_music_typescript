@@ -12,18 +12,20 @@ import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../util
 import NavbarMobile from "../Navbar/NavbarMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
-import MobileTrackInfo from "../MobileTrackInfo";
+import MobileTrackInfo from "../PopUpModal/MobileTrackInfo";
 import QueueMobile from "../Queue/QueueMobile";
 import {setOpeningState} from "../../store/playingQueueSlice";
-import MobilePlaylistInfo from "../MobilePlaylistInfo";
+import MobilePlaylistInfo from "../PopUpModal/MobilePlaylistInfo";
 import { UserT } from "../Pages/User/user.types";
 import { setUser } from "../Pages/User/userSlice";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))

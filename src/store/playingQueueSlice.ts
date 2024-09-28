@@ -7,7 +7,7 @@ interface QueueState {
     queue:QueueT
 }
 const initialState:QueueState = {
-    queue:{playlist:PlaylistInitState,queueTracks:[{id:0,track:SongInitState}],queueOpen:false}
+    queue:{playlist:PlaylistInitState,filteredBy:[],queueTracks:[{id:0,track:SongInitState}],queueOpen:false}
 }
 const move = function(from:number, to:number, array:TrackType[]) {
     array.splice(to, 0, array.splice(from, 1)[0]);
@@ -21,6 +21,7 @@ const playingQueueSlice = createSlice({
         initQueue(state, action) {
             state.queue.playlist = {...action.payload.playlist, tracks:action.payload.playlist.tracks.filter((track:TrackType) => track.track.available)}
             state.queue.queueTracks = action.payload.queueTracks.filter((track:TrackType) => track.track.available)
+            state.queue.filteredBy = action.payload.filteredBy
         },
         setQueue(state, action) {
             state.queue.queueTracks = action.payload.filter((track:TrackType) => track.track.available)

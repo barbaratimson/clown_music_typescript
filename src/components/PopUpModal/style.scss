@@ -1,4 +1,6 @@
-.track-info-mobile {
+@import 'src/styles/vars';
+
+.popup-modal {
   position: fixed;
   display: flex;
   flex-direction:column;
@@ -13,4 +15,48 @@
   -webkit-backdrop-filter: blur(2.6px);
   transition: all .4s ease-in;
   z-index: 99999;
+}
+
+.track-info-mobile-about-wrapper {
+  display: flex;
+  flex-direction: row;
+};
+
+.track-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  white-space: nowrap;
+};
+
+.track-info-back-button {
+  display:flex;
+  flex-grow:1;
+  justify-content:end;
+  align-items:center;
+  color:var(--font-color-main);
+  margin-right:10px;
+};
+
+.track-info-mobile-control-button {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  gap: 10px;
+  background-color: var(--bg-color-secondary_hover);
+  color: var(--font-color-main);
+  border-bottom: 1px solid rgba(178, 174, 174, 0.19);
+}
+
+.track-info-mobile-control-button:last-child {
+  border: none;
 }

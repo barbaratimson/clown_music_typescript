@@ -12,6 +12,7 @@ import axios from "axios";
 import {setPlaylistInfo, setPlaylistInfoActiveState} from "../../store/playlistInfoSlice";
 import {setTrackInfo} from "../../store/trackInfoSlice";
 import { Skeleton } from "@mui/material";
+import "./style.scss"
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -63,10 +64,15 @@ const Playlist = ({ playlist }: PlaylistProps) => {
             <div className="playlist-wrapper mobile-folded animated-opacity">
                 <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.ogImage} controls={
                     <>
+                        <span className="playlist__filters">
+                            {filterQuery.getAll("genres").map((genre) => (
+                                <a className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1) }</a>
+                            ))}
+                        </span>
                         <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />
                     </>
                 } />
-                    <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered, title: `${playlist.title} ${filterQuery.get("genre") !== null ? `(${filterQuery.get("genre")})` : ""}` } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
+                    <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
             </div>
         </>
     )

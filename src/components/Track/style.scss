@@ -1,4 +1,6 @@
 @import 'src/styles/vars';
+
+
 .track-wrapper {
   display: flex;
   flex-direction: row;
@@ -89,6 +91,12 @@
     border-radius: 12px;
   }
 }
+
+.track-info-title {
+  font-size: 16px;
+}
+
+
 
 
 

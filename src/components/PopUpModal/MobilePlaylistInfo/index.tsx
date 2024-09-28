@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
-import {RootState, useAppSelector} from "../../store";
+import {RootState, useAppSelector} from "../../../store";
 import {Add, Delete, ExpandMore, FilterAlt, KeyboardArrowDown} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import Cover, {ImagePlaceholder} from "../Cover";
-import {setPlaylistInfoActiveState} from "../../store/playlistInfoSlice";
-import PopUpModal from "../PopUpModal";
+import Cover, {ImagePlaceholder} from "../../Cover";
+import {setPlaylistInfoActiveState} from "../../../store/playlistInfoSlice";
+import PopUpModal from "../index";
 import axios from "axios";
-import {link} from "../../utils/constants";
+import {link} from "../../../utils/constants";
+import "./style.scss"
 
 interface GenreCountT {
     genre: string,
-    amount: number
+    amount: number,
+    percentage: number
 }
 
 const MobilePlaylistInfo = () => {
@@ -57,10 +59,12 @@ const MobilePlaylistInfo = () => {
         const uniqueGenres = Array.from(new Set(genres))
         const countAmount = uniqueGenres.map((genre) => {
             const amountOfGenre = genres.filter(elem => elem == genre)
-            return { genre: genre, amount: amountOfGenre.length }
+            const genrePecentage = amountOfGenre.length * 100 /genres.length
+            return { genre: genre, amount: amountOfGenre.length , percentage: genrePecentage}
         })
         setGenres(countAmount.sort((a, b) => b.amount - a.amount))
-    }, [playlistInfoState]);
+        setGenresToFilter([])
+    }, [playlistInfoState.playlist]);
 
     useEffect(() => {
         setFilterQuery({genres: genresToFilter})
@@ -122,10 +126,10 @@ const MobilePlaylistInfo = () => {
 
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
                 <>
-                    <div className="playlist-filter-title"><ExpandMore /></div>
-                    <div className="playlist-filter-wrapper" onClick={(e)=>{e.stopPropagation()}}>
+                    <div className="playlist-filter__title"><ExpandMore /></div>
+                    <div className="playlist-filter__wrapper" onClick={(e)=>{e.stopPropagation()}}>
                         {genres ? genres.map(genreRender => (
-                            <div key={genreRender.genre} className={`playlist-filter-button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "playlist-filter-button-active" : ""}`}
+                            <div key={genreRender.genre} className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}
                                  onClick={() => {
                                         !filterQuery.getAll("genres")?.includes(genreRender.genre) && genreRender.genre ?
                                          // setFilterQuery({ genre: [genreRender.genre })
@@ -133,9 +137,9 @@ const MobilePlaylistInfo = () => {
                                          :
                                          setGenresToFilter(genresToFilter.filter(elem => elem !== genreRender.genre))
                                  }}>
-                                <div className="playlist-filter-button-text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
-                                <div className="playlist-filter-button-amount" style={{ width: genreRender.amount + "%" }}>
-                                    <div className="playlist-filter-button-amount-number">{genreRender.amount}</div>
+                                <div className="playlist-filter__button_text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
+                                <div className="playlist-filter__button_amount" style={{ width: genreRender.percentage + "%" }}>
+                                    <div className="playlist-filter__button_amount_number">{genreRender.amount}</div>
                                 </div>
                             </div>
                         )) : null}
