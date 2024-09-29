@@ -27,7 +27,7 @@ const Chart = () => {
         setIsLoading(true)
         try {
             const response = await axios.get(
-                `${link}/ya/chart`);
+                `${link}/ya/chart`,{ headers: { "Authorization": localStorage.getItem("Authorization") } });
             setChartResult(response.data)
             console.log(response.data)
             setIsLoading(false)

@@ -63,12 +63,23 @@ const MobilePlaylistInfo = () => {
             return { genre: genre, amount: amountOfGenre.length , percentage: genrePecentage}
         })
         setGenres(countAmount.sort((a, b) => b.amount - a.amount))
-        setGenresToFilter([])
     }, [playlistInfoState.playlist]);
+
+    useEffect(() => {
+        const filter = filterQuery.getAll("genres")
+        if (filter.length !== 0) {
+            setGenresToFilter(filter)
+        } else {
+            setGenresToFilter([])
+        }
+    }, [filterQuery]);
+
+
 
     useEffect(() => {
         setFilterQuery({genres: genresToFilter})
     }, [genresToFilter]);
+
 
     return (
         <>
@@ -138,7 +149,7 @@ const MobilePlaylistInfo = () => {
                                          setGenresToFilter(genresToFilter.filter(elem => elem !== genreRender.genre))
                                  }}>
                                 <div className="playlist-filter__button_text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
-                                <div className="playlist-filter__button_amount" style={{ width: genreRender.percentage + "%" }}>
+                                <div className="playlist-filter__button_amount" style={{ width: genreRender.percentage * 100 / genres[0].percentage + "%" }}>
                                     <div className="playlist-filter__button_amount_number">{genreRender.amount}</div>
                                 </div>
                             </div>

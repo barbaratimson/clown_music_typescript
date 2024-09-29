@@ -58,14 +58,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
         error
     } = usePalette(currentSong && currentSong.coverUri ? `http://${currentSong.coverUri.substring(0, currentSong.coverUri.lastIndexOf('/'))}/800x800` : "")
 
-    const handleKeyPress = (e: any) => {
-        if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
-            e.preventDefault()
-
-            !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
-        }
-    }
-
     useEffect(() => {
         if (!playerFolded) {
             document.body.style.overflow = "hidden"
@@ -141,7 +133,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                             <PlayButton playing={playerState.playing} startFunc={startPlayerFunc}
                                 stopFunc={stopPlayerFunc} onKeyDown={(e: Event) => {
                                     e.preventDefault();
-                                    handleKeyPress(e)
                                 }} />
                             <IconButton onClick={skipForward} className="player-primary-button"
                                 aria-label="next song">
@@ -173,11 +164,18 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                         e.stopPropagation();
                                     }}>{queueCurrentPlaylist.title}</div>
                                     <span className="player-header-mobile-filters">
+                                        <>
                                         {queueCurrentFilter.slice(0,3).map((filter)=> (
                                             <a className="player-header-mobile-filters-filter">
-                                                {filter}
+                                                {filter.charAt(0).toUpperCase() + filter.slice(1)}
                                             </a>
                                         ))}
+                                        {queueCurrentFilter.length >= 2 ?
+                                            <a className="player-header-mobile-filters-filter">
+                                                And more...
+                                            </a>
+                                        : null}
+                                        </>
                                     </span>
                                 </div>
                                 <div className="player-navbar-button queue" onClick={(e) => {
@@ -306,7 +304,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                             startFunc={startPlayerFunc} stopFunc={stopPlayerFunc}
                                             onKeyDown={(e: Event) => {
                                                 e.preventDefault();
-                                                handleKeyPress(e)
                                             }} />
                                         <IconButton onClick={skipForward}
                                             className="player-primary-button mobile-secondary"

@@ -64,6 +64,19 @@ const MobileTrackInfo = () => {
         }
     };
 
+    const fetchUserPlaylists = async () => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+            return response.data
+            // setUserPlaylists(response.data)
+            // setIsPlaylistsLoading(false)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    };
+
+
     const addToPlaylist = async (playlistId: number | string, track: TrackT, revision: number) => {
         try {
             const response = await axios.get(

@@ -71,7 +71,6 @@ const Player = () => {
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
             e.preventDefault()
-
             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
         }
     }
