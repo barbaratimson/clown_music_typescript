@@ -170,7 +170,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                                 {filter.charAt(0).toUpperCase() + filter.slice(1)}
                                             </a>
                                         ))}
-                                        {queueCurrentFilter.length >= 2 ?
+                                        {queueCurrentFilter.length > 2 ?
                                             <a className="player-header-mobile-filters-filter">
                                                 And more...
                                             </a>
