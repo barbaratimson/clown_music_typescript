@@ -77,7 +77,9 @@ const MobilePlaylistInfo = () => {
 
 
     useEffect(() => {
-        setFilterQuery({genres: genresToFilter})
+        if (genresToFilter.length !== 0) {
+          setFilterQuery({genres: genresToFilter})
+        }
     }, [genresToFilter]);
 
 
