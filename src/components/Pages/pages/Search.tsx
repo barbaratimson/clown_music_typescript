@@ -49,8 +49,6 @@ const Search = () => {
         handleSearch()
         if (searchQuery.get("query") !== null) {
             setSearch(searchQuery?.get("query") ?? "")
-        } else {
-            setSearch("")
         }
     }, [searchQuery]);
 
