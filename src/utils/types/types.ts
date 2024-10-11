@@ -142,3 +142,14 @@ export interface QueueT {
     queueOpen?:boolean
     filteredBy: string[]
 }
+
+export interface FeedT {
+    generatedPlaylists: GeneratedPlaylistT[],
+    days: FeedDaysT[]
+}
+
+export interface FeedDaysT {
+    // TODO: Change
+    events: any,
+    tracksToPlay: TrackT[]
+}
