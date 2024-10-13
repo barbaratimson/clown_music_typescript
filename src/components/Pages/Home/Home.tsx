@@ -44,6 +44,13 @@ const Home = () => {
                     </PageBlock>
                 }
             </div>
+            {feed?.days.map(day => (
+                day.events.map((event)=> event.tracks ? (
+                    <PageBlock title={event.title.map((eventTitle => eventTitle.text)).join("").toString()}>
+                        <SongsList tracks={trackArrayWrap(event.tracks)} playlist={{ kind: 0, cover: { uri: event.tracks[0].coverUri }, uid: 0, ogImage: event.tracks[0].coverUri, available: true, owner: { uid: event.tracks[0].artists[0].id, name: event.tracks[0].artists[0].name, verified: true }, title: event.title.map((eventTitle => eventTitle.text)).join("").toString(), description: "", tracks: trackArrayWrap(event.tracks) }}></SongsList>
+                    </PageBlock>
+                ): null)
+            ))}
             <PageBlock title={"Recommended tracks"}>
                 {feed?.days.map(day => (
                     <SongsList tracks={trackArrayWrap(day.tracksToPlay)} playlist={{ kind: 0, cover: { uri: day.tracksToPlay[0].coverUri }, uid: 0, ogImage: day.tracksToPlay[0].coverUri, available: true, owner: { uid: day.tracksToPlay[0].artists[0].id, name: day.tracksToPlay[0].artists[0].name, verified: true }, title: `Треки для вас`, description: "", tracks: trackArrayWrap(day.tracksToPlay) }}></SongsList>

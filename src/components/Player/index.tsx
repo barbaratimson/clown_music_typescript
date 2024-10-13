@@ -43,6 +43,7 @@ import {usePalette} from "react-palette";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
+import message from "../Message";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -67,6 +68,7 @@ const Player = () => {
     const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
     const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
     const devLog = (message: string) => dispatch(logMessage(message))
+    const message = (message:string) => dispatch(showMessage(message))
 
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
@@ -188,7 +190,10 @@ const Player = () => {
                 })
                 .then(_ => { })
                 .catch(e => {
-                    console.log(e)
+                    if (e.code !== 20) {
+                        message(e)
+                    }
+                    console.error(e.code)
                     devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
                 }).finally(()=>{
                     setLoading(false)

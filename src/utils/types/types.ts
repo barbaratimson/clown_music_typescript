@@ -148,8 +148,17 @@ export interface FeedT {
     days: FeedDaysT[]
 }
 
+export interface TitleT {
+    type: "text" | "track" | "artist" | any
+    text: string
+}
+export interface FeedEventsT {
+    title: TitleT[]
+    tracks: TrackT[]
+    type: string
+}
 export interface FeedDaysT {
     // TODO: Change
-    events: any,
+    events: FeedEventsT[],
     tracksToPlay: TrackT[]
 }

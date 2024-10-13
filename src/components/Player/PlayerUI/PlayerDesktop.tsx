@@ -58,8 +58,6 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
 
     return (
         <>
-            {currentSong.id !== 0 ? (
-
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
                     <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri}
@@ -188,7 +186,6 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
                     </div>
                 </div>
             </div>
-            ) : null}
         </>
     )
 }
