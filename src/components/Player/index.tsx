@@ -201,7 +201,8 @@ const Player = () => {
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         if (currentSong.available && currentSong && audioElem.current) {
-            audioElem.current.volume = isMobile ? parseFloat(mobilePlayerInitialVolume) : parseFloat(savedVolume ? savedVolume : "0") / 100
+            const volume = localStorage.getItem("player_volume")
+            audioElem.current.volume = isMobile ? parseFloat(mobilePlayerInitialVolume) : parseFloat(volume ? volume : "0") / 100
             changeTime(0)
             setPosition(0)
         }
