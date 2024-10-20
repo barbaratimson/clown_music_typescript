@@ -1,9 +1,9 @@
 import React, {ReactElement, useEffect} from "react";
-import {Slide} from "@mui/material";
+import {Fade, Slide} from "@mui/material";
 import {useLocation} from 'react-router-dom'
 import './style.scss'
 
-interface PopUpModalProps {
+export interface PopUpModalProps {
     children:ReactElement,
     active: boolean,
     setActive: any,
@@ -14,6 +14,9 @@ const PopUpModal = ({children,active,setActive,unmount}:PopUpModalProps) => {
 
     return (
         <>
+            <Fade in={active} unmountOnExit>
+                <div className={"modal-wrapper"} onClick={()=>{setActive(false)}}></div>
+            </Fade>
             <Slide direction={"up"} in={active} unmountOnExit={unmount}>
                     <div className="popup-modal" onClick={()=>{setActive(false)}}>
                         {children}

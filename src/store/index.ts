@@ -24,7 +24,7 @@ export const store = configureStore({
         trackInfo:trackInfoSlice,
         devLog: devLogSlice,
         playlistInfo: playlistInfoSlice,
-        user: userSlice
+        user: userSlice,
     }
 });
 

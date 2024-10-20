@@ -6,7 +6,7 @@ import PlaylistCard from "../../PlaylistCard";
 import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
 import {Add} from "@mui/icons-material";
-import { RootState, useAppSelector } from "../../../store";
+import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 
 
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -17,7 +17,6 @@ const Collection = () => {
     const [userTracks, setUserTracks] = useState<PlaylistT>()
     const [userPlaylists, setUserPlaylists] = useState<Array<PlaylistT>>()
     const userData = useAppSelector((state:RootState)=> state.user)
-    
     const fetchUserPlaylists = async () => {
         try {
             const response = await axios.get(
@@ -65,7 +64,7 @@ const Collection = () => {
     if (isLoading) return <Loader.PageLoader />
     return (
         <div className="page-default animated-opacity">
-            <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" />
+            <PageHeader titleText="Collection" descText="Your music" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/"/>
             <PageBlock title="Playlists" controls={<div onClick={()=>{createPlaylist("abboba")}}><Add fontSize="large"/></div>}>
                 {!isPlaylistsLoading ? (
                     <div className="playlists-wrapper-flex">

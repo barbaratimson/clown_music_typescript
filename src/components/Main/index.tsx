@@ -31,7 +31,6 @@ const Main = () => {
     const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
     const setCurrentUser = (user:UserT) => dispatch(setUser(user))
-
     const fetchUser = async () => {
         try {
             const response = await axios.get(
@@ -75,7 +74,6 @@ const Main = () => {
                     </Fade>
                     </>
                 ) : (<QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>)}
-
                 <MobileTrackInfo/>
                 <MobilePlaylistInfo/>
             </div>

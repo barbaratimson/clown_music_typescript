@@ -1,5 +1,14 @@
 @import 'src/styles/vars';
 
+
+.modal-wrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: $modal-Z_layer;
+}
+
 .popup-modal {
   position: fixed;
   display: flex;
@@ -14,7 +23,7 @@
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(2.6px);
   transition: all .4s ease-in;
-  z-index: 99999;
+  z-index: $modal-Z_layer + 1;
 }
 
 .track-info-mobile-about-wrapper {
@@ -59,4 +68,9 @@
 
 .track-info-mobile-control-button:last-child {
   border: none;
+}
+
+.track-info-mobile-control-button.artist {
+  height: auto;
+  padding: 5px;
 }

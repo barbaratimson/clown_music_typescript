@@ -1,3 +1,9 @@
+//z-indexes:
+$player-Z_layer: 1;
+$modal-Z_layer: 2;
+$message-Z_layer: 3;
+$interface-Z_layer: 1;
+
 //$large:
 //$medium:
 $small: 575px;
@@ -7,7 +13,7 @@ $track-title-size_mobile:14px;
 $track-artist-size:14px;
 $track-artist-size_mobile:12px;
 
-$font-color-main-light: #ffffff;
+$font-color-main-light: rgba(255, 255, 255, 0.47);
 $bg-color-main: rgba(0, 0, 0, 0.5);
 $bg-color-secondary: rgba(255, 255, 255, 0.08);
 $bg-color-secondary_hover: rgba(255, 247, 247, 0.19);

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {TrackId, TrackT} from "../../../utils/types/types";
-import {Link, useLocation, useSearchParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {RootState, useAppSelector} from "../../../store";
 import {
     Add,
-    Album,
+    Album, ContentCopy,
     Favorite,
     FavoriteBorder,
     FilterAlt,
@@ -25,8 +25,7 @@ import {setTrackInfoActiveState} from "../../../store/trackInfoSlice";
 import {addTrackToQueuePosition} from "../../../store/playingQueueSlice";
 import PopUpModal from "../index";
 import Cover, {ImagePlaceholder} from "../../Cover";
-import track from "../../Track";
-import {ClickAwayListener} from "@mui/material";
+import "./style.scss"
 
 interface SimilarTracksT {
     track: TrackT
@@ -34,6 +33,7 @@ interface SimilarTracksT {
 }
 
 const MobileTrackInfo = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
     const [params, setParams] = useSearchParams("")
@@ -51,6 +51,7 @@ const MobileTrackInfo = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [similarTracks, setSimilarTracks] = useState<SimilarTracksT>()
     const [artistsOpen, setArtistsOpen] = useState(false)
+    const [showSimilar, setShowSimilar] = useState(false)
     const fetchSimilarTracks = async (id: any) => {
         setIsLoading(true)
         try {
@@ -107,7 +108,7 @@ const MobileTrackInfo = () => {
     }
 
     useEffect(() => {
-        fetchSimilarTracks(trackInfoState.track.id)
+        setShowSimilar(false)
     }, [trackInfoState.track]);
 
     useEffect(() => {
@@ -116,20 +117,18 @@ const MobileTrackInfo = () => {
 
     return (
         <>
-
             <PopUpModal active={trackInfoState.active} setActive={closeCondArtists}>
                 <>
-                        <>
-                            <div className="track-info-mobile-about-wrapper">
-                                <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
-                                <div className="track-info-wrapper">
-                                    <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
-                                    <div style={{ marginTop: "5px" }} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
+                                <div className="track-info-mobile-about-wrapper">
+                                    <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
+                                    <div className="track-info-wrapper">
+                                        <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
+                                        <div style={{ marginTop: "5px" }} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
+                                    </div>
+                                    <div className="track-info-back-button">
+                                        <KeyboardArrowDown className="track-info-back-icon"/>
+                                    </div>
                                 </div>
-                                <div className="track-info-back-button">
-                                    <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: artistsOpen ? "90deg" : "0deg" }} />
-                                </div>
-                            </div>
                             <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e) => { e.stopPropagation() }}>
                                 <div className="track-info-mobile-control-button" onClick={(e) => { isLiked(trackInfoState.track.id) ? dislikeSong(trackInfoState.track).then((response) => updateLikedSongs("removed")) : likeSong(trackInfoState.track).then((response) => updateLikedSongs("liked")); closeAll() }}>
                                     <div className="track-info-mobile-control-icon">
@@ -157,17 +156,18 @@ const MobileTrackInfo = () => {
                                 </div>
                                 {trackInfoState.track.artists.length !== 0 ? (
                                     <>
-                                    <div className="track-info-mobile-control-button" onClick={() => { setArtistsOpen(true) }}>
-                                        <div className="track-info-mobile-control-icon">
-                                            <PeopleAlt />
+                                        <div className="track-info-mobile-control-button" onClick={() => { trackInfoState.track.artists.length === 1 ? navigate(`/artist/${trackInfoState.track.artists[0].id}`) : setArtistsOpen(true);setTrackInfoShowState(false)}}>
+                                            <div className="track-info-mobile-control-icon">
+                                                <PeopleAlt />
+                                            </div>
+                                            <div className="track-info-mobile-control-label">
+                                                {trackInfoState.track.artists.length === 1 ? "Artist" : "Artists"}
+                                            </div>
+                                            <div className="track-info-mobile-control-label" style={{flexGrow:"1",textAlign:"end"}}> { trackInfoState.track.artists.length !== 1 ? <KeyboardArrowDown className="track-info-back-icon"/> : null}</div>
                                         </div>
-                                        <div className="track-info-mobile-control-label">
-                                            Artists
-                                        </div>
-                                    </div>
-                                     </>
+                                    </>
                                 ) : null}
-                                    <div className="track-info-mobile-control-button" onClick={()=>{addToPlaylist(1040,trackInfoState.track,1)}}>
+                                <div className="track-info-mobile-control-button" onClick={()=>{addToPlaylist(1040,trackInfoState.track,1)}}>
                                     <div className="track-info-mobile-control-icon">
                                         <Add />
                                     </div>
@@ -189,53 +189,76 @@ const MobileTrackInfo = () => {
                                 ) : null}
                                 { trackInfoState.track.albums[0]?.genre ? (
                                     <div className="track-info-mobile-control-button" onClick={() => { setParams({ genres: trackInfoState.track.albums[0]?.genre }) }}>
-                                    <div className="track-info-mobile-control-icon">
-                                        <FilterAlt />
+                                        <div className="track-info-mobile-control-icon">
+                                            <FilterAlt />
+                                        </div>
+                                        <div className="track-info-mobile-control-label">
+                                            Filter by genre
+                                        </div>
                                     </div>
-                                    <div className="track-info-mobile-control-label">
-                                        Filter by genre
-                                    </div>
-                                </div>
                                 ) : null}
-
-
                             </div>
+
                             <div className="track-info-mobile-similar-tracks" onClick={(e) => { e.stopPropagation() }}>
-                                {!isLoading ? (
-                                    <>
-                                    {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
-                                        <SongsList style={{ flexDirection: "row" }} playlist={{ kind: -1, cover: { uri: similarTracks.track.coverUri }, uid: 0, ogImage: similarTracks.track.coverUri, available: true, owner: { uid: similarTracks.track.artists[0].id, name: similarTracks.track.artists[0].name, verified: true }, title: `${similarTracks.track.title}: Similar`, description: "", tracks: trackArrayWrap(similarTracks.similarTracks) }} tracks={trackArrayWrap(similarTracks?.similarTracks)} />
-                                    ):null}
-                                </>
-                                ) : (
+                                {showSimilar ? (
+
+                                    !isLoading ? (
+                                        <>
+                                            {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
+                                                <SongsList style={{ flexDirection: "row" }} playlist={{ kind: -1, cover: { uri: similarTracks.track.coverUri }, uid: 0, ogImage: similarTracks.track.coverUri, available: true, owner: { uid: similarTracks.track.artists[0].id, name: similarTracks.track.artists[0].name, verified: true }, title: `${similarTracks.track.title}: Similar`, description: "", tracks: trackArrayWrap(similarTracks.similarTracks) }} tracks={trackArrayWrap(similarTracks?.similarTracks)} />
+                                            ):(
+                                                <div className="track-info-mobile-control-label" style={{display:"flex",justifyContent:"center",color:"white",width:"100%"}}>No similar tracks found :(</div>)
+                                            }
+                                        </>
+                                    ) : (
                                         <div style={{ width: "100%", height: "50px" }}>
                                             <Loader size={30} />
                                         </div>
-                                )}
+                                    )
 
+                                ) : (
+                                    <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e) => { e.stopPropagation() }}>
+                                        <div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%"}}>
+                                            <div className="track-info-mobile-control-button" style={{height:"50px"}} onClick={() => { setShowSimilar(true);fetchSimilarTracks(trackInfoState.track.id) }}>
+                                                <div className="track-info-mobile-control-icon">
+                                                    <ContentCopy />
+                                                </div>
+                                                <div className="track-info-mobile-control-label">
+                                                    Similar Tracks
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </>
                 </>
             </PopUpModal>
-            <PopUpModal active={trackInfoState.active && artistsOpen} setActive={setArtistsOpen}>
-                <div onClick={() => { setArtistsOpen(false) }}>
-                    <div className="track-info-artists-title-wrapper">
-                        <div className="track-info-artists-title">Artists</div>
-                    </div>
-                    {trackInfoState.track.artists ? (trackInfoState.track.artists.map((artist) => (
-                        <Link style={{ textDecoration: "none" }} to={`/artist/${artist.id}`}>
-                            <div className="track-info-artist-info">
-                                <div className="track-info-artist-avatar-wrapper">
-                                    <Cover coverUri={artist.cover?.uri} size="50x50" placeholder={<ImagePlaceholder size="small"/>} unWrapped/>
-                                </div>
-                                <div className="track-info-artist-info-name">{artist.name}</div>
-                            </div>
-                        </Link>
-                    ))) : null}
-                </div>
-            </PopUpModal>
-        </>
 
+                                    <PopUpModal active={artistsOpen} setActive={setArtistsOpen}>
+                                    <>
+                                        <div className="track-info-mobile-about-wrapper">
+                                            <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200"/>
+                                            <div className="track-info-wrapper">
+                                                <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
+                                                <div style={{ marginTop: "5px" }} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
+                                            </div>
+                                            <div className="track-info-back-button">
+                                                <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: artistsOpen ? "90deg" : "0deg" }} />
+                                            </div>
+                                        </div>
+                                        <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={() => { setArtistsOpen(false) }}>
+                                            {trackInfoState.track.artists ? (trackInfoState.track.artists.map((artist) => (
+                                                <Link className="track-info-mobile-control-button artist" style={{ textDecoration: "none" }} to={`/artist/${artist.id}`}>
+                                                        <div className="track-info-artist-avatar-wrapper">
+                                                            <Cover coverUri={artist.cover?.uri} size="50x50" placeholder={<ImagePlaceholder size="small"/>} unWrapped/>
+                                                        </div>
+                                                        <div className="track-info-artist-info-name">{artist.name}</div>
+                                                </Link>
+                                            ))) : null}
+                                        </div>
+                                    </>
+                                    </PopUpModal>
+                </>
     )
 }
 

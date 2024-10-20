@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 import {RootState, useAppSelector} from "../../../store";
-import {Add, Delete, ExpandMore, FilterAlt, KeyboardArrowDown} from "@mui/icons-material";
+import {Add, Close, Delete, ExpandMore, FilterAlt, KeyboardArrowDown} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import Cover, {ImagePlaceholder} from "../../Cover";
 import {setPlaylistInfoActiveState} from "../../../store/playlistInfoSlice";
@@ -107,12 +107,19 @@ const MobilePlaylistInfo = () => {
                                         </div>
                                     </div>
                                     <div className="track-info-mobile-control-button" onClick={() => {setFilterMenuActive(!filterMenuActive);setPlaylistInfoShow(false)}}>
-                                        <div className="track-info-mobile-control-icon">
-                                            <FilterAlt />
-                                        </div>
-                                        <div className="track-info-mobile-control-label">
-                                            Filter
-                                        </div>
+                                        <>
+                                            <div className="track-info-mobile-control-icon">
+                                                <FilterAlt />
+                                            </div>
+                                            <div className="track-info-mobile-control-label">
+                                                Filter
+                                            </div>
+                                            {filterQuery.getAll("genres").length !== 0 ? (
+                                                <div className="track-info-mobile-control-label additional" onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery(filterQuery);setPlaylistInfoShow(false)}}>
+                                                    <Close />
+                                                </div>
+                                            ) : null}
+                                        </>
                                     </div>
                                     <div className="track-info-mobile-control-button" onClick={() => {
                                         // removePlaylist(playlistInfoState.playlist.kind)
