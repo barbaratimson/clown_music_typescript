@@ -190,7 +190,7 @@ const Player = () => {
                 })
                 .then(_ => { })
                 .catch(e => {
-                    if (e.code !== 20) {
+                    if (e.code !== 20 && e.code !== 9) {
                         message(e)
                     }
                     console.error(e.code)

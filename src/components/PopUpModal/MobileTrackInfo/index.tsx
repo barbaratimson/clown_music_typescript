@@ -248,7 +248,7 @@ const MobileTrackInfo = () => {
                                         </div>
                                         <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={() => { setArtistsOpen(false) }}>
                                             {trackInfoState.track.artists ? (trackInfoState.track.artists.map((artist) => (
-                                                <Link className="track-info-mobile-control-button artist" style={{ textDecoration: "none" }} to={`/artist/${artist.id}`}>
+                                                <Link key={artist.id} className="track-info-mobile-control-button artist" style={{ textDecoration: "none" }} to={`/artist/${artist.id}`}>
                                                         <div className="track-info-artist-avatar-wrapper">
                                                             <Cover coverUri={artist.cover?.uri} size="50x50" placeholder={<ImagePlaceholder size="small"/>} unWrapped/>
                                                         </div>

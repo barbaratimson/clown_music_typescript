@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import { Box, IconButton, Skeleton, Slide } from "@mui/material";
 import { addAlpha, secToMinutesAndSeconds } from "../../../utils/utils";
 import ArtistName from '../../ArtistName';
@@ -26,9 +26,9 @@ import { setOpeningState } from "../../../store/playingQueueSlice";
 import { useLocation } from "react-router-dom";
 
 interface PlayerMobilePropsT {
-    currentSong: TrackT,
     position: number,
     duration: number,
+    currentSong: TrackT,
     changeVolume: (value: number) => void,
     skipForward: () => void,
     skipBack: () => void,
@@ -57,6 +57,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
         loading,
         error
     } = usePalette(currentSong && currentSong.coverUri ? `http://${currentSong.coverUri.substring(0, currentSong.coverUri.lastIndexOf('/'))}/800x800` : "")
+
 
     useEffect(() => {
         if (!playerFolded) {
@@ -108,7 +109,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     }} className="track-info-artist-span">
 
                                         {currentSong.artists.map(artist => (
-                                            <ArtistName size={"15px"} artist={artist} />
+                                            <ArtistName key={artist.id} size={"15px"} artist={artist} />
                                         ))}
 
                                     </span>
@@ -240,7 +241,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                                 }} className="track-info-artist-span">
 
                                                     {currentSong.artists.map(artist => (
-                                                        <ArtistName size={"15px"} artist={artist} />
+                                                        <ArtistName key={artist.id} size={"15px"} artist={artist} />
                                                     ))}
 
                                                 </span>
@@ -267,7 +268,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     e.stopPropagation()
                                 }}>
                                     <SeekSlider loadingState={playerState.loading} position={position}
-                                        duration={duration} changeTime={seekTo} />
+                                                duration={duration} changeTime={seekTo} />
                                     <div className='player-primary-seek-time-full'>
                                         <div className="player-primary-trackTime">
                                             {secToMinutesAndSeconds(position)}
@@ -330,7 +331,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
         </>
     )
 }
-
 
 
 export default PlayerMobile;

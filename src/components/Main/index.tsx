@@ -1,5 +1,5 @@
 import Player from "../Player";
-import React, {useEffect, useState} from "react";
+import React, {lazy, Suspense, useEffect, useState} from "react";
 import Navbar from "../Navbar";
 import Page from "../Pages";
 import Message from "../Message";
@@ -7,20 +7,20 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {TrackId} from "../../utils/types/types";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {fetchLikedSongs} from "../../utils/apiRequests";
-import Queue from "../Queue/queue";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import NavbarMobile from "../Navbar/NavbarMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
 import MobileTrackInfo from "../PopUpModal/MobileTrackInfo";
-import QueueMobile from "../Queue/QueueMobile";
 import {setOpeningState} from "../../store/playingQueueSlice";
 import MobilePlaylistInfo from "../PopUpModal/MobilePlaylistInfo";
 import { UserT } from "../Pages/User/user.types";
 import { setUser } from "../Pages/User/userSlice";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-
+import Queue from "../Queue/queue";
+import Loader from "../Loader";
+const QueueMobile = lazy(()=> import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
@@ -68,12 +68,15 @@ const Main = () => {
                 {!isMobile ? (
                     <>
                     <Fade in={queueOpen} unmountOnExit>
-                    <div className="player-queue-section">
-                        <Queue/>
-                    </div>
+                        <div className="player-queue-section">
+                            <Queue/>
+                        </div>
                     </Fade>
                     </>
-                ) : (<QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>)}
+                ) : (
+                        <QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>
+                        )
+                }
                 <MobileTrackInfo/>
                 <MobilePlaylistInfo/>
             </div>
