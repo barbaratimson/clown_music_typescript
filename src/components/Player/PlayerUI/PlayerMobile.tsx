@@ -6,8 +6,8 @@ import {
     ExpandLess,
     ExpandMore,
     FastForwardRounded,
-    FastRewindRounded, Info,
-    MoreVert,
+    FastRewindRounded, Info, KeyboardArrowDown,
+    MoreVert, PeopleAlt, PlaylistAdd,
     Repeat, Reply,
     Shuffle,
 } from '@mui/icons-material';
@@ -22,8 +22,8 @@ import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { TrackT } from "../../../utils/types/types";
 import { setTrackInfo, setTrackInfoActiveState } from "../../../store/trackInfoSlice";
 import { usePalette } from "react-palette";
-import { setOpeningState } from "../../../store/playingQueueSlice";
-import { useLocation } from "react-router-dom";
+import {addTrackToQueuePosition, setOpeningState} from "../../../store/playingQueueSlice";
+import {useLocation, useNavigate} from "react-router-dom";
 
 interface PlayerMobilePropsT {
     position: number,
@@ -36,6 +36,7 @@ interface PlayerMobilePropsT {
 }
 
 const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, seekTo }: PlayerMobilePropsT) => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const location = useLocation()
     const [playerFolded, setPlayerFolded] = useState(true)
@@ -52,6 +53,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
+    const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({ currentSong, songToAdd }))
     const {
         data,
         loading,
@@ -309,10 +311,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                 </div>
                                 <div className="player-secondary-controls-full" onClick={(e)=>{e.stopPropagation()}}>
                                     <div className="player-track-controls-full">
-                                        <div className="track-controls-button" onClick={() => {
-                                            setTrackInfoShowState(true);
-                                            setTrackInfoState(currentSong)
-                                        }}>
+                                        <div className="track-controls-button">
                                             <Reply />
                                         </div>
 
@@ -323,12 +322,10 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                         }} />
                                         </div>
 
-                                        <div className="track-controls-button" onClick={() => {
-                                            setTrackInfoShowState(true);
-                                            setTrackInfoState(currentSong)
-                                        }}>
-                                            <MoreVert />
-                                        </div>
+                                                <div className="track-controls-button" onClick={() => {navigate(`/artist/${currentSong.artists[0].id}`)}}>
+                                                        <PeopleAlt />
+                                                </div>
+
 
                                         <div
                                             className={`player-primary-button mobile-func shuffle ${playerState.shuffle ? "active" : ""}`}
