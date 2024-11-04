@@ -24,7 +24,7 @@ interface TrackProps {
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Index = ({track,queueFunc}:TrackProps) => {
+const Track = ({track,queueFunc}:TrackProps) => {
     const dispatch = useAppDispatch()
     const currentSong = useAppSelector((state:RootState) => state.CurrentSongStore.currentSong)
     const likedSongs = useAppSelector((state:RootState) => state.likedSongs.likedSongs)
@@ -119,4 +119,4 @@ export const PositionInChart = ({position, text}:PositionInChartProps) => {
 }
 
 
-export default Index
+export default Track

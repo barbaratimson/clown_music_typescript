@@ -59,8 +59,6 @@ const Player = () => {
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
     const [isMobile, setIsMobile] = useState(false)
-    const volumeMultiplier = 1
-    const mobilePlayerInitialVolume = process.env.REACT_APP_MOBILE_PLAYER_VOLUME ?? '1'
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
@@ -136,6 +134,14 @@ const Player = () => {
         }
     }
 
+    const getVolume = () => {
+        if (isMobile) {
+            return parseFloat(localStorage.getItem("mobilePlayer_volume") ?? "1")
+        } else {
+            return parseInt(localStorage.getItem("player_volume") ?? "100") * 0.25 / 100
+        }
+    }
+
     const skipBack = () => {
         const index = queue.findIndex(x => x.track.id == currentSong.id);
         if (!audioElem.current) return
@@ -202,7 +208,7 @@ const Player = () => {
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         if (currentSong.available && currentSong && audioElem.current) {
             const volume = localStorage.getItem("player_volume")
-            audioElem.current.volume = isMobile ? parseFloat(mobilePlayerInitialVolume) : parseFloat(volume ? volume : "0") / 100
+            audioElem.current.volume = getVolume()
             changeTime(0)
             setPosition(0)
         }
@@ -244,11 +250,8 @@ const Player = () => {
     });
 
     useEffect(() => {
-        if (!audioElem.current) return
-        if (isMobile) {
-                audioElem.current.volume = parseFloat(mobilePlayerInitialVolume)
-        } else {
-                audioElem.current.volume = (playerVolume * volumeMultiplier) / 100
+        if (audioElem.current) {
+                audioElem.current.volume = getVolume()
                 localStorage.setItem("player_volume",playerVolume.toString())
         }
     }, [playerVolume]);

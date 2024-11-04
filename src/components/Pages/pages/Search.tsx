@@ -58,7 +58,7 @@ const Search = () => {
 
             <div className="searchbar">
                 <div className="nav-search-icon"><SearchIcon /></div>
-                <input ref={input} value={search ?? ""} className="nav-search-input" type='text'
+                <input autoFocus ref={input} value={search ?? ""} className="nav-search-input" type='text'
                     onChange={(e) => {
                         setSearch(e.target.value)
                     }} />

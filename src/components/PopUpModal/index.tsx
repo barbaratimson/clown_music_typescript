@@ -14,10 +14,10 @@ const PopUpModal = ({children,active,setActive,unmount}:PopUpModalProps) => {
 
     return (
         <>
-            <Fade in={active} unmountOnExit={unmount}>
+            <Fade in={active}>
                 <div className={"modal-wrapper"} onClick={()=>{setActive(false)}}></div>
             </Fade>
-            <Slide direction={"up"} in={active} unmountOnExit={unmount}>
+            <Slide direction={"up"} in={active}>
                     <div className="popup-modal" onClick={()=>{setActive(false)}}>
                         {children}
                     </div>

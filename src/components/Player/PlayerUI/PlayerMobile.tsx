@@ -6,9 +6,9 @@ import {
     ExpandLess,
     ExpandMore,
     FastForwardRounded,
-    FastRewindRounded,
+    FastRewindRounded, Info,
     MoreVert,
-    Repeat,
+    Repeat, Reply,
     Shuffle,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
@@ -199,7 +199,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                         }}>
                                         <Cover
                                             coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri}
-                                            size={"600x600"} imageSize={"1000x1000"} unWrapped />
+                                            size={"200x200"} unWrapped />
                                     </div>
                                     <div
                                         className={`player-track-cover-wrapper-full ${playerState.playing ? "active" : ""}`}
@@ -207,8 +207,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
                                         }}>
                                         <Cover placeholder={<ImagePlaceholder size='large' />}
-                                            coverUri={currentSong.coverUri} size={"600x600"}
-                                            imageSize={"1000x1000"} unWrapped />
+                                            coverUri={currentSong.coverUri} size={"800x800"} unWrapped />
                                     </div>
                                     <div key={String(playerState.shuffle) + 1}
                                         className="player-track-cover-wrapper-full animated-translate-right next"
@@ -217,7 +216,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                         }}>
                                         <Cover
                                             coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri}
-                                            size={"600x600"} imageSize={"1000x1000"} unWrapped />
+                                            size={"200x200"} unWrapped />
                                     </div>
                                 </div>
                                 {/*track title and artists*/}
@@ -256,12 +255,12 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     }}>
                                         <LikeButton silent track={currentSong} />
 
-                                        <div className="track-controls-button" onClick={() => {
-                                            setTrackInfoShowState(true);
-                                            setTrackInfoState(currentSong)
-                                        }}>
-                                            <MoreVert />
-                                        </div>
+                                        {/*<div className="track-controls-button" onClick={() => {*/}
+                                        {/*    setTrackInfoShowState(true);*/}
+                                        {/*    setTrackInfoState(currentSong)*/}
+                                        {/*}}>*/}
+                                        {/*    <MoreVert />*/}
+                                        {/*</div>*/}
                                     </div>
                                 </div>
                                 <div className="player-primary-seek-wrapper-full" onClick={(e) => {
@@ -291,11 +290,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     }}
                                         className="player-primary-buttons-wrapper"
                                     >
-                                        <div
-                                            className={`player-primary-button mobile-func shuffle ${playerState.shuffle ? "active" : ""}`}
-                                        ><Shuffle onClick={() => {
-                                            setPlayerShuffle(!playerState.shuffle)
-                                        }} /></div>
                                         <IconButton onClick={skipBack}
                                             className="player-primary-button mobile-secondary"
                                             aria-label="previous song">
@@ -311,15 +305,44 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                             aria-label="next song">
                                             <FastForwardRounded />
                                         </IconButton>
+                                    </Box>
+                                </div>
+                                <div className="player-secondary-controls-full" onClick={(e)=>{e.stopPropagation()}}>
+                                    <div className="player-track-controls-full">
+                                        <div className="track-controls-button" onClick={() => {
+                                            setTrackInfoShowState(true);
+                                            setTrackInfoState(currentSong)
+                                        }}>
+                                            <Reply />
+                                        </div>
+
                                         <div
                                             className={`player-primary-button mobile-func repeat ${playerState.repeat ? "active" : ""}`}
                                         ><Repeat onClick={() => {
                                             setPlayerRepeat(!playerState.repeat)
-                                        }} /></div>
-                                    </Box>
-                                </div>
-                                <div className="player-secondary-controls-full">
-                                    <div className="player-track-controls-full">
+                                        }} />
+                                        </div>
+
+                                        <div className="track-controls-button" onClick={() => {
+                                            setTrackInfoShowState(true);
+                                            setTrackInfoState(currentSong)
+                                        }}>
+                                            <MoreVert />
+                                        </div>
+
+                                        <div
+                                            className={`player-primary-button mobile-func shuffle ${playerState.shuffle ? "active" : ""}`}
+                                        ><Shuffle onClick={() => {
+                                            setPlayerShuffle(!playerState.shuffle)
+                                        }} />
+                                        </div>
+
+                                        <div className="track-controls-button" onClick={() => {
+                                            setTrackInfoShowState(true);
+                                            setTrackInfoState(currentSong)
+                                        }}>
+                                            <Info/>
+                                        </div>
 
                                     </div>
                                 </div>
