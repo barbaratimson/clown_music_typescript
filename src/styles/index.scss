@@ -90,7 +90,7 @@ html,body {
   }
   100% {
     opacity: 1;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
   }
 }
 
@@ -626,7 +626,7 @@ html,body {
 .player-full-top-wrapper {
   display: flex;
   flex-direction: column;
-  height: 70%;
+  height: 65%;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -638,7 +638,7 @@ html,body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 30%;
+  height: 35%;
   margin-bottom: 30px;
 }
 
@@ -873,7 +873,7 @@ html,body {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 }
 .player-navbar-full {
@@ -1560,8 +1560,11 @@ html,body {
   width: 100%;
   overflow-y: auto;
   border-radius: 12px;
-  /*margin-bottom: 40px;*/
-  padding: 1px;
+  background-color: rgba(255, 247, 247, 0.1);
+}
+
+.queue-tracks::-webkit-scrollbar {
+  display: none;
 }
 
 .queue-tracks > .songs-wrapper > *:hover {
@@ -1652,25 +1655,28 @@ html,body {
   margin-bottom: 80px;
 }
 
-.message-wrapper {
-  position: fixed;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  padding: 20px;
-  border-radius: 16px;
-  background: rgb(255 255 255 / 10%);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(2.6px);
-  z-index: $message-Z_layer;
-  overflow: hidden;
-  white-space: nowrap;
-}
+//.message-wrapper {
+//  position: fixed;
+//  display: flex;
+//  flex-direction: row;
+//  top: 80%;
+//  left: 50%;
+//  transform: translate(-50%,-50%);
+//  padding: 20px;
+//  border-radius: 16px;
+//  background: rgb(255 255 255 / 10%);
+//  backdrop-filter: blur(15px);
+//  -webkit-backdrop-filter: blur(2.6px);
+//  z-index: $message-Z_layer;
+//  overflow: hidden;
+//  white-space: nowrap;
+//  max-width: 80%;
+//}
 
-.message-wrapper.track {
-  padding: 5px;
-  top: 50%;
-}
+//.message-wrapper.track {
+//  padding: 5px;
+//  top: 50%;
+//}
 
 .message-cover {
   display: flex;
@@ -1678,37 +1684,37 @@ html,body {
   align-items: center;
   width: fit-content;
 }
-.message-cover-animation {
-  display: flex;
-  position: relative;
-}
-.message-cover-animation-icon {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  border-radius:12px;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  backdrop-filter: blur(2px);
-  background: rgb(65 65 65 / 14%);
-  color: var(--font-color-main);
-  animation: blur-opacity .8s ease;
-}
+//.message-cover-animation {
+//  display: flex;
+//  position: relative;
+//  width: 50px;
+//  height: 50px;
+//}
+//.message-cover-animation-icon {
+//  position: absolute;
+//  display: flex;
+//  width: 100%;
+//  height: 100%;
+//  border-radius:12px;
+//  justify-content: center;
+//  align-items: center;
+//  z-index: 1;
+//  backdrop-filter: blur(2px);
+//  background: rgb(65 65 65 / 14%);
+//  color: var(--font-color-main);
+//  animation: blur-opacity .8s ease;
+//}
 
-.message-track-title {
-  text-align: center;
-  font-size: 15px;
-  color: var(--font-color-main);
-  font-weight: 600;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px;
-  height: 20px;
-  margin: 0 auto;
-  margin-top: 5px;
-}
+//.message-track-title {
+//  text-align: center;
+//  font-size: 12px;
+//  color: var(--font-color-main);
+//  font-weight: 600;
+//  overflow: hidden;
+//  text-overflow: ellipsis;
+//  max-width: 150px;
+//  height: 20px;
+//}
 
 .playlist-sign-wrapper {
   display: flex;

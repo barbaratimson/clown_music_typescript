@@ -168,16 +168,16 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     }}>{queueCurrentPlaylist.title}</div>
                                     <span className="player-header-mobile-filters">
                                         <>
-                                        {queueCurrentFilter.slice(0,3).map((filter)=> (
+                                        {queueCurrentFilter?.slice(0,3).map((filter)=> (
                                             <a className="player-header-mobile-filters-filter">
                                                 {filter.charAt(0).toUpperCase() + filter.slice(1)}
                                             </a>
                                         ))}
-                                        {queueCurrentFilter.length > 2 ?
+                                        {queueCurrentFilter ? queueCurrentFilter.length > 2 ?
                                             <a className="player-header-mobile-filters-filter">
                                                 And more...
                                             </a>
-                                        : null}
+                                        : null: null}
                                         </>
                                     </span>
                                 </div>

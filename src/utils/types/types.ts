@@ -140,7 +140,7 @@ export interface QueueT {
     playlist: PlaylistT
     queueTracks:Array<TrackType>,
     queueOpen?:boolean
-    filteredBy: string[]
+    filteredBy?: string[]
 }
 
 export interface FeedT {

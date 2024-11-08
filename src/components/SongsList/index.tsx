@@ -19,9 +19,9 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const setInitQueue = (track: Array<TrackType>) => {
         if (playerState.shuffle) {
-            setPlayingQueue({ playlist: playlist, queueTracks: track, filteredBy: filterQuery.getAll("genres")})
+            setPlayingQueue({ playlist: playlist, queueTracks: track})
         } else {
-            setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks, filteredBy: filterQuery.getAll("genres")})
+            setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks})
         }
     }
 

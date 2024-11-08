@@ -4,7 +4,9 @@ import {Fade} from "@mui/material";
 import {hideMessage} from "../../store/MessageSlice";
 import Cover from "../Cover";
 import {Favorite, HeartBroken} from "@mui/icons-material";
-
+import './style.scss'
+import ArtistName from "../ArtistName";
+import {PositionInChart} from "../Track";
 
 const Message = () => {
     const dispatch = useAppDispatch()
@@ -24,9 +26,21 @@ const Message = () => {
                 <div className="message-wrapper track">
                     <div className="message-cover-animation">
                         <div className={`message-cover-animation-icon`}>{message.type === "trackLiked" ? <Favorite /> : <HeartBroken />}</div>
-                        <Cover coverUri={message.track.coverUri} size={"150x150"} imageSize="100x100" />
+                        <Cover coverUri={message.track.coverUri} size={"50x50"} imageSize="50x50" />
                     </div>
-                    <div style={{textDecoration:message.type === "trackDisliked" ? "line-through" : "none"}} className="message-track-title">{message.track.title}</div>
+                    <div className="track-info-wrapper">
+                        <div className="track-info-title-wrapper">
+                            {message.track.chart && <PositionInChart position={message.track.chart.position}/>}
+                            <div className="track-info-title">{message.track.title + `${message.track.version ? ` (${message.track.version})` : ""}`}</div>
+                        </div>
+                        <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">
+                        <span className="track-info-artist-span">
+                            {message.track.artists.map(artist => (
+                                <ArtistName key={artist.id} artist={artist}/>
+                            ))}
+                        </span>
+                        </div>
+                    </div>
                 </div>
             </Fade>
         )
@@ -34,7 +48,7 @@ const Message = () => {
         return (
             <Fade in={message.active}>
                 <div className="message-wrapper">
-                    <div>{message.message}</div>
+                    <div className="message-text-message">{message.message}</div>
                 </div>
             </Fade>
         )

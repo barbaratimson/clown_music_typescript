@@ -49,6 +49,14 @@ const MobilePlaylistInfo = () => {
     }
 
     useEffect(() => {
+        const artists = playlistInfoState.playlist.tracks.map((track)=>{
+            if (track.track.artists.length !== 0) {
+                return track.track.artists
+            }
+        })
+        const uniqueArtists = Array.from(new Set(artists)).flat(1)
+
+
         const genres = playlistInfoState.playlist.tracks.map((track) => {
             if (track.track.albums[0]?.genre !== undefined) {
                 return track.track.albums[0]?.genre
@@ -146,7 +154,7 @@ const MobilePlaylistInfo = () => {
                 <>
                     <div className="playlist-filter__title"><ExpandMore /></div>
                     <div className="playlist-filter__wrapper" onClick={(e)=>{e.stopPropagation()}}>
-                        {genres ? genres.map(genreRender => (
+                        {genres?.map(genreRender => (
                             <div key={genreRender.genre} className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}
                                  onClick={() => {
                                         !filterQuery.getAll("genres")?.includes(genreRender.genre) && genreRender.genre ?
@@ -160,7 +168,7 @@ const MobilePlaylistInfo = () => {
                                     <div className="playlist-filter__button_amount_number">{genreRender.amount}</div>
                                 </div>
                             </div>
-                        )) : null}
+                        ))}
                     </div>
                 </>
             </PopUpModal>

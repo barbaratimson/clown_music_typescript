@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {TrackId, TrackT} from "../../../utils/types/types";
+import {PlaylistT, TrackId, TrackT} from "../../../utils/types/types";
 import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {RootState, useAppSelector} from "../../../store";
 import {
     Add,
-    Album, ContentCopy,
+    Album, ContentCopy, ExpandMore,
     Favorite,
     FavoriteBorder,
     FilterAlt,
@@ -26,6 +26,7 @@ import {addTrackToQueuePosition} from "../../../store/playingQueueSlice";
 import PopUpModal from "../index";
 import Cover, {ImagePlaceholder} from "../../Cover";
 import "./style.scss"
+import PlaylistCard from "../../PlaylistCard";
 
 interface SimilarTracksT {
     track: TrackT
@@ -43,7 +44,9 @@ const MobileTrackInfo = () => {
     const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({ currentSong, songToAdd }))
     const likedSongs = useAppSelector((state: RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const setLikedMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({ message: message, track: track, type: type }))
     const setMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({ message: message, track: track, type: type }))
+    const message = (message:string) => dispatch(showMessage({message: message}))
     const isLiked = (id: number | string) => {
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
         return !!likedSong
@@ -52,6 +55,8 @@ const MobileTrackInfo = () => {
     const [similarTracks, setSimilarTracks] = useState<SimilarTracksT>()
     const [artistsOpen, setArtistsOpen] = useState(false)
     const [showSimilar, setShowSimilar] = useState(false)
+    const [showPlaylistsToAdd, setShowPlaylistsToAdd] = useState(false)
+    const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
     const fetchSimilarTracks = async (id: any) => {
         setIsLoading(true)
         try {
@@ -69,9 +74,8 @@ const MobileTrackInfo = () => {
         try {
             const response = await axios.get(
                 `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
-            return response.data
-            // setUserPlaylists(response.data)
-            // setIsPlaylistsLoading(false)
+            setUserPlaylists(response.data)
+            setIsLoading(false)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
         }
@@ -81,7 +85,8 @@ const MobileTrackInfo = () => {
     const addToPlaylist = async (playlistId: number | string, track: TrackT, revision: number) => {
         try {
             const response = await axios.get(
-                `${link}/ya/playlist/${playlistId}/add`, { params:{tracks:[{id:track.id,albumId:track.albums[0].id}], revision: revision}, headers: { "Authorization": localStorage.getItem("Authorization") } });
+                `${link}/ya/playlist/${playlistId}/add`, { params:{tracks:[{id:track.id,albumId:track.albums[0].id}], revision: revision}, headers: { "Authorization": localStorage.getItem("Authorization") }});
+            message(`Track ${track.title} added to playlist`)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
             console.log(err)
@@ -103,8 +108,8 @@ const MobileTrackInfo = () => {
 
     const updateLikedSongs = async (action: "liked" | "removed") => {
         setLikedSongsData(await fetchLikedSongs())
-        if (action === "liked") setMessage(`Track ${trackInfoState.track.title} added to Liked`, trackInfoState.track, "trackLiked");
-        if (action === "removed") setMessage(`Track ${trackInfoState.track.title} removed to Liked`, trackInfoState.track, "trackDisliked");
+        if (action === "liked") setLikedMessage(`Track ${trackInfoState.track.title} added to Liked`, trackInfoState.track, "trackLiked");
+        if (action === "removed") setLikedMessage(`Track ${trackInfoState.track.title} removed to Liked`, trackInfoState.track, "trackDisliked");
     }
 
     useEffect(() => {
@@ -114,6 +119,10 @@ const MobileTrackInfo = () => {
     useEffect(() => {
         closeAll()
     }, [location]);
+
+    useEffect(() => {
+        fetchUserPlaylists()
+    }, [showPlaylistsToAdd]);
 
     return (
         <>
@@ -167,7 +176,12 @@ const MobileTrackInfo = () => {
                                         </div>
                                     </>
                                 ) : null}
-                                <div className="track-info-mobile-control-button" onClick={()=>{addToPlaylist(1040,trackInfoState.track,1)}}>
+                                <div className="track-info-mobile-control-button"
+                                     onClick={()=>{
+                                         setShowPlaylistsToAdd(true);closeAll()
+                                         // addToPlaylist(1040,trackInfoState.track,1)
+                                }}
+                                >
                                     <div className="track-info-mobile-control-icon">
                                         <Add />
                                     </div>
@@ -258,6 +272,17 @@ const MobileTrackInfo = () => {
                                         </div>
                                     </>
                                     </PopUpModal>
+
+            <PopUpModal active={showPlaylistsToAdd} setActive={setShowPlaylistsToAdd}>
+                <>
+                    <div className="playlist-add__title"><ExpandMore /></div>
+                        {userPlaylists?.filter((playlist) => playlist.kind !== 0).map((playlist)=>(
+                            <div onClick={()=>{addToPlaylist(playlist.kind,trackInfoState.track,playlist.revision ?? 0)}}>
+                                <PlaylistCard title={playlist.title} type={"line"} coverUri={playlist.cover.uri}/>
+                            </div>
+                        ))}
+                    </>
+            </PopUpModal>
                 </>
     )
 }

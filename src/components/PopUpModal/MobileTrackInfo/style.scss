@@ -1,1 +1,9 @@
 @use "../style";
+
+.playlist-add__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  color: var(--font-color-main);
+}
