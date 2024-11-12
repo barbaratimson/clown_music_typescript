@@ -165,7 +165,7 @@ const MobileTrackInfo = () => {
                                 </div>
                                 {trackInfoState.track.artists.length !== 0 ? (
                                     <>
-                                        <div className="track-info-mobile-control-button" onClick={() => { trackInfoState.track.artists.length === 1 ? navigate(`/artist/${trackInfoState.track.artists[0].id}`) : setArtistsOpen(true);setTrackInfoShowState(false)}}>
+                                        <div className="track-info-mobile-control-button" onClick={() => { trackInfoState.track.artists.length === 1 ? navigate(`/artist/${trackInfoState.track.artists[0]?.id}`) : setArtistsOpen(true);setTrackInfoShowState(false)}}>
                                             <div className="track-info-mobile-control-icon">
                                                 <PeopleAlt />
                                             </div>
@@ -191,7 +191,7 @@ const MobileTrackInfo = () => {
                                 </div>
                                 {trackInfoState.track.albums && trackInfoState.track.albums.length !== 0 ? (
                                     <>
-                                        <Link className="track-info-mobile-control-button" style={{ textDecoration: "none" }} to={`/artist/${trackInfoState.track.albums[0].artists[0].id}/album/${trackInfoState.track.albums[0].id}`}>
+                                        <Link className="track-info-mobile-control-button" style={{ textDecoration: "none" }} to={`/artist/${trackInfoState.track.albums[0].artists[0]?.id}/album/${trackInfoState.track.albums[0]?.id}`}>
                                             <div className="track-info-mobile-control-icon">
                                                 <Album />
                                             </div>
@@ -276,11 +276,11 @@ const MobileTrackInfo = () => {
             <PopUpModal active={showPlaylistsToAdd} setActive={setShowPlaylistsToAdd}>
                 <>
                     <div className="playlist-add__title"><ExpandMore /></div>
-                        {userPlaylists?.filter((playlist) => playlist.kind !== 0).map((playlist)=>(
+                        {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.filter((playlist) => playlist.kind !== 0).map((playlist)=>(
                             <div onClick={()=>{addToPlaylist(playlist.kind,trackInfoState.track,playlist.revision ?? 0)}}>
                                 <PlaylistCard title={playlist.title} type={"line"} coverUri={playlist.cover.uri}/>
                             </div>
-                        ))}
+                        )):null}
                     </>
             </PopUpModal>
                 </>
