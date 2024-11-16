@@ -16,12 +16,13 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
     const playerState = useAppSelector((state: RootState) => state.player)
-    const [filterQuery, setFilterQuery] = useSearchParams("")
+    const [filterQuery, setFilterQuery] = useSearchParams()
     const setInitQueue = (track: Array<TrackType>) => {
+        const filter = filterQuery.getAll("genres")
         if (playerState.shuffle) {
-            setPlayingQueue({ playlist: playlist, queueTracks: track})
+            setPlayingQueue({ playlist: playlist, queueTracks: track, filteredBy: filter ?? filter})
         } else {
-            setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks})
+            setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks, filteredBy: filter ?? filter})
         }
     }
 

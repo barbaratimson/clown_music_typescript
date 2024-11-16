@@ -886,7 +886,7 @@ html,body {
   border-radius: 0 0 16px 16px;
   transition: background .2s ease-in-out;
   color: var(--font-color-main) !important;
-  padding: 10px 20px;
+  padding: 10px 25px;
 
 }
 .player-button-row {
@@ -1812,13 +1812,17 @@ html,body {
   font-weight: 600;
 
   &.additional {
+    display: flex;
+    justify-content: end;
+    align-items: center;
     flex-grow: 1;
-    text-align: end;
-    color: #b74d4d;
+    color: rgba(255, 247, 247, 0.47);
   }
   &.additional > svg {
+    width: fit-content;
     border-left: 1px solid $bg-color-secondary;
     padding-left: 5px !important;
+    font-size: 20px;
   }
 }
 .track-info-mobile-similar-tracks {

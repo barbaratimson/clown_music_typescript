@@ -53,7 +53,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
-    const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({ currentSong, songToAdd }))
+
     const {
         data,
         loading,
@@ -71,11 +71,11 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
     }, [playerFolded]);
 
     useEffect(() => {
+        const color = data?.darkMuted
         if (!mobilePlayerFull.current || loading) return
-        if (data.darkMuted) {
-            mobilePlayerFull.current.style.backgroundColor = addAlpha(data.darkMuted, 0.7)
-        } else {
-            mobilePlayerFull.current.style.backgroundColor = "rgba(0, 0, 0, 0.7)"
+        if (color && currentSong.derivedColors?.average === "#999999") {
+            console.log(color)
+            mobilePlayerFull.current.style.backgroundColor = color
         }
     }, [data])
 
@@ -153,9 +153,9 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
 
 
             <Slide direction={"up"} in={!playerFolded}>
-                <div ref={mobilePlayerFull} className="player-wrapper-full" onClick={() => {
+                <div ref={mobilePlayerFull} style={{backgroundColor: currentSong.derivedColors?.average ?? "rgba(0, 0, 0)" ,marginBottom: "49px" }} className="player-wrapper-full" onClick={() => {
                     setPlayerFolded(true)
-                }} style={{ marginBottom: "49px" }}>
+                }}>
                     {!playerFolded ? (
                         <>
                             <div className="player-navbar-full">
@@ -169,7 +169,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                     <span className="player-header-mobile-filters">
                                         <>
                                         {queueCurrentFilter?.slice(0,3).map((filter)=> (
-                                            <a className="player-header-mobile-filters-filter">
+                                            <a key={filter + "_player_filter"} className="player-header-mobile-filters-filter">
                                                 {filter.charAt(0).toUpperCase() + filter.slice(1)}
                                             </a>
                                         ))}
@@ -209,7 +209,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
                                             !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
                                         }}>
                                         <Cover placeholder={<ImagePlaceholder size='large' />}
-                                            coverUri={currentSong.coverUri} size={"800x800"} unWrapped />
+                                            coverUri={currentSong.ogImage} size={"800x800"} unWrapped />
                                     </div>
                                     <div key={String(playerState.shuffle) + 1}
                                         className="player-track-cover-wrapper-full animated-translate-right next"

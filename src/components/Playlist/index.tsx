@@ -68,7 +68,7 @@ const Playlist = ({ playlist }: PlaylistProps) => {
                     <>
                         <span className="playlist__filters">
                             {filterQuery.getAll("genres").map((genre) => (
-                                <a className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1) }</a>
+                                <a key={genre} className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1) }</a>
                             ))}
                         </span>
                         <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />

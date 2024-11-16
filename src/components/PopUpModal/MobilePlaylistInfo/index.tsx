@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 import {RootState, useAppSelector} from "../../../store";
-import {Add, Close, Delete, ExpandMore, FilterAlt, KeyboardArrowDown} from "@mui/icons-material";
+import {Add, Close, Delete, ExpandMore, FilterAlt, FilterAltOff, KeyboardArrowDown} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import Cover, {ImagePlaceholder} from "../../Cover";
 import {setPlaylistInfoActiveState} from "../../../store/playlistInfoSlice";
@@ -10,6 +10,7 @@ import PopUpModal from "../index";
 import axios from "axios";
 import {link} from "../../../utils/constants";
 import "./style.scss"
+import {PlaylistT} from "../../../utils/types/types";
 
 interface GenreCountT {
     genre: string,
@@ -30,6 +31,18 @@ const MobilePlaylistInfo = () => {
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const navigate = useNavigate()
     const [genresToFilter, setGenresToFilter] = useState<string[]>([])
+    const currentUser = useAppSelector((state:RootState)=> state.user)
+    const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
+
+    const addPlaylist = async (playlistId:number) => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlist/${playlistId}/add`, {headers: { "Authorization": localStorage.getItem("Authorization") } });
+            console.log(response.data)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    }
 
     const removePlaylist = async (playlistId:number) => {
         try {
@@ -43,12 +56,23 @@ const MobilePlaylistInfo = () => {
             console.error('Ошибка при получении списка треков:', err);
         }
     }
+    const fetchUserPlaylists = async () => {
+        try {
+            const response = await axios.get(
+                `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+            setUserPlaylists(response.data)
+            setIsLoading(false)
+        } catch (err) {
+            console.error('Ошибка при получении списка треков:', err);
+        }
+    };
 
     const genresHandler = () => {
 
     }
 
     useEffect(() => {
+        fetchUserPlaylists()
         const artists = playlistInfoState.playlist.tracks.map((track)=>{
             if (track.track.artists.length !== 0) {
                 return track.track.artists
@@ -71,14 +95,13 @@ const MobilePlaylistInfo = () => {
             return { genre: genre, amount: amountOfGenre.length , percentage: genrePecentage}
         })
         setGenres(countAmount.sort((a, b) => b.amount - a.amount))
+
     }, [playlistInfoState.playlist]);
 
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
         if (filter.length !== 0) {
             setGenresToFilter(filter)
-        } else {
-            setGenresToFilter([])
         }
     }, [filterQuery]);
 
@@ -95,6 +118,7 @@ const MobilePlaylistInfo = () => {
                 <>
                     {playlistInfoState.playlist ? (
                             <>
+
                                 <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
                                     <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={playlistInfoState.playlist.cover?.uri} size="75x75" imageSize="200x200"/>
                                     <div className="track-info-wrapper">
@@ -106,14 +130,7 @@ const MobilePlaylistInfo = () => {
                                     </div>
                                 </div>
                                 <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e) => { e.stopPropagation() }}>
-                                    <div className="track-info-mobile-control-button">
-                                        <div className="track-info-mobile-control-icon">
-                                            <Add />
-                                        </div>
-                                        <div className="track-info-mobile-control-label">
-                                            Add playlist
-                                        </div>
-                                    </div>
+
                                     <div className="track-info-mobile-control-button" onClick={() => {setFilterMenuActive(!filterMenuActive);setPlaylistInfoShow(false)}}>
                                         <>
                                             <div className="track-info-mobile-control-icon">
@@ -123,23 +140,27 @@ const MobilePlaylistInfo = () => {
                                                 Filter
                                             </div>
                                             {filterQuery.getAll("genres").length !== 0 ? (
-                                                <div className="track-info-mobile-control-label additional" onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery(filterQuery);setPlaylistInfoShow(false)}}>
-                                                    <Close />
+                                                <div className="track-info-mobile-control-label additional">
+                                                    <FilterAltOff onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery(filterQuery);setPlaylistInfoShow(false)}}/>
                                                 </div>
                                             ) : null}
                                         </>
                                     </div>
-                                    <div className="track-info-mobile-control-button" onClick={() => {
-                                        // removePlaylist(playlistInfoState.playlist.kind)
-                                        console.log("Delete playlist")
-                                    }}>
-                                        <div className="track-info-mobile-control-icon">
-                                            <Delete/>
+
+                                    {playlistInfoState.playlist.owner.uid === currentUser.user.account.uid && playlistInfoState.playlist.kind !== 3 ? (
+                                        <div className="track-info-mobile-control-button" onClick={() => {
+                                            // removePlaylist(playlistInfoState.playlist.kind)
+                                            console.log("Delete playlist")
+                                        }}>
+                                            <div className="track-info-mobile-control-icon">
+                                                <Delete/>
+                                            </div>
+                                            <div className="track-info-mobile-control-label">
+                                                Remove playlist
+                                            </div>
                                         </div>
-                                        <div className="track-info-mobile-control-label">
-                                            Remove playlist
-                                        </div>
-                                    </div>
+                                    ):null}
+
                                 </div>
 
                             </>

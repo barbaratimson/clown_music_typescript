@@ -35,6 +35,13 @@ export type TrackId = {
     albumId: number | string
 }
 
+export type DerivedColorsT = {
+    average: string
+    waveText: string
+    miniPlayer: string
+    accent: string
+}
+
 export interface TrackT {
     id:string | number
     title: string,
@@ -46,14 +53,10 @@ export interface TrackT {
     durationMs:number
     albums:Array<AlbumT>
     version?: string
+    derivedColors?: DerivedColorsT
+    ogImage?: string
 }
 
-interface DerivedColorsT {
-    accent: string,
-    average: string,
-    miniPlayer: string,
-    waveText: string
-}
 
 
 export interface SearchT {
