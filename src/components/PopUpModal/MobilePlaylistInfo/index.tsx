@@ -147,7 +147,7 @@ const MobilePlaylistInfo = () => {
                                         </>
                                     </div>
 
-                                    {playlistInfoState.playlist.owner.uid === currentUser.user.account.uid && playlistInfoState.playlist.kind !== 3 ? (
+                                    {playlistInfoState.playlist.owner.uid === currentUser.user?.account?.uid && playlistInfoState.playlist.kind !== 3 ? (
                                         <div className="track-info-mobile-control-button" onClick={() => {
                                             // removePlaylist(playlistInfoState.playlist.kind)
                                             console.log("Delete playlist")

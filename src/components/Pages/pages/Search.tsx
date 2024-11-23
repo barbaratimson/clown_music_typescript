@@ -11,6 +11,7 @@ import Index from "../../Track";
 import {getImageLink, getPlaylistLink} from "../../../utils/utils";
 import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
+import Track from "../../Track";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
@@ -67,17 +68,19 @@ const Search = () => {
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (
                         <>
-                            {searchResults?.best &&
+                            {searchResults?.best && searchResults?.best.type !== "track" ? (
+                                
                                 <PageBlock title="Best">
                                     <BestResult bestResult={searchResults?.best} />
                                 </PageBlock>
+                                ):null
                             }
 
                             {searchResults?.tracks?.results &&
                                 <PageBlock title="Tracks">
                                     <div
                                         className={searchResults.tracks.results.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                                        <SongsList playlist={{ kind: -1, cover: { uri: searchResults.tracks.results[0].coverUri }, uid: 0, ogImage: searchResults.tracks.results[0].coverUri, available: true, owner: { uid: searchResults.tracks.results[0].artists[0].id, name: searchResults.tracks.results[0].artists[0].name, verified: true }, title: `${" "}: Результаты`, description: "", tracks: trackArrayWrap(searchResults.tracks.results) }} tracks={trackArrayWrap(searchResults.tracks.results)} />
+                                        <SongsList playlist={{ kind: -1, cover: { uri: searchResults.tracks.results[0].coverUri }, uid: 0, ogImage: searchResults.tracks.results[0].coverUri, available: true, owner: { uid: searchResults.tracks.results[0].artists[0].id, name: searchResults.tracks.results[0].artists[0].name, verified: true }, title: `${searchResults.text}: Результаты`, description: "", tracks: trackArrayWrap(searchResults.tracks.results) }} tracks={trackArrayWrap(searchResults.tracks.results)} />
                                     </div>
                                 </PageBlock>
                             }
@@ -115,9 +118,6 @@ const BestResult = ({ bestResult }: any) => {
                         </Link>
                     </div>
                 )
-            }
-            case "track": {
-                return <Index track={bestResult.result} />
             }
             case "playlist": {
                 return <PlaylistCard type="line" title={bestResult.result.title} coverUri={bestResult.result.cover.uri} link={getPlaylistLink(bestResult?.result.owner.uid,bestResult?.result.kind)}/>

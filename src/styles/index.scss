@@ -262,14 +262,18 @@ html,body {
 .player-header-mobile-title-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  white-space: nowrap;
+  max-width: 80%;
 }
 .player-header-mobile-title {
   text-align: center;
   font-size: 16px;
   color: var(--font-color-main);
   font-weight: 600;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .player-header-mobile-filters {

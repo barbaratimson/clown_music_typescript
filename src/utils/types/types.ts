@@ -65,7 +65,8 @@ export interface SearchT {
     tracks: TracksResultSearchT
     playlists:PlaylistResultSearchT
     searchRequestId:string
-    best: SearchBestT
+    best: SearchBestT,
+    text: string
 }
 
 export interface SearchBestT {

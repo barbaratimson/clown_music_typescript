@@ -1,4 +1,4 @@
-import {TrackT, TrackType} from "./types/types";
+import {CoverT, PlaylistT, TrackT, TrackType} from "./types/types";
 
 export function addAlpha(color:string, opacity:number) {
     opacity = Math.round(Math.min(Math.max(opacity ?? 1, 0), 1) * 255);
@@ -66,4 +66,8 @@ export const getPlaylistLink = (ownerId:number,kind:number) => {
 }
 export const getAlbumLink = (atistId:number,albumId:number) => {
     return `/artist/${atistId}/album/${albumId}`
+}
+
+export const defaultPlaylist = (tracks:TrackType[],cover:CoverT,title:string = ""):PlaylistT => {
+    return {uid:0,kind:-1,tracks:tracks,cover:cover,title:title,ogImage:cover.uri,description:"",available:true,owner:{uid: tracks[0]?.track.artists[0]?.id, name: tracks[0]?.track.artists[0].name, verified: true }}
 }

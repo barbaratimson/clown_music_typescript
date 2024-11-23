@@ -5,12 +5,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  bottom: 15%;
+  bottom: 7%;
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
   border-radius: 16px;
-  background: rgb(255 255 255 / 10%);
+  background: rgb(255 255 255 / 25%);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(2.6px);
   z-index: $message-Z_layer;

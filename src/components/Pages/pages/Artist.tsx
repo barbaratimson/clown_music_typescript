@@ -85,8 +85,8 @@ const Artist = () => {
                             <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult?.artist.cover?.uri }, uid: 0, ogImage: artistResult?.artist.cover?.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
-                    <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
-                        <AlbumsBlock type={changePlaylistView ? "flex" : "grid"} albums={artistResult?.albums}/>
+                    <PageBlock title="Albums" controls={isMobile && <PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
+                        <AlbumsBlock type={!isMobile ? "grid" : changePlaylistView ? "flex" : "grid"} albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
             ) : null}
