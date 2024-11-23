@@ -124,6 +124,10 @@ const MobileTrackInfo = () => {
     },[similarTracks])
 
     useEffect(() => {
+        setShowSimilar(false)
+    }, [trackInfoState.track]);
+
+    useEffect(() => {
         closeAll()
     }, [location]);
 
