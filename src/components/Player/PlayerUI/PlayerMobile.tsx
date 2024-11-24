@@ -21,7 +21,6 @@ import { playerStart, playerStop, setRepeat, setShuffle } from "../playerSlice";
 import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { TrackT } from "../../../utils/types/types";
 import { setTrackInfo, setTrackInfoActiveState } from "../../../store/trackInfoSlice";
-import { usePalette } from "react-palette";
 import {addTrackToQueuePosition, setOpeningState} from "../../../store/playingQueueSlice";
 import {useLocation, useNavigate} from "react-router-dom";
 
@@ -54,13 +53,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
 
-    const {
-        data,
-        loading,
-        error
-    } = usePalette(currentSong && currentSong.coverUri ? `http://${currentSong.coverUri.substring(0, currentSong.coverUri.lastIndexOf('/'))}/800x800` : "")
-
-
     useEffect(() => {
         if (!playerFolded) {
             document.body.style.overflow = "hidden"
@@ -70,14 +62,6 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
         }
     }, [playerFolded]);
 
-    useEffect(() => {
-        const color = data?.darkMuted
-        if (!mobilePlayerFull.current || loading) return
-        if (color && currentSong.derivedColors?.average === "#999999") {
-            console.log(color)
-            mobilePlayerFull.current.style.backgroundColor = color
-        }
-    }, [data])
 
     useEffect(() => {
         setPlayerFolded(true)

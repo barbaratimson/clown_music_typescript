@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
-import {Box, IconButton, Skeleton} from "@mui/material";
-import Slider from '@mui/material/Slider';
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "./playerSlice";
@@ -13,33 +11,11 @@ import {
     secToMinutesAndSeconds
 } from "../../utils/utils";
 import {fetchLikedSongs, fetchYaSongLink} from '../../utils/apiRequests';
-import ArtistName from '../ArtistName';
-import {
-    FastForwardRounded,
-    FastRewindRounded,
-    PauseRounded,
-    PlayArrowRounded,
-    Repeat,
-    Shuffle,
-    VolumeDown,
-    VolumeMute,
-    VolumeOff,
-    VolumeUp
-} from '@mui/icons-material';
-import ListIcon from '@mui/icons-material/List';
 import {MessageType, showMessage} from '../../store/MessageSlice';
-import {setLikedSongs} from '../../store/LikedSongsSlice';
 import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
 import {trackWrap} from '../../utils/trackWrap';
-import SeekSlider from "./PlayerUI/SeekSlider";
-import Cover, {ImagePlaceholder} from "../Cover";
 import {logMessage} from "../../store/devLogSlice";
-import {PositionInChart} from '../Track';
-import LikeButton from '../LikeButton';
 import Audio from "./Audio";
-import {useLocation} from "react-router-dom";
-import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice";
-import {usePalette} from "react-palette";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
