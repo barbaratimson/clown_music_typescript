@@ -8,7 +8,7 @@ import {useSearchParams} from "react-router-dom";
 
 interface SongsListProps {
     tracks: Array<TrackType>
-    playlist: PlaylistT
+    playlist?: PlaylistT
     style?: any,
 }
 
@@ -18,11 +18,13 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     const playerState = useAppSelector((state: RootState) => state.player)
     const [filterQuery, setFilterQuery] = useSearchParams()
     const setInitQueue = (track: Array<TrackType>) => {
-        const filter = filterQuery.getAll("genres")
-        if (playerState.shuffle) {
-            setPlayingQueue({ playlist: playlist, queueTracks: track, filteredBy: filter ?? filter})
-        } else {
-            setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks, filteredBy: filter ?? filter})
+        if (playlist) {
+            const filter = filterQuery.getAll("genres")
+            if (playerState.shuffle) {
+                setPlayingQueue({ playlist: playlist, queueTracks: track, filteredBy: filter ?? filter})
+            } else {
+                setPlayingQueue({ playlist: playlist, queueTracks: playlist.tracks, filteredBy: filter ?? filter})
+            }
         }
     }
 

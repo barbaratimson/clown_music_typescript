@@ -7,3 +7,16 @@
   height: 30px;
   color: var(--font-color-main);
 }
+
+.track-info-songs-wrapper {
+  border-radius: 16px;
+}
+
+.track-info-songs-wrapper > .songs-wrapper {
+  background-color: style.$bg-color-secondary;
+  gap: 5px;
+}
+
+.track-info-songs-wrapper::-webkit-scrollbar {
+  display: none;
+}

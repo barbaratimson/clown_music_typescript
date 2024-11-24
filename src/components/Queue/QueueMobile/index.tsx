@@ -7,6 +7,8 @@ import {useLocation} from "react-router-dom";
 import Cover from "../../Cover";
 import PopUpModal from "../../PopUpModal";
 import Loader from "../../Loader";
+import Track from "../../Track";
+import SongsList from "../../SongsList";
 
 interface QueueMobileProps {
     active : boolean,
@@ -36,13 +38,12 @@ const QueueMobile = ({active, setActive}:QueueMobileProps) => {
                     </div>
                 </div>
             <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`} onClick={(e)=>{e.stopPropagation()}}>
-                <Suspense fallback={<Loader.PageLoader/>}>
-                    <div className="songs-wrapper">
-                        {currentQueue ? currentQueue.queueTracks.map((song) => (
-                                <Index key={song.id} track={song.track}/>
-                        )) : null}
-                    </div>
-                </Suspense>
+                   <SongsList tracks={currentQueue.queueTracks}></SongsList>
+                    {/*<div className="songs-wrapper">*/}
+                    {/*    {currentQueue ? currentQueue.queueTracks.map((song) => (*/}
+                    {/*            <Track key={song.id} track={song.track}/>*/}
+                    {/*    )) : null}*/}
+                    {/*</div>*/}
             </div>
         </div>
         </PopUpModal>

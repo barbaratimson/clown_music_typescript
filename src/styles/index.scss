@@ -36,6 +36,7 @@ html,body {
 * {
   box-sizing: border-box;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
+  line-height: 1.2;
 }
 
 @keyframes blur-pulse {
@@ -1564,7 +1565,7 @@ html,body {
   width: 100%;
   overflow-y: auto;
   border-radius: 12px;
-  background-color: rgba(255, 247, 247, 0.1);
+  background-color: $bg-color-secondary;
 }
 
 .queue-tracks::-webkit-scrollbar {

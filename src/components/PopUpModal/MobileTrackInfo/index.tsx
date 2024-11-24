@@ -27,6 +27,7 @@ import PopUpModal from "../index";
 import Cover, { ImagePlaceholder } from "../../Cover";
 import "./style.scss"
 import PlaylistCard from "../../PlaylistCard";
+import {playlistFromTracksArr} from "../../../utils/utils";
 
 interface SimilarTracksT {
     track: TrackT
@@ -282,15 +283,15 @@ const MobileTrackInfo = () => {
                         <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={trackInfoState.track.coverUri} size="75x75" imageSize="200x200" />
                         <div className="track-info-wrapper">
                             <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{trackInfoState.track.title + `${trackInfoState.track.version ? ` (${trackInfoState.track.version})` : ""}`}</div>
-                            <div style={{ marginTop: "5px" }} className="track-info-artist">{trackInfoState.track.albums[0]?.genre}</div>
+                            <div style={{ marginTop: "5px" }} className="track-info-artist">{`${similarTracks?.similarTracks.length} similar`}</div>
                         </div>
                         <div className="track-info-back-button">
-                            <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: artistsOpen ? "90deg" : "0deg" }} />
+                            <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: showSimilar ? "90deg" : "0deg" }} />
                         </div>
                     </div>
-                    <div style={{maxHeight:"250px", overflowY:"scroll"}}>
+                    <div className="track-info-songs-wrapper" onClick={(e)=>{e.stopPropagation()}} style={{maxHeight:"250px", overflowY:"scroll"}}>
                         {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
-                            <SongsList playlist={{ kind: -1, cover: { uri: similarTracks.track.coverUri }, uid: 0, ogImage: similarTracks.track.coverUri, available: true, owner: { uid: similarTracks.track.artists[0].id, name: similarTracks.track.artists[0].name, verified: true }, title: `${similarTracks.track.title}: Similar`, description: "", tracks: trackArrayWrap(similarTracks.similarTracks) }} tracks={trackArrayWrap(similarTracks?.similarTracks)} />
+                            <SongsList playlist={playlistFromTracksArr(trackArrayWrap(similarTracks.similarTracks), `${similarTracks.track.title}: similar`)} tracks={trackArrayWrap(similarTracks?.similarTracks)} />
                         ) : null}
                     </div>
                 </>

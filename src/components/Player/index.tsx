@@ -192,7 +192,7 @@ const Player = () => {
                     devLog(`song link ready ${link}`)
                     if (!audioElem.current) return
                     audioElem.current.src = link;
-                    return audioElem.current.play();
+                    // return audioElem.current.play();
                 })
                 .then(_ => { })
                 .catch(e => {

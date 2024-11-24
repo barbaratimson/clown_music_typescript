@@ -68,6 +68,6 @@ export const getAlbumLink = (atistId:number,albumId:number) => {
     return `/artist/${atistId}/album/${albumId}`
 }
 
-export const defaultPlaylist = (tracks:TrackType[],cover:CoverT,title:string = ""):PlaylistT => {
-    return {uid:0,kind:-1,tracks:tracks,cover:cover,title:title,ogImage:cover.uri,description:"",available:true,owner:{uid: tracks[0]?.track.artists[0]?.id, name: tracks[0]?.track.artists[0].name, verified: true }}
+export const playlistFromTracksArr = (tracks:TrackType[],title:string = ""):PlaylistT => {
+    return {uid:0,kind:-1,tracks:tracks,cover:{uri:tracks[0].track.coverUri},title:title,ogImage:tracks[0].track.coverUri,description:"",available:true,owner:{uid: -1, name: "", verified: false }}
 }

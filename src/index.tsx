@@ -7,15 +7,15 @@ import {store} from "./store";
 import {BrowserRouter, Router} from "react-router-dom";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-        <BrowserRouter>
-    <Provider store={store}>
-     {/*<React.StrictMode>*/}
-        <Main/>
-      {/*</React.StrictMode>*/}
-    </Provider>
-        </BrowserRouter>
+    <BrowserRouter>
+        <Provider store={store}>
+            {/*<React.StrictMode>*/}
+                <Main/>
+            {/*</React.StrictMode>*/}
+        </Provider>
+    </BrowserRouter>
 );
 
