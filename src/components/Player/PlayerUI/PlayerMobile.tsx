@@ -137,7 +137,7 @@ const PlayerMobile = ({ currentSong, position, duration, skipForward, skipBack, 
 
 
             <Slide direction={"up"} in={!playerFolded}>
-                <div ref={mobilePlayerFull} style={{backgroundColor: currentSong.derivedColors?.average ?? "rgba(0, 0, 0)" ,marginBottom: "49px" }} className="player-wrapper-full" onClick={() => {
+                <div ref={mobilePlayerFull} style={{backgroundColor: currentSong.derivedColors?.average ?? "#99999" ,marginBottom: "49px" }} className="player-wrapper-full" onClick={() => {
                     setPlayerFolded(true)
                 }}>
                     {!playerFolded ? (
