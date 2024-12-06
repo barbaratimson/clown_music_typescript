@@ -30,14 +30,23 @@ interface PlayerPropsT {
     position: number,
     duration: number,
     volume: number,
-    changeVolume: (value: number)=>void,
-    skipForward: ()=>void,
-    skipBack: ()=>void,
-    seekTo: (value:number)=>void,
+    changeVolume: (value: number) => void,
+    skipForward: () => void,
+    skipBack: () => void,
+    seekTo: (value: number) => void,
 }
 
 
-const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, skipForward,skipBack, seekTo}:PlayerPropsT) => {
+const PlayerDesktop = ({
+                           currentSong,
+                           position,
+                           volume,
+                           changeVolume,
+                           duration,
+                           skipForward,
+                           skipBack,
+                           seekTo
+                       }: PlayerPropsT) => {
     const dispatch = useAppDispatch()
     const setPlayerShuffle = (shuffle: boolean) => dispatch(setShuffle(shuffle))
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
@@ -60,8 +69,8 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
         <>
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
-                    <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={currentSong.coverUri}
-                           size="60x60" imageSize="200x200" />
+                    <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={currentSong.coverUri}
+                           size="60x60" imageSize="200x200"/>
                     <div className="player-track-info">
                         {currentSong.title ? (
                             <div className='track-info-title-wrapper'>
@@ -71,7 +80,7 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
                                 </div>
                             </div>
                         ) : (
-                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f' }} animation={false} width={50}
+                            <Skeleton variant="rounded" sx={{bgcolor: '#ffffff1f'}} animation={false} width={50}
                                       height={10}></Skeleton>
                         )}
                         {currentSong.artists.length !== 0 ? (
@@ -81,13 +90,13 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
                                     }} className="track-info-artist-span">
 
                                         {currentSong.artists.map(artist => (
-                                            <ArtistName size={"15px"} artist={artist} />
+                                            <ArtistName size={"15px"} artist={artist}/>
                                         ))}
 
                                     </span>
                             </div>
                         ) : (
-                            <Skeleton variant="rounded" sx={{ bgcolor: '#ffffff1f', marginTop: "5px" }}
+                            <Skeleton variant="rounded" sx={{bgcolor: '#ffffff1f', marginTop: "5px"}}
                                       animation={false} width={100} height={10}></Skeleton>
                         )}
                     </div>
@@ -139,7 +148,7 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
                             {secToMinutesAndSeconds(position)}
                         </div>
                         <SeekSlider loadingState={playerState.loading} position={position}
-                                    duration={duration} changeTime={seekTo} />
+                                    duration={duration} changeTime={seekTo}/>
                         <div className="player-primary-trackTime">
                             {secToMinutesAndSeconds(duration)}
                         </div>
@@ -181,7 +190,8 @@ const PlayerDesktop = ({currentSong, position, volume, changeVolume, duration, s
                                         '&:hover, &.Mui-focusVisible, &.Mui-active': {
                                             boxShadow: 'none',
                                         },
-                                    }}}
+                                    }
+                                }}
                                 aria-label="Default" valueLabelDisplay="auto"/>
                     </div>
                 </div>

@@ -1,0 +1,76 @@
+@use "../style";
+
+.playlist-filter__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  color: var(--font-color-main);
+}
+
+.playlist-filter__wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  gap: 5px;
+  max-height: 350px;
+}
+
+.playlist-filter__wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.playlist-filter__button_text {
+  display: flex;
+  margin-right: 10px;
+}
+
+.playlist-filter__button_amount {
+  display: flex;
+  background-color: rgba(255, 247, 247, 0.41);
+  border-radius: 15px;
+  justify-content: center;
+  width: auto;
+  padding: 0 20px;
+}
+
+.playlist-filter__button_amount_number {
+  //future styles here
+}
+
+.playlist-filter__button {
+  display: flex;
+  width: fit-content(100%);
+  justify-content: space-between;
+  border-radius: 15px;
+  background-color: rgb(255 247 247 / 17%);
+  color: white;
+  font-size: 15px;
+  white-space: nowrap;
+  padding: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:last-child {
+    flex-grow: unset;
+    justify-self: start;
+  }
+
+  &:hover {
+    @media(hover: hover) and (pointer: fine) {
+      background-color: rgba(255, 247, 247, 0.6);
+    }
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.5)
+  }
+
+
+
+}

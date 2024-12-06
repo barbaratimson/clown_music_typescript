@@ -118,7 +118,6 @@ const MobilePlaylistInfo = () => {
                 <>
                     {playlistInfoState.playlist ? (
                             <>
-
                                 <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
                                     <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={playlistInfoState.playlist.cover?.uri} size="75x75" imageSize="200x200"/>
                                     <div className="track-info-wrapper">
@@ -139,9 +138,9 @@ const MobilePlaylistInfo = () => {
                                             <div className="track-info-mobile-control-label">
                                                 Filter
                                             </div>
-                                            {filterQuery.getAll("genres").length !== 0 ? (
+                                            {filterQuery.getAll("genres")?.length !== 0 ? (
                                                 <div className="track-info-mobile-control-label additional">
-                                                    <FilterAltOff onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery(filterQuery);setPlaylistInfoShow(false)}}/>
+                                                    <FilterAltOff onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery("");setGenresToFilter([]);setPlaylistInfoShow(false)}}/>
                                                 </div>
                                             ) : null}
                                         </>

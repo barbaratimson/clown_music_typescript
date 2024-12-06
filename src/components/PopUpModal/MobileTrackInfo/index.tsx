@@ -269,7 +269,7 @@ const MobileTrackInfo = () => {
                 <>
                     <div className="playlist-add__title"><ExpandMore /></div>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.filter((playlist) => playlist.kind !== 0).map((playlist) => (
-                        <div onClick={() => { addToPlaylist(playlist.kind, trackInfoState.track, playlist.revision ?? 0) }}>
+                        <div key={playlist.kind} onClick={() => { addToPlaylist(playlist.kind, trackInfoState.track, playlist.revision ?? 0) }}>
                             <PlaylistCard title={playlist.title} type={"line"} coverUri={playlist.cover.uri} />
                         </div>
                     )) : null}

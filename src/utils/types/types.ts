@@ -102,6 +102,8 @@ export interface EmptyAlbumT {
     coverUri: string
     title:string
     genre: string
+    year: string
+    likesCount: number
 }
 
 
@@ -160,6 +162,7 @@ export interface FeedEventsT {
     title: TitleT[]
     tracks: TrackT[]
     type: string
+    id: string
 }
 export interface FeedDaysT {
     // TODO: Change

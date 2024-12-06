@@ -20,10 +20,11 @@ import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
 import message from "../Message";
+import {Simulate} from "react-dom/test-utils";
+import abort = Simulate.abort;
 
 
 const savedVolume = localStorage.getItem("player_volume")
-
 const Player = () => {
     const dispatch = useAppDispatch()
     const audioElem = useRef<HTMLAudioElement>(null)
@@ -35,6 +36,7 @@ const Player = () => {
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
     const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
     const [isMobile, setIsMobile] = useState(false)
+    const [buffered, setBuffered] = useState<number>()
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
@@ -91,7 +93,7 @@ const Player = () => {
                 setPosition(ct)
             }
         }
-        // setBuffered(getBuffered())
+        setBuffered(getBuffered())
     }
 
     const changeTime = (value: number) => {
@@ -109,6 +111,7 @@ const Player = () => {
             }
         }
     }
+
 
     const getVolume = () => {
         if (isMobile) {
@@ -135,7 +138,6 @@ const Player = () => {
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
-            audioElem.current.play()
         } else if (index === queue.length - 1) {
             if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
                 setPlayingQueue([trackWrap(currentSong)])
@@ -154,7 +156,8 @@ const Player = () => {
         if (!playerState.playing) {
             audioElem.current.pause()
         } else {
-            audioElem.current.play().catch((e) => {
+            audioElem.current.play().catch(_ => {
+
             })
         }
     }, [playerState]);
@@ -163,14 +166,20 @@ const Player = () => {
         const fetchAudioAndPlay = () => {
             setLoading(true)
             devLog(`start fetching song link`)
-            const a = fetchYaSongLink(currentSong.id)
+            fetchYaSongLink(currentSong.id)
                 .then(link => {
                     devLog(`song link ready ${link}`)
                     if (!audioElem.current) return
-                    audioElem.current.src = link;
-                    // return audioElem.current.play();
+                    if (!link) {
+                        devLog(`Link fetching rejected`)
+                        message(`${currentSong.title} link loading error`)
+                    } else {
+                        audioElem.current.src = link;
+                        if (playerState.playing) {
+                            audioElem.current.play().catch(_ => { })
+                        }
+                    }
                 })
-                .then(_ => { })
                 .catch(e => {
                     if (e.code !== 20 && e.code !== 9) {
                         message(e)
@@ -282,11 +291,7 @@ const Player = () => {
             onLoadedMetadata={(e)=>{
                 setLoading(false)
             }}
-            // onLoadStart={(e) => {
-            //     setLoading(true)
-            // }}
             onError={(e) => {
-                //   stopPlayerFunc()
                 devLog(`player error`)
                 setLoading(false)
             }}

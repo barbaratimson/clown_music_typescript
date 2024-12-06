@@ -279,6 +279,7 @@ html,body {
 
 .player-header-mobile-filters {
   font-size: 12px;
+  text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -631,7 +632,6 @@ html,body {
 .player-full-top-wrapper {
   display: flex;
   flex-direction: column;
-  height: 65%;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -643,7 +643,7 @@ html,body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 35%;
+  flex-grow: 1;
   margin-bottom: 30px;
 }
 
@@ -662,6 +662,7 @@ html,body {
   min-width: 300px;
   height: 300px;
   border-radius: 14px;
+  margin: 25px 0;
   overflow: hidden;
   background-color: var(--bg-color-secondary_hover);
   transition: all .2s ease-in-out;
@@ -689,11 +690,11 @@ html,body {
   flex-direction: row;
   overflow: hidden;
   gap: 20px;
-  height: 350px;
   justify-content: center;
   align-items: center;
   transition: scale .4s ease-in;
   flex-grow: 1;
+  margin: 20px 0;
 }
 
 
@@ -718,6 +719,7 @@ html,body {
   flex-direction: row;
   width: 100%;
   gap: 10px;
+  margin-top: 10px;
   padding: 0 30px 0 20px;
 
 }
@@ -1468,7 +1470,6 @@ html,body {
 .album-artist-info-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 10px;
   margin-top: 10px;
 }
 .album-artist-info {
@@ -1962,7 +1963,7 @@ html,body {
 }
 
 .page-header-info-title {
-  font-size: 35px;
+  font-size: 30px;
   font-weight: 500;
   overflow : hidden;
   text-overflow: ellipsis;
