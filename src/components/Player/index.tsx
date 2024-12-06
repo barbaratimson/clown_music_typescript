@@ -1,27 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {TrackDefaultT, TrackId, TrackT, TrackType} from "../../utils/types/types";
+import {TrackDefaultT, TrackT, TrackType} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop, setIsLoading, setRepeat, setShuffle, setSrc} from "./playerSlice";
-import {
-    addAlpha,
-    getImageLink,
-    getUniqueRandomTrackFromPlaylist,
-    randomSongFromTrackList,
-    secToMinutesAndSeconds
-} from "../../utils/utils";
-import {fetchLikedSongs, fetchYaSongLink} from '../../utils/apiRequests';
-import {MessageType, showMessage} from '../../store/MessageSlice';
-import {addTrackToQueue, setOpeningState, setQueue} from "../../store/playingQueueSlice";
+import {playerStart, playerStop, setIsLoading} from "./playerSlice";
+import {getImageLink, getUniqueRandomTrackFromPlaylist, randomSongFromTrackList} from "../../utils/utils";
+import {fetchYaSongLink} from '../../utils/apiRequests';
+import {showMessage} from '../../store/MessageSlice';
+import {addTrackToQueue, setQueue} from "../../store/playingQueueSlice";
 import {trackWrap} from '../../utils/trackWrap';
 import {logMessage} from "../../store/devLogSlice";
 import Audio from "./Audio";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
-import message from "../Message";
-import {Simulate} from "react-dom/test-utils";
-import abort = Simulate.abort;
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -34,7 +25,7 @@ const Player = () => {
     const playerState = useAppSelector((state: RootState) => state.player)
     const queue = useAppSelector((state: RootState) => state.playingQueue.queue.queueTracks)
     const queueCurrentPlaylist = useAppSelector((state: RootState) => state.playingQueue.queue.playlist)
-    const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume)?? 50)
+    const [playerVolume, setPlayerVolume] = useState<number>(Number(savedVolume) ?? 50)
     const [isMobile, setIsMobile] = useState(false)
     const [buffered, setBuffered] = useState<number>()
     const setLoading = (loading: boolean) => dispatch(setIsLoading(loading))
@@ -44,7 +35,7 @@ const Player = () => {
     const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
     const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
     const devLog = (message: string) => dispatch(logMessage(message))
-    const message = (message:string) => dispatch(showMessage(message))
+    const message = (message: string) => dispatch(showMessage(message))
 
     const handleKeyPress = (e: any) => {
         if (e.key === " " && e.srcElement?.tagName !== "INPUT") {
@@ -163,6 +154,7 @@ const Player = () => {
     }, [playerState]);
 
     useEffect(() => {
+        if (currentSong.id === 0 && currentSong.title === "") return;
         const fetchAudioAndPlay = () => {
             setLoading(true)
             devLog(`start fetching song link`)
@@ -176,7 +168,8 @@ const Player = () => {
                     } else {
                         audioElem.current.src = link;
                         if (playerState.playing) {
-                            audioElem.current.play().catch(_ => { })
+                            audioElem.current.play().catch(_ => {
+                            })
                         }
                     }
                 })
@@ -186,9 +179,9 @@ const Player = () => {
                     }
                     console.error(e.code)
                     devLog(`error while fetching link: ${e.name && JSON.stringify(e)}`)
-                }).finally(()=>{
-                    setLoading(false)
-                })
+                }).finally(() => {
+                setLoading(false)
+            })
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         if (currentSong.available && currentSong && audioElem.current) {
@@ -213,7 +206,6 @@ const Player = () => {
     }, [currentSong]);
 
 
-
     useEffect(() => {
         setMediaSession(currentSong)
         const getIsMobileInfo = () => {
@@ -236,8 +228,8 @@ const Player = () => {
 
     useEffect(() => {
         if (audioElem.current) {
-                audioElem.current.volume = getVolume()
-                localStorage.setItem("player_volume",playerVolume.toString())
+            audioElem.current.volume = getVolume()
+            localStorage.setItem("player_volume", playerVolume.toString())
         }
     }, [playerVolume]);
 
@@ -259,56 +251,56 @@ const Player = () => {
     }, [playerState.shuffle]);
 
     return (
-    <>
-        {isMobile ?
-            (<PlayerMobile
-                currentSong={currentSong}
-                position={position}
-                duration={duration}
-                changeVolume={setPlayerVolume}
-                skipForward={skipForward}
-                skipBack={skipBack}
-                seekTo={changeTime}/>)
-            :
-            (<PlayerDesktop
-                currentSong={currentSong}
-                position={position}
-                duration={duration}
-                volume={playerVolume}
-                changeVolume={setPlayerVolume}
-                skipForward={skipForward}
-                skipBack={skipBack}
-                seekTo={changeTime}/>)
-        }
-        <Audio
-            track={currentSong}
-            crossOrigin="anonymous"
-            preload="auto"
-            ref={audioElem}
-            onPlay={(e) => {
-                devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
-            }}
-            onLoadedMetadata={(e)=>{
-                setLoading(false)
-            }}
-            onError={(e) => {
-                devLog(`player error`)
-                setLoading(false)
-            }}
-            onCanPlay={() => {
-                setLoading(false)
-                if (playerState.playing && audioElem.current) audioElem.current.play()
-                //   startPlayerFunc()
-            }}
-            onPause={() => {
-                if (playerState.playing) stopPlayerFunc()
-                devLog(`player paused`)
-            }} onEnded={(e) => {
-            skipForward()
-            startPlayerFunc()
-        }} onTimeUpdate={onPlaying}
-        />
-    </>
+        <>
+            {isMobile ?
+                (<PlayerMobile
+                    currentSong={currentSong}
+                    position={position}
+                    duration={duration}
+                    changeVolume={setPlayerVolume}
+                    skipForward={skipForward}
+                    skipBack={skipBack}
+                    seekTo={changeTime}/>)
+                :
+                (<PlayerDesktop
+                    currentSong={currentSong}
+                    position={position}
+                    duration={duration}
+                    volume={playerVolume}
+                    changeVolume={setPlayerVolume}
+                    skipForward={skipForward}
+                    skipBack={skipBack}
+                    seekTo={changeTime}/>)
+            }
+            <Audio
+                track={currentSong}
+                crossOrigin="anonymous"
+                preload="auto"
+                ref={audioElem}
+                onPlay={(e) => {
+                    devLog(`player started: ${currentSong.title} with src: ${audioElem.current?.src}}`)
+                }}
+                onLoadedMetadata={(e) => {
+                    setLoading(false)
+                }}
+                onError={(e) => {
+                    devLog(`player error`)
+                    setLoading(false)
+                }}
+                onCanPlay={() => {
+                    setLoading(false)
+                    if (playerState.playing && audioElem.current) audioElem.current.play()
+                    //   startPlayerFunc()
+                }}
+                onPause={() => {
+                    if (playerState.playing) stopPlayerFunc()
+                    devLog(`player paused`)
+                }} onEnded={(e) => {
+                skipForward()
+                startPlayerFunc()
+            }} onTimeUpdate={onPlaying}
+            />
+        </>
     )
 }
 

@@ -8,6 +8,7 @@ const link = process.env.REACT_APP_YMAPI_LINK
 const setMessage = (message:string,type:MessageType) => store.dispatch(showMessage({message:message,type:type}))
 const devLog = (message:string) => store.dispatch(logMessage(message))
 export const fetchYaSongLink = async (id:string | number) => {
+    if (!id && id === 0) throw new Error ("Id null or undefined")
     try {
         const response = await axios.get(
             `${link}/ya/tracks/${id}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
