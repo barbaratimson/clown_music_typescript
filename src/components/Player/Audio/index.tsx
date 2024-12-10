@@ -1,5 +1,6 @@
 import React, {forwardRef} from "react";
 import {TrackT} from "../../../utils/types/types";
+import track from "../../Track";
 
 interface AudioPropsT {
     track: TrackT,
@@ -21,6 +22,7 @@ interface AudioPropsT {
 const Audio = forwardRef<HTMLAudioElement, AudioPropsT>((props, ref) => {
     return (
         <audio
+            key={"player_"+props.track.id}
             src={props.src}
             ref={ref}
             preload={props.preload}
