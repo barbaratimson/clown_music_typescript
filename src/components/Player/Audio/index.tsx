@@ -21,7 +21,6 @@ interface AudioPropsT {
 const Audio = forwardRef<HTMLAudioElement, AudioPropsT>((props, ref) => {
     return (
         <audio
-            key={props.track.id + "_player"}
             src={props.src}
             ref={ref}
             preload={props.preload}

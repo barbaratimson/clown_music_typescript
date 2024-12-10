@@ -1,10 +1,10 @@
 import React from "react";
 import {PlaylistT, QueueT, TrackType} from "../../utils/types/types";
-import Index from "../Track";
 import './style.scss'
 import {initQueue} from "../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {useSearchParams} from "react-router-dom";
+import Track from "../Track";
 
 interface SongsListProps {
     tracks: Array<TrackType>
@@ -32,7 +32,7 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     return (
         <div style={style} className="songs-wrapper">
                 {tracks ? tracks.map((song) => song.track.available ? (
-                            <Index key={song.track.id} queueFunc={setInitQueue} track={song.track} />
+                            <Track key={song.track.id} queueFunc={setInitQueue} track={song.track} />
                 ) : null) : null}
         </div>
     )

@@ -156,6 +156,9 @@ const Player = () => {
     useEffect(() => {
         if (currentSong.id === 0 && currentSong.title === "") return;
         const fetchAudioAndPlay = () => {
+            if (!audioElem.current) return
+            audioElem.current.src = "";
+            audioElem.current.load()
             setLoading(true)
             devLog(`start fetching song link`)
             fetchYaSongLink(currentSong.id)
@@ -167,6 +170,7 @@ const Player = () => {
                         message(`${currentSong.title} link loading error`)
                     } else {
                         audioElem.current.src = link;
+                        audioElem.current.load()
                         if (playerState.playing) {
                             audioElem.current.play().catch(_ => {
                             })
@@ -284,18 +288,11 @@ const Player = () => {
                     setLoading(false)
                 }}
                 onError={(e) => {
+                    e.preventDefault()
                     devLog(`player error`)
                     setLoading(false)
                 }}
-                onCanPlay={() => {
-                    setLoading(false)
-                    if (playerState.playing && audioElem.current) audioElem.current.play()
-                    //   startPlayerFunc()
-                }}
-                onPause={() => {
-                    if (playerState.playing) stopPlayerFunc()
-                    devLog(`player paused`)
-                }} onEnded={(e) => {
+                onEnded={(e) => {
                 skipForward()
                 startPlayerFunc()
             }} onTimeUpdate={onPlaying}

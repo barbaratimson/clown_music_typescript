@@ -20,7 +20,7 @@ const Message = () => {
         return () => { clearInterval(a) }
     }, [message.active]);
 
-    if ((message.type === "trackLiked" || "trackDisliked") && message.track) {
+    if ((message.type === "trackLiked" || message.type === "trackDisliked") && message.track) {
         return (
             <Fade in={message.active} unmountOnExit>
                 <div className="message-wrapper track">
