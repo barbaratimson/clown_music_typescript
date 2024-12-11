@@ -61,7 +61,7 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
                                     <Track key={song.track.id} queueFunc={setInitQueue} track={song.track} />
                         ) : null) : null}
                 </div>
-                <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "1600px" : 0}}></div>
+                <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "2400px" : 0}}></div>
             </>
     )
 })
