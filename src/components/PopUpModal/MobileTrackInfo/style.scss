@@ -12,6 +12,10 @@
   border-radius: 16px;
 }
 
+.track-info-songs-wrapper > .songs-wrapper {
+  gap: 5px;
+}
+
 .track-info-songs-wrapper > .songs-wrapper > * {
   background-color: style.$bg-color-secondary;
   //gap: 5px;

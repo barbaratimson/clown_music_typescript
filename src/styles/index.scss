@@ -1562,7 +1562,7 @@ html,body {
 
 .queue-tracks {
   display: flex;
-  flex-direction:row;
+  flex-direction:column;
   width: 100%;
   overflow-y: auto;
   border-radius: 12px;
