@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {PlaylistT, QueueT, TrackType} from "../../utils/types/types";
 import './style.scss'
 import {initQueue} from "../../store/playingQueueSlice";
@@ -17,6 +17,9 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
     const playerState = useAppSelector((state: RootState) => state.player)
     const [filterQuery, setFilterQuery] = useSearchParams()
+    const [offset, setOffset] = useState(10)
+    const [dataToShow, setDataToShow] = useState<TrackType[]>()
+    const loaderRef = useRef<any>();
     const setInitQueue = (track: Array<TrackType>) => {
         if (playlist) {
             const filter = filterQuery.getAll("genres")
@@ -28,16 +31,36 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
         }
     }
 
-    // TODO: Dynamic pagination
+    const showNextData = (offset:number) => {
+        setOffset((prevState) => prevState + 40)
+        return tracks.slice(0,offset)
+    }
+    
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            const firstEntry = entries[0];
+            if (firstEntry.isIntersecting) {
+                // Load more planets when the loader is visible
+                setDataToShow(showNextData(offset))
+            }
+        });
+        if (loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
 
-
+        // Clean up the observer on component unmount
+        return () => observer.disconnect();
+    }, [showNextData]);
 
     return (
+            <>
         <div style={style} className="songs-wrapper">
-                {tracks ? tracks.map((song) => song.track.available ? (
+                {dataToShow ? dataToShow.map((song) => song.track.available ? (
                             <Track key={song.track.id} queueFunc={setInitQueue} track={song.track} />
                 ) : null) : null}
         </div>
+                <div ref={loaderRef} style={{width:"100%",height:"1px"}}></div>
+            </>
     )
 })
 
