@@ -23,6 +23,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
+    const input = useRef<HTMLInputElement>(null);
     const playlistInfo = useRef(null)
     const [tracksFiltered, setTracksFiltered] = useState<TrackType[]>()
     const [tracksSearchResult, setTracksSearchResult] = useState<TrackType[]>()
@@ -101,8 +102,12 @@ const Playlist = ({playlist}: PlaylistProps) => {
     }, [filterMenuActive]);
 
     useEffect(() => {
+        if (input.current) {
+            input.current.focus()
+        }
         setSearch("")
     }, [showSearch]);
+
 
     return (
         <>
@@ -127,7 +132,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                 </>
                             }/>
                 <Collapse in={showSearch} orientation="vertical">
-                    <Searchbar className="playlist__searchbar_noBackground" value={search} setValue={setSearch}/>
+                    <Searchbar ref={input} className="playlist__searchbar_noBackground" value={search} setValue={setSearch}/>
                 </Collapse>
 
                 <SongsList playlist={tracksSearchResult ? {
