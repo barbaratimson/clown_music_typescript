@@ -1,18 +1,17 @@
 import React, {useEffect, useRef, useState} from "react";
-import {PlaylistT, TrackT, TrackType} from "../../utils/types/types";
+import {PlaylistT, TrackType} from "../../utils/types/types";
 import {isElementInViewport} from "../../utils/utils";
 import SongsList from "../SongsList";
-import {useAppDispatch} from "../../store";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../store";
+import {useSearchParams} from "react-router-dom";
 import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
-import PopUpModal from "../PopUpModal";
-import {Delete, ExpandMore, FilterAlt, MoreHoriz} from "@mui/icons-material";
+import {MoreHoriz} from "@mui/icons-material";
 import PageHeader from "../PageHeader";
-import axios from "axios";
-import {setPlaylistInfo, setPlaylistInfoActiveState} from "../../store/playlistInfoSlice";
-import {setTrackInfo} from "../../store/trackInfoSlice";
-import { Skeleton } from "@mui/material";
+import {setPlaylistInfo, setPlaylistInfoActiveState, setPlaylistSearchActiveState} from "../../store/playlistInfoSlice";
+import {Collapse} from "@mui/material";
 import "./style.scss"
+import SearchIcon from "@mui/icons-material/Search";
+import Searchbar from "../Pages/Search/Searchbar/Searchbar";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -20,16 +19,40 @@ interface PlaylistProps {
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Playlist = ({ playlist }: PlaylistProps) => {
+const Playlist = ({playlist}: PlaylistProps) => {
     const dispatch = useAppDispatch()
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
     const playlistInfo = useRef(null)
-    const [tracksFiltered, setTracksFiltered] = useState<Array<TrackType>>()
+    const [tracksFiltered, setTracksFiltered] = useState<TrackType[]>()
+    const [tracksSearchResult, setTracksSearchResult] = useState<TrackType[]>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
+    const [search, setSearch] = useState("")
+    const showSearch = useAppSelector(state => state.playlistInfo.searchActive)
     const setPlaylistInfoShow = (active: boolean) => dispatch(setPlaylistInfoActiveState(active))
-    const setPlaylistInfoState = (playlist:PlaylistT) => dispatch(setPlaylistInfo(playlist))
+    const setPlaylistSearchShow = (active: boolean) => dispatch(setPlaylistSearchActiveState(active))
+    const setPlaylistInfoState = (playlist: PlaylistT) => dispatch(setPlaylistInfo(playlist))
+
+    const searchFunc = (tracks: TrackType[]) => {
+        return tracks.filter(track =>
+            track.track.title.split(" ")
+                .join("")
+                .toLowerCase()
+                .includes(search
+                    .split(" ")
+                    .join("")
+                    .toLowerCase()) ||
+            (track.track.artists.length !== 0 ?
+                track.track.artists.find(artist => artist.name.split(" ")
+                    .join("")
+                    .toLowerCase()
+                    .includes(search
+                        .split(" ")
+                        .join("")
+                        .toLowerCase())
+                ) : false))
+    }
 
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
@@ -38,43 +61,80 @@ const Playlist = ({ playlist }: PlaylistProps) => {
         } else if (filter.length !== 0) {
             setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.track.albums[0]?.genre)))
         } else {
-            setTracksFiltered(playlist.tracks)
+            setSearch("")
+            setTracksSearchResult(undefined)
+            setTracksFiltered(undefined)
         }
     }, [filterQuery]);
 
     useEffect(() => {
+        if (search === "") {
+            setTracksSearchResult(undefined)
+        } else {
+            setTracksSearchResult(searchFunc(tracksFiltered ?? playlist.tracks))
+        }
+    }, [search]);
+
+
+    useEffect(() => {
         const a = () => {
             if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
-                setHeaderActive({ title: playlist.title })
+                setHeaderActive({title: playlist.title})
             } else {
                 setHeaderOff()
             }
         }
         document.addEventListener("scroll", a)
-        return () => { document.removeEventListener("scroll", a); setHeaderOff() }
+        return () => {
+            document.removeEventListener("scroll", a);
+            setHeaderOff()
+        }
     }, []);
 
     useEffect(() => {
         if (filterMenuActive) {
             document.body.style.overflow = "hidden"
         }
-        return () => { document.body.style.overflow = "unset" }
+        return () => {
+            document.body.style.overflow = "unset"
+        }
     }, [filterMenuActive]);
+
+    useEffect(() => {
+        setSearch("")
+    }, [showSearch]);
 
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description} coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.ogImage} controls={
-                    <>
-                        <span className="playlist__filters">
-                            {filterQuery.getAll("genres").map((genre) => (
-                                <a key={genre} className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1) }</a>
-                            ))}
-                        </span>
-                        <MoreHoriz onClick={() => { setPlaylistInfoShow(true);setPlaylistInfoState(playlist)}} />
-                    </>
-                } />
-                    <SongsList playlist={tracksFiltered ? { ...playlist, tracks: tracksFiltered } : playlist} tracks={tracksFiltered ?? playlist.tracks} />
+                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description}
+                            coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.ogImage}
+                            controls={
+                                <>
+                                <span className="playlist__filters">
+                                    {filterQuery.getAll("genres").map((genre) => (
+                                        <a key={genre}
+                                           className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1)}</a>
+                                    ))}
+                                </span>
+                                    <SearchIcon onClick={() => {
+                                        setPlaylistSearchShow(!showSearch)
+                                    }}/>
+                                    <MoreHoriz onClick={() => {
+                                        setPlaylistInfoShow(true);
+                                        setPlaylistInfoState(playlist)
+                                    }}/>
+                                </>
+                            }/>
+                <Collapse in={showSearch} orientation="vertical">
+                    <Searchbar className="playlist__searchbar_noBackground" value={search} setValue={setSearch}/>
+                </Collapse>
+
+                <SongsList playlist={tracksSearchResult ? {
+                    ...playlist,
+                    tracks: tracksSearchResult
+                } : tracksFiltered ? {...playlist, tracks: tracksFiltered} : playlist}
+                           tracks={tracksSearchResult ?? tracksFiltered ?? playlist.tracks}/>
             </div>
         </>
     )

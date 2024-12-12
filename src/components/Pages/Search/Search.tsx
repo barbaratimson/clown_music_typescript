@@ -12,6 +12,7 @@ import {getImageLink, getPlaylistLink} from "../../../utils/utils";
 import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 import Track from "../../Track";
+import Searchbar from "./Searchbar/Searchbar";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
@@ -37,12 +38,15 @@ const Search = () => {
 
 
     useEffect(() => {
-        if (!search) return
-        let Debounce = setTimeout(() => {
-            setSearchQuery({ query: search })
-        }, 500)
-        return () => {
-            clearTimeout(Debounce)
+        if (search) {
+            let Debounce = setTimeout(() => {
+                setSearchQuery({query: search})
+            }, 500)
+            return () => {
+                clearTimeout(Debounce)
+            }
+        } else {
+            setSearchQuery(undefined)
         }
     }, [search]);
 
@@ -57,13 +61,7 @@ const Search = () => {
     return (
         <div className="page-default animated-opacity">
 
-            <div className="searchbar">
-                <div className="nav-search-icon"><SearchIcon /></div>
-                <input autoFocus ref={input} value={search ?? ""} className="nav-search-input" type='text'
-                    onChange={(e) => {
-                        setSearch(e.target.value)
-                    }} />
-            </div>
+            <Searchbar ref={input} value={search ?? " "} setValue={setSearch}/>
             {search !== "" ? (
                 <div key={searchResults?.searchRequestId} className="search-results animated-opacity">
                     {!isLoading ? (

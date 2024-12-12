@@ -3,7 +3,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import Collection from "./pages/Collection";
 import Chart from "./pages/Chart";
 import Home from "./Home/Home";
-import Search from "./pages/Search";
+import Search from "./Search/Search";
 import User from "./User";
 import Settings from "./pages/Settings";
 import PlaylistView from "../PlaylistView";

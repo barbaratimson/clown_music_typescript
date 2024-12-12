@@ -8,6 +8,11 @@
   line-height: 1.2;
   font-size: 14px;
 }
+
+.playlist__searchbar_noBackground{
+  background-color: transparent !important;
+}
+
 .playlist__filters_filter-title {
   &:not(:last-child):after {
     content: ", "

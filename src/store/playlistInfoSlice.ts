@@ -5,11 +5,13 @@ import {PlaylistInitState, SongInitState,} from "./initialStates";
 export interface PlaylistInfoState {
     playlist:PlaylistT,
     active:boolean
+    searchActive:boolean
 }
 
 const initialState:PlaylistInfoState = {
     playlist: PlaylistInitState,
     active:false,
+    searchActive:false
 }
 
 
@@ -20,6 +22,9 @@ const PlaylistInfo = createSlice({
         setPlaylistInfoActiveState(state, action) {
             state.active = action.payload
         },
+        setPlaylistSearchActiveState(state, action) {
+            state.searchActive = action.payload
+        },
         setPlaylistInfo(state, action) {
             state.playlist = action.payload
         },
@@ -27,5 +32,5 @@ const PlaylistInfo = createSlice({
 
 })
 
-export const { setPlaylistInfoActiveState,setPlaylistInfo } = PlaylistInfo.actions
+export const { setPlaylistInfoActiveState,setPlaylistInfo,setPlaylistSearchActiveState } = PlaylistInfo.actions
 export default PlaylistInfo.reducer

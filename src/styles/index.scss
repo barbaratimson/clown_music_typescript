@@ -1381,35 +1381,12 @@ html,body {
   width: 100%;
   padding: 10px;
 }
-.searchbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-}
 
 .search-results {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 10px;
-}
-
-.nav-search-input {
-  background-color: transparent;
-  border: 0;
-  color: var(--font-color-main);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  outline: none;
-  width: 100%;
-  padding: 5px 0;
-  font-size: 15px;
-  font-weight: 400;
-  margin-right: 10px;
 }
 
 .nav-search-line {
@@ -1428,14 +1405,6 @@ html,body {
   padding: 10px;
   border-radius: 12px;
   gap: 5px;
-}
-
-.nav-search-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 5px;
-  color: var(--font-color-main);
 }
 
 .search-no-search {
