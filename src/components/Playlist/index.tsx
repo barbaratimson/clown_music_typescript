@@ -12,6 +12,7 @@ import {Collapse} from "@mui/material";
 import "./style.scss"
 import SearchIcon from "@mui/icons-material/Search";
 import Searchbar from "../Pages/Search/Searchbar/Searchbar";
+import SmallButton from "../SmallButton/SmallButton";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -102,7 +103,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     }, [filterMenuActive]);
 
     useEffect(() => {
-        if (input.current) {
+        if (input.current && showSearch) {
             input.current.focus()
         }
         setSearch("")
@@ -122,13 +123,17 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                            className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1)}</a>
                                     ))}
                                 </span>
-                                    <SearchIcon onClick={() => {
+                                    <SmallButton onClick={() => {
                                         setPlaylistSearchShow(!showSearch)
-                                    }}/>
-                                    <MoreHoriz onClick={() => {
+                                    }}>
+                                        <SearchIcon/>
+                                    </SmallButton>
+                                    <SmallButton onClick={() => {
                                         setPlaylistInfoShow(true);
                                         setPlaylistInfoState(playlist)
-                                    }}/>
+                                    }}>
+                                        <MoreHoriz/>
+                                    </SmallButton>
                                 </>
                             }/>
                 <Collapse in={showSearch} orientation="vertical">

@@ -1966,6 +1966,8 @@ html,body {
 }
 
 .page-header-image-wrapper {
+  //TODO: Adjust
+  filter: brightness(75%);
   display: flex;
 }
 
