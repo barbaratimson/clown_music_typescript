@@ -72,7 +72,7 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
             {playerFolded &&
                 <div className="player-wrapper" onClick={() => {
                     setPlayerFolded(!playerFolded)
-                }} style={{marginBottom: "49px", gap: "0"}}>
+                }} style={{marginBottom: "37px", gap: "0"}}>
                     <div className="player-track-info-wrapper mobile" key={currentSong.id}>
                         <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={currentSong.coverUri}
                                size="50x50" imageSize="200x200"/>

@@ -12,7 +12,7 @@ import {Collapse} from "@mui/material";
 import "./style.scss"
 import SearchIcon from "@mui/icons-material/Search";
 import Searchbar from "../../../Searchbar/Searchbar";
-import SmallButton from "../../../SmallButton/SmallButton";
+import Button from "../../../Button/./Button";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -77,7 +77,6 @@ const Playlist = ({playlist}: PlaylistProps) => {
         }
     }, [search]);
 
-
     useEffect(() => {
         const a = () => {
             if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
@@ -92,6 +91,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
             setHeaderOff()
         }
     }, []);
+
 
     useEffect(() => {
         if (filterMenuActive) {
@@ -123,17 +123,17 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                            className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1)}</a>
                                     ))}
                                 </span>
-                                    <SmallButton onClick={() => {
+                                    <Button onClick={() => {
                                         setPlaylistSearchShow(!showSearch)
                                     }}>
                                         <SearchIcon/>
-                                    </SmallButton>
-                                    <SmallButton onClick={() => {
+                                    </Button>
+                                    <Button onClick={() => {
                                         setPlaylistInfoShow(true);
                                         setPlaylistInfoState(playlist)
                                     }}>
                                         <MoreHoriz/>
-                                    </SmallButton>
+                                    </Button>
                                 </>
                             }/>
                 <Collapse in={showSearch} orientation="vertical">

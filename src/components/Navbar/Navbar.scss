@@ -1,0 +1,30 @@
+@import "src/styles/vars";
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-color-main);
+  border-radius: 0 16px 0 0;
+  position: fixed;
+  height: 100%;
+  padding: 10px 10px 85px 10px;
+}
+
+.navbar__buttons_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar__buttons_wrapper_bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+  flex-grow: 1;
+  gap: 20px;
+}
+
+

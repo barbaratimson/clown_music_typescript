@@ -1,0 +1,38 @@
+@import "src/styles/vars";
+
+$hover-color: rgba(255, 247, 247, 0.5);
+$active-color: rgba(255, 247, 247, 0.7);
+
+.button__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  padding: 15px;
+  transition: all .4s;
+  border-radius: 2px;
+  color: $font-color-main-light;
+
+  &:active {
+    background-color: $active-color!important;
+    transition: all .1s ease-in;
+    border-radius: 50% !important;
+  }
+
+  &:hover {
+    background-color: $hover-color;
+    border-radius: 8px;
+  }
+
+  @media screen and (max-width: 575px) {
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:active {
+      background-color: $hover-color !important;
+      border-radius: 12px !important;
+    }
+  }
+}

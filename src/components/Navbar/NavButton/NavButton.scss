@@ -1,0 +1,10 @@
+@import "src/styles/vars";
+
+.navbar__button > a {
+  color: $font-color-main-light;
+}
+
+.navbar__link_active {
+  background-color: var(--bg-color-secondary_hover) !important;
+  border-radius: 8px;
+}
