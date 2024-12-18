@@ -10,6 +10,7 @@ import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import SongsList from "../../SongsList";
 import PageHeader from "../../PageHeader";
 import {getIsMobileInfo} from "../../../utils/deviceHandler";
+import { fetchChart } from "../../../utils/apiRequests";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -23,20 +24,7 @@ const Chart = () => {
     const setPlayingQueue = (queue: QueueT) => dispatch(setQueue(queue))
     const setErrMessageActive = (active: boolean) => dispatch(showMessage(active))
     const setErrMessage = (message: string, code: ErrCodeT) => dispatch(showMessage({ message, code }))
-    const fetchChart = async () => {
-        setIsLoading(true)
-        try {
-            const response = await axios.get(
-                `${link}/ya/chart`,{ headers: { "Authorization": localStorage.getItem("Authorization") } });
-            setChartResult(response.data)
-            console.log(response.data)
-            setIsLoading(false)
-        } catch (err: any) {
-            setErrMessageActive(true)
-            setErrMessage(err.message, err.code)
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    };
+
 
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && chartResult) {
@@ -47,7 +35,7 @@ const Chart = () => {
     }
 
     useEffect(() => {
-        fetchChart()
+        fetchChart().then(result => setChartResult(result)).finally(() => setIsLoading(false))
     }, [])
 
 

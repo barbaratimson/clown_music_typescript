@@ -12,7 +12,14 @@ import {
     PeopleAlt,
     PlaylistAdd
 } from "@mui/icons-material";
-import { dislikeSong, fetchLikedSongs, likeSong } from "../../../utils/apiRequests";
+import {
+    addToPlaylist,
+    dislikeSong,
+    fetchLikedSongs,
+    fetchSimilarTracks,
+    fetchUserPlaylists,
+    likeSong
+} from "../../../utils/apiRequests";
 import { MessageType, showMessage } from "../../../store/MessageSlice";
 import { setLikedSongs } from "../../../store/LikedSongsSlice";
 import { useDispatch } from "react-redux";
@@ -28,6 +35,7 @@ import Cover, { ImagePlaceholder } from "../../Cover";
 import "./style.scss"
 import PlaylistCard from "../../PlaylistCard";
 import {playlistFromTracksArr} from "../../../utils/utils";
+import {setIsLoading} from "../../Player/playerSlice";
 
 interface SimilarTracksT {
     track: TrackT
@@ -58,42 +66,6 @@ const MobileTrackInfo = () => {
     const [showSimilar, setShowSimilar] = useState(false)
     const [showPlaylistsToAdd, setShowPlaylistsToAdd] = useState(false)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
-
-    const fetchSimilarTracks = async (id: any) => {
-        setIsLoading(true)
-        try {
-            const response = await axios.get(
-                `${link}/ya/tracks/${id}/similar`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
-            setSimilarTracks(response.data)
-            setIsLoading(false)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-        }
-    };
-
-    const fetchUserPlaylists = async () => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
-            setUserPlaylists(response.data)
-            setIsLoading(false)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    };
-
-
-    const addToPlaylist = async (playlistId: number | string, track: TrackT, revision: number) => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlist/${playlistId}/add`, { params: { tracks: [{ id: track.id, albumId: track.albums[0].id }], revision: revision }, headers: { "Authorization": localStorage.getItem("Authorization") } });
-            message(`Track ${track.title} added to playlist`)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
-        }
-    };
 
     const closeAll = () => {
         setArtistsOpen(false);
@@ -133,7 +105,8 @@ const MobileTrackInfo = () => {
     }, [location]);
 
     useEffect(() => {
-        fetchUserPlaylists()
+        setIsLoading(true)
+        fetchUserPlaylists().then(result => setUserPlaylists(result)).finally(()=>{setIsLoading(false)})
     }, [showPlaylistsToAdd]);
 
     return (
@@ -223,7 +196,7 @@ const MobileTrackInfo = () => {
                                 </div>
                             </div>
                         ) : null}
-                        <div className="track-info-mobile-control-button" onClick={()=>{fetchSimilarTracks(trackInfoState.track.id)}}>
+                        <div className="track-info-mobile-control-button" onClick={()=>{setIsLoading(true);fetchSimilarTracks(trackInfoState.track.id).then(result => setSimilarTracks(result)).finally(() => setIsLoading(false))}}>
                             <div className="track-info-mobile-control-icon">
                                 <ContentCopy />
                             </div>

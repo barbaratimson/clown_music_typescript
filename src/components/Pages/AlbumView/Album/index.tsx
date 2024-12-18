@@ -1,17 +1,17 @@
 import React, {useRef, useState} from "react";
-import {AlbumT, PlaylistT} from "../../utils/types/types";
-import SongsList from "../SongsList";
-import {useAppDispatch} from "../../store";
-import {trackArrayWrap} from "../../utils/trackWrap";
+import {AlbumT, PlaylistT} from "../../../../utils/types/types";
+import SongsList from "../../../SongsList";
+import {useAppDispatch} from "../../../../store";
+import {trackArrayWrap} from "../../../../utils/trackWrap";
 import {Link} from "react-router-dom";
-import PageHeader from "../PageHeader";
-import Cover from "../Cover";
+import PageHeader from "../../../PageHeader";
+import Cover from "../../../Cover";
 import {MoreVert} from "@mui/icons-material";
-import PopUpModal from "../PopUpModal";
-import {setPlaylistInfo} from "../../store/playlistInfoSlice";
-import playlist from "../Playlist";
-import MobileAlbumInfo from "../PopUpModal/MobileAlbumInfo";
-import Loader from "../Loader";
+import PopUpModal from "../../../PopUpModal";
+import {setPlaylistInfo} from "../../../../store/playlistInfoSlice";
+import playlist from "../../PlaylistView/Playlist";
+import MobileAlbumInfo from "../../../PopUpModal/MobileAlbumInfo";
+import Loader from "../../../Loader";
 
 interface AlbumProps {
     album: AlbumT

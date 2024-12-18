@@ -54,3 +54,68 @@ export const dislikeSong = async (song:TrackT) => {
         console.log(err)
     }
 };
+
+
+export const fetchSimilarTracks = async (id: any) => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/tracks/${id}/similar`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+        console.log(err)
+    }
+};
+
+export const fetchUserPlaylists = async () => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/playlists`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+    }
+};
+
+
+export const addToPlaylist = async (playlistId: number | string, track: TrackT, revision: number) => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/playlist/${playlistId}/add`, { params: { tracks: [{ id: track.id, albumId: track.albums[0].id }], revision: revision }, headers: { "Authorization": localStorage.getItem("Authorization") } });
+        return `Track ${track.title} added to playlist`
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+        console.log(err)
+    }
+};
+
+export const fetchArtist = async (artistId: string) => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/artist/${artistId}`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+    }
+};
+
+export const fetchChart = async () => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/chart`,{ headers: { "Authorization": localStorage.getItem("Authorization") } });
+        return response.data
+    } catch (err: any) {
+        console.error('Ошибка при получении чарта:', err);
+    }
+};
+
+export const fetchAlbum = async (id:any) => {
+    try {
+        const response = await axios.get(
+            `${link}/ya/album/${id}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении альбома:', err);
+    }
+};
+

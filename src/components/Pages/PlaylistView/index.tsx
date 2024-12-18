@@ -1,8 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../Loader";
-import Playlist from "../Playlist";
+import Loader from "../../Loader";
+import Playlist from "./Playlist";
 import { Skeleton } from "@mui/material";
 
 const link = process.env.REACT_APP_YMAPI_LINK
