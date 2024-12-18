@@ -275,8 +275,6 @@ const MobileTrackInfo = () => {
                     )) : null}
                 </>
             </PopUpModal>
-
-
             <PopUpModal active={showSimilar} setActive={setShowSimilar}>
                 <>
                     <div className="track-info-mobile-about-wrapper">

@@ -24,14 +24,14 @@ export const getUniqueRandomTrackFromPlaylist = (referencePlaylist: Array<TrackT
     let newSong: TrackType;
     if (queueToAdd.length !== 0 && currentSong.id !== 0) {
         const index = queueToAdd.findIndex(x => x.id == currentSong.id);
-        if (queueToAdd.length !== referencePlaylist.length) {
-            do {
-                newSong = randomSongFromTrackList(referencePlaylist)
-            } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
-        } else {
+        if (queueToAdd.length >= referencePlaylist.length) {
             do {
                 newSong = randomSongFromTrackList(referencePlaylist)
             } while (currentSong.id == newSong.track.id)
+        } else {
+            do {
+                newSong = randomSongFromTrackList(referencePlaylist)
+            } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
         }
         return newSong
     }

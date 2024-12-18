@@ -44,8 +44,6 @@ const Artist = () => {
     };
 
 
-    //TODO: Artist disappearing from state
-
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && artistResult) {
             setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover?.uri })

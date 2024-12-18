@@ -11,6 +11,7 @@ import PopUpModal from "../PopUpModal";
 import {setPlaylistInfo} from "../../store/playlistInfoSlice";
 import playlist from "../Playlist";
 import MobileAlbumInfo from "../PopUpModal/MobileAlbumInfo";
+import Loader from "../Loader";
 
 interface AlbumProps {
     album: AlbumT
@@ -21,6 +22,7 @@ const Album = ({album}: AlbumProps) => {
     const dispatch = useAppDispatch()
     const playlistInfo = useRef(null)
     const [showMenu, setShowMenu] = useState(false)
+
     return (
         <>
         <div className="playlist-wrapper animated-opacity">
@@ -53,7 +55,7 @@ const Album = ({album}: AlbumProps) => {
                 </>
             }>
             </PageHeader>
-            {album.volumes.map((volume)=>(
+            {album.volumes?.map((volume)=>(
              <SongsList playlist={{kind:album.id,cover:{uri:album.coverUri},uid:0,ogImage:album.coverUri,available:true,owner:{uid:album.artists[0].id,name:album.artists[0].name,verified:true},title:album.title,description:"",tracks:trackArrayWrap(volume)}} tracks={trackArrayWrap(volume)}/>
             ))}
         </div>

@@ -172,7 +172,16 @@ const MobilePlaylistInfo = () => {
 
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
                 <>
-                    <div className="playlist-filter__title"><ExpandMore /></div>
+                    <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
+                        <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={playlistInfoState.playlist.cover?.uri} size="75x75" imageSize="200x200"/>
+                        <div className="track-info-wrapper">
+                            <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{playlistInfoState.playlist.title}</div>
+                            <div style={{ marginTop: "5px" }} className="track-info-artist">{playlistInfoState.playlist.tracks.length + " tracks"}</div>
+                        </div>
+                        <div className="track-info-back-button">
+                            <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: "90deg"}} />
+                        </div>
+                    </div>
                     <div className="playlist-filter__wrapper" onClick={(e)=>{e.stopPropagation()}}>
                         {genres?.map(genreRender => (
                             <div key={genreRender.genre} className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}

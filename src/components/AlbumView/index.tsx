@@ -10,7 +10,7 @@ const AlbumView = () => {
     const {albumId} = useParams()
     const [album,setAlbum] = useState<AlbumT>()
     const [isLoading,setIsLoading] = useState(true)
-    const fetchPlaylistSongs = async (id:any) => {
+    const fetchAlbum = async (id:any) => {
         setIsLoading(true)
         try {
             const response = await axios.get(
@@ -19,22 +19,15 @@ const AlbumView = () => {
             console.log(response.data)
             setIsLoading(false)
         } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-            console.log(err)
+            console.error('Ошибка при получении альбома:', err);
         }
     };
 
 
     useEffect(() => {
-        fetchPlaylistSongs(albumId)
+        fetchAlbum(albumId)
     }, [albumId]);
 
-    // useEffect(() => {
-    //     const formattedVolumes = album?.volumes.map((volume)=>{
-    //         return trackArrayWrap(volume)
-    //     })
-    //     setAlbum({...album,volumes:formattedVolumes})
-    // }, [album]);
 
     if (isLoading) return <Loader.PageLoader/>
     return (

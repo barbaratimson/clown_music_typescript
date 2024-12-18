@@ -201,10 +201,10 @@ const Player = () => {
         if (playerState.shuffle && index === queue.length - 1 && queueCurrentPlaylist.tracks.length !== 1) {
             const newSong = getUniqueRandomTrackFromPlaylist(queueCurrentPlaylist.tracks, queue, currentSong)
             if (!newSong) return
-            if (queueCurrentPlaylist.tracks.length !== queue.length) {
-                addToQueue(newSong)
-            } else {
+            if (queueCurrentPlaylist.tracks.length <= queue.length) {
                 setPlayingQueue([trackWrap(currentSong), newSong])
+            } else {
+                addToQueue(newSong)
             }
         }
     }, [currentSong]);
