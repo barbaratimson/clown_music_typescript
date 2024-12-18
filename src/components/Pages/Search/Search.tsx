@@ -12,7 +12,7 @@ import {getImageLink, getPlaylistLink} from "../../../utils/utils";
 import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 import Track from "../../Track";
-import Searchbar from "./Searchbar/Searchbar";
+import Searchbar from "../../Searchbar/Searchbar";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {

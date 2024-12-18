@@ -12,6 +12,7 @@ import PageHeader from "../../PageHeader";
 import PageBlock from "../../PageBlock";
 import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
 import Loader from "../../Loader";
+import {fetchArtist} from "../../../utils/apiRequests";
 
 interface ArtistResultT {
     artist: ArtistT,
@@ -31,18 +32,6 @@ const Artist = () => {
     const [changePlaylistView, setChangePlaylistView] = useState(true)
     const setHeaderActive = (state: any) => dispatch(showHeader(state))
     const setHeaderOff = () => dispatch(hideHeader())
-    const fetchArtist = async (artistId: string) => {
-        setIsLoading(true)
-        try {
-            const response = await axios.get(
-                `${link}/ya/artist/${artistId}`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
-            setArtistResult(response.data)
-            setIsLoading(false)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    };
-
 
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && artistResult) {
@@ -60,7 +49,8 @@ const Artist = () => {
 
     useEffect(() => {
         if (artistId) {
-            fetchArtist(artistId)
+            setIsLoading(true)
+            fetchArtist(artistId).then(result => setArtistResult(result)).finally(() => setIsLoading(false))
         }
     }, [artistId])
 

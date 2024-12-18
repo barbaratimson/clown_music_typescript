@@ -6,9 +6,9 @@ import Home from "./Home/Home";
 import Search from "./Search/Search";
 import User from "./User";
 import Settings from "./pages/Settings";
-import PlaylistView from "../PlaylistView";
+import PlaylistView from "./PlaylistView";
 import Artist from "./pages/Artist";
-import AlbumView from "../AlbumView";
+import AlbumView from "./AlbumView";
 
 interface PagePropsT {
     isMobile:boolean

@@ -1,18 +1,18 @@
 import React, {useEffect, useRef, useState} from "react";
-import {PlaylistT, TrackType} from "../../utils/types/types";
-import {isElementInViewport} from "../../utils/utils";
-import SongsList from "../SongsList";
-import {useAppDispatch, useAppSelector} from "../../store";
+import {PlaylistT, TrackType} from "../../../../utils/types/types";
+import {isElementInViewport} from "../../../../utils/utils";
+import SongsList from "../../../SongsList";
+import {useAppDispatch, useAppSelector} from "../../../../store";
 import {useSearchParams} from "react-router-dom";
-import {hideHeader, showHeader} from "../../store/mobile/mobileHeaderSlice";
+import {hideHeader, showHeader} from "../../../../store/mobile/mobileHeaderSlice";
 import {MoreHoriz} from "@mui/icons-material";
-import PageHeader from "../PageHeader";
-import {setPlaylistInfo, setPlaylistInfoActiveState, setPlaylistSearchActiveState} from "../../store/playlistInfoSlice";
+import PageHeader from "../../../PageHeader";
+import {setPlaylistInfo, setPlaylistInfoActiveState, setPlaylistSearchActiveState} from "../../../../store/playlistInfoSlice";
 import {Collapse} from "@mui/material";
 import "./style.scss"
 import SearchIcon from "@mui/icons-material/Search";
-import Searchbar from "../Pages/Search/Searchbar/Searchbar";
-import SmallButton from "../SmallButton/SmallButton";
+import Searchbar from "../../../Searchbar/Searchbar";
+import Button from "../../../Button/./Button";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -77,7 +77,6 @@ const Playlist = ({playlist}: PlaylistProps) => {
         }
     }, [search]);
 
-
     useEffect(() => {
         const a = () => {
             if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
@@ -92,6 +91,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
             setHeaderOff()
         }
     }, []);
+
 
     useEffect(() => {
         if (filterMenuActive) {
@@ -123,17 +123,17 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                            className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1)}</a>
                                     ))}
                                 </span>
-                                    <SmallButton onClick={() => {
+                                    <Button onClick={() => {
                                         setPlaylistSearchShow(!showSearch)
                                     }}>
                                         <SearchIcon/>
-                                    </SmallButton>
-                                    <SmallButton onClick={() => {
+                                    </Button>
+                                    <Button onClick={() => {
                                         setPlaylistInfoShow(true);
                                         setPlaylistInfoState(playlist)
                                     }}>
                                         <MoreHoriz/>
-                                    </SmallButton>
+                                    </Button>
                                 </>
                             }/>
                 <Collapse in={showSearch} orientation="vertical">
