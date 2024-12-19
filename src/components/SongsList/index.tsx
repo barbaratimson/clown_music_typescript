@@ -10,9 +10,10 @@ interface SongsListProps {
     tracks: Array<TrackType>
     playlist?: PlaylistT
     style?: any,
+    hideControls?: boolean
 }
 
-const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
+const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
     const playerState = useAppSelector((state: RootState) => state.player)
@@ -58,7 +59,7 @@ const SongsList = (({ tracks, playlist, style}: SongsListProps) => {
             <>
                 <div key={tracks[0]?.id} className="songs-wrapper">
                         {dataToShow ? dataToShow.map((song) => song.track.available ? (
-                                    <Track key={song.track.id} queueFunc={setInitQueue} track={song.track} />
+                                    <Track hideControls={hideControls} key={song.track.id} queueFunc={setInitQueue} track={song.track} />
                         ) : null) : null}
                 </div>
                 <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "2400px" : 0}}></div>

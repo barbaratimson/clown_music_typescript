@@ -162,11 +162,11 @@ const Playlist = ({playlist}: PlaylistProps) => {
                     tracks: tracksSearchResult
                 } : tracksFiltered ? {...playlist, tracks: tracksFiltered} : playlist}
                            tracks={tracksSearchResult ?? tracksFiltered ?? playlist.tracks}/>
-            </div>
 
                 <ContextMenu active={playlistInfoState.active} position={"auto"} keepMounted setActive={setPlaylistInfoShow} anchorEl={anchorEl}>
                         <PlaylistInfo playlist={playlist}/>
                 </ContextMenu>
+            </div>
         </>
     )
 }

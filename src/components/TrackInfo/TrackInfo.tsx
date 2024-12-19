@@ -166,8 +166,9 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                     </>
                 ) : null}
                 <div className="track-info-mobile-control-button"
-                     onClick={() => {
+                     onClick={(e) => {
                          setShowPlaylistsToAdd(true);
+                         setAnchorEl(e.currentTarget)
                          closeAll()
                          // addToPlaylist(1040,track,1)
                      }}
@@ -204,8 +205,9 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                         </div>
                     </div>
                 ) : null}
-                <div className="track-info-mobile-control-button" onClick={() => {
+                <div className="track-info-mobile-control-button" onClick={(e) => {
                     setIsLoading(true);
+                    setAnchorEl(e.currentTarget)
                     fetchSimilarTracks(track.id).then(result => setSimilarTracks(result)).finally(() => setIsLoading(false))
                 }}>
                     <div className="track-info-mobile-control-icon">
@@ -240,9 +242,8 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                     </div>
             </ContextMenu>
 
-            <PopUpModal active={showPlaylistsToAdd} setActive={setShowPlaylistsToAdd}>
+            <ContextMenu active={showPlaylistsToAdd} position={"left"} anchorEl={anchorEl} setActive={setShowPlaylistsToAdd}>
                 <>
-                    <div className="playlist-add__title"><ExpandMore/></div>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.filter((playlist) => playlist.kind !== 0).map((playlist) => (
                         <div key={playlist.kind} onClick={() => {
                             addToPlaylist(playlist.kind, track, playlist.revision ?? 0)
@@ -251,14 +252,14 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                         </div>
                     )) : null}
                 </>
-            </PopUpModal>
+            </ContextMenu>
 
             <ContextMenu active={showSimilar} position={"left"} anchorEl={anchorEl} setActive={setShowSimilar}>
                     <div className="track-info-songs-wrapper" onClick={(e) => {
                         e.stopPropagation()
                     }} style={{maxHeight: "250px", overflowY: "scroll"}}>
                         {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
-                            <SongsList
+                            <SongsList hideControls
                                 playlist={playlistFromTracksArr(trackArrayWrap(similarTracks.similarTracks), `${similarTracks.track.title}: similar`)}
                                 tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
                         ) : null}

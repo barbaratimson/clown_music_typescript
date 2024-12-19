@@ -21,11 +21,12 @@ import TrackInfo from "../TrackInfo/TrackInfo";
 interface TrackProps {
     track: TrackT,
     queueFunc?: Function
+    hideControls?:boolean
 }
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({track, queueFunc}: TrackProps) => {
+const Track = ({track, queueFunc, hideControls}: TrackProps) => {
     const dispatch = useAppDispatch()
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
     const playerState = useAppSelector((state: RootState) => state.player)
@@ -96,16 +97,16 @@ const Track = ({track, queueFunc}: TrackProps) => {
                 <div onClick={(e) => {
                     e.stopPropagation()
                 }} className="track-controls-wrapper">
-                    <LikeButton className="mobile-hidden" track={track}/>
+                    {!hideControls && <LikeButton className="mobile-hidden" track={track}/>}
                     <div className="track-controls-info-time">
                         {msToMinutesAndSeconds(track.durationMs)}
                     </div>
-                    <div className="track-controls-button" onClick={(e) => {
+                    {!hideControls && <div className="track-controls-button" onClick={(e) => {
                         setTrackInfoActive(!trackInfoActive)
                         setAnchorEl(e.currentTarget)
                     }}>
                         <MoreVert/>
-                    </div>
+                    </div>}
                 </div>
             </div>
 
