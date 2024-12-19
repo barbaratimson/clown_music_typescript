@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {ArtistT, EmptyAlbumT, TrackT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
-import {isElementInViewport} from "../../../utils/utils";
+import {isElementInViewport, playlistFromTracksArr} from "../../../utils/utils";
 import {trackArrayWrap} from "../../../utils/trackWrap";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../utils/deviceHandler";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
@@ -70,7 +70,7 @@ const Artist = () => {
                     <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult?.artist?.cover?.uri} />
                     <PageBlock title="Popular tracks">
                         <div className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList playlist={{ kind: artistResult.artist.id, cover: { uri: artistResult?.artist.cover?.uri }, uid: 0, ogImage: artistResult?.artist.cover?.uri, available: true, owner: { uid: artistResult.artist.id, name: artistResult.artist.name, verified: true }, title: `${artistResult.artist.name}: Популярное`, description: "", tracks: trackArrayWrap(artistResult?.popularTracks) }} tracks={trackArrayWrap(artistResult?.popularTracks)} />
+                            <SongsList playlist={playlistFromTracksArr(trackArrayWrap(artistResult.popularTracks),artistResult.artist.name + ": Popular")} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={isMobile && <PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>

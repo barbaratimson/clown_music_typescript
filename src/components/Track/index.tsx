@@ -14,6 +14,8 @@ import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice"
 import Cover, {ImagePlaceholder} from "../Cover";
 import LikeButton from "../LikeButton";
 import './style.scss'
+import ContextMenu from "../ContextMenu/ContextMenu";
+import TrackInfo from "../TrackInfo/TrackInfo";
 
 
 interface TrackProps {
@@ -30,9 +32,12 @@ const Track = ({track, queueFunc}: TrackProps) => {
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const setTrackInfoState = (track: TrackT) => dispatch(setTrackInfo(track))
-    const setTrackInfoShowState = (active: boolean) => dispatch(setTrackInfoActiveState(active))
+    const [trackInfoActive, setTrackInfoActive] = useState(false)
     const [isCurrentSong, setIsCurrentSong] = useState(false)
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+
     const changeSong = (song: TrackT) => {
         if (song.id != currentSong.id) {
             setCurrentSong(song);
@@ -53,55 +58,61 @@ const Track = ({track, queueFunc}: TrackProps) => {
     }, [currentSong])
 
     return (
-        <div
-            className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""} ${!playerState.playing ? "active" : ""}`}
-            onClick={() => {
-                changeSong(track)
-            }}>
-            <div className="track-cover-wrapper">
-                <div className={`track-playing-status ${isCurrentSong ? "show" : ""}`}>
-                    {currentSong.id != track.id ? (
-                        <PlayArrowRounded/>
-                    ) : playerState.playing ? (
-                        <EqualizerIcon/>
-                    ) : (
-                        <PauseRounded/>
-                    )}
+        <>
+            <div
+                className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""} ${!playerState.playing ? "active" : ""}`}
+                onClick={() => {
+                    changeSong(track)
+                }}>
+                <div className="track-cover-wrapper">
+                    <div className={`track-playing-status ${isCurrentSong ? "show" : ""}`}>
+                        {currentSong.id != track.id ? (
+                            <PlayArrowRounded/>
+                        ) : playerState.playing ? (
+                            <EqualizerIcon/>
+                        ) : (
+                            <PauseRounded/>
+                        )}
+                    </div>
+                    <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri}
+                           size="200x200"/>
                 </div>
-                <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri}
-                       size="200x200"/>
-            </div>
-            <div className="track-info-wrapper">
-                <div className="track-info-title-wrapper">
-                    {track.chart && <PositionInChart position={track.chart.position}/>}
-                    <div
-                        className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
-                </div>
-                <div onClick={(e) => {
-                    e.stopPropagation()
-                }} className="track-info-artists-wrapper">
+                <div className="track-info-wrapper">
+                    <div className="track-info-title-wrapper">
+                        {track.chart && <PositionInChart position={track.chart.position}/>}
+                        <div
+                            className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+                    </div>
+                    <div onClick={(e) => {
+                        e.stopPropagation()
+                    }} className="track-info-artists-wrapper">
                         <span className="track-info-artist-span">
                             {track.artists.map(artist => (
                                 <ArtistName key={artist.id} artist={artist}/>
                             ))}
                         </span>
+                    </div>
+                </div>
+                <div onClick={(e) => {
+                    e.stopPropagation()
+                }} className="track-controls-wrapper">
+                    <LikeButton className="mobile-hidden" track={track}/>
+                    <div className="track-controls-info-time">
+                        {msToMinutesAndSeconds(track.durationMs)}
+                    </div>
+                    <div className="track-controls-button" onClick={(e) => {
+                        setTrackInfoActive(!trackInfoActive)
+                        setAnchorEl(e.currentTarget)
+                    }}>
+                        <MoreVert/>
+                    </div>
                 </div>
             </div>
-            <div onClick={(e) => {
-                e.stopPropagation()
-            }} className="track-controls-wrapper">
-                <LikeButton className="mobile-hidden" track={track}/>
-                <div className="track-controls-info-time">
-                    {msToMinutesAndSeconds(track.durationMs)}
-                </div>
-                <div className="track-controls-button" onClick={() => {
-                    setTrackInfoShowState(true);
-                    setTrackInfoState(track)
-                }}>
-                    <MoreVert/>
-                </div>
-            </div>
-        </div>
+
+            <ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"}>
+                <TrackInfo track={track}/>
+            </ContextMenu>
+        </>
     )
 }
 

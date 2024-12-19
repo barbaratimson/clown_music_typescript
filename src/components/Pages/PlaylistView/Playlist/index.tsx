@@ -2,17 +2,24 @@ import React, {useEffect, useRef, useState} from "react";
 import {PlaylistT, TrackType} from "../../../../utils/types/types";
 import {isElementInViewport} from "../../../../utils/utils";
 import SongsList from "../../../SongsList";
-import {useAppDispatch, useAppSelector} from "../../../../store";
+import {RootState, useAppDispatch, useAppSelector} from "../../../../store";
 import {useSearchParams} from "react-router-dom";
 import {hideHeader, showHeader} from "../../../../store/mobile/mobileHeaderSlice";
 import {MoreHoriz} from "@mui/icons-material";
 import PageHeader from "../../../PageHeader";
-import {setPlaylistInfo, setPlaylistInfoActiveState, setPlaylistSearchActiveState} from "../../../../store/playlistInfoSlice";
-import {Collapse} from "@mui/material";
+import {
+    setPlaylistInfo,
+    setPlaylistInfoActiveState,
+    setPlaylistSearchActiveState
+} from "../../../../store/playlistInfoSlice";
+import {ClickAwayListener, Collapse, Popover, Popper} from "@mui/material";
 import "./style.scss"
 import SearchIcon from "@mui/icons-material/Search";
 import Searchbar from "../../../Searchbar/Searchbar";
 import Button from "../../../Button/./Button";
+import MobilePlaylistInfo from "../../../PlaylistInfo/MobilePlaylistInfo";
+import PlaylistInfo from "../../../PlaylistInfo/PlaylistInfo";
+import ContextMenu from "../../../ContextMenu/ContextMenu";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -36,6 +43,10 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const setPlaylistSearchShow = (active: boolean) => dispatch(setPlaylistSearchActiveState(active))
     const setPlaylistInfoState = (playlist: PlaylistT) => dispatch(setPlaylistInfo(playlist))
 
+    const playlistInfoState = useAppSelector((state: RootState) => state.playlistInfo)
+
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
     const searchFunc = (tracks: TrackType[]) => {
         return tracks.filter(track =>
             track.track.title.split(" ")
@@ -54,6 +65,10 @@ const Playlist = ({playlist}: PlaylistProps) => {
                         .join("")
                         .toLowerCase())
                 ) : false))
+    }
+
+    const handleClickAway = ()=> {
+        setPlaylistInfoShow(false)
     }
 
     useEffect(() => {
@@ -128,24 +143,30 @@ const Playlist = ({playlist}: PlaylistProps) => {
                                     }}>
                                         <SearchIcon/>
                                     </Button>
-                                    <Button onClick={() => {
-                                        setPlaylistInfoShow(true);
-                                        setPlaylistInfoState(playlist)
+                                    <Button onClick={(e) => {
+                                        e.stopPropagation()
+                                        setPlaylistInfoShow(!playlistInfoState.active);
+                                        setPlaylistInfoState(playlist);
+                                        setAnchorEl(e.currentTarget);
                                     }}>
                                         <MoreHoriz/>
                                     </Button>
                                 </>
                             }/>
                 <Collapse in={showSearch} orientation="vertical">
-                    <Searchbar ref={input} className="playlist__searchbar_noBackground" value={search} setValue={setSearch}/>
+                    <Searchbar ref={input} className="playlist__searchbar_noBackground" value={search}
+                               setValue={setSearch}/>
                 </Collapse>
-
                 <SongsList playlist={tracksSearchResult ? {
                     ...playlist,
                     tracks: tracksSearchResult
                 } : tracksFiltered ? {...playlist, tracks: tracksFiltered} : playlist}
                            tracks={tracksSearchResult ?? tracksFiltered ?? playlist.tracks}/>
             </div>
+
+                <ContextMenu active={playlistInfoState.active} position={"auto"} keepMounted setActive={setPlaylistInfoShow} anchorEl={anchorEl}>
+                        <PlaylistInfo playlist={playlist}/>
+                </ContextMenu>
         </>
     )
 }

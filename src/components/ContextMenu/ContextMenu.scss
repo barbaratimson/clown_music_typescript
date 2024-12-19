@@ -1,0 +1,15 @@
+.context-menu__wrapper {
+  width: 200px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 12px;
+  background-color: rgb(56, 56, 56);
+}
+
+.context-menu__click-away_wrapper {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}

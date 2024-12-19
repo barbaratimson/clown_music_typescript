@@ -30,7 +30,7 @@ import { trackArrayWrap } from "../../../utils/trackWrap";
 import Loader from "../../Loader";
 import { setTrackInfoActiveState } from "../../../store/trackInfoSlice";
 import { addTrackToQueuePosition } from "../../../store/playingQueueSlice";
-import PopUpModal from "../index";
+import PopUpModal from "../../PopUpModal";
 import Cover, { ImagePlaceholder } from "../../Cover";
 import "./style.scss"
 import PlaylistCard from "../../PlaylistCard";

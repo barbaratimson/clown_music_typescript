@@ -6,7 +6,7 @@ import {Add, Close, Delete, ExpandMore, FilterAlt, FilterAltOff, KeyboardArrowDo
 import {useDispatch} from "react-redux";
 import Cover, {ImagePlaceholder} from "../../Cover";
 import {setPlaylistInfoActiveState} from "../../../store/playlistInfoSlice";
-import PopUpModal from "../index";
+import PopUpModal from "../../PopUpModal";
 import axios from "axios";
 import {link} from "../../../utils/constants";
 import "./style.scss"
@@ -17,6 +17,7 @@ interface GenreCountT {
     amount: number,
     percentage: number
 }
+
 
 const MobilePlaylistInfo = () => {
     const dispatch = useDispatch()

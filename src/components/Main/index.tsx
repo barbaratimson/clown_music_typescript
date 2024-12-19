@@ -11,9 +11,9 @@ import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../util
 import NavbarMobile from "../Navbar/NavbarMobile";
 import MobileHeader from "../MobileHeader";
 import {Fade} from "@mui/material";
-import MobileTrackInfo from "../PopUpModal/MobileTrackInfo";
+import MobileTrackInfo from "../TrackInfo/MobileTrackInfo";
 import {setOpeningState} from "../../store/playingQueueSlice";
-import MobilePlaylistInfo from "../PopUpModal/MobilePlaylistInfo";
+import MobilePlaylistInfo from "../PlaylistInfo/MobilePlaylistInfo";
 import { UserT } from "../Pages/User/user.types";
 import { setUser } from "../Pages/User/userSlice";
 import axios from "axios";
@@ -77,8 +77,8 @@ const Main = () => {
                         <QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>
                         )
                 }
-                <MobileTrackInfo/>
-                <MobilePlaylistInfo/>
+                {isMobile && <MobileTrackInfo/>}
+                {isMobile && <MobilePlaylistInfo/>}
             </div>
     )
 }

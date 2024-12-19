@@ -1,16 +1,17 @@
 import "./Button.scss"
+import React, {forwardRef} from "react";
 interface ButtonT {
     className?: string
     children?: any
-    onClick?: () => void
+    onClick?: (e:any) => void
 }
 
-const Button = ({className, onClick, children   }:ButtonT) => {
+const Button = forwardRef<HTMLDivElement,ButtonT>((props, ref) => {
     return (
-        <div className={`button__wrapper ${className}`} onClick={onClick} >
-            {children}
+        <div className={`button__wrapper ${props.className}`} onClick={props.onClick} >
+            {props.children}
         </div>
     )
-}
+})
 
 export default Button
