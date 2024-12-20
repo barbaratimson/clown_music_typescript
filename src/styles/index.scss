@@ -1746,16 +1746,11 @@ html,body {
   font-weight: 600;
 
   &.additional {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    flex-grow: 1;
+    margin-left: auto;
     color: rgba(255, 247, 247, 0.47);
   }
   &.additional > svg {
     width: fit-content;
-    border-left: 1px solid $bg-color-secondary;
-    padding-left: 5px !important;
     font-size: 20px;
   }
 }

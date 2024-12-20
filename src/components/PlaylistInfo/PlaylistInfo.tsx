@@ -10,6 +10,7 @@ import "./PlaylistInfo.scss"
 import {PlaylistT} from "../../utils/types/types";
 import {Popper} from "@mui/material";
 import ContextMenu from "../ContextMenu/ContextMenu";
+import Button from "../Button/Button";
 
 interface PlaylistInfoProps {
     playlist: PlaylistT
@@ -137,15 +138,15 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                                 Filter
                             </div>
                             {filterQuery.getAll("genres")?.length !== 0 ? (
-                                <div className="track-info-mobile-control-label additional">
-                                    <FilterAltOff onClick={(e) => {
-                                        e.stopPropagation();
-                                        filterQuery.delete("genres");
-                                        setFilterQuery("");
-                                        setGenresToFilter([]);
-                                        // setPlaylistInfoShow(false)
-                                    }}/>
-                                </div>
+                                <Button className="track-info-mobile-control-label additional" onClick={(e) => {
+                                    e.stopPropagation();
+                                    filterQuery.delete("genres");
+                                    setFilterQuery("");
+                                    setGenresToFilter([]);
+                                    // setPlaylistInfoShow(false)
+                                }}>
+                                        <FilterAltOff/>
+                                    </Button>
                             ) : null}
                         </>
                     </div>

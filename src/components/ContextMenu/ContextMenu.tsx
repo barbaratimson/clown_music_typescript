@@ -14,7 +14,6 @@ interface ContextMenuProps {
 
 const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, position}: ContextMenuProps) => {
 
-
     return (
         <>
             {active && <div className="context-menu__click-away_wrapper" onClick={() => {

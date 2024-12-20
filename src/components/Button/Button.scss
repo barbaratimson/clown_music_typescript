@@ -16,8 +16,8 @@ $active-color: rgba(255, 247, 247, 0.7);
 
   &:active {
     background-color: $active-color!important;
-    transition: all .1s ease-in;
-    border-radius: 50% !important;
+    transition: all .2s ease-in-out;
+    border-radius: 12px !important;
   }
 
   &:hover {
@@ -32,7 +32,7 @@ $active-color: rgba(255, 247, 247, 0.7);
 
     &:active {
       background-color: $hover-color !important;
-      border-radius: 12px !important;
+      border-radius: 2px !important;
     }
   }
 }
