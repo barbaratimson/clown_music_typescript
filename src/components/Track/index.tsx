@@ -16,6 +16,7 @@ import LikeButton from "../LikeButton";
 import './style.scss'
 import ContextMenu from "../ContextMenu/ContextMenu";
 import TrackInfo from "../TrackInfo/TrackInfo";
+import Button from "../Button/Button";
 
 
 interface TrackProps {
@@ -101,12 +102,13 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                     <div className="track-controls-info-time">
                         {msToMinutesAndSeconds(track.durationMs)}
                     </div>
-                    {!hideControls && <div className="track-controls-button" onClick={(e) => {
-                        setTrackInfoActive(!trackInfoActive)
-                        setAnchorEl(e.currentTarget)
-                    }}>
-                        <MoreVert/>
-                    </div>}
+                    {!hideControls &&
+                        <Button style={{padding:0}} onClick={(e) => {
+                            setTrackInfoActive(!trackInfoActive)
+                            setAnchorEl(e.currentTarget)
+                        }}>
+                            <MoreVert/>
+                        </Button>}
                 </div>
             </div>
 
