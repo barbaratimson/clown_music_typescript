@@ -1,7 +1,7 @@
 import React from 'react';
 import HomeIcon from '@mui/icons-material/Home'
 import {Link, useLocation} from "react-router-dom";
-import Button from "../Button/Button";
+import Button from "../UI/Button/Button";
 import "./Navbar.scss"
 import {LibraryMusic} from "@mui/icons-material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";

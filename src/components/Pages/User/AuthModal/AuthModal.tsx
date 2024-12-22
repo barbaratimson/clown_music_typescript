@@ -1,4 +1,4 @@
-import PopUpModal from "../../../PopUpModal";
+import PopUpModal from "../../../UI/PopUpModal";
 import React from "react";
 import {UserT} from "../user.types";
 import './style.scss'

@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import Album from "./Album";
 import {AlbumT} from "../../../utils/types/types";
 import {fetchAlbum} from "../../../utils/apiRequests";

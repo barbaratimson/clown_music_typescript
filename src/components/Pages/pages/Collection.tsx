@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { PlaylistT } from "../../../utils/types/types";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import PlaylistCard from "../../PlaylistCard";
-import PageHeader from "../../PageHeader";
+import PageHeader from "../../UI/PageHeader";
 import PageBlock from "../../PageBlock";
 import {Add} from "@mui/icons-material";
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";

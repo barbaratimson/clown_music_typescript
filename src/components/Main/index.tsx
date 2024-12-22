@@ -19,7 +19,7 @@ import { setUser } from "../Pages/User/userSlice";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Queue from "../Queue/queue";
-import Loader from "../Loader";
+import Loader from "../UI/Loader";
 const QueueMobile = lazy(()=> import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
 

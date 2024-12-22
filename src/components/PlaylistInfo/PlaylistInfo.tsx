@@ -9,8 +9,8 @@ import {link} from "../../utils/constants";
 import "./PlaylistInfo.scss"
 import {PlaylistT} from "../../utils/types/types";
 import {Popper} from "@mui/material";
-import ContextMenu from "../ContextMenu/ContextMenu";
-import Button from "../Button/Button";
+import ContextMenu from "../UI/ContextMenu/ContextMenu";
+import Button from "../UI/Button/Button";
 
 interface PlaylistInfoProps {
     playlist: PlaylistT
@@ -128,7 +128,6 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                     <div className="track-info-mobile-control-button" onClick={(e) => {
                         setFilterMenuActive(!filterMenuActive);
                         setAnchorEl(e.currentTarget);
-                        // setPlaylistInfoShow(false)
                     }}>
                         <>
                             <div className="track-info-mobile-control-icon">

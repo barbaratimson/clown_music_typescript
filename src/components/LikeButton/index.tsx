@@ -5,7 +5,7 @@ import {TrackId, TrackT} from "../../utils/types/types"
 import {setLikedSongs} from "../../store/LikedSongsSlice"
 import {Favorite, FavoriteBorder} from "@mui/icons-material"
 import {useState} from "react"
-import Loader from "../Loader"
+import Loader from "../UI/Loader"
 import './style.scss'
 
 interface LikeButtonProps {

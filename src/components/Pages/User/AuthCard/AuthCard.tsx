@@ -1,5 +1,5 @@
 import { Check, Close } from "@mui/icons-material"
-import Loader from "../../../Loader"
+import Loader from "../../../UI/Loader"
 import { UserT } from "../user.types"
 import './style.scss'
 

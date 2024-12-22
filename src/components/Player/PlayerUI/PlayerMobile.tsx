@@ -14,7 +14,7 @@ import {
 import ListIcon from '@mui/icons-material/List';
 import SeekSlider from './SeekSlider';
 import PlayButton from './PlayButton';
-import Cover, {ImagePlaceholder} from '../../Cover';
+import Cover, {ImagePlaceholder} from '../../UI/Cover';
 import {PositionInChart} from '../../Track';
 import LikeButton from '../../LikeButton';
 import {playerStart, playerStop, setRepeat, setShuffle} from "../playerSlice";

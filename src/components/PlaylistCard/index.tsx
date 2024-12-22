@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import Cover, {ImagePlaceholder} from "../Cover";
+import Cover, {ImagePlaceholder} from "../UI/Cover";
 import {ArrowForwardIos} from "@mui/icons-material";
 import ListIcon from '@mui/icons-material/List';
 

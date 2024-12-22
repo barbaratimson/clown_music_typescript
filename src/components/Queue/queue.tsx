@@ -3,7 +3,7 @@ import {RootState, useAppSelector} from "../../store";
 import Index from "../Track";
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import {Repeat} from "@mui/icons-material";
-import Cover from "../Cover";
+import Cover from "../UI/Cover";
 
 const Queue = () => {
     const currentQueue = useAppSelector((state: RootState) => state.playingQueue.queue)

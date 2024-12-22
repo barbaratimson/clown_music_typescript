@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import PopUpModal from "../../PopUpModal";
+import PopUpModal from "../../UI/PopUpModal";
 import DevLog from "../../DevLog";
 import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { setUser } from "./userSlice";

@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import Playlist from "./Playlist";
 import { Skeleton } from "@mui/material";
 

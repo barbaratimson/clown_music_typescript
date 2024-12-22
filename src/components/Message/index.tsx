@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {Fade} from "@mui/material";
 import {hideMessage} from "../../store/MessageSlice";
-import Cover from "../Cover";
+import Cover from "../UI/Cover";
 import {Favorite, HeartBroken} from "@mui/icons-material";
 import './style.scss'
 import ArtistName from "../ArtistName";

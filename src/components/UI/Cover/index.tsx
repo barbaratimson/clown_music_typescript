@@ -1,5 +1,5 @@
 import {memo} from "react"
-import {getImageLink} from "../../utils/utils"
+import {getImageLink} from "../../../utils/utils"
 import './style.scss'
 import {MusicNote} from "@mui/icons-material"
 
@@ -11,27 +11,28 @@ interface CoverProps {
     imageSize?: CoverSizeT
     unWrapped?: boolean
     placeholder?: any
+    className?: string
 }
 
-const Cover = memo(({ coverUri, size, imageSize, unWrapped,placeholder}: CoverProps) => {
+const Cover = memo(({ coverUri, size, imageSize, unWrapped,placeholder, className}: CoverProps) => {
     const [width, height] = size.split("x")
     const link = getImageLink(coverUri, imageSize ?? size)
 
     if (!unWrapped) {
         if (!link) return (
-        <div style={{ minWidth: width + "px", height: height + "px" }} className="cover-wrapper">
+        <div style={{ minWidth: width + "px", height: height + "px" }} className={`cover-wrapper ${className}`}>
                 {placeholder ?? <ImagePlaceholder/>}
         </div>
         )
         return (
-            <div style={{ minWidth: width + "px", height: height + "px" }} className="cover-wrapper">
+            <div style={{ minWidth: width + "px", height: height + "px" }} className={`cover-wrapper ${className}`}>
                 <img style={{ minWidth: width + "px", height: height + "px"}} src={link} loading="lazy" alt="" />
             </div>
         )
     } else {
         if (!link) return placeholder ?? <ImagePlaceholder/>
         return (
-                <img src={getImageLink(coverUri, imageSize ?? size)} loading="lazy" alt="" />
+                <img className={className} src={getImageLink(coverUri, imageSize ?? size)} loading="lazy" alt="" />
         )
     }
 })

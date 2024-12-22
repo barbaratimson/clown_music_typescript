@@ -11,12 +11,12 @@ import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {showMessage} from "../../store/MessageSlice";
 import {trackWrap} from "../../utils/trackWrap";
 import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice";
-import Cover, {ImagePlaceholder} from "../Cover";
+import Cover, {ImagePlaceholder} from "../UI/Cover";
 import LikeButton from "../LikeButton";
 import './style.scss'
-import ContextMenu from "../ContextMenu/ContextMenu";
+import ContextMenu from "../UI/ContextMenu/ContextMenu";
 import TrackInfo from "../TrackInfo/TrackInfo";
-import Button from "../Button/Button";
+import Button from "../UI/Button/Button";
 
 
 interface TrackProps {

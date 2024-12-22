@@ -2,6 +2,7 @@ import {GridView, ViewAgenda} from "@mui/icons-material"
 import {EmptyAlbumT, PlaylistT} from "../../utils/types/types"
 import PlaylistCard from "../PlaylistCard"
 import {getAlbumLink, getPlaylistLink} from "../../utils/utils";
+import Button from "../UI/Button/Button";
 
 interface PlaylistsBlockT {
     type: "grid" | "flex"
@@ -41,9 +42,9 @@ export const AlbumsBlock = ({albums, type}:AlbumsBlockT) => {
 
 export const PlaylistArrangeControls = ({active, setActive}:ControlsProps) => {
     return (
-                <div key={"controls_" + active} className="change-playlist-orient" onClick={()=>{setActive(!active)}}>
+                <Button key={"controls_" + active} className="change-playlist-orient" onClick={()=>{setActive(!active)}}>
                     {active ? <ViewAgenda/> : <GridView/>}
-                </div>
+                </Button>
     )
 }
 

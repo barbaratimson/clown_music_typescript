@@ -27,15 +27,15 @@ import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
 import SongsList from "../SongsList";
 import {trackArrayWrap} from "../../utils/trackWrap";
-import Loader from "../Loader";
+import Loader from "../UI/Loader";
 import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
 import {addTrackToQueuePosition} from "../../store/playingQueueSlice";
-import PopUpModal from "../PopUpModal";
-import Cover, {ImagePlaceholder} from "../Cover";
+import PopUpModal from "../UI/PopUpModal";
+import Cover, {ImagePlaceholder} from "../UI/Cover";
 import "./TrackInfo.scss"
 import PlaylistCard from "../PlaylistCard";
 import {playlistFromTracksArr} from "../../utils/utils";
-import ContextMenu from "../ContextMenu/ContextMenu";
+import ContextMenu from "../UI/ContextMenu/ContextMenu";
 
 interface SimilarTracksT {
     track: TrackT

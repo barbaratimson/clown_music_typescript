@@ -5,6 +5,7 @@ export function addAlpha(color:string, opacity:number) {
     return color + opacity.toString(16).toUpperCase();
 }
 
+
 export const getImageLink = (link:string | undefined,size:string) => {
     if (!link) return undefined
     return `https://${link.substring(0, link.lastIndexOf('/'))}/${size}`

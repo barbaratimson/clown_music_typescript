@@ -1,6 +1,6 @@
 import React from "react";
 import {Link, useLocation} from "react-router-dom";
-import Button from "../../Button/Button";
+import Button from "../../UI/Button/Button";
 import "./NavButton.scss"
 
 interface NavButtonProps {

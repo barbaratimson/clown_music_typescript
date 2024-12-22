@@ -4,9 +4,9 @@ import Index from "../../Track";
 import {ExpandMore} from "@mui/icons-material";
 import {Slide} from "@mui/material";
 import {useLocation} from "react-router-dom";
-import Cover from "../../Cover";
-import PopUpModal from "../../PopUpModal";
-import Loader from "../../Loader";
+import Cover from "../../UI/Cover";
+import PopUpModal from "../../UI/PopUpModal";
+import Loader from "../../UI/Loader";
 import Track from "../../Track";
 import SongsList from "../../SongsList";
 

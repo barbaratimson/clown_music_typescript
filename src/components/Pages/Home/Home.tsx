@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import axios from "axios";
 import {FeedT, GeneratedPlaylistT} from "../../../utils/types/types";
 import PageBlock from "../../PageBlock";

@@ -18,7 +18,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import {playerStart, playerStop, setRepeat, setShuffle} from "../playerSlice";
 import {TrackT} from "../../../utils/types/types";
 import {setOpeningState} from "../../../store/playingQueueSlice";
-import Cover, {ImagePlaceholder} from '../../Cover';
+import Cover, {ImagePlaceholder} from '../../UI/Cover';
 import {PositionInChart} from "../../Track";
 import ArtistName from "../../ArtistName";
 import LikeButton from "../../LikeButton";

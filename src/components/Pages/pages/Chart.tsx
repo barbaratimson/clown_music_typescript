@@ -1,14 +1,14 @@
 import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {ChartT, QueueT} from "../../../utils/types/types";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import {isElementInViewport} from "../../../utils/utils";
 import {setQueue} from "../../../store/playingQueueSlice";
 import {useAppDispatch} from "../../../store";
 import {ErrCodeT, showMessage} from "../../../store/MessageSlice";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import SongsList from "../../SongsList";
-import PageHeader from "../../PageHeader";
+import PageHeader from "../../UI/PageHeader";
 import {getIsMobileInfo} from "../../../utils/deviceHandler";
 import { fetchChart } from "../../../utils/apiRequests";
 

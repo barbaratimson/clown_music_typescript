@@ -6,7 +6,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../../../store";
 import {useSearchParams} from "react-router-dom";
 import {hideHeader, showHeader} from "../../../../store/mobile/mobileHeaderSlice";
 import {MoreHoriz} from "@mui/icons-material";
-import PageHeader from "../../../PageHeader";
+import PageHeader from "../../../UI/PageHeader";
 import {
     setPlaylistInfo,
     setPlaylistInfoActiveState,
@@ -15,11 +15,11 @@ import {
 import {ClickAwayListener, Collapse, Popover, Popper} from "@mui/material";
 import "./style.scss"
 import SearchIcon from "@mui/icons-material/Search";
-import Searchbar from "../../../Searchbar/Searchbar";
-import Button from "../../../Button/./Button";
+import Searchbar from "../../../UI/Searchbar/Searchbar";
+import Button from "../../../UI/Button/./Button";
 import MobilePlaylistInfo from "../../../PlaylistInfo/MobilePlaylistInfo";
 import PlaylistInfo from "../../../PlaylistInfo/PlaylistInfo";
-import ContextMenu from "../../../ContextMenu/ContextMenu";
+import ContextMenu from "../../../UI/ContextMenu/ContextMenu";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -49,13 +49,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
 
     const searchFunc = (tracks: TrackType[]) => {
         return tracks.filter(track =>
-            track.track.title.split(" ")
-                .join("")
-                .toLowerCase()
-                .includes(search
-                    .split(" ")
-                    .join("")
-                    .toLowerCase()) ||
+            track.track.title.split(" ").join("").toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
             (track.track.artists.length !== 0 ?
                 track.track.artists.find(artist => artist.name.split(" ")
                     .join("")

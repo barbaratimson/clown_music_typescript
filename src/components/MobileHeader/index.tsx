@@ -4,9 +4,9 @@ import {Fade} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import {ArrowBackIosNew} from "@mui/icons-material";
 import {RootState, useAppSelector} from "../../store";
-import Cover from "../Cover";
+import Cover from "../UI/Cover";
 import NavButton from "../Navbar/NavButton/NavButton";
-import Button from "../Button/Button";
+import Button from "../UI/Button/Button";
 
 
 const MobileHeader = () => {

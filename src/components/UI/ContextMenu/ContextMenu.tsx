@@ -19,7 +19,7 @@ const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, positi
             {active && <div className="context-menu__click-away_wrapper" onClick={() => {
                 setActive(false)
             }}></div>}
-            <Popper disablePortal placement={position} open={active} anchorEl={anchorEl} keepMounted={keepMounted}>
+            <Popper placement={position} open={active} anchorEl={anchorEl} keepMounted={keepMounted}>
                 <div className="context-menu__wrapper">
                     {children}
                 </div>

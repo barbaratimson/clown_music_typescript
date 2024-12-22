@@ -27,11 +27,11 @@ import axios from "axios";
 import { link } from "../../../utils/constants";
 import SongsList from "../../SongsList";
 import { trackArrayWrap } from "../../../utils/trackWrap";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import { setTrackInfoActiveState } from "../../../store/trackInfoSlice";
 import { addTrackToQueuePosition } from "../../../store/playingQueueSlice";
-import PopUpModal from "../../PopUpModal";
-import Cover, { ImagePlaceholder } from "../../Cover";
+import PopUpModal from "../../UI/PopUpModal";
+import Cover, { ImagePlaceholder } from "../../UI/Cover";
 import "./style.scss"
 import PlaylistCard from "../../PlaylistCard";
 import {playlistFromTracksArr} from "../../../utils/utils";

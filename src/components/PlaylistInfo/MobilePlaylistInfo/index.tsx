@@ -4,9 +4,9 @@ import {useNavigate, useSearchParams} from "react-router-dom";
 import {RootState, useAppSelector} from "../../../store";
 import {Add, Close, Delete, ExpandMore, FilterAlt, FilterAltOff, KeyboardArrowDown} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import Cover, {ImagePlaceholder} from "../../Cover";
+import Cover, {ImagePlaceholder} from "../../UI/Cover";
 import {setPlaylistInfoActiveState} from "../../../store/playlistInfoSlice";
-import PopUpModal from "../../PopUpModal";
+import PopUpModal from "../../UI/PopUpModal";
 import axios from "axios";
 import {link} from "../../../utils/constants";
 import "./style.scss"

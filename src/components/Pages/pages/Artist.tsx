@@ -8,10 +8,10 @@ import {trackArrayWrap} from "../../../utils/trackWrap";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../utils/deviceHandler";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import {useAppDispatch} from "../../../store";
-import PageHeader from "../../PageHeader";
+import PageHeader from "../../UI/PageHeader";
 import PageBlock from "../../PageBlock";
 import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import {fetchArtist} from "../../../utils/apiRequests";
 
 interface ArtistResultT {
@@ -73,8 +73,8 @@ const Artist = () => {
                             <SongsList playlist={playlistFromTracksArr(trackArrayWrap(artistResult.popularTracks),artistResult.artist.name + ": Popular")} tracks={trackArrayWrap(artistResult?.popularTracks)} />
                         </div>
                     </PageBlock>
-                    <PageBlock title="Albums" controls={isMobile && <PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
-                        <AlbumsBlock type={!isMobile ? "grid" : changePlaylistView ? "flex" : "grid"} albums={artistResult?.albums}/>
+                    <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
+                        <AlbumsBlock type={changePlaylistView ? isMobile ? "flex" : "grid" : isMobile ? "grid" : "flex"} albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
             ) : null}

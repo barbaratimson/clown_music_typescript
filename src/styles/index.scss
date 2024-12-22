@@ -1411,15 +1411,13 @@ html,body {
   gap: 5px;
   transition: background .2s;
 }
-.album-artist-info:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
+
 .album-artist-avatar-wrapper {
   position: relative;
   display: flex;
-  align-self: center;
-  justify-self: center;
-  min-width: 30px;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
   height: 30px;
   border-radius: 50%;
   margin-left: 2px;

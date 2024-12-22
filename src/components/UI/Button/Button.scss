@@ -1,4 +1,4 @@
-@import "src/styles/vars";
+@import "../../../styles/vars";
 
 $hover-color: rgba(255, 247, 247, 0.5);
 $active-color: rgba(255, 247, 247, 0.7);
@@ -7,9 +7,9 @@ $active-color: rgba(255, 247, 247, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
-  height: 25px;
-  padding: 15px;
+  min-width: 25px;
+  min-height: 25px;
+  padding: 5px;
   transition: all .4s;
   border-radius: 2px;
   color: $font-color-main-light;

@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import {SearchT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import { trackArrayWrap } from "../../../utils/trackWrap";
-import Loader from "../../Loader";
+import Loader from "../../UI/Loader";
 import PlaylistCard from "../../PlaylistCard";
 import {Link, useSearchParams} from "react-router-dom";
 import Index from "../../Track";
@@ -12,7 +12,7 @@ import {getImageLink, getPlaylistLink} from "../../../utils/utils";
 import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 import Track from "../../Track";
-import Searchbar from "../../Searchbar/Searchbar";
+import Searchbar from "../../UI/Searchbar/Searchbar";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const Search = () => {
