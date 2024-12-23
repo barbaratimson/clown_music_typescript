@@ -49,7 +49,13 @@ const Playlist = ({playlist}: PlaylistProps) => {
 
     const searchFunc = (tracks: TrackType[]) => {
         return tracks.filter(track =>
-            track.track.title.split(" ").join("").toLowerCase().includes(search.split(" ").join("").toLowerCase()) ||
+            track.track.title.split(" ")
+                .join("")
+                .toLowerCase()
+                .includes(search
+                    .split(" ")
+                    .join("")
+                    .toLowerCase()) ||
             (track.track.artists.length !== 0 ?
                 track.track.artists.find(artist => artist.name.split(" ")
                     .join("")
