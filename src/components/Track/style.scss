@@ -63,6 +63,31 @@
 
 }
 
+.track-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  white-space: nowrap;
+};
+
+.track-info-artists-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-left: 2px;
+}
+
+.track-info-artist-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .track-current {
   transform: none;
   background: rgba(255,255,255,0.1);

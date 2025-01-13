@@ -189,7 +189,6 @@ const Player = () => {
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
         if (currentSong.available && currentSong && audioElem.current) {
-            const volume = localStorage.getItem("player_volume")
             audioElem.current.volume = getVolume()
             changeTime(0)
             setPosition(0)

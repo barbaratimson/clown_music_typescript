@@ -747,10 +747,7 @@ html,body {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.track-info-artist-span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 .player-track-controls {
   display: flex;
   flex-grow: 1;
@@ -978,13 +975,6 @@ html,body {
   transform: none;
 }
 
-
-.track-info-artists-wrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  margin-left: 2px;
-}
 
 .track-info-title-wrapper {
   display: flex;

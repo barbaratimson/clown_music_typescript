@@ -74,7 +74,7 @@ const Artist = () => {
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
-                        <AlbumsBlock type={changePlaylistView ? isMobile ? "flex" : "grid" : isMobile ? "grid" : "flex"} albums={artistResult?.albums}/>
+                        <AlbumsBlock type={changePlaylistView ? isMobile ? "grid" : "flex" : isMobile ? "flex" : "grid"} albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
             ) : null}

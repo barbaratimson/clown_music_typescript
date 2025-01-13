@@ -14,39 +14,41 @@ import {Fade} from "@mui/material";
 import MobileTrackInfo from "../TrackInfo/MobileTrackInfo";
 import {setOpeningState} from "../../store/playingQueueSlice";
 import MobilePlaylistInfo from "../PlaylistInfo/MobilePlaylistInfo";
-import { UserT } from "../Pages/User/user.types";
-import { setUser } from "../Pages/User/userSlice";
+import {UserT} from "../Pages/User/user.types";
+import {setUser} from "../Pages/User/userSlice";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Queue from "../Queue/queue";
 import Loader from "../UI/Loader";
-const QueueMobile = lazy(()=> import("../Queue/QueueMobile"))
+
+const QueueMobile = lazy(() => import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
-    const setLikedSongsData = (songs:Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
-    const setQueueOpen = (open:boolean) => dispatch(setOpeningState(open))
+    const setQueueOpen = (open: boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
-    const setCurrentUser = (user:UserT) => dispatch(setUser(user))
+    const setCurrentUser = (user: UserT) => dispatch(setUser(user))
     const fetchUser = async () => {
         try {
             const response = await axios.get(
-                `${link}/ya/user`, { headers: { "Authorization": localStorage.getItem("Authorization") } });
+                `${link}/ya/user`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
             setCurrentUser(response.data)
         } catch (err) {
             console.error('Ошибка при получении списка треков:', err);
         }
     };
 
-    
+
     useEffect(() => {
-        async function fetchData () {
-            setLikedSongsData( await fetchLikedSongs())
+        async function fetchData() {
+            setLikedSongsData(await fetchLikedSongs())
             fetchUser()
         }
+
         fetchData()
         const getIsMobileInfo = () => {
             handleSubscribe()
@@ -59,27 +61,27 @@ const Main = () => {
     }, []);
 
     return (
-            <div className="main-wrapper">
-                {isMobile && <MobileHeader/>}
-                {!isMobile ? (<Navbar/>) : (<NavbarMobile/>)}
-                <Page isMobile={isMobile}/>
-                <Player/>
-                <Message/>
-                {!isMobile ? (
-                    <>
+        <div className="main-wrapper">
+            {isMobile && <MobileHeader/>}
+            {!isMobile ? (<Navbar/>) : (<NavbarMobile/>)}
+            <Page isMobile={isMobile}/>
+            <Player/>
+            <Message/>
+            {!isMobile ? (
+                <>
                     <Fade in={queueOpen} unmountOnExit>
                         <div className="player-queue-section">
                             <Queue/>
                         </div>
                     </Fade>
-                    </>
-                ) : (
-                        <QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>
-                        )
-                }
-                {isMobile && <MobileTrackInfo/>}
-                {isMobile && <MobilePlaylistInfo/>}
-            </div>
+                </>
+            ) : (
+                <QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>
+            )
+            }
+            {isMobile && <MobileTrackInfo/>}
+            {isMobile && <MobilePlaylistInfo/>}
+        </div>
     )
 }
 

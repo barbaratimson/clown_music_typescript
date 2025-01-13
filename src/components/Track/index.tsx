@@ -112,7 +112,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                 </div>
             </div>
 
-            <ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"}>
+            <ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
                 <TrackInfo track={track}/>
             </ContextMenu>
         </>

@@ -115,7 +115,9 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
 
 
     useEffect(() => {
-        setFilterQuery({genres: genresToFilter})
+        if (genresToFilter.length !== 0 ) {
+            setFilterQuery({genres: genresToFilter})
+        }
     }, [genresToFilter]);
 
 
