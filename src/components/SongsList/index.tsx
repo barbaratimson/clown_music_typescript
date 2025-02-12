@@ -33,8 +33,12 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
     }
 
     const showNextData = (offset:number) => {
-        setOffset((prevState) => prevState + 40)
-        return tracks.slice(0,offset)
+        if (offset <= tracks.length) {
+            setOffset((prevState) => prevState + 40)
+            return tracks.slice(0, offset)
+        } else {
+            return tracks
+        }
     }
 
     useEffect(() => {
@@ -43,16 +47,16 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
     }, [tracks]);
     
     useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            const firstEntry = entries[0];
-            if (firstEntry.isIntersecting) {
-                setDataToShow(showNextData(offset))
+            const observer = new IntersectionObserver((entries) => {
+                const firstEntry = entries[0];
+                if (firstEntry.isIntersecting) {
+                    setDataToShow(showNextData(offset))
+                }
+            });
+            if (loaderRef.current) {
+                observer.observe(loaderRef.current);
             }
-        });
-        if (loaderRef.current) {
-            observer.observe(loaderRef.current);
-        }
-        return () => observer.disconnect();
+            return () => observer.disconnect();
     }, [showNextData]);
 
     return (
