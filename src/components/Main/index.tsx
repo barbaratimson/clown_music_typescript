@@ -6,7 +6,7 @@ import Message from "../Message";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {TrackId} from "../../utils/types/types";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
-import {fetchLikedSongs} from "../../utils/apiRequests";
+import {fetchLikedSongs} from "../../utils/ymApiRequests";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import NavbarMobile from "../Navbar/NavbarMobile";
 import MobileHeader from "../MobileHeader";

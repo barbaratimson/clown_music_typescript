@@ -4,7 +4,7 @@ import axios from "axios";
 import Loader from "../../UI/Loader";
 import Album from "./Album";
 import {AlbumT} from "../../../utils/types/types";
-import {fetchAlbum} from "../../../utils/apiRequests";
+import {fetchAlbum} from "../../../utils/ymApiRequests";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const AlbumView = () => {

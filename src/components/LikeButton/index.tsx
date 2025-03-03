@@ -1,6 +1,6 @@
 import {RootState, useAppDispatch, useAppSelector} from "../../store"
 import {MessageType, showMessage} from "../../store/MessageSlice"
-import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/apiRequests"
+import {dislikeSong, fetchLikedSongs, likeSong} from "../../utils/ymApiRequests"
 import {TrackId, TrackT} from "../../utils/types/types"
 import {setLikedSongs} from "../../store/LikedSongsSlice"
 import {Favorite, FavoriteBorder} from "@mui/icons-material"

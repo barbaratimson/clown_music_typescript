@@ -21,7 +21,7 @@ import {
     fetchSimilarTracks,
     fetchUserPlaylists,
     likeSong
-} from "../../utils/apiRequests";
+} from "../../utils/ymApiRequests";
 import {MessageType, showMessage} from "../../store/MessageSlice";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
@@ -258,7 +258,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
             {showSimilar && <ContextMenu active={showSimilar} position={"left-end"} anchorEl={anchorEl} setActive={setShowSimilar}>
                     <div className="track-info-songs-wrapper" onClick={(e) => {
                         e.stopPropagation()
-                    }} style={{maxHeight: "250px", overflowY: "scroll"}}>
+                    }} style={{maxHeight: "350px", overflowY: "scroll"}}>
                         {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
                             <SongsList hideControls
                                 playlist={playlistFromTracksArr(trackArrayWrap(similarTracks.similarTracks), `${similarTracks.track.title}: similar`)}

@@ -13,6 +13,7 @@ import AlbumView from "./AlbumView";
 interface PagePropsT {
     isMobile:boolean
 }
+
 const Page = ({isMobile}:PagePropsT) => {
     return (
         <div className={`page-wrapper ${isMobile && "mobile"}`}>

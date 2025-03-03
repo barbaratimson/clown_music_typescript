@@ -17,27 +17,28 @@ const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, positi
 
     return (
         <>
-            {clickAway && active && <div className="context-menu__click-away_wrapper" onClick={() => {
-                setActive(false)
-            }}></div>}
-            <Popper placement={position} open={active} anchorEl={anchorEl} disablePortal modifiers={[{
-                name: 'flip',
-                enabled: false,
-            },
-                {
-                    name: 'preventOverflow',
-                    enabled: true,
-                    options: {
-                        altAxis: false,
-                        altBoundary: true,
-                        tether: true,
-                        rootBoundary: 'document',
-                    }
-                }]} keepMounted={keepMounted}>
-                <div className="context-menu__wrapper">
-                    {children}
-                </div>
-            </Popper>
+            {clickAway && active &&
+                <div className="context-menu__click-away_wrapper" onClick={() => {
+                setActive(false)}}></div>
+            }
+                <Popper placement={position} open={active} anchorEl={anchorEl} modifiers={[{
+                    name: 'flip',
+                    enabled: false,
+                },
+                    {
+                        name: 'preventOverflow',
+                        enabled: true,
+                        options: {
+                            altAxis: false,
+                            altBoundary: true,
+                            tether: true,
+                            rootBoundary: 'document',
+                        }
+                    }]} keepMounted={keepMounted}>
+                    <div className="context-menu__wrapper">
+                        {children}
+                    </div>
+                </Popper>
         </>
     )
 }

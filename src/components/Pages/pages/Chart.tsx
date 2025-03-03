@@ -10,7 +10,7 @@ import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import SongsList from "../../SongsList";
 import PageHeader from "../../UI/PageHeader";
 import {getIsMobileInfo} from "../../../utils/deviceHandler";
-import { fetchChart } from "../../../utils/apiRequests";
+import { fetchChart } from "../../../utils/ymApiRequests";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 

@@ -12,7 +12,7 @@ import PageHeader from "../../UI/PageHeader";
 import PageBlock from "../../PageBlock";
 import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
 import Loader from "../../UI/Loader";
-import {fetchArtist} from "../../../utils/apiRequests";
+import {fetchArtist} from "../../../utils/ymApiRequests";
 
 interface ArtistResultT {
     artist: ArtistT,
@@ -74,7 +74,7 @@ const Artist = () => {
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
-                        <AlbumsBlock type={changePlaylistView ? isMobile ? "grid" : "flex" : isMobile ? "flex" : "grid"} albums={artistResult?.albums}/>
+                        <AlbumsBlock type={changePlaylistView ? isMobile ? "flex" : "grid": isMobile ? "grid" : "flex" } albums={artistResult?.albums}/>
                     </PageBlock>
                 </>
             ) : null}

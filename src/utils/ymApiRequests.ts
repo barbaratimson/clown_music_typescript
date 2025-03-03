@@ -20,7 +20,6 @@ export const fetchYaSongLink = async (id:string | number) => {
         console.log("Error while getting download link: " + err)
     }
 };
-
 export const fetchLikedSongs = async () => {
     try {
         const response = await axios.get(

@@ -4,7 +4,7 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading} from "./playerSlice";
 import {getImageLink, getUniqueRandomTrackFromPlaylist, randomSongFromTrackList} from "../../utils/utils";
-import {fetchYaSongLink} from '../../utils/apiRequests';
+import {fetchYaSongLink} from '../../utils/ymApiRequests';
 import {showMessage} from '../../store/MessageSlice';
 import {addTrackToQueue, setQueue} from "../../store/playingQueueSlice";
 import {trackWrap} from '../../utils/trackWrap';
@@ -108,7 +108,7 @@ const Player = () => {
         if (isMobile) {
             return parseFloat(localStorage.getItem("mobilePlayer_volume") ?? "1")
         } else {
-            return parseInt(localStorage.getItem("player_volume") ?? "100") * 0.25 / 100
+            return parseInt(localStorage.getItem("player_volume") ?? "100") / 100
         }
     }
 
@@ -161,6 +161,7 @@ const Player = () => {
             audioElem.current.load()
             setLoading(true)
             devLog(`start fetching song link`)
+            console.log(currentSong)
             fetchYaSongLink(currentSong.id)
                 .then(link => {
                     devLog(`song link ready ${link}`)
@@ -188,7 +189,7 @@ const Player = () => {
             })
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
-        if (currentSong.available && currentSong && audioElem.current) {
+        if (currentSong && audioElem.current) {
             audioElem.current.volume = getVolume()
             changeTime(0)
             setPosition(0)
@@ -292,9 +293,9 @@ const Player = () => {
                     setLoading(false)
                 }}
                 onEnded={(e) => {
-                skipForward()
-                startPlayerFunc()
-            }} onTimeUpdate={onPlaying}
+                    skipForward()
+                    startPlayerFunc()
+                }} onTimeUpdate={onPlaying}
             />
         </>
     )

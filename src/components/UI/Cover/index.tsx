@@ -6,7 +6,7 @@ import {MusicNote} from "@mui/icons-material"
 export type CoverSizeT = "50x50" | "100x100" | "150x150" | "200x200" | "300x300" | "400x400" | "500x500" | "600x600" | "700x700" | "800x800" | "900x900" | "1000x1000"
 
 interface CoverProps {
-    coverUri: string | undefined,
+    coverUri?: string | undefined,
     size: string
     imageSize?: CoverSizeT
     unWrapped?: boolean
@@ -17,7 +17,6 @@ interface CoverProps {
 const Cover = memo(({ coverUri, size, imageSize, unWrapped,placeholder, className}: CoverProps) => {
     const [width, height] = size.split("x")
     const link = getImageLink(coverUri, imageSize ?? size)
-
     if (!unWrapped) {
         if (!link) return (
         <div style={{ minWidth: width + "px", height: height + "px" }} className={`cover-wrapper ${className}`}>

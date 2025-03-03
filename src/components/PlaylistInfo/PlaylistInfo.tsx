@@ -24,14 +24,12 @@ interface GenreCountT {
 
 
 const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
-    const dispatch = useDispatch()
-    const [params, setParams] = useSearchParams("")
+    const navigate = useNavigate()
     const [filterMenuActive, setFilterMenuActive] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [genres, setGenres] = useState<GenreCountT[]>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
-    const navigate = useNavigate()
-    const [genresToFilter, setGenresToFilter] = useState<string[]>([])
+    const [genresToFilter, setGenresToFilter] = useState<string[]>(filterQuery.getAll("genres"))
     const currentUser = useAppSelector((state: RootState) => state.user)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
 
@@ -106,17 +104,19 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
 
     }, [playlist]);
 
-    useEffect(() => {
-        const filter = filterQuery.getAll("genres")
-        if (filter.length !== 0) {
-            setGenresToFilter(filter)
-        }
-    }, [filterQuery]);
+    // useEffect(() => {
+    //     const filter = filterQuery.getAll("genres")
+    //         if (filter.length !== 0) {
+    //             setGenresToFilter(filter)
+    //         }
+    // }, [filterQuery]);
 
 
     useEffect(() => {
-        if (genresToFilter.length !== 0 ) {
+        if (genresToFilter.length !== 0) {
             setFilterQuery({genres: genresToFilter})
+        } else {
+            setFilterQuery("");
         }
     }, [genresToFilter]);
 
@@ -146,8 +146,8 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                                     setGenresToFilter([]);
                                     // setPlaylistInfoShow(false)
                                 }}>
-                                        <FilterAltOff/>
-                                    </Button>
+                                    <FilterAltOff/>
+                                </Button>
                             ) : null}
                         </>
                     </div>
@@ -166,7 +166,8 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                     ) : null}
                 </div>
             </div>
-            <ContextMenu active={filterMenuActive} setActive={setFilterMenuActive} position={"left-start"} anchorEl={anchorEl}>
+            <ContextMenu active={filterMenuActive} setActive={setFilterMenuActive} position={"left-start"}
+                         anchorEl={anchorEl}>
                 <PlaylistFilters genres={genres} genresToFilter={genresToFilter} setGenresToFilter={setGenresToFilter}
                                  filterQuery={filterQuery}/>
             </ContextMenu>

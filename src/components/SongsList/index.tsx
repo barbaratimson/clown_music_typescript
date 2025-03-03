@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {memo, useEffect, useRef, useState} from "react";
 import {PlaylistT, QueueT, TrackType} from "../../utils/types/types";
 import './style.scss'
 import {initQueue} from "../../store/playingQueueSlice";
@@ -13,7 +13,7 @@ interface SongsListProps {
     hideControls?: boolean
 }
 
-const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) => {
+const SongsList = ({ tracks, playlist, style, hideControls}: SongsListProps) => {
     const dispatch = useAppDispatch()
     const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue))
     const playerState = useAppSelector((state: RootState) => state.player)
@@ -69,6 +69,6 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
                 <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "2400px" : 0}}></div>
             </>
     )
-})
+}
 
 export default SongsList

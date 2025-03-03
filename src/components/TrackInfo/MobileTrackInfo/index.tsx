@@ -19,7 +19,7 @@ import {
     fetchSimilarTracks,
     fetchUserPlaylists,
     likeSong
-} from "../../../utils/apiRequests";
+} from "../../../utils/ymApiRequests";
 import { MessageType, showMessage } from "../../../store/MessageSlice";
 import { setLikedSongs } from "../../../store/LikedSongsSlice";
 import { useDispatch } from "react-redux";

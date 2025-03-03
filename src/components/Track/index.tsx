@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {TrackId, TrackT} from "../../utils/types/types";
+import {TrackT} from "../../utils/types/types";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop} from "../Player/playerSlice";
@@ -7,10 +7,7 @@ import {msToMinutesAndSeconds} from "../../utils/utils";
 import {MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
-import {setLikedSongs} from "../../store/LikedSongsSlice";
-import {showMessage} from "../../store/MessageSlice";
 import {trackWrap} from "../../utils/trackWrap";
-import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice";
 import Cover, {ImagePlaceholder} from "../UI/Cover";
 import LikeButton from "../LikeButton";
 import './style.scss'
