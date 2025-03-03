@@ -93,7 +93,7 @@ export const UploadForm = () => {
         </form>
 
             {/*TODO: Move to another component*/}
-            <SongsList tracks={trackArrayWrap(userTracks)}></SongsList>
+            <SongsList tracks={userTracks}></SongsList>
         </>
     );
 };

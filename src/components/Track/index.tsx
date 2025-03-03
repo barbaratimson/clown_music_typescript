@@ -17,6 +17,7 @@ import './style.scss'
 import ContextMenu from "../UI/ContextMenu/ContextMenu";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import Button from "../UI/Button/Button";
+import {getCMImageUrl} from "../../utils/cmApiRequsts";
 
 
 interface TrackProps {
@@ -45,7 +46,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
             setCurrentSong(song);
             startPlayerFunc()
             if (queueFunc) {
-                queueFunc([trackWrap(song)]);
+                queueFunc([song]);
             }
         } else if (playerState.playing) {
             stopPlayerFunc()
@@ -76,7 +77,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                             <PauseRounded/>
                         )}
                     </div>
-                    <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} coverUri={track.coverUri}
+                    <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(track.cover?.id, "120x120")}
                            size="200x200"/>
                 </div>
                 <div className="track-info-wrapper">

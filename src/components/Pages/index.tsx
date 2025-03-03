@@ -9,10 +9,12 @@ import Settings from "./pages/Settings";
 import PlaylistView from "./PlaylistView";
 import Artist from "./pages/Artist";
 import AlbumView from "./AlbumView";
+import {UploadForm} from "../UploadTrack/UploadForm";
 
 interface PagePropsT {
     isMobile:boolean
 }
+
 const Page = ({isMobile}:PagePropsT) => {
     return (
         <div className={`page-wrapper ${isMobile && "mobile"}`}>
@@ -23,6 +25,7 @@ const Page = ({isMobile}:PagePropsT) => {
                 <Route path="/" element={<RedirectToHome/>} />
                 <Route path="search" element={<Search/>} />
                 <Route path="user" element={<User/>} />
+                <Route path="/user/upload" element={<UploadForm/>}></Route>
                 <Route path="settings" element={<Settings/>} />
                 <Route path="users/:userId/playlist/:playlistId" element={<PlaylistView />} />
                 <Route path="artist/:artistId" element={<Artist/>}></Route>

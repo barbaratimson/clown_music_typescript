@@ -13,7 +13,7 @@ export const FileInput = ({register, fileType}: FileInputProps) => {
     const inputRef = useRef<HTMLInputElement>(null)
     const {ref, ...rest} = register
 
-    const getBase64 = async function (file: File | null) {
+    const getBase64 = async function (file: File | null)     {
         if (!file) return
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -56,7 +56,7 @@ export const FileInput = ({register, fileType}: FileInputProps) => {
                 <div className="audio-file-input" onClick={async () => {
                     inputRef.current?.click()
                 }}>
-                    {/*<audio controls src={preview}/>*/}
+                    <audio controls src={preview}/>
                 </div>
             )}
             {fileType === "image" && (

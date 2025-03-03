@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {PlaylistT, TrackType} from "../../../../utils/types/types";
+import {PlaylistT, TrackT, TrackType} from "../../../../utils/types/types";
 import {isElementInViewport} from "../../../../utils/utils";
 import SongsList from "../../../SongsList";
 import {RootState, useAppDispatch, useAppSelector} from "../../../../store";
@@ -20,6 +20,7 @@ import Button from "../../../UI/Button/./Button";
 import MobilePlaylistInfo from "../../../PlaylistInfo/MobilePlaylistInfo";
 import PlaylistInfo from "../../../PlaylistInfo/PlaylistInfo";
 import ContextMenu from "../../../UI/ContextMenu/ContextMenu";
+import {getCMImageUrl} from "../../../../utils/cmApiRequsts";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -33,8 +34,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const setHeaderOff = () => dispatch(hideHeader())
     const input = useRef<HTMLInputElement>(null);
     const playlistInfo = useRef(null)
-    const [tracksFiltered, setTracksFiltered] = useState<TrackType[]>()
-    const [tracksSearchResult, setTracksSearchResult] = useState<TrackType[]>()
+    const [tracksFiltered, setTracksFiltered] = useState<TrackT[]>()
+    const [tracksSearchResult, setTracksSearchResult] = useState<TrackT[]>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
     const [search, setSearch] = useState("")
@@ -74,9 +75,9 @@ const Playlist = ({playlist}: PlaylistProps) => {
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
         if (filter.includes("Unknown")) {
-            setTracksFiltered(playlist.tracks.filter(track => track.track.albums[0]?.genre === undefined))
+            setTracksFiltered(playlist.tracks.filter(track => track.albums[0]?.genre === undefined))
         } else if (filter.length !== 0) {
-            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.track.albums[0]?.genre)))
+            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.albums[0]?.genre)))
         } else {
             setSearch("")
             setTracksSearchResult(undefined)
@@ -95,7 +96,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     useEffect(() => {
         const a = () => {
             if (playlistInfo.current && !isElementInViewport(playlistInfo.current)) {
-                setHeaderActive({title: playlist.title})
+                setHeaderActive({title: playlist.name})
             } else {
                 setHeaderOff()
             }
@@ -128,8 +129,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <PageHeader ref={playlistInfo} titleText={playlist.title} descText={playlist.description}
-                            coverUri={playlist.coverWithoutText ? playlist.coverWithoutText.uri : playlist.ogImage}
+                <PageHeader ref={playlistInfo} titleText={playlist.name} descText={playlist.description}
+                            src={getCMImageUrl(playlist.cover?.id, "800x800")}
                             controls={
                                 <>
                                 <span className="playlist__filters">

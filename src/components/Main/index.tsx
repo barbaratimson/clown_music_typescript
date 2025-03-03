@@ -20,6 +20,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Queue from "../Queue/queue";
 import Loader from "../UI/Loader";
+import {fetchCmUser} from "../../utils/cmApiRequsts";
 
 const QueueMobile = lazy(() => import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -32,21 +33,12 @@ const Main = () => {
     const setQueueOpen = (open: boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
     const setCurrentUser = (user: UserT) => dispatch(setUser(user))
-    const fetchUser = async () => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/user`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
-            setCurrentUser(response.data)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    };
 
 
     useEffect(() => {
         async function fetchData() {
             setLikedSongsData(await fetchLikedSongs())
-            fetchUser()
+            setCurrentUser(await fetchCmUser())
         }
 
         fetchData()

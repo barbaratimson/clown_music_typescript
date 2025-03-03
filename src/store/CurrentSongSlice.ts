@@ -18,12 +18,9 @@ const CurrentSongSlice = createSlice({
         changeCurrentSong(state, action) {
             state.currentSong = action.payload
         },
-        updateSongLink(state,action) {
-            state.currentSong.url = action.payload
-        }
     }
 })
 
 
-export const { changeCurrentSong, updateSongLink } = CurrentSongSlice.actions
+export const { changeCurrentSong } = CurrentSongSlice.actions
 export default CurrentSongSlice.reducer

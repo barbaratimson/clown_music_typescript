@@ -21,24 +21,24 @@ export function secToMinutesAndSeconds(time:number | undefined) {
     }
 }
 
-export const getUniqueRandomTrackFromPlaylist = (referencePlaylist: Array<TrackType>, queueToAdd: Array<TrackType>, currentSong: TrackT) => {
-    let newSong: TrackType;
+export const getUniqueRandomTrackFromPlaylist = (referencePlaylist: Array<TrackT>, queueToAdd: Array<TrackT>, currentSong: TrackT) => {
+    let newSong: TrackT;
     if (queueToAdd.length !== 0 && currentSong.id !== 0) {
         const index = queueToAdd.findIndex(x => x.id == currentSong.id);
         if (queueToAdd.length >= referencePlaylist.length) {
             do {
                 newSong = randomSongFromTrackList(referencePlaylist)
-            } while (currentSong.id == newSong.track.id)
+            } while (currentSong.id == newSong.id)
         } else {
             do {
                 newSong = randomSongFromTrackList(referencePlaylist)
-            } while (queueToAdd.findIndex(x => x.track.id === newSong.track.id) !== -1)
+            } while (queueToAdd.findIndex(x => x.id === newSong.id) !== -1)
         }
         return newSong
     }
 }
 
-export const randomSongFromTrackList = (trackList: Array<TrackType>) => {
+export const randomSongFromTrackList = (trackList: Array<TrackT>) => {
     return trackList[Math.floor((Math.random() * trackList.length))]
 }
 
@@ -69,6 +69,6 @@ export const getAlbumLink = (atistId:number,albumId:number) => {
     return `/artist/${atistId}/album/${albumId}`
 }
 
-export const playlistFromTracksArr = (tracks:TrackType[],title:string = ""):PlaylistT => {
-    return {uid:0,kind:-1,tracks:tracks,cover:{uri:tracks[0].track.coverUri},title:title,ogImage:tracks[0].track.coverUri,description:"",available:true,owner:{uid: -1, name: "", verified: false }}
+export const playlistFromTracksArr = (tracks:TrackT[],title:string = ""):PlaylistT => {
+    return {uid:0,kind:-1,tracks:tracks,cover:{id:tracks[0].cover?.id ?? "0", type:""},title:title,ogImage:tracks[0].coverUri,description:"",available:true,owner:{uid: -1, name: "", verified: false }}
 }

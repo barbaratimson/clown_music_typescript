@@ -43,18 +43,18 @@ export type DerivedColorsT = {
 }
 
 export interface TrackT {
-    id:string | number
+    id: number
     title: string,
     artists: Array<ArtistT>,
-    url: string
+    cover?: {
+        id: string
+    }
+    genre: string
     coverUri: string
-    chart:ChartPosT
-    available:boolean
     durationMs:number
     albums:Array<AlbumT>
     version?: string
     derivedColors?: DerivedColorsT
-    ogImage?: string
 }
 
 
@@ -96,20 +96,17 @@ export interface TrackDefaultT {
     track:TrackT
 }
 
-export interface EmptyAlbumT {
+export interface AlbumT {
     id:number
     artists:Array<ArtistT>
-    coverUri: string
+    cover: CoverT
     title:string
     genre: string
     year: string
     likesCount: number
+    tracks:TrackT[]
 }
 
-
-export interface AlbumT extends EmptyAlbumT{
-    volumes:Array<Array<TrackT>>
-}
 
 export interface ArtistT {
     id: number
@@ -125,13 +122,14 @@ export interface OwnerT {
 }
 
 export interface CoverT {
-    uri:string
+    id: string,
+    type: string
 }
 
 export interface PlaylistT {
     uid: number | string
-    tracks: Array<TrackType>
-    title: string
+    tracks: Array<TrackT>
+    name: string
     ogImage:string
     description:string
     cover:CoverT
@@ -144,7 +142,7 @@ export interface PlaylistT {
 
 export interface QueueT {
     playlist: PlaylistT
-    queueTracks:Array<TrackType>,
+    queueTracks:Array<TrackT>,
     queueOpen?:boolean
     filteredBy?: string[]
 }

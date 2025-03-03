@@ -5,6 +5,7 @@ import Loader from "../../UI/Loader";
 import Album from "./Album";
 import {AlbumT} from "../../../utils/types/types";
 import {fetchAlbum} from "../../../utils/apiRequests";
+import {fetchCmAlbumById} from "../../../utils/cmApiRequsts";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const AlbumView = () => {
@@ -16,7 +17,7 @@ const AlbumView = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        fetchAlbum(albumId).then(result => setAlbum(result)).finally(() => setIsLoading(false))
+        fetchCmAlbumById(albumId).then(result => setAlbum(result)).finally(() => setIsLoading(false))
     }, [albumId]);
 
 

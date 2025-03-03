@@ -24,6 +24,7 @@ import ArtistName from "../../ArtistName";
 import LikeButton from "../../LikeButton";
 import {secToMinutesAndSeconds} from "../../../utils/utils";
 import SeekSlider from "./SeekSlider";
+import {getCMImageUrl} from "../../../utils/cmApiRequsts";
 
 interface PlayerPropsT {
     currentSong: TrackT,
@@ -69,7 +70,7 @@ const PlayerDesktop = ({
         <>
             <div className="player-wrapper">
                 <div className="player-track-info-wrapper" key={currentSong.id}>
-                    <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={currentSong.coverUri}
+                    <Cover placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(currentSong.cover?.id, "120x120")}
                            size="60x60" imageSize="200x200"/>
                     <div className="player-track-info">
                         {currentSong.title ? (

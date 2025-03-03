@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {PlaylistT, QueueT, TrackType} from "../../utils/types/types";
+import {AlbumT, PlaylistT, QueueT, TrackT, TrackType} from "../../utils/types/types";
 import './style.scss'
 import {initQueue} from "../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
@@ -7,7 +7,7 @@ import {useSearchParams} from "react-router-dom";
 import Track from "../Track";
 
 interface SongsListProps {
-    tracks: Array<TrackType>
+    tracks: Array<TrackT>
     playlist?: PlaylistT
     style?: any,
     hideControls?: boolean
@@ -19,9 +19,9 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
     const playerState = useAppSelector((state: RootState) => state.player)
     const [filterQuery, setFilterQuery] = useSearchParams()
     const [offset, setOffset] = useState(20)
-    const [dataToShow, setDataToShow] = useState<TrackType[]>()
+    const [dataToShow, setDataToShow] = useState<TrackT[]>([])
     const loaderRef = useRef<any>();
-    const setInitQueue = (tracks: Array<TrackType>) => {
+    const setInitQueue = (tracks: Array<TrackT>) => {
         if (playlist) {
             const filter = filterQuery.getAll("genres")
             if (playerState.shuffle) {
@@ -43,7 +43,9 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
 
     useEffect(() => {
         setOffset(20)
-        setDataToShow(playlist?.tracks.slice(0,20))
+        if (playlist?.tracks) {
+            setDataToShow(playlist?.tracks.slice(0,20))
+        }
     }, [tracks]);
     
     useEffect(() => {
@@ -62,9 +64,9 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
     return (
             <>
                 <div key={tracks[0]?.id} className="songs-wrapper">
-                        {dataToShow ? dataToShow.map((song) => song.track.available ? (
-                                    <Track hideControls={hideControls} key={song.track.id} queueFunc={setInitQueue} track={song.track} />
-                        ) : null) : null}
+                        {dataToShow ? dataToShow.map((song) => (
+                                    <Track hideControls={hideControls} key={song.id} queueFunc={setInitQueue} track={song} />
+                        )) : null}
                 </div>
                 <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "2400px" : 0}}></div>
             </>

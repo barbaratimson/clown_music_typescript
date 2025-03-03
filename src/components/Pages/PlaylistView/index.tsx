@@ -4,17 +4,18 @@ import axios from "axios";
 import Loader from "../../UI/Loader";
 import Playlist from "./Playlist";
 import { Skeleton } from "@mui/material";
+import {cmLink} from "../../../utils/cmApiRequsts";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 const PlaylistView = () => {
     const {userId,playlistId} = useParams()
     const [playlistState,setPlaylist] = useState()
     const [isLoading,setIsLoading] = useState(true)
-    const fetchPlaylistSongs = async (userId:any,kind:any) => {
+    const fetchPlaylistSongs = async (kind:any) => {
         setIsLoading(true)
         try {
             const response = await axios.get(
-                `${link}/ya/playlist/tracks/${userId}/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization")}});
+                `${cmLink}/playlist/${kind}`,{headers:{"Authorization":localStorage.getItem("Authorization_CM")}});
             setPlaylist(response.data)
             setIsLoading(false)
         } catch (err) {
@@ -24,7 +25,7 @@ const PlaylistView = () => {
     };
 
     useEffect(() => {
-        fetchPlaylistSongs(playlistId,userId)
+        fetchPlaylistSongs(playlistId)
     }, [playlistId]);
 
     if (isLoading) return <Loader.PageLoader />

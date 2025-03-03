@@ -52,9 +52,7 @@ const Chart = () => {
             {chartResult ? (
                 <>
                     <PageHeader ref={playlistInfo} titleText={chartResult?.chart.title} descText={chartResult?.chart.description} coverUri={chartResult?.chart.cover.uri}/>
-
                     <SongsList playlist={chartResult.chart} tracks={chartResult.chart.tracks} />
-
                 </>
             ) : null}
         </div>

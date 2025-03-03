@@ -1,15 +1,15 @@
 import {createSlice, current} from "@reduxjs/toolkit";
-import {QueueT, TrackType} from "../utils/types/types";
-import {PlaylistInitState, SongInitState} from "./initialStates";
-import { trackWrap } from "../utils/trackWrap";
+import {QueueT, TrackT} from "../utils/types/types";
+import {PlaylistInitState} from "./initialStates";
+import {trackWrap} from "../utils/trackWrap";
 
 interface QueueState {
     queue:QueueT
 }
 const initialState:QueueState = {
-    queue:{playlist:PlaylistInitState,filteredBy:[],queueTracks:[{id:0,track:SongInitState}],queueOpen:false}
+    queue:{playlist:PlaylistInitState,filteredBy:[],queueTracks:[],queueOpen:false}
 }
-const move = function(from:number, to:number, array:TrackType[]) {
+const move = function(from:number, to:number, array:TrackT[]) {
     array.splice(to, 0, array.splice(from, 1)[0]);
 };
 
@@ -19,12 +19,12 @@ const playingQueueSlice = createSlice({
     initialState,
     reducers:{
         initQueue(state, action) {
-            state.queue.playlist = {...action.payload.playlist, tracks:action.payload.playlist.tracks.filter((track:TrackType) => track.track.available)}
-            state.queue.queueTracks = action.payload.queueTracks.filter((track:TrackType) => track.track.available)
+            state.queue.playlist = {...action.payload.playlist, tracks:action.payload.playlist.tracks}
+            state.queue.queueTracks = action.payload.queueTracks
             state.queue.filteredBy = action.payload.filteredBy
         },
         setQueue(state, action) {
-            state.queue.queueTracks = action.payload.filter((track:TrackType) => track.track.available)
+            state.queue.queueTracks = action.payload
         },
         setOpeningState(state, action) {
             state.queue.queueOpen = action.payload
@@ -44,7 +44,7 @@ const playingQueueSlice = createSlice({
                     move(trackExistsIndex,currentSongPosition + 1,state.queue.queueTracks)
                 }
             } else if (currentSongPosition !== -1) {
-                state.queue.queueTracks.splice(currentSongPosition + 1,0,trackWrap(track))
+                state.queue.queueTracks.splice(currentSongPosition + 1,0,track)
             } else {
                 return 
             }

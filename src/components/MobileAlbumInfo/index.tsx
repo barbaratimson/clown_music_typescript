@@ -27,14 +27,14 @@ const MobileAlbumInfo = ({album}: AlbumInfoT) => {
                 <>
                     <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
                         <>
-                            <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={album.coverUri}
+                            <Cover placeholder={<ImagePlaceholder size="medium"/>} src={album.cover.id}
                                    size="75x75" imageSize="200x200"/>
                             <div className="track-info-wrapper">
                                 <div onClick={(e) => {
                                     e.stopPropagation()
                                 }} className="track-info-title mobile">{album.title}</div>
                                 <div style={{marginTop: "5px"}}
-                                     className="track-info-artist">{album.volumes[0].length + " tracks"}</div>
+                                     className="track-info-artist">{album.tracks.length + " tracks"}</div>
                             </div>
                             <div className="track-info-back-button">
                                 <KeyboardArrowDown className="track-info-back-icon"/>

@@ -6,7 +6,6 @@ import {
     Add,
     Album,
     ContentCopy,
-    ExpandMore,
     Favorite,
     FavoriteBorder,
     FilterAlt,
@@ -26,16 +25,15 @@ import {MessageType, showMessage} from "../../store/MessageSlice";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
 import SongsList from "../SongsList";
-import {trackArrayWrap} from "../../utils/trackWrap";
 import Loader from "../UI/Loader";
-import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
 import {addTrackToQueuePosition} from "../../store/playingQueueSlice";
-import PopUpModal from "../UI/PopUpModal";
 import Cover, {ImagePlaceholder} from "../UI/Cover";
 import "./TrackInfo.scss"
 import PlaylistCard from "../PlaylistCard";
 import {playlistFromTracksArr} from "../../utils/utils";
 import ContextMenu from "../UI/ContextMenu/ContextMenu";
+import {addToCmPlaylist, fetchCmUserPlaylists, getCMImageUrl} from "../../utils/cmApiRequsts";
+import {userId} from "../../utils/constants";
 
 interface SimilarTracksT {
     track: TrackT
@@ -52,6 +50,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
     const location = useLocation()
     const [params, setParams] = useSearchParams("")
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
+    const user = useAppSelector((state: RootState) => state.user.user)
     const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({currentSong, songToAdd}))
     const likedSongs = useAppSelector((state: RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
@@ -108,7 +107,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
 
     useEffect(() => {
         setIsLoading(true)
-        fetchUserPlaylists().then(result => setUserPlaylists(result)).finally(() => {
+        fetchCmUserPlaylists(user.id).then(result => setUserPlaylists(result)).finally(() => {
             setIsLoading(false)
         })
     }, [showPlaylistsToAdd]);
@@ -149,7 +148,6 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                     </div>
                 </div>
                 {track.artists.length !== 0 ? (
-                    <>
                         <div className="track-info-mobile-control-button" onClick={(e) => {
                             track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(!artistsOpen); setAnchorEl(e.currentTarget)
                         }}>
@@ -163,7 +161,6 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                                  style={{flexGrow: "1", textAlign: "end"}}> {track.artists.length !== 1 ?
                                 <KeyboardArrowDown className="track-info-back-icon"/> : null}</div>
                         </div>
-                    </>
                 ) : null}
                 <div className="track-info-mobile-control-button"
                      onClick={(e) => {
@@ -183,7 +180,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                 {track.albums && track.albums.length !== 0 ? (
                     <>
                         <Link className="track-info-mobile-control-button" style={{textDecoration: "none"}}
-                              to={`/artist/${track.albums[0].artists[0]?.id}/album/${track.albums[0]?.id}`}>
+                              to={`/artist/${track.albums[0]?.artists[0]?.id}/album/${track.albums[0]?.id}`}>
                             <div className="track-info-mobile-control-icon">
                                 <Album/>
                             </div>
@@ -193,9 +190,9 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                         </Link>
                     </>
                 ) : null}
-                {track.albums[0]?.genre ? (
+                {track.genre ? (
                     <div className="track-info-mobile-control-button" onClick={() => {
-                        setParams({genres: track.albums[0]?.genre})
+                        setParams({genres: track.genre})
                     }}>
                         <div className="track-info-mobile-control-icon">
                             <FilterAlt/>
@@ -234,7 +231,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                             <Link key={artist.id} className="track-info-mobile-control-button artist"
                                   style={{textDecoration: "none"}} to={`/artist/${artist.id}`}>
                                 <div className="track-info-artist-avatar-wrapper">
-                                    <Cover coverUri={artist.cover?.uri} size="50x50"
+                                    <Cover src={getCMImageUrl(artist.cover?.id, "120x120")} size="50x50"
                                            placeholder={<ImagePlaceholder size="small"/>} unWrapped/>
                                 </div>
                                 <div className="track-info-artist-info-name">{artist.name}</div>
@@ -246,10 +243,12 @@ const TrackInfo = ({track}: TrackInfoProps) => {
             {showPlaylistsToAdd && <ContextMenu active={showPlaylistsToAdd} position={"left"} anchorEl={anchorEl} setActive={setShowPlaylistsToAdd}>
                 <>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.filter((playlist) => playlist.kind !== 0).map((playlist) => (
-                        <div key={playlist.kind} onClick={() => {
-                            addToPlaylist(playlist.kind, track, playlist.revision ?? 0)
-                        }}>
-                            <PlaylistCard title={playlist.title} type={"line"} coverUri={playlist.cover.uri}/>
+                        <div key={playlist.kind}
+                             onClick={() => {
+                            addToCmPlaylist(playlist.id, [track])
+                        }}
+                        >
+                            <PlaylistCard title={playlist.name} type={"line"} coverUri={getCMImageUrl(playlist.cover?.id, "400x400")}/>
                         </div>
                     )) : null}
                 </>
@@ -261,8 +260,8 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                     }} style={{maxHeight: "250px", overflowY: "scroll"}}>
                         {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
                             <SongsList hideControls
-                                playlist={playlistFromTracksArr(trackArrayWrap(similarTracks.similarTracks), `${similarTracks.track.title}: similar`)}
-                                tracks={trackArrayWrap(similarTracks?.similarTracks)}/>
+                                playlist={playlistFromTracksArr(similarTracks.similarTracks, `${similarTracks.track.title}: similar`)}
+                                tracks={similarTracks?.similarTracks}/>
                         ) : null}
                     </div>
             </ContextMenu>}

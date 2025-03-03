@@ -13,6 +13,8 @@ import playlist from "../../PlaylistView/Playlist";
 import MobileAlbumInfo from "../../../MobileAlbumInfo";
 import Loader from "../../../UI/Loader";
 import Button from "../../../UI/Button/Button";
+import track from "../../../Track";
+import {getCMImageUrl} from "../../../../utils/cmApiRequsts";
 
 interface AlbumProps {
     album: AlbumT
@@ -28,18 +30,18 @@ const Album = ({album}: AlbumProps) => {
     return (
         <>
         <div className="playlist-wrapper animated-opacity">
-            <PageHeader ref={playlistInfo} titleText={album.title} coverUri={album.coverUri} controls={
+            <PageHeader ref={playlistInfo} titleText={album.title} src={album.cover.id} controls={
                 <>
                 <div style={{flexGrow:"1"}}>
                     <div className="album-artist-info-wrapper">
                         {album.artists.slice(1).map((artist) => (
                             <Button onClick={()=>{navigate(`/artist/${artist.id}`)}}>
-                                    <Cover className="album-artist-avatar-wrapper" coverUri={artist.cover.uri} unWrapped size="50x50"/>
+                                    <Cover className="album-artist-avatar-wrapper" src={getCMImageUrl(artist.cover.id,"50x50")} unWrapped size="50x50"/>
                             </Button>
                         ))}
                         <Button onClick={()=>{navigate(`/artist/${album.artists[0].id}`)}}>
                             <div className="album-artist-info">
-                                    <Cover className="album-artist-avatar-wrapper" coverUri={album.artists[0].cover.uri} unWrapped size="50x50"/>
+                                    <Cover className="album-artist-avatar-wrapper" src={getCMImageUrl(album.artists[0].cover.id,"50x50")} unWrapped size="50x50"/>
                                 <div className="album-artist-info-name">{album.artists[0].name}</div>
                             </div>
                         </Button>
@@ -51,9 +53,7 @@ const Album = ({album}: AlbumProps) => {
                 </>
             }>
             </PageHeader>
-            {album.volumes?.map((volume)=>(
-             <SongsList playlist={{kind:album.id,cover:{uri:album.coverUri},uid:0,ogImage:album.coverUri,available:true,owner:{uid:album.artists[0].id,name:album.artists[0].name,verified:true},title:album.title,description:"",tracks:trackArrayWrap(volume)}} tracks={trackArrayWrap(volume)}/>
-            ))}
+             <SongsList playlist={album as unknown as PlaylistT} tracks={album.tracks}/>
         </div>
          <PopUpModal active={showMenu} setActive={setShowMenu}>
             <MobileAlbumInfo album={album}/>

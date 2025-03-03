@@ -13,6 +13,7 @@ import Audio from "./Audio";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
+import {fetchCMSongLink} from "../../utils/cmApiRequsts";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -32,8 +33,8 @@ const Player = () => {
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
-    const setPlayingQueue = (queue: Array<TrackDefaultT>) => dispatch(setQueue(queue))
-    const addToQueue = (track: TrackType) => dispatch(addTrackToQueue(track))
+    const setPlayingQueue = (queue: Array<TrackT>) => dispatch(setQueue(queue))
+    const addToQueue = (track: TrackT) => dispatch(addTrackToQueue(track))
     const devLog = (message: string) => dispatch(logMessage(message))
     const message = (message: string) => dispatch(showMessage(message))
 
@@ -113,30 +114,30 @@ const Player = () => {
     }
 
     const skipBack = () => {
-        const index = queue.findIndex(x => x.track.id == currentSong.id);
+        const index = queue.findIndex(x => x.id == currentSong.id);
         if (!audioElem.current) return
         if (audioElem.current.currentTime >= 10) {
             audioElem.current.currentTime = 0
         } else if (index !== 0) {
-            setCurrentSong(queue[index - 1].track)
+            setCurrentSong(queue[index - 1])
         } else {
             changeTime(0)
         }
     }
 
     const skipForward = () => {
-        const index = queue.findIndex(x => x.track.id == currentSong.id);
+        const index = queue.findIndex(x => x.id == currentSong.id);
         if (!audioElem.current) return
         if (playerState.repeat && audioElem.current.currentTime === audioElem.current.duration) {
             audioElem.current.currentTime = 0
         } else if (index === queue.length - 1) {
             if (playerState.shuffle && queueCurrentPlaylist.tracks.length !== 1) {
-                setPlayingQueue([trackWrap(currentSong)])
+                setPlayingQueue([currentSong])
             } else {
-                setCurrentSong(queue[0].track)
+                setCurrentSong(queue[0])
             }
         } else {
-            setCurrentSong(queue[index + 1].track)
+            setCurrentSong(queue[index + 1])
         }
     }
 
@@ -161,7 +162,7 @@ const Player = () => {
             audioElem.current.load()
             setLoading(true)
             devLog(`start fetching song link`)
-            fetchYaSongLink(currentSong.id)
+            fetchCMSongLink(currentSong.id)
                 .then(link => {
                     devLog(`song link ready ${link}`)
                     if (!audioElem.current) return
@@ -188,7 +189,7 @@ const Player = () => {
             })
         }
         devLog(`current song changed: ${currentSong.id} ${currentSong.title}`)
-        if (currentSong.available && currentSong && audioElem.current) {
+        if (currentSong && audioElem.current) {
             audioElem.current.volume = getVolume()
             changeTime(0)
             setPosition(0)
@@ -201,7 +202,7 @@ const Player = () => {
             const newSong = getUniqueRandomTrackFromPlaylist(queueCurrentPlaylist.tracks, queue, currentSong)
             if (!newSong) return
             if (queueCurrentPlaylist.tracks.length <= queue.length) {
-                setPlayingQueue([trackWrap(currentSong), newSong])
+                setPlayingQueue([currentSong, newSong])
             } else {
                 addToQueue(newSong)
             }
@@ -243,11 +244,11 @@ const Player = () => {
     useEffect(() => {
         localStorage.setItem("player_shuffle", playerState.shuffle.toString())
         if (playerState.shuffle && queueCurrentPlaylist.tracks.length > 1) {
-            let newSong: TrackType;
+            let newSong: TrackT;
             do {
                 newSong = randomSongFromTrackList(queueCurrentPlaylist.tracks)
-            } while (currentSong.id == newSong.track.id)
-            setPlayingQueue([trackWrap(currentSong), newSong])
+            } while (currentSong.id == newSong.id)
+            setPlayingQueue([currentSong, newSong])
         } else {
             setPlayingQueue(queueCurrentPlaylist.tracks)
         }

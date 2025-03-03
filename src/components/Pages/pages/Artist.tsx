@@ -1,10 +1,8 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useRef, useState} from "react";
-import axios from "axios";
-import {ArtistT, EmptyAlbumT, TrackT} from "../../../utils/types/types";
+import {AlbumT, ArtistT, TrackT} from "../../../utils/types/types";
 import SongsList from "../../SongsList";
 import {isElementInViewport, playlistFromTracksArr} from "../../../utils/utils";
-import {trackArrayWrap} from "../../../utils/trackWrap";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../utils/deviceHandler";
 import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import {useAppDispatch} from "../../../store";
@@ -12,12 +10,11 @@ import PageHeader from "../../UI/PageHeader";
 import PageBlock from "../../PageBlock";
 import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
 import Loader from "../../UI/Loader";
-import {fetchArtist} from "../../../utils/apiRequests";
+import {fetchCmArtistById} from "../../../utils/cmApiRequsts";
 
-interface ArtistResultT {
-    artist: ArtistT,
-    popularTracks: Array<TrackT>,
-    albums: Array<EmptyAlbumT>
+interface ArtistResultT extends ArtistT {
+    tracks: Array<TrackT>,
+    albums: Array<AlbumT>
 
 }
 
@@ -35,7 +32,7 @@ const Artist = () => {
 
     const a = () => {
         if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && artistResult) {
-            setHeaderActive({ title: artistResult.artist.name, imgUrl: artistResult.artist.cover?.uri })
+            setHeaderActive({ title: artistResult.name, imgUrl: artistResult.cover?.id })
         } else {
             setHeaderOff()
         }
@@ -50,7 +47,7 @@ const Artist = () => {
     useEffect(() => {
         if (artistId) {
             setIsLoading(true)
-            fetchArtist(artistId).then(result => setArtistResult(result)).finally(() => setIsLoading(false))
+            fetchCmArtistById(artistId).then(result => setArtistResult(result)).finally(() => setIsLoading(false))
         }
     }, [artistId])
 
@@ -67,10 +64,10 @@ const Artist = () => {
         <div className="page-default animated-opacity">
             {artistResult ? (
                 <>
-                    <PageHeader ref={playlistInfo} titleText={artistResult.artist.name} descText={`Нравится: ${artistResult?.artist.likesCount}`} coverUri={artistResult?.artist?.cover?.uri} />
+                    <PageHeader ref={playlistInfo} titleText={artistResult.name} descText={`Нравится: ${artistResult.likesCount}`} src={artistResult.cover.id} />
                     <PageBlock title="Popular tracks">
-                        <div className={artistResult.popularTracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList playlist={playlistFromTracksArr(trackArrayWrap(artistResult.popularTracks),artistResult.artist.name + ": Popular")} tracks={trackArrayWrap(artistResult?.popularTracks)} />
+                        <div className={artistResult.tracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
+                            <SongsList playlist={playlistFromTracksArr(artistResult.tracks,artistResult.name + ": Popular")} tracks={artistResult?.tracks} />
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>
