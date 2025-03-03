@@ -1,0 +1,23 @@
+@use "src/styles/vars";
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  background-color: vars.$bg-color-secondary;
+  padding: 20px;
+}
+
+.upload-form-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.upload-form-inputs {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 10px;
+}
