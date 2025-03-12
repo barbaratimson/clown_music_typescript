@@ -15,7 +15,7 @@ const Queue = () => {
             <div className="queue-mobile-header animated-opacity-4ms">
                 <Cover src={getCMImageUrl(currentQueue.playlist.cover.id,"120x120")} size="75x75" imageSize="100x100"/>
                 <div className="track-info-wrapper">
-                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.title}</div>
+                    <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.name}</div>
                 </div>
             </div>
             <div className={`queue-tracks ${playerState.repeat ? "queue-tracks-repeat" : null}`}>

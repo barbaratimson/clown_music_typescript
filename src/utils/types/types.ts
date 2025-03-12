@@ -46,11 +46,9 @@ export interface TrackT {
     id: number
     title: string,
     artists: Array<ArtistT>,
-    cover?: {
-        id: string
-    }
+    cover?: CoverT
+    source: string
     genre: string
-    coverUri: string
     durationMs:number
     albums:Array<AlbumT>
     version?: string
@@ -117,8 +115,8 @@ export interface ArtistT {
 
 export interface OwnerT {
     name:string
-    uid:number
-    verified: boolean
+    id:number
+    idVerified?: boolean
 }
 
 export interface CoverT {
@@ -127,17 +125,11 @@ export interface CoverT {
 }
 
 export interface PlaylistT {
-    uid: number | string
+    id: string
     tracks: Array<TrackT>
     name: string
-    ogImage:string
-    description:string
-    cover:CoverT
-    coverWithoutText?:CoverT
-    available: boolean
+    cover?:CoverT
     owner: OwnerT
-    kind:number
-    revision?: number
 }
 
 export interface QueueT {

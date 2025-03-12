@@ -9,7 +9,8 @@ import Settings from "./pages/Settings";
 import PlaylistView from "./PlaylistView";
 import Artist from "./pages/Artist";
 import AlbumView from "./AlbumView";
-import {UploadForm} from "../UploadTrack/UploadForm";
+import {UploadForm} from "../UploadForms/UploadForms";
+import {Upload} from "./Upload/Upload";
 
 interface PagePropsT {
     isMobile:boolean
@@ -25,7 +26,7 @@ const Page = ({isMobile}:PagePropsT) => {
                 <Route path="/" element={<RedirectToHome/>} />
                 <Route path="search" element={<Search/>} />
                 <Route path="user" element={<User/>} />
-                <Route path="/user/upload" element={<UploadForm/>}></Route>
+                <Route path="/upload" element={<Upload/>}></Route>
                 <Route path="settings" element={<Settings/>} />
                 <Route path="users/:userId/playlist/:playlistId" element={<PlaylistView />} />
                 <Route path="artist/:artistId" element={<Artist/>}></Route>

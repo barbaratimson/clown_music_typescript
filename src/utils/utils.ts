@@ -70,5 +70,5 @@ export const getAlbumLink = (atistId:number,albumId:number) => {
 }
 
 export const playlistFromTracksArr = (tracks:TrackT[],title:string = ""):PlaylistT => {
-    return {uid:0,kind:-1,tracks:tracks,cover:{id:tracks[0].cover?.id ?? "0", type:""},title:title,ogImage:tracks[0].coverUri,description:"",available:true,owner:{uid: -1, name: "", verified: false }}
+    return {id:"",tracks:tracks,cover:{id:tracks[0]?.cover?.id ?? "", type:""},name:title,owner:{id: 0, name: "" }}
 }

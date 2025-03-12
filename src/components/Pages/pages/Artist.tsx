@@ -10,7 +10,7 @@ import PageHeader from "../../UI/PageHeader";
 import PageBlock from "../../PageBlock";
 import {AlbumsBlock, PlaylistArrangeControls} from "../../PlaylistsBlock";
 import Loader from "../../UI/Loader";
-import {fetchCmArtistById} from "../../../utils/cmApiRequsts";
+import {fetchCmArtistById, getCMImageUrl} from "../../../utils/cmApiRequsts";
 
 interface ArtistResultT extends ArtistT {
     tracks: Array<TrackT>,
@@ -64,10 +64,15 @@ const Artist = () => {
         <div className="page-default animated-opacity">
             {artistResult ? (
                 <>
-                    <PageHeader ref={playlistInfo} titleText={artistResult.name} descText={`Нравится: ${artistResult.likesCount}`} src={artistResult.cover.id} />
+                    <PageHeader ref={playlistInfo} titleText={artistResult.name} descText={`Нравится: ${artistResult.likesCount}`} src={getCMImageUrl(artistResult.cover.id, "1000x1000")} />
                     <PageBlock title="Popular tracks">
                         <div className={artistResult.tracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                            <SongsList playlist={playlistFromTracksArr(artistResult.tracks,artistResult.name + ": Popular")} tracks={artistResult?.tracks} />
+                            <SongsList playlist={playlistFromTracksArr(artistResult.tracks.filter(track => track.source !== "user-loaded"),artistResult.name + ": Popular")} tracks={artistResult?.tracks.filter(track => track.source !== "user-loaded")} />
+                        </div>
+                    </PageBlock>
+                    <PageBlock title="User-Loaded">
+                        <div className={artistResult.tracks.length % 2 === 0 && !isMobile ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
+                            <SongsList playlist={playlistFromTracksArr(artistResult.tracks.filter(track => track.source === "user-loaded"),artistResult.name + ": Popular")} tracks={artistResult?.tracks.filter(track => track.source === "user-loaded")} />
                         </div>
                     </PageBlock>
                     <PageBlock title="Albums" controls={<PlaylistArrangeControls active={changePlaylistView} setActive={setChangePlaylistView}/>}>

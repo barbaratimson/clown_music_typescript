@@ -125,6 +125,17 @@ export const addToCmPlaylist = async (id:string | number, tracks:TrackT[]) => {
 }
 
 
+export const fetchRecentTracks = async () => {
+    try {
+        const response = await axios.get(
+            `${cmLink}/track/recent`, {headers: { "Authorization": localStorage.getItem("Authorization_CM") }} );
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+    }
+}
+
+
 
 
 

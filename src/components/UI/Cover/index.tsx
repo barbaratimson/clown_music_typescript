@@ -10,7 +10,7 @@ interface CoverProps {
     imageSize?: CoverSizeT
     unWrapped?: boolean
     placeholder?: any
-    src?: string
+    src: string
     className?: string
 }
 

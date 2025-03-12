@@ -3,7 +3,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import {Link, useLocation} from "react-router-dom";
 import Button from "../UI/Button/Button";
 import "./Navbar.scss"
-import {LibraryMusic} from "@mui/icons-material";
+import {LibraryMusic, Upload} from "@mui/icons-material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
@@ -19,6 +19,7 @@ const Navbar = () => {
                 <NavButton title="Search" to="/search"><SearchIcon/></NavButton>
             </div>
             <div className="navbar__buttons_wrapper_bottom">
+                <NavButton title="Upload" to="/upload"><Upload/></NavButton>
                 <NavButton title="Your info" to="/user"><PersonIcon/></NavButton>
             </div>
         </div>
