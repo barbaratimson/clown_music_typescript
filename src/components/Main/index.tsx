@@ -43,7 +43,7 @@ const Main = () => {
 
     }, []);
 
-    if (isLoading || true) return <AppAuth changeLoadingState={setIsLoading}/>
+    if (isLoading) return <AppAuth changeLoadingState={setIsLoading}/>
     return (
         <div className="main-wrapper">
             {isMobile && <MobileHeader/>}

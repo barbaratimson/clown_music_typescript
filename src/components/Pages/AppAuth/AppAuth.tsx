@@ -34,7 +34,7 @@ export const AppAuth = ({changeLoadingState} : AppAuthProps) => {
 
     return (
         <div className="app-auth">
-            {isLoading || true ? (
+            {isLoading? (
                 <div>
                     <div className="logo">CLOWN MUSIC</div>
                     <Loader/>
