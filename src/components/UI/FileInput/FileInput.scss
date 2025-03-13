@@ -1,9 +1,21 @@
+@use "src/styles/vars";
 .image-file-input {
   display: flex;
   width: fit-content;
 }
 
+.image-file-upload-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  & svg {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.35);
+  }
+}
 
 .audio-file-input {
 
 }
+

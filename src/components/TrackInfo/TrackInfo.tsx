@@ -5,7 +5,7 @@ import {RootState, useAppSelector} from "../../store";
 import {
     Add,
     Album,
-    ContentCopy,
+    ContentCopy, DeleteOutlined,
     Favorite,
     FavoriteBorder,
     FilterAlt,
@@ -32,7 +32,7 @@ import "./TrackInfo.scss"
 import PlaylistCard from "../PlaylistCard";
 import {playlistFromTracksArr} from "../../utils/utils";
 import ContextMenu from "../UI/ContextMenu/ContextMenu";
-import {addToCmPlaylist, fetchCmUserPlaylists, getCMImageUrl} from "../../utils/cmApiRequsts";
+import {addToCmPlaylist, deleteTrack, fetchCmUserPlaylists, getCMImageUrl} from "../../utils/cmApiRequsts";
 import {userId} from "../../utils/constants";
 
 interface SimilarTracksT {
@@ -221,6 +221,16 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                         </div>
                     </div>
                 </div>
+                {(track.uploadedBy?.id === user.id && track.source === "user-loaded") && <div className="track-info-mobile-control-button" onClick={(e) => {
+                   deleteTrack(track.id).then(data => console.log(data))
+                }}>
+                    <div className="track-info-mobile-control-icon">
+                        <DeleteOutlined/>
+                    </div>
+                    <div className="track-info-mobile-control-label">
+                        Delete Track
+                    </div>
+                </div>}
             </div>
 
             {artistsOpen && <ContextMenu active={artistsOpen} position={"left"} anchorEl={anchorEl} setActive={setArtistsOpen}>
@@ -242,8 +252,8 @@ const TrackInfo = ({track}: TrackInfoProps) => {
 
             {showPlaylistsToAdd && <ContextMenu active={showPlaylistsToAdd} position={"left"} anchorEl={anchorEl} setActive={setShowPlaylistsToAdd}>
                 <>
-                    {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.filter((playlist) => playlist.kind !== 0).map((playlist) => (
-                        <div key={playlist.kind}
+                    {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.map((playlist) => (
+                        <div key={playlist.id}
                              onClick={() => {
                             addToCmPlaylist(playlist.id, [track])
                         }}
@@ -265,6 +275,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                         ) : null}
                     </div>
             </ContextMenu>}
+
         </>
     )
 }

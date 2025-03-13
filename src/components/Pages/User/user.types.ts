@@ -1,5 +1,7 @@
 export interface UserT {
-    account: AccountT
+    id: number
+    username: string
+    isVerified: string
 }
 
 export interface AccountT {

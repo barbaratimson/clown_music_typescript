@@ -1,6 +1,6 @@
 import SongsList from "../../SongsList";
 import React, {useEffect, useState} from "react";
-import {ArtistUploadForm, TrackUploadForm} from "../../UploadForms/UploadForms";
+import {ArtistUploadForm, PlaylistCreateForm, TrackUploadForm} from "../../UploadForms/UploadForms";
 import {TrackT} from "../../../utils/types/types";
 import {fetchCmUser, fetchCmUserTracks} from "../../../utils/cmApiRequsts";
 
@@ -12,6 +12,7 @@ export const Upload = () => {
     }, []);
     return (
         <div className="page-default">
+            <PlaylistCreateForm/>
             <TrackUploadForm/>
             <ArtistUploadForm/>
             {uploadedTracks &&

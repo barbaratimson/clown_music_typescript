@@ -14,11 +14,49 @@ import {trackArrayWrap} from "../../utils/trackWrap";
 import artist from "../Pages/pages/Artist";
 import Cover from "../UI/Cover";
 
-interface ArtistUploadFormInput {
-    title: string
-    genre: string
+interface PlaylistFormInput {
+    name: string
     imageFile: FileList
-    audioFile: FileList
+}
+
+export const PlaylistCreateForm = () => {
+    const {register, handleSubmit} = useForm<PlaylistFormInput>();
+    const onSubmit: SubmitHandler<ArtistUploadFormInput> = (data) => createCmPlaylist(data)
+    const createCmPlaylist = async (artistFormData: ArtistUploadFormInput) => {
+        const requestForm = new FormData()
+        requestForm.append("name", artistFormData.name)
+        if (artistFormData.imageFile) {
+            requestForm.append("imageFile", artistFormData.imageFile[0])
+        }
+        try {
+            const response = await axios.post(
+                `${cmLink}/playlist`, requestForm, {headers: {"Authorization": localStorage.getItem("Authorization_CM")}});
+            return response.data
+        } catch (err: any) {
+            // setMessage(err.message,"error")
+            // devLog("error while fetching song link "+ err.code + err.message);
+            console.log("Error while getting download link: " + err)
+        }
+    };
+
+
+    return (
+        <form className="upload-form" onSubmit={handleSubmit(onSubmit)}>
+            <div className="upload-form-text">Playlist</div>
+            <div className="upload-form-top">
+                <div className="upload-form-inputs">
+                    <Input register={register("name", {required: true, maxLength: 50})} placeholder="Playlist title"/>
+                </div>
+                <FileInput fileType="image" register={register("imageFile")}/>
+            </div>
+            <input className="upload-form-button-send" type="submit"/>
+        </form>
+    );
+};
+
+interface ArtistUploadFormInput {
+    name: string
+    imageFile: FileList
 }
 
 export const ArtistUploadForm = () => {
@@ -26,7 +64,7 @@ export const ArtistUploadForm = () => {
     const onSubmit: SubmitHandler<ArtistUploadFormInput> = (data) => createCmArtist(data)
     const createCmArtist = async (artistFormData: ArtistUploadFormInput) => {
         const requestForm = new FormData()
-        requestForm.append("name", artistFormData.title)
+        requestForm.append("name", artistFormData.name)
         if (artistFormData.imageFile) {
             requestForm.append("imageFile", artistFormData.imageFile[0])
         }
@@ -46,7 +84,7 @@ export const ArtistUploadForm = () => {
         <form className="upload-form" onSubmit={handleSubmit(onSubmit)}>
             <div className="upload-form-top">
                 <div className="upload-form-inputs">
-                    <Input register={register("title", {required: true, maxLength: 50})} placeholder="Artist name"/>
+                    <Input register={register("name", {required: true, maxLength: 50})} placeholder="Artist name"/>
                 </div>
                 <FileInput fileType="image" register={register("imageFile")}/>
             </div>
@@ -114,13 +152,13 @@ export const TrackUploadForm = () => {
                     {/*        <option>a</option>*/}
                     {/*    </select>*/}
                     <Input register={register("genre", {required: true, maxLength: 50})} placeholder="Track Genre"/>
-                    <div>Artists</div>
+                    <div className="upload-form-text">Artists</div>
                     {selectableArtists?.map(artist => (
                         <Button onClick={() => {
                             addArtist(artist)
                         }} style={{width: "fit-content"}}>{artist.name}</Button>
                     ))}
-                    <div>Selected artists</div>
+                    <div className="upload-form-text">Selected artists</div>
                     {selectedArtists?.map(artist => (
                         <Button onClick={() => {
                             setSelectedArtists(selectedArtists.filter(elem => elem.id !== artist.id))

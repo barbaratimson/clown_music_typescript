@@ -28,7 +28,7 @@ const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, positi
                     name: 'preventOverflow',
                     enabled: true,
                     options: {
-                        altAxis: false,
+                        altAxis: true,
                         altBoundary: true,
                         tether: true,
                         rootBoundary: 'document',

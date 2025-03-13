@@ -135,6 +135,16 @@ export const fetchRecentTracks = async () => {
     }
 }
 
+export const deleteTrack = async (id:number) => {
+    try {
+        const response = await axios.delete(
+            `${cmLink}/track/${id}`,{headers: { "Authorization": localStorage.getItem("Authorization_CM") }} );
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+    }
+}
+
 
 
 

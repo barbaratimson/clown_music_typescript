@@ -21,13 +21,13 @@ const Page = ({isMobile}:PagePropsT) => {
         <div className={`page-wrapper ${isMobile && "mobile"}`}>
             <Routes>
                 <Route path="collection" element={<Collection/>} />
-                <Route path="chart" element={<Chart/>} />
+                {/*<Route path="chart" element={<Chart/>} />*/}
                 <Route path="home" element={<Home/>} />
                 <Route path="/" element={<RedirectToHome/>} />
-                <Route path="search" element={<Search/>} />
+                {/*<Route path="search" element={<Search/>} />*/}
                 <Route path="user" element={<User/>} />
                 <Route path="/upload" element={<Upload/>}></Route>
-                <Route path="settings" element={<Settings/>} />
+                {/*<Route path="settings" element={<Settings/>} />*/}
                 <Route path="users/:userId/playlist/:playlistId" element={<PlaylistView />} />
                 <Route path="artist/:artistId" element={<Artist/>}></Route>
                 <Route path="artist/:artistId/album/:albumId" element={<AlbumView/>}></Route>

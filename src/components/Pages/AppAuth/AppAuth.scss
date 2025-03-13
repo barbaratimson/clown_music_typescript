@@ -1,0 +1,17 @@
+@use "src/styles/vars";
+.app-auth {
+  position: absolute;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999;
+}
+
+.logo {
+  font-size: 40px;
+  color: vars.$font-color-main-light;
+  margin-bottom: 20px;
+}

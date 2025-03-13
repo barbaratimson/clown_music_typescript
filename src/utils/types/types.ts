@@ -45,6 +45,7 @@ export type DerivedColorsT = {
 export interface TrackT {
     id: number
     title: string,
+    uploadedBy: OwnerT
     artists: Array<ArtistT>,
     cover?: CoverT
     source: string

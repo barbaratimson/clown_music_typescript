@@ -2,6 +2,7 @@ import {ChangeHandler, UseFormRegisterReturn} from "react-hook-form";
 import "./FileInput.scss"
 import React, {ChangeEvent, forwardRef, useEffect, useRef, useState} from "react";
 import Cover from "../Cover";
+import {Upload} from "@mui/icons-material";
 
 interface FileInputProps {
     register: UseFormRegisterReturn<any>,
@@ -63,7 +64,7 @@ export const FileInput = ({register, fileType}: FileInputProps) => {
                 <div className="image-file-input" onClick={async () => {
                     inputRef.current?.click()
                 }}>
-                    <Cover src={preview} size={"200x200"} imageSize="1000x1000" placeholder={<div>Upload image</div>}/>
+                    <Cover src={preview} size={"200x200"} imageSize="1000x1000" placeholder={<div className="image-file-upload-placeholder"><Upload/></div>}/>
                 </div>
             )}
             <input style={{display: "none"}} className="file-input" type="file" ref={inputRef} name={register.name}

@@ -21,37 +21,29 @@ import {useNavigate} from "react-router-dom";
 import Queue from "../Queue/queue";
 import Loader from "../UI/Loader";
 import {fetchCmUser} from "../../utils/cmApiRequsts";
+import {setIsLoading} from "../Player/playerSlice";
+import {AppAuth} from "../Pages/AppAuth/AppAuth";
 
 const QueueMobile = lazy(() => import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
 
 const Main = () => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
-    const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
+    const [isLoading, setIsLoading] = useState(true)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
     const setQueueOpen = (open: boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
-    const setCurrentUser = (user: UserT) => dispatch(setUser(user))
-
-
     useEffect(() => {
-        async function fetchData() {
-            setLikedSongsData(await fetchLikedSongs())
-            setCurrentUser(await fetchCmUser())
-        }
-
-        fetchData()
         const getIsMobileInfo = () => {
             handleSubscribe()
             onSubscribe()
             setIsMobile(getIsMobile(deviceState))
-            console.log(getIsMobile(deviceState))
         }
         getIsMobileInfo()
 
     }, []);
 
+    if (isLoading || true) return <AppAuth changeLoadingState={setIsLoading}/>
     return (
         <div className="main-wrapper">
             {isMobile && <MobileHeader/>}
