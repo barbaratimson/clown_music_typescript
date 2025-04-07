@@ -27,3 +27,9 @@
   color: var(--font-color-main);
   font-weight: 600;
 }
+
+.artist-upload-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}

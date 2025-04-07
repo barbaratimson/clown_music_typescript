@@ -13,14 +13,6 @@ import {
     PeopleAlt,
     PlaylistAdd
 } from "@mui/icons-material";
-import {
-    addToPlaylist,
-    dislikeSong,
-    fetchLikedSongs,
-    fetchSimilarTracks,
-    fetchUserPlaylists,
-    likeSong
-} from "../../utils/apiRequests";
 import {MessageType, showMessage} from "../../store/MessageSlice";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
 import {useDispatch} from "react-redux";
@@ -31,7 +23,7 @@ import Cover, {ImagePlaceholder} from "../UI/Cover";
 import "./TrackInfo.scss"
 import PlaylistCard from "../PlaylistCard";
 import {playlistFromTracksArr} from "../../utils/utils";
-import ContextMenu from "../UI/ContextMenu/ContextMenu";
+import {ContextMenu, ContextMenuElement} from "../UI/ContextMenu/ContextMenu";
 import {addToCmPlaylist, deleteTrack, fetchCmUserPlaylists, getCMImageUrl} from "../../utils/cmApiRequsts";
 import {userId} from "../../utils/constants";
 
@@ -51,11 +43,22 @@ const TrackInfo = ({track}: TrackInfoProps) => {
     const [params, setParams] = useSearchParams("")
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
     const user = useAppSelector((state: RootState) => state.user.user)
-    const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({currentSong, songToAdd}))
+    const playNext = (currentSong: TrackT, songToAdd: TrackT) => dispatch(addTrackToQueuePosition({
+        currentSong,
+        songToAdd
+    }))
     const likedSongs = useAppSelector((state: RootState) => state.likedSongs.likedSongs)
     const setLikedSongsData = (songs: Array<TrackId>) => (dispatch(setLikedSongs(songs)))
-    const setLikedMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({message: message, track: track, type: type}))
-    const setMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({message: message, track: track, type: type}))
+    const setLikedMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({
+        message: message,
+        track: track,
+        type: type
+    }))
+    const setMessage = (message: string, track: TrackT, type: MessageType) => dispatch(showMessage({
+        message: message,
+        track: track,
+        type: type
+    }))
     const message = (message: string) => dispatch(showMessage({message: message}))
     const isLiked = (id: number | string) => {
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
@@ -82,7 +85,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
     }
 
     const updateLikedSongs = async (action: "liked" | "removed") => {
-        setLikedSongsData(await fetchLikedSongs())
+        // setLikedSongsData(await fetchLikedSongs())
         if (action === "liked") setLikedMessage(`Track ${track.title} added to Liked`, track, "trackLiked");
         if (action === "removed") setLikedMessage(`Track ${track.title} removed to Liked`, track, "trackDisliked");
     }
@@ -117,123 +120,47 @@ const TrackInfo = ({track}: TrackInfoProps) => {
             <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e) => {
                 e.stopPropagation()
             }}>
-                <div className="track-info-mobile-control-button" onClick={(e) => {
-                    isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) : likeSong(track).then((response) => updateLikedSongs("liked"));
-                    closeAll()
-                }}>
-                    <div className="track-info-mobile-control-icon">
-                        {isLiked(track.id) ? (
-                            <div
-                                className={`track-controls-button ${isLiked(track.id) ? "heart-pulse" : null}`}>
-                                <Favorite/>
-                            </div>
-                        ) : (
-                            <FavoriteBorder/>
-                        )}
-                    </div>
-                    <div className="track-info-mobile-control-label">
-                        Like
-                    </div>
-                </div>
-
-                <div className="track-info-mobile-control-button" onClick={() => {
+                <ContextMenuElement icon={isLiked(track.id) ? <Favorite/> : <FavoriteBorder/>} label="Like"
+                                    onClick={(e) => {
+                                        // isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) : likeSong(track).then((response) => updateLikedSongs("liked"));
+                                        closeAll()
+                                    }}/>
+                <ContextMenuElement onClick={() => {
                     playNext(currentSong, track);
                     closeAll()
-                }}>
-                    <div className="track-info-mobile-control-icon">
-                        <PlaylistAdd/>
-                    </div>
-                    <div className="track-info-mobile-control-label">
-                        Play next
-                    </div>
-                </div>
-                {track.artists.length !== 0 ? (
-                        <div className="track-info-mobile-control-button" onClick={(e) => {
-                            track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(!artistsOpen); setAnchorEl(e.currentTarget)
-                        }}>
-                            <div className="track-info-mobile-control-icon">
-                                <PeopleAlt/>
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                {track.artists.length === 1 ? "Artist" : "Artists"}
-                            </div>
-                            <div className="track-info-mobile-control-label"
-                                 style={{flexGrow: "1", textAlign: "end"}}> {track.artists.length !== 1 ?
-                                <KeyboardArrowDown className="track-info-back-icon"/> : null}</div>
-                        </div>
-                ) : null}
-                <div className="track-info-mobile-control-button"
-                     onClick={(e) => {
-                         setShowPlaylistsToAdd(true);
-                         setAnchorEl(e.currentTarget)
-                         closeAll()
-                         // addToPlaylist(1040,track,1)
-                     }}
-                >
-                    <div className="track-info-mobile-control-icon">
-                        <Add/>
-                    </div>
-                    <div className="track-info-mobile-control-label">
-                        Add to playlist
-                    </div>
-                </div>
-                {track.albums && track.albums.length !== 0 ? (
-                    <>
-                        <Link className="track-info-mobile-control-button" style={{textDecoration: "none"}}
-                              to={`/artist/${track.albums[0]?.artists[0]?.id}/album/${track.albums[0]?.id}`}>
-                            <div className="track-info-mobile-control-icon">
-                                <Album/>
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Album
-                            </div>
-                        </Link>
-                    </>
-                ) : null}
-                {track.genre ? (
-                    <div className="track-info-mobile-control-button" onClick={() => {
-                        setParams({genres: track.genre})
-                    }}>
-                        <div className="track-info-mobile-control-icon">
-                            <FilterAlt/>
-                        </div>
-                        <div className="track-info-mobile-control-label">
-                            Filter by genre
-                        </div>
-                    </div>
-                ) : null}
-                <div className="track-info-mobile-control-button" onClick={(e) => {
-                    if (showSimilar) {setShowSimilar(false); return}
-                    setIsLoading(true);
-                    setAnchorEl(e.currentTarget);
-                    fetchSimilarTracks(track.id).then(result => setSimilarTracks(result)).finally(() => setIsLoading(false));
-                }}>
-                    <div className="track-info-mobile-control-icon">
-                        <ContentCopy/>
-                    </div>
-                    <div className="track-info-mobile-control-label">
-                        Similar Tracks
-                    </div>
-                    <div className="track-info-mobile-control-label"
-                         style={{flexGrow: "1", display: "flex", justifyContent: "end"}}>
-                        <div style={{width: "30px"}}>
-                            {isLoading && <Loader size={16}/>}
-                        </div>
-                    </div>
-                </div>
-                {(track.uploadedBy?.id === user.id && track.source === "user-loaded") && <div className="track-info-mobile-control-button" onClick={(e) => {
-                   deleteTrack(track.id).then(data => console.log(data))
-                }}>
-                    <div className="track-info-mobile-control-icon">
-                        <DeleteOutlined/>
-                    </div>
-                    <div className="track-info-mobile-control-label">
-                        Delete Track
-                    </div>
-                </div>}
+                }} label="Play next" icon={<PlaylistAdd/>}/>
+
+                {track.artists.length !== 0 && (
+                    <ContextMenuElement icon={<PeopleAlt/>} label={track.artists.length === 1 ? "Artist" : "Artists"}
+                                        additional={track.artists.length !== 1 ?
+                                            <KeyboardArrowDown className="track-info-back-icon"/> : undefined}
+                                        onClick={(e) => {
+                                            track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(!artistsOpen);
+                                            setAnchorEl(e.currentTarget)
+                                        }}/>
+                )}
+                <ContextMenuElement onClick={(e) => {
+                    setShowPlaylistsToAdd(true);
+                    setAnchorEl(e.currentTarget)
+                    closeAll()
+                }} label="Add to playlist" icon={<Add/>}/>
+
+                {track.album && <ContextMenuElement onClick={() => {
+                    navigate(`/artist/${track.album?.artists[0]?.id}/album/${track.album?.id}`)
+                }} icon={<Album/>} label="Album"/>}
+                {track.genre && <ContextMenuElement onClick={() => {
+                    setParams({genres: track.genre})
+                }} icon={<FilterAlt/>} label="Filter by genre"/>}
+
+                {(track.uploadedBy?.id === user.id && track.source === "user-loaded") &&
+                    <ContextMenuElement onClick={() => {
+                        deleteTrack(track.id).then(data => console.log(data))
+                    }} icon={<DeleteOutlined/>} label="Delete Track"/>
+                }
             </div>
 
-            {artistsOpen && <ContextMenu active={artistsOpen} position={"left"} anchorEl={anchorEl} setActive={setArtistsOpen}>
+            {artistsOpen &&
+                <ContextMenu active={artistsOpen} position={"left"} anchorEl={anchorEl} setActive={setArtistsOpen}>
                     <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={() => {
                         setArtistsOpen(false)
                     }}>
@@ -248,33 +175,24 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                             </Link>
                         ))) : null}
                     </div>
-            </ContextMenu>}
+                </ContextMenu>}
 
-            {showPlaylistsToAdd && <ContextMenu active={showPlaylistsToAdd} position={"left"} anchorEl={anchorEl} setActive={setShowPlaylistsToAdd}>
+            {showPlaylistsToAdd && <ContextMenu active={showPlaylistsToAdd} position={"left"} anchorEl={anchorEl}
+                                                setActive={setShowPlaylistsToAdd}>
                 <>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.map((playlist) => (
                         <div key={playlist.id}
                              onClick={() => {
-                            addToCmPlaylist(playlist.id, [track])
-                        }}
+                                 addToCmPlaylist(playlist.id, [track])
+                             }}
                         >
-                            <PlaylistCard title={playlist.name} type={"line"} coverUri={getCMImageUrl(playlist.cover?.id, "400x400")}/>
+                            <PlaylistCard title={playlist.name} type={"line"}
+                                          coverUri={getCMImageUrl(playlist.cover?.id, "400x400")}/>
                         </div>
                     )) : null}
                 </>
             </ContextMenu>}
 
-            {showSimilar && <ContextMenu active={showSimilar} position={"left-end"} anchorEl={anchorEl} setActive={setShowSimilar}>
-                    <div className="track-info-songs-wrapper" onClick={(e) => {
-                        e.stopPropagation()
-                    }} style={{maxHeight: "250px", overflowY: "scroll"}}>
-                        {similarTracks && similarTracks?.similarTracks.length !== 0 ? (
-                            <SongsList hideControls
-                                playlist={playlistFromTracksArr(similarTracks.similarTracks, `${similarTracks.track.title}: similar`)}
-                                tracks={similarTracks?.similarTracks}/>
-                        ) : null}
-                    </div>
-            </ContextMenu>}
 
         </>
     )

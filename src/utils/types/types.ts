@@ -51,7 +51,7 @@ export interface TrackT {
     source: string
     genre: string
     durationMs:number
-    albums:Array<AlbumT>
+    album:AlbumT
     version?: string
     derivedColors?: DerivedColorsT
 }
@@ -124,6 +124,8 @@ export interface CoverT {
     id: string,
     type: string
 }
+
+export type CoverSize = "50x50" | "120x120" | "400x400" | "800x800" | "1000x1000"
 
 export interface PlaylistT {
     id: string

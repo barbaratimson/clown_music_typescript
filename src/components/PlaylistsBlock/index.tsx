@@ -23,9 +23,9 @@ interface ControlsProps {
 export const PlaylistsBlock = ({playlists, type}:PlaylistsBlockT) => {
     return (
         <div key={type} className={`animated-opacity-4ms ${type === "grid" ? "playlists-wrapper-grid" : "playlists-wrapper-flex"}`}>
-        {playlists ? playlists.map((playlist) => playlist.kind !== 0 ? (
-            <PlaylistCard type={type === "grid" ? "block" : "line"} key={playlist.kind} title={playlist.title} coverUri={getCMImageUrl(playlist.cover.id, "400x400")} link={getPlaylistLink(playlist.owner.uid,playlist.kind)} />
-        ) : null
+        {playlists ? playlists.map((playlist) => (
+            <PlaylistCard type={type === "grid" ? "block" : "line"} key={playlist.id} title={playlist.name} coverUri={getCMImageUrl(playlist.cover?.id, "400x400")} link={getPlaylistLink(playlist.owner.id,playlist.id)} />
+        )
     ) : null}
         </div>
     )

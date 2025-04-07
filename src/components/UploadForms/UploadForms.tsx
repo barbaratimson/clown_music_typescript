@@ -13,6 +13,7 @@ import {cmLink, fetchCmArtists, fetchCmUserTracks, getCMImageUrl} from "../../ut
 import {trackArrayWrap} from "../../utils/trackWrap";
 import artist from "../Pages/pages/Artist";
 import Cover from "../UI/Cover";
+import Searchbar from "../UI/Searchbar/Searchbar";
 
 interface PlaylistFormInput {
     name: string
@@ -142,32 +143,38 @@ export const TrackUploadForm = () => {
     }, []);
 
     return (
-        <form className="upload-form" onSubmit={handleSubmit(onSubmit)}>
-            <div className="upload-form-top">
-                <FileInput fileType="image" register={register("imageFile")}/>
-                <div className="upload-form-inputs">
-                    <Input register={register("title", {required: true, maxLength: 50})} placeholder="Track Title"/>
-                    {/*TODO: Replace with selection*/}
-                    {/*    <select>*/}
-                    {/*        <option>a</option>*/}
-                    {/*    </select>*/}
-                    <Input register={register("genre", {required: true, maxLength: 50})} placeholder="Track Genre"/>
-                    <div className="upload-form-text">Artists</div>
-                    {selectableArtists?.map(artist => (
-                        <Button onClick={() => {
-                            addArtist(artist)
-                        }} style={{width: "fit-content"}}>{artist.name}</Button>
-                    ))}
-                    <div className="upload-form-text">Selected artists</div>
-                    {selectedArtists?.map(artist => (
-                        <Button onClick={() => {
-                            setSelectedArtists(selectedArtists.filter(elem => elem.id !== artist.id))
-                        }} style={{width: "fit-content"}}>{artist.name}</Button>
-                    ))}
+        <>
+            <form className="upload-form" onSubmit={handleSubmit(onSubmit)}>
+                <div className="upload-form-top">
+                    <FileInput fileType="image" register={register("imageFile")}/>
+                    <div className="upload-form-inputs">
+                        <Input register={register("title", {required: true, maxLength: 50})} placeholder="Track Title"/>
+                        {/*TODO: Replace with selection*/}
+                        {/*    <select>*/}
+                        {/*        <option>a</option>*/}
+                        {/*    </select>*/}
+                        <Input register={register("genre", {required: true, maxLength: 50})} placeholder="Track Genre"/>
+                        <div className="upload-form-text">Artists</div>
+                        <div className="artist-upload-wrapper">
+                            {selectableArtists?.map(artist => (
+                                <Button onClick={() => {
+                                    addArtist(artist)
+                                }} style={{width: "fit-content"}}>{artist.name}</Button>
+                            ))}
+                        </div>
+                        <div className="upload-form-text">Selected artists</div>
+                        <div className="artist-upload-wrapper">
+                            {selectedArtists?.map(artist => (
+                                <Button onClick={() => {
+                                    setSelectedArtists(selectedArtists.filter(elem => elem.id !== artist.id))
+                                }} style={{width: "fit-content"}}>{artist.name}</Button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <FileInput fileType="audio" register={register("audioFile")}/>
-            <input className="upload-form-button-send" type="submit"/>
-        </form>
+                <FileInput fileType="audio" register={register("audioFile")}/>
+                <input className="upload-form-button-send" type="submit"/>
+            </form>
+        </>
     )
 }

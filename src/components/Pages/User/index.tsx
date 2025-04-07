@@ -40,14 +40,14 @@ const User = () => {
         localStorage.setItem("mobilePlayer_volume",(mobileVolume).toString())
     }, [mobileVolume]);
 
-    useEffect(() => {
-        localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
-        fetchUser()
-    }, [accessToken])
-
-    useEffect(() => {
-        localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
-    }, [currentUser,accessToken])
+    // useEffect(() => {
+    //     localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
+    //     fetchUser()
+    // }, [accessToken])
+    //
+    // useEffect(() => {
+    //     localStorage.setItem("Authorization", currentUser.user.account?.uid + ":" + accessToken)
+    // }, [currentUser,accessToken])
 
     
     return (

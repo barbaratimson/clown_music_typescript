@@ -14,10 +14,12 @@ import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice"
 import Cover, {ImagePlaceholder} from "../UI/Cover";
 import LikeButton from "../LikeButton";
 import './style.scss'
-import ContextMenu from "../UI/ContextMenu/ContextMenu";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import Button from "../UI/Button/Button";
 import {getCMImageUrl} from "../../utils/cmApiRequsts";
+import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
+import MobileTrackInfo from "../TrackInfo/MobileTrackInfo";
+import {ContextMenu} from "../UI/ContextMenu/ContextMenu";
 
 
 interface TrackProps {
@@ -39,6 +41,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
     const [isCurrentSong, setIsCurrentSong] = useState(false)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isMobile, setIsMobile] = useState(false)
 
 
     const changeSong = (song: TrackT) => {
@@ -54,6 +57,16 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
             startPlayerFunc()
         }
     }
+
+    useEffect(() => {
+        const getIsMobileInfo = () => {
+            handleSubscribe()
+            onSubscribe()
+            setIsMobile(getIsMobile(deviceState))
+        }
+        getIsMobileInfo()
+
+    }, []);
 
 
     useEffect(() => {
@@ -82,7 +95,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                 </div>
                 <div className="track-info-wrapper">
                     <div className="track-info-title-wrapper">
-                        {track.chart && <PositionInChart position={track.chart.position}/>}
+                        {/*{track.chart && <PositionInChart position={track.chart.position}/>}*/}
                         <div
                             className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                     </div>
@@ -99,10 +112,10 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                 <div onClick={(e) => {
                     e.stopPropagation()
                 }} className="track-controls-wrapper">
-                    {!hideControls && <LikeButton className="mobile-hidden" track={track}/>}
-                    <div className="track-controls-info-time">
-                        {msToMinutesAndSeconds(track.durationMs)}
-                    </div>
+                    {/*{!hideControls && <LikeButton className="mobile-hidden" track={track}/>}*/}
+                    {/*<div className="track-controls-info-time">*/}
+                    {/*    {msToMinutesAndSeconds(track.durationMs)}*/}
+                    {/*</div>*/}
                     {!hideControls &&
                         <Button style={{padding:0}} onClick={(e) => {
                             setTrackInfoActive(!trackInfoActive)
@@ -113,9 +126,11 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                 </div>
             </div>
 
-            <ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
+            {!isMobile ? (<ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
                 <TrackInfo track={track}/>
-            </ContextMenu>
+            </ContextMenu>) : (
+                <MobileTrackInfo active={trackInfoActive} setActive={setTrackInfoActive} track={track}/>
+                )}
         </>
     )
 }

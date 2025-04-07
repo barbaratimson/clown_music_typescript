@@ -43,7 +43,7 @@ const AuthCard = ({user,service,status, onClick}:AuthCardProps) => {
     return (
         <div className="auth-card__wrapper" onClick={onClick}>
             <div className="auth-card__service-logo">{formatServiceReturn(service)}</div>
-            <div className="auth-card__user-account-name">{user.account?.displayName}</div>
+            {/*<div className="auth-card__user-account-name">{user.account?.displayName}</div>*/}
             <div className="auth-card__status">
                 {formatStatusReturn(status)}
             </div>

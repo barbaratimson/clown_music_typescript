@@ -11,6 +11,7 @@ import axios from "axios";
 import {link} from "../../../utils/constants";
 import "./style.scss"
 import {PlaylistT} from "../../../utils/types/types";
+import {getCMImageUrl} from "../../../utils/cmApiRequsts";
 
 interface GenreCountT {
     genre: string,
@@ -75,16 +76,16 @@ const MobilePlaylistInfo = () => {
     useEffect(() => {
         fetchUserPlaylists()
         const artists = playlistInfoState.playlist.tracks.map((track)=>{
-            if (track.track.artists.length !== 0) {
-                return track.track.artists
+            if (track.artists.length !== 0) {
+                return track.artists
             }
         })
         const uniqueArtists = Array.from(new Set(artists)).flat(1)
 
 
         const genres = playlistInfoState.playlist.tracks.map((track) => {
-            if (track.track.albums[0]?.genre !== undefined) {
-                return track.track.albums[0]?.genre
+            if (track.genre !== undefined) {
+                return track.genre
             } else {
                 return "Unknown"
             }
@@ -120,9 +121,9 @@ const MobilePlaylistInfo = () => {
                     {playlistInfoState.playlist ? (
                             <>
                                 <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
-                                    <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={playlistInfoState.playlist.cover?.uri} size="75x75" imageSize="200x200"/>
+                                    <Cover placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(playlistInfoState.playlist.cover?.id, "120x120")} size="75x75" imageSize="200x200"/>
                                     <div className="track-info-wrapper">
-                                        <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{playlistInfoState.playlist.title}</div>
+                                        <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{playlistInfoState.playlist.name}</div>
                                         <div style={{ marginTop: "5px" }} className="track-info-artist">{playlistInfoState.playlist.tracks.length + " tracks"}</div>
                                     </div>
                                     <div className="track-info-back-button">
@@ -147,19 +148,19 @@ const MobilePlaylistInfo = () => {
                                         </>
                                     </div>
 
-                                    {playlistInfoState.playlist.owner.uid === currentUser.user?.account?.uid && playlistInfoState.playlist.kind !== 3 ? (
-                                        <div className="track-info-mobile-control-button" onClick={() => {
-                                            // removePlaylist(playlistInfoState.playlist.kind)
-                                            console.log("Delete playlist")
-                                        }}>
-                                            <div className="track-info-mobile-control-icon">
-                                                <Delete/>
-                                            </div>
-                                            <div className="track-info-mobile-control-label">
-                                                Remove playlist
-                                            </div>
-                                        </div>
-                                    ):null}
+                                    {/*{playlistInfoState.playlist.owner.uid === currentUser.user?.account?.uid && playlistInfoState.playlist.kind !== 3 ? (*/}
+                                    {/*    <div className="track-info-mobile-control-button" onClick={() => {*/}
+                                    {/*        // removePlaylist(playlistInfoState.playlist.kind)*/}
+                                    {/*        console.log("Delete playlist")*/}
+                                    {/*    }}>*/}
+                                    {/*        <div className="track-info-mobile-control-icon">*/}
+                                    {/*            <Delete/>*/}
+                                    {/*        </div>*/}
+                                    {/*        <div className="track-info-mobile-control-label">*/}
+                                    {/*            Remove playlist*/}
+                                    {/*        </div>*/}
+                                    {/*    </div>*/}
+                                    {/*):null}*/}
 
                                 </div>
 
@@ -174,9 +175,9 @@ const MobilePlaylistInfo = () => {
             <PopUpModal active={filterMenuActive} setActive={setFilterMenuActive}>
                 <>
                     <div className="track-info-mobile-about-wrapper animated-opacity-4ms">
-                        <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={playlistInfoState.playlist.cover?.uri} size="75x75" imageSize="200x200"/>
+                        <Cover placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(playlistInfoState.playlist.cover?.id, "120x120")} size="75x75" imageSize="200x200"/>
                         <div className="track-info-wrapper">
-                            <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{playlistInfoState.playlist.title}</div>
+                            <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{playlistInfoState.playlist.name}</div>
                             <div style={{ marginTop: "5px" }} className="track-info-artist">{playlistInfoState.playlist.tracks.length + " tracks"}</div>
                         </div>
                         <div className="track-info-back-button">

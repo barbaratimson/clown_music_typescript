@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+    import React, {useEffect} from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Collection from "./pages/Collection";
 import Chart from "./pages/Chart";
@@ -9,7 +9,6 @@ import Settings from "./pages/Settings";
 import PlaylistView from "./PlaylistView";
 import Artist from "./pages/Artist";
 import AlbumView from "./AlbumView";
-import {UploadForm} from "../UploadForms/UploadForms";
 import {Upload} from "./Upload/Upload";
 
 interface PagePropsT {

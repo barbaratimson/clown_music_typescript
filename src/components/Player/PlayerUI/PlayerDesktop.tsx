@@ -75,7 +75,7 @@ const PlayerDesktop = ({
                     <div className="player-track-info">
                         {currentSong.title ? (
                             <div className='track-info-title-wrapper'>
-                                {currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}
+                                {/*{currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}*/}
                                 <div className="player-track-info-title">
                                     {currentSong.title}
                                 </div>

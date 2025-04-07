@@ -10,7 +10,6 @@ import {hideHeader, showHeader} from "../../../store/mobile/mobileHeaderSlice";
 import SongsList from "../../SongsList";
 import PageHeader from "../../UI/PageHeader";
 import {getIsMobileInfo} from "../../../utils/deviceHandler";
-import { fetchChart } from "../../../utils/apiRequests";
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
@@ -27,34 +26,34 @@ const Chart = () => {
 
 
     const a = () => {
-        if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && chartResult) {
-            setHeaderActive({ title: chartResult?.chart.title })
-        } else {
-            setHeaderOff()
-        }
+        // if (playlistInfo.current && !isElementInViewport(playlistInfo.current) && chartResult) {
+        //     setHeaderActive({ title: chartResult?.chart.title })
+        // } else {
+        //     setHeaderOff()
+        // }
     }
-
-    useEffect(() => {
-        fetchChart().then(result => setChartResult(result)).finally(() => setIsLoading(false))
-    }, [])
-
-
-    useEffect(() => {
-        getIsMobileInfo()
-        document.addEventListener("scroll", a)
-        return () => { document.removeEventListener("scroll", a); setHeaderOff() }
-    }, []);
-
+    //
+    // useEffect(() => {
+    //     fetchChart().then(result => setChartResult(result)).finally(() => setIsLoading(false))
+    // }, [])
+    //
+    //
+    // useEffect(() => {
+    //     getIsMobileInfo()
+    //     document.addEventListener("scroll", a)
+    //     return () => { document.removeEventListener("scroll", a); setHeaderOff() }
+    // }, []);
+    //
     if (isLoading) return <Loader.PageLoader />
 
     return (
         <div className="page-default animated-opacity">
-            {chartResult ? (
-                <>
-                    <PageHeader ref={playlistInfo} titleText={chartResult?.chart.title} descText={chartResult?.chart.description} coverUri={chartResult?.chart.cover.uri}/>
-                    <SongsList playlist={chartResult.chart} tracks={chartResult.chart.tracks} />
-                </>
-            ) : null}
+            {/*{chartResult ? (*/}
+            {/*    <>*/}
+            {/*        <PageHeader ref={playlistInfo} titleText={chartResult?.chart.title} descText={chartResult?.chart.description} coverUri={chartResult?.chart.cover.uri}/>*/}
+            {/*        <SongsList playlist={chartResult.chart} tracks={chartResult.chart.tracks} />*/}
+            {/*    </>*/}
+            {/*) : null}*/}
         </div>
     )
 }

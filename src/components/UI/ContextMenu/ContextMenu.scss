@@ -14,3 +14,47 @@
   top: 0;
   left: 0;
 }
+
+.context-menu__button {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  gap: 10px;
+  background-color: var(--bg-color-secondary);
+  color: var(--font-color-main);
+  border-bottom: 1px solid rgba(178, 174, 174, 0.19);
+  cursor: pointer;
+  transition: background-color .2s ease-out;
+
+  &:hover {
+    background-color: var(--bg-color-secondary_hover);
+    border-color: transparent;
+  }
+}
+
+.context-menu__button:last-child {
+  border: none;
+}
+
+
+.context-menu__button__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.context-menu__button__label {
+  font-size: 14px;
+  font-weight: 600;
+
+  &.additional {
+    margin-left: auto;
+    width: 30px;
+  }
+  &.additional > svg {
+    width: fit-content;
+    font-size: 20px;
+  }
+}

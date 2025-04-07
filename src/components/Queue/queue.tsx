@@ -13,7 +13,7 @@ const Queue = () => {
     return (
         <div className="queue-wrapper">
             <div className="queue-mobile-header animated-opacity-4ms">
-                <Cover src={getCMImageUrl(currentQueue.playlist.cover.id,"120x120")} size="75x75" imageSize="100x100"/>
+                <Cover src={getCMImageUrl(currentQueue.playlist?.cover?.id,"120x120")} size="75x75" imageSize="100x100"/>
                 <div className="track-info-wrapper">
                     <div onClick={(e)=>{e.stopPropagation()}} className="track-info-title mobile">{currentQueue.playlist.name}</div>
                 </div>

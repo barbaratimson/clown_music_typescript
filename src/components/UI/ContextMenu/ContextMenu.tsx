@@ -1,6 +1,8 @@
-import React, {useEffect} from "react";
+import React, {MouseEventHandler, useEffect} from "react";
 import "./ContextMenu.scss"
 import {ClickAwayListener, Fade, Popper} from "@mui/material";
+import {Add, ContentCopy} from "@mui/icons-material";
+import Loader from "../Loader";
 
 interface ContextMenuProps {
     children: React.ReactElement
@@ -13,7 +15,15 @@ interface ContextMenuProps {
 }
 
 
-const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, position, clickAway}: ContextMenuProps) => {
+export const ContextMenu = ({
+                                children,
+                                anchorEl,
+                                active,
+                                setActive,
+                                keepMounted,
+                                position,
+                                clickAway
+                            }: ContextMenuProps) => {
 
     return (
         <>
@@ -29,7 +39,7 @@ const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, positi
                     enabled: true,
                     options: {
                         altAxis: true,
-                        altBoundary: true,
+                        altBoundary: false,
                         tether: true,
                         rootBoundary: 'document',
                     }
@@ -43,4 +53,27 @@ const ContextMenu = ({children, anchorEl, active, setActive, keepMounted, positi
 }
 
 
-export default ContextMenu
+interface ContextMenuElementProps {
+    label: string,
+    icon: React.ReactElement
+    onClick: (e: any) => void
+    additional?: React.ReactElement
+}
+
+export const ContextMenuElement = ({label, icon, onClick, additional}: ContextMenuElementProps) => {
+    return (
+        <div className="context-menu__button" onClick={onClick}>
+            <div className="context-menu__button__icon">
+                {icon}
+            </div>
+            <div className="context-menu__button__label">
+                {label}
+            </div>
+            {additional && <div className="context-menu__button__label additional">
+                    {additional}
+            </div>}
+        </div>
+    )
+}
+
+

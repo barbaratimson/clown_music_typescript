@@ -62,11 +62,11 @@ export function msToMinutesAndSeconds(time:number | undefined) {
     }
 }
 
-export const getPlaylistLink = (ownerId:number,kind:number) => {
-    return `/users/${ownerId}/playlist/${kind}`
+export const getPlaylistLink = (ownerId:number,id:string) => {
+    return `/users/${ownerId}/playlist/${id}`
 }
-export const getAlbumLink = (atistId:number,albumId:number) => {
-    return `/artist/${atistId}/album/${albumId}`
+export const getAlbumLink = (artistId:number,albumId:number) => {
+    return `/artist/${artistId}/album/${albumId}`
 }
 
 export const playlistFromTracksArr = (tracks:TrackT[],title:string = ""):PlaylistT => {

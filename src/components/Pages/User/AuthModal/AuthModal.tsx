@@ -17,7 +17,7 @@ const AuthModal = ({active,setActive,data,setData,user}:AuthModalPropsT) => {
         <PopUpModal active={active} setActive={setActive}>
             <div className="auth-modal__wrapper">
                 <div className="auth-modal__close" ><ExpandMore /></div>
-                <div className="auth-modal__text">{user.account?.displayName}</div>
+                {/*<div className="auth-modal__text">{user.account?.displayName}</div>*/}
                 <div className="auth-modal__text">Access token:</div>
                 <input className="auth-modal__input"
                     // type={"password"}

@@ -4,7 +4,6 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {changeCurrentSong} from "../../store/CurrentSongSlice";
 import {playerStart, playerStop, setIsLoading} from "./playerSlice";
 import {getImageLink, getUniqueRandomTrackFromPlaylist, randomSongFromTrackList} from "../../utils/utils";
-import {fetchYaSongLink} from '../../utils/apiRequests';
 import {showMessage} from '../../store/MessageSlice';
 import {addTrackToQueue, setQueue} from "../../store/playingQueueSlice";
 import {trackWrap} from '../../utils/trackWrap';
@@ -13,7 +12,7 @@ import Audio from "./Audio";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import PlayerDesktop from './PlayerUI/PlayerDesktop';
-import {fetchCMSongLink} from "../../utils/cmApiRequsts";
+import {fetchCMSongLink, getCMImageUrl} from "../../utils/cmApiRequsts";
 
 
 const savedVolume = localStorage.getItem("player_volume")
@@ -51,7 +50,7 @@ const Player = () => {
             artist: track.artists && track.artists.length > 0 ? track.artists[0].name : "",
             artwork: [
                 {
-                    src: getImageLink(track.coverUri, "600x600") ?? "",
+                    src: getCMImageUrl(track.cover?.id, "400x400"),
                     sizes: "512x512",
                     type: "image/png",
                 },

@@ -7,6 +7,7 @@ import {Favorite, HeartBroken} from "@mui/icons-material";
 import './style.scss'
 import ArtistName from "../ArtistName";
 import {PositionInChart} from "../Track";
+import {getCMImageUrl} from "../../utils/cmApiRequsts";
 
 const Message = () => {
     const dispatch = useAppDispatch()
@@ -26,11 +27,11 @@ const Message = () => {
                 <div className="message-wrapper track">
                     <div className="message-cover-animation">
                         <div className={`message-cover-animation-icon`}>{message.type === "trackLiked" ? <Favorite /> : <HeartBroken />}</div>
-                        <Cover coverUri={message.track.coverUri} size={"50x50"} imageSize="50x50" />
+                        <Cover src={getCMImageUrl(message.track.cover?.id,"50x50")} size={"50x50"} imageSize="50x50" />
                     </div>
                     <div className="track-info-wrapper">
                         <div className="track-info-title-wrapper">
-                            {message.track.chart && <PositionInChart position={message.track.chart.position}/>}
+                            {/*{message.track.chart && <PositionInChart position={message.track.chart.position}/>}*/}
                             <div className="track-info-title">{message.track.title + `${message.track.version ? ` (${message.track.version})` : ""}`}</div>
                         </div>
                         <div onClick={(e)=>{e.stopPropagation()}} className="track-info-artists-wrapper">

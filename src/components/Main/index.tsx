@@ -6,7 +6,6 @@ import Message from "../Message";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {TrackId} from "../../utils/types/types";
 import {setLikedSongs} from "../../store/LikedSongsSlice";
-import {fetchLikedSongs} from "../../utils/apiRequests";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
 import NavbarMobile from "../Navbar/NavbarMobile";
 import MobileHeader from "../MobileHeader";
@@ -43,8 +42,9 @@ const Main = () => {
 
     }, []);
 
-    if (isLoading) return <AppAuth changeLoadingState={setIsLoading}/>
     return (
+        <>
+        {isLoading && <AppAuth changeLoadingState={setIsLoading}/>}
         <div className="main-wrapper">
             {isMobile && <MobileHeader/>}
             {!isMobile ? (<Navbar/>) : (<NavbarMobile/>)}
@@ -63,9 +63,9 @@ const Main = () => {
                 <QueueMobile active={queueOpen ?? false} setActive={setQueueOpen}/>
             )
             }
-            {isMobile && <MobileTrackInfo/>}
             {isMobile && <MobilePlaylistInfo/>}
         </div>
+        </>
     )
 }
 

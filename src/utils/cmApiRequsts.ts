@@ -3,7 +3,7 @@ import {MessageType, showMessage} from "../store/MessageSlice";
 import {store} from "../store";
 import {logMessage} from "../store/devLogSlice";
 import axios from "axios";
-import {TrackT} from "./types/types";
+import {CoverSize, TrackT} from "./types/types";
 
 export const cmLink = process.env.REACT_APP_CMAPI_LINK
 
@@ -35,7 +35,7 @@ export const fetchCmUser = async () => {
 };
 
 
-export function getCMImageUrl(id:string | undefined, size:string) {
+export function getCMImageUrl(id:string | undefined, size:CoverSize) {
     if (id && size) {
         return `${cmLink}/cover/${id}?size=${size}`
     } else {
@@ -81,10 +81,10 @@ export const fetchCmAlbumById = async (id:string | undefined) => {
     }
 };
 
-export const fetchCmUserTracks = async () => {
+export const fetchCmUserTracks = async (id:number) => {
     try {
         const response = await axios.get(
-            `${cmLink}/track/users/1`, {headers: {"Authorization": localStorage.getItem("Authorization_CM")}});
+            `${cmLink}/track/users/${id}`, {headers: {"Authorization": localStorage.getItem("Authorization_CM")}});
         return response.data
     } catch (err: any) {
         // setMessage(err.message,"error")
@@ -145,6 +145,16 @@ export const deleteTrack = async (id:number) => {
     }
 }
 
+export const authorizeUser = async (body:{email:string, password:string}) => {
+    try {
+        const response = await axios.post<{access_token:string}>(
+            `${cmLink}/auth/login`,body);
+        localStorage.setItem("Authorization_CM", "Bearer " + response.data.access_token)
+        return response.data
+    } catch (err) {
+        console.error('Ошибка при получении списка треков:', err);
+    }
+}
 
 
 

@@ -19,8 +19,9 @@ import Searchbar from "../../../UI/Searchbar/Searchbar";
 import Button from "../../../UI/Button/./Button";
 import MobilePlaylistInfo from "../../../PlaylistInfo/MobilePlaylistInfo";
 import PlaylistInfo from "../../../PlaylistInfo/PlaylistInfo";
-import ContextMenu from "../../../UI/ContextMenu/ContextMenu";
 import {getCMImageUrl} from "../../../../utils/cmApiRequsts";
+import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../../utils/deviceHandler";
+import { ContextMenu } from "../../../UI/ContextMenu/ContextMenu";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -43,22 +44,23 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const setPlaylistInfoShow = (active: boolean) => dispatch(setPlaylistInfoActiveState(active))
     const setPlaylistSearchShow = (active: boolean) => dispatch(setPlaylistSearchActiveState(active))
     const setPlaylistInfoState = (playlist: PlaylistT) => dispatch(setPlaylistInfo(playlist))
+    const [isMobile, setIsMobile] = useState(false)
 
     const playlistInfoState = useAppSelector((state: RootState) => state.playlistInfo)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const searchFunc = (tracks: TrackType[]) => {
+    const searchFunc = (tracks: TrackT[]) => {
         return tracks.filter(track =>
-            track.track.title.split(" ")
+            track.title.split(" ")
                 .join("")
                 .toLowerCase()
                 .includes(search
                     .split(" ")
                     .join("")
                     .toLowerCase()) ||
-            (track.track.artists.length !== 0 ?
-                track.track.artists.find(artist => artist.name.split(" ")
+            (track.artists.length !== 0 ?
+                track.artists.find(artist => artist.name.split(" ")
                     .join("")
                     .toLowerCase()
                     .includes(search
@@ -75,9 +77,9 @@ const Playlist = ({playlist}: PlaylistProps) => {
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
         if (filter.includes("Unknown")) {
-            setTracksFiltered(playlist.tracks.filter(track => track.albums[0]?.genre === undefined))
+            setTracksFiltered(playlist.tracks.filter(track => track.genre === undefined))
         } else if (filter.length !== 0) {
-            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.albums[0]?.genre)))
+            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.genre)))
         } else {
             setSearch("")
             setTracksSearchResult(undefined)
@@ -125,11 +127,21 @@ const Playlist = ({playlist}: PlaylistProps) => {
         setSearch("")
     }, [showSearch]);
 
+    useEffect(() => {
+        const getIsMobileInfo = () => {
+            handleSubscribe()
+            onSubscribe()
+            setIsMobile(getIsMobile(deviceState))
+        }
+        getIsMobileInfo()
+
+    }, []);
 
     return (
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
-                <PageHeader ref={playlistInfo} titleText={playlist.name} descText={playlist.description}
+                <PageHeader ref={playlistInfo} titleText={playlist.name}
+                            // descText={playlist.description}
                             src={getCMImageUrl(playlist.cover?.id, "800x800")}
                             controls={
                                 <>
@@ -164,9 +176,9 @@ const Playlist = ({playlist}: PlaylistProps) => {
                 } : tracksFiltered ? {...playlist, tracks: tracksFiltered} : playlist}
                            tracks={tracksSearchResult ?? tracksFiltered ?? playlist.tracks}/>
 
-                <ContextMenu active={playlistInfoState.active} position={"auto"} setActive={setPlaylistInfoShow} anchorEl={anchorEl} clickAway>
+                {!isMobile && <ContextMenu active={playlistInfoState.active} position={"auto"} setActive={setPlaylistInfoShow} anchorEl={anchorEl} clickAway>
                         <PlaylistInfo playlist={playlist}/>
-                </ContextMenu>
+                </ContextMenu>}
             </div>
         </>
     )

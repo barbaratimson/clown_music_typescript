@@ -19,7 +19,7 @@ const PageHeader = forwardRef<HTMLDivElement, PageHeaderT>((props, ref) => {
     return (
         <div ref={ref} className="page-header-wrapper">
             <div className="page-header-image-wrapper">
-                <Cover src={props.src} placeholder={<div className="page-header-image-placeholder"></div>}
+                <Cover src={props.src ?? ""} placeholder={<div className="page-header-image-placeholder"></div>}
                        unWrapped size={mobile ? "600x600" : "1000x1000"}/>
             </div>
             <div className="page-header-info">

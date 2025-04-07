@@ -19,7 +19,7 @@ const MobileHeader = () => {
                     <Button onClick={()=>{navigate(-1)}}><ArrowBackIosNew sx={{fontSize:"20px"}}/></Button>
                     <Fade in={headerInfo.active}>
                         <div className="header-mobile-title-wrapper">
-                            {headerInfo.imgUrl && <Cover coverUri={headerInfo.imgUrl} size="25x25" imageSize="50x50"/>}
+                            {headerInfo.imgUrl && <Cover src={headerInfo.imgUrl} size="25x25" imageSize="50x50"/>}
                             <div className="header-mobile-title">{headerInfo.title}</div>
                         </div>
                         </Fade>

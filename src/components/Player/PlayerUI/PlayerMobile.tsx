@@ -23,6 +23,7 @@ import {TrackT} from "../../../utils/types/types";
 import {setTrackInfo, setTrackInfoActiveState} from "../../../store/trackInfoSlice";
 import {addTrackToQueuePosition, setOpeningState} from "../../../store/playingQueueSlice";
 import {useLocation, useNavigate} from "react-router-dom";
+import {getCMImageUrl} from "../../../utils/cmApiRequsts";
 
 interface PlayerMobilePropsT {
     position: number,
@@ -72,14 +73,14 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
             {playerFolded &&
                 <div className="player-wrapper" onClick={() => {
                     setPlayerFolded(!playerFolded)
-                }} style={{marginBottom: "37px", gap: "0"}}>
+                }} style={{marginBottom: "40px", gap: "0"}}>
                     <div className="player-track-info-wrapper mobile" key={currentSong.id}>
-                        <Cover placeholder={<ImagePlaceholder size="medium"/>} coverUri={currentSong.coverUri}
+                        <Cover placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(currentSong.cover?.id, "120x120")}
                                size="50x50" imageSize="200x200"/>
                         <div className="player-track-info">
                             {currentSong.title ? (
                                 <div className='track-info-title-wrapper'>
-                                    {currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}
+                                    {/*{currentSong.chart && <PositionInChart position={currentSong.chart.position}/>}*/}
                                     <div className="player-track-info-title">
                                         {currentSong.title}
                                     </div>
@@ -151,7 +152,7 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                     <div className="player-header-mobile-title-wrapper">
                                         <div className="player-header-mobile-title" onClick={(e) => {
                                             e.stopPropagation();
-                                        }}>{queueCurrentPlaylist.title.charAt(0).toUpperCase() + queueCurrentPlaylist.title.slice(1)}</div>
+                                        }}>{queueCurrentPlaylist.name.charAt(0).toUpperCase() + queueCurrentPlaylist.name.slice(1)}</div>
                                         <span className="player-header-mobile-filters">
                                         <>
                                         {queueCurrentFilter?.slice(0, 3).map((filter) => (
@@ -187,7 +188,7 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                                  skipBack()
                                              }}>
                                             <Cover
-                                                coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) - 1]?.track.coverUri}
+                                                src={getCMImageUrl(queue[queue.findIndex(x => x.id == currentSong.id) - 1]?.cover?.id, "400x400")}
                                                 size={"200x200"} unWrapped/>
                                         </div>
                                         <div
@@ -196,7 +197,7 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                                 !playerState.playing ? startPlayerFunc() : stopPlayerFunc()
                                             }}>
                                             <Cover placeholder={<ImagePlaceholder size='large'/>}
-                                                   coverUri={currentSong.ogImage} size={"800x800"} unWrapped/>
+                                                   src={getCMImageUrl(currentSong.cover?.id, "800x800")} size={"800x800"} unWrapped/>
                                         </div>
                                         <div key={String(playerState.shuffle) + 1}
                                              className="player-track-cover-wrapper-full animated-translate-right next"
@@ -204,7 +205,7 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                                  skipForward()
                                              }}>
                                             <Cover
-                                                coverUri={queue[queue.findIndex(x => x.track.id == currentSong.id) + 1]?.track.coverUri}
+                                                src={getCMImageUrl(queue[queue.findIndex(x => x.id == currentSong.id) + 1]?.cover?.id, "400x400")}
                                                 size={"200x200"} unWrapped/>
                                         </div>
                                     </div>
@@ -213,8 +214,8 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                         <div className="player-track-info full">
                                             {currentSong.title ? (
                                                 <div className='track-info-title-wrapper full'>
-                                                    {currentSong.chart &&
-                                                        <PositionInChart position={currentSong.chart.position}/>}
+                                                    {/*{currentSong.chart &&*/}
+                                                    {/*    <PositionInChart position={currentSong.chart.position}/>}*/}
                                                     <div className="player-track-info-title"
                                                          style={{fontSize: "20px !important"}}>
                                                         {currentSong.title}

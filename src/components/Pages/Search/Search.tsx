@@ -8,7 +8,7 @@ import Loader from "../../UI/Loader";
 import PlaylistCard from "../../PlaylistCard";
 import {Link, useSearchParams} from "react-router-dom";
 import Index from "../../Track";
-import {getImageLink, getPlaylistLink} from "../../../utils/utils";
+import {getImageLink, getPlaylistLink, playlistFromTracksArr} from "../../../utils/utils";
 import {PlaylistsBlock} from "../../PlaylistsBlock";
 import PageBlock from "../../PageBlock";
 import Track from "../../Track";
@@ -78,7 +78,7 @@ const Search = () => {
                                 <PageBlock title="Tracks">
                                     <div
                                         className={searchResults.tracks.results.length % 2 === 0 ? "artist-popular-tracks-grid" : "artist-popular-tracks-flex"}>
-                                        <SongsList playlist={{ kind: -1, cover: { uri: searchResults.tracks.results[0].coverUri }, uid: 0, ogImage: searchResults.tracks.results[0].coverUri, available: true, owner: { uid: searchResults.tracks.results[0].artists[0].id, name: searchResults.tracks.results[0].artists[0].name, verified: true }, title: `${searchResults.text}: Результаты`, description: "", tracks: trackArrayWrap(searchResults.tracks.results) }} tracks={trackArrayWrap(searchResults.tracks.results)} />
+                                        <SongsList playlist={playlistFromTracksArr(searchResults.tracks.results, `${searchResults.text}: Результаты`)} tracks={searchResults.tracks.results} />
                                     </div>
                                 </PageBlock>
                             }

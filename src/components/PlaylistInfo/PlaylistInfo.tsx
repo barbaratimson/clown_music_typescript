@@ -9,8 +9,9 @@ import {link} from "../../utils/constants";
 import "./PlaylistInfo.scss"
 import {PlaylistT} from "../../utils/types/types";
 import {Popper} from "@mui/material";
-import ContextMenu from "../UI/ContextMenu/ContextMenu";
 import Button from "../UI/Button/Button";
+import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
+import { ContextMenu } from "../UI/ContextMenu/ContextMenu";
 
 interface PlaylistInfoProps {
     playlist: PlaylistT
@@ -34,6 +35,7 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
     const [genresToFilter, setGenresToFilter] = useState<string[]>([])
     const currentUser = useAppSelector((state: RootState) => state.user)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
+    const [isMobile, setIsMobile] = useState(false)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
 
@@ -82,16 +84,16 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
     useEffect(() => {
         fetchUserPlaylists()
         const artists = playlist.tracks.map((track) => {
-            if (track.track.artists.length !== 0) {
-                return track.track.artists
+            if (track.artists.length !== 0) {
+                return track.artists
             }
         })
         const uniqueArtists = Array.from(new Set(artists)).flat(1)
 
 
         const genres = playlist.tracks.map((track) => {
-            if (track.track.albums[0]?.genre !== undefined) {
-                return track.track.albums[0]?.genre
+            if (track.genre !== undefined) {
+                return track.genre
             } else {
                 return "Unknown"
             }
@@ -113,6 +115,15 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
         }
     }, [filterQuery]);
 
+    useEffect(() => {
+        const getIsMobileInfo = () => {
+            handleSubscribe()
+            onSubscribe()
+            setIsMobile(getIsMobile(deviceState))
+        }
+        getIsMobileInfo()
+
+    }, []);
 
     useEffect(() => {
         if (genresToFilter.length !== 0 ) {
@@ -151,25 +162,25 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                             ) : null}
                         </>
                     </div>
-                    {playlist.owner.uid === currentUser.user?.account?.uid && playlist.kind !== 3 ? (
-                        <div className="track-info-mobile-control-button" onClick={() => {
-                            // removePlaylist(playlist.kind)
-                            console.log("Delete playlist")
-                        }}>
-                            <div className="track-info-mobile-control-icon">
-                                <Delete/>
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Remove playlist
-                            </div>
-                        </div>
-                    ) : null}
+                    {/*{playlist.owner.uid === currentUser.user?.account?.uid && playlist.kind !== 3 ? (*/}
+                    {/*    <div className="track-info-mobile-control-button" onClick={() => {*/}
+                    {/*        // removePlaylist(playlist.kind)*/}
+                    {/*        console.log("Delete playlist")*/}
+                    {/*    }}>*/}
+                    {/*        <div className="track-info-mobile-control-icon">*/}
+                    {/*            <Delete/>*/}
+                    {/*        </div>*/}
+                    {/*        <div className="track-info-mobile-control-label">*/}
+                    {/*            Remove playlist*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*) : null}*/}
                 </div>
             </div>
-            <ContextMenu active={filterMenuActive} setActive={setFilterMenuActive} position={"left-start"} anchorEl={anchorEl}>
+            {!isMobile && <ContextMenu active={filterMenuActive} setActive={setFilterMenuActive} position={"left-start"} anchorEl={anchorEl}>
                 <PlaylistFilters genres={genres} genresToFilter={genresToFilter} setGenresToFilter={setGenresToFilter}
                                  filterQuery={filterQuery}/>
-            </ContextMenu>
+            </ContextMenu>}
         </>
     )
 }
