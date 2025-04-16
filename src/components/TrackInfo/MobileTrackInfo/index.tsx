@@ -28,7 +28,8 @@ import "./style.scss"
 import PlaylistCard from "../../PlaylistCard";
 import {playlistFromTracksArr} from "../../../utils/utils";
 import {setIsLoading} from "../../Player/playerSlice";
-import {addToCmPlaylist, getCMImageUrl} from "../../../utils/cmApiRequsts";
+import {addToCmPlaylist, fetchCmUserPlaylists, getCMImageUrl} from "../../../utils/cmApiRequsts";
+import {ContextMenuElement} from "../../UI/ContextMenu/ContextMenu";
 
 interface SimilarTracksT {
     track: TrackT
@@ -39,7 +40,7 @@ interface SimilarTracksT {
 interface MobileTrackInfoProps {
     active: boolean,
     track: TrackT,
-    setActive: Dispatch<SetStateAction<boolean>>
+    setActive: Dispatch<SetStateAction<boolean>> | any
 }
 
 const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
@@ -65,6 +66,7 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
     const [showSimilar, setShowSimilar] = useState(false)
     const [showPlaylistsToAdd, setShowPlaylistsToAdd] = useState(false)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
+    const user = useAppSelector((state: RootState) => state.user.user)
 
     const closeAll = () => {
         setArtistsOpen(false);
@@ -86,8 +88,9 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
     }
 
     useEffect(()=>{
+        if (!active) return
         if (!similarTracks) return
-        if(similarTracks?.similarTracks?.length !== 0) {   
+        if(similarTracks?.similarTracks?.length !== 0) {
             setShowSimilar(true)
             closeAll()
         } else {
@@ -96,6 +99,7 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
     },[similarTracks])
 
     useEffect(() => {
+        if (!active) return
         setShowSimilar(false)
     }, [track]);
 
@@ -104,9 +108,12 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
     }, [location]);
 
     useEffect(() => {
+        if (!active) return
         setIsLoading(true)
-        // fetchUserPlaylists().then(result => setUserPlaylists(result)).finally(()=>{setIsLoading(false)})
-    }, [showPlaylistsToAdd]);
+        fetchCmUserPlaylists(user.id).then(result => setUserPlaylists(result)).finally(() => {
+            setIsLoading(false)
+        })
+    }, [showPlaylistsToAdd, active]);
 
     return (
         <>
@@ -123,95 +130,17 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
                         </div>
                     </div>
                     <div className="track-info-mobile-controls-wrapper animated-opacity-4ms" onClick={(e) => { e.stopPropagation() }}>
-                        <div className="track-info-mobile-control-button" onClick={(e) => {
-                            // isLiked(track.id) ? dislikeSong(track).then((response) => updateLikedSongs("removed")) : likeSong(track).then((response) => updateLikedSongs("liked"));
-                                closeAll() }}>
-                            <div className="track-info-mobile-control-icon">
-                                {isLiked(track.id) ? (
-                                    <div
-                                        className={`track-controls-button ${isLiked(track.id) ? "heart-pulse" : null}`}>
-                                        <Favorite />
-                                    </div>
-                                ) : (
-                                    <FavoriteBorder />
-                                )}
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Like
-                            </div>
-                        </div>
-
-                        <div className="track-info-mobile-control-button" onClick={() => { playNext(currentSong, track); closeAll() }}>
-                            <div className="track-info-mobile-control-icon">
-                                <PlaylistAdd />
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Play next
-                            </div>
-                        </div>
+                        <ContextMenuElement label="Play next" icon={<PlaylistAdd />} onClick={() => { playNext(currentSong, track); closeAll() }}/>
                         {track.artists.length !== 0 ? (
-                            <>
-                                <div className="track-info-mobile-control-button" onClick={() => { track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(true); setActive(false) }}>
-                                    <div className="track-info-mobile-control-icon">
-                                        <PeopleAlt />
-                                    </div>
-                                    <div className="track-info-mobile-control-label">
-                                        {track.artists.length === 1 ? "Artist" : "Artists"}
-                                    </div>
-                                    <div className="track-info-mobile-control-label" style={{ flexGrow: "1", textAlign: "end" }}> {track.artists.length !== 1 ? <KeyboardArrowDown className="track-info-back-icon" /> : null}</div>
-                                </div>
-                            </>
+                                <ContextMenuElement label=   {track.artists.length === 1 ? "Artist" : "Artists"} icon={<PeopleAlt />} onClick={() => { track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(true); setActive(false) }}/>
                         ) : null}
-                        <div className="track-info-mobile-control-button"
-                            onClick={() => {
-                                setShowPlaylistsToAdd(true); closeAll()
-                                // addToPlaylist(1040,track,1)
-                            }}
-                        >
-                            <div className="track-info-mobile-control-icon">
-                                <Add />
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Add to playlist
-                            </div>
-                        </div>
+                        <ContextMenuElement label="Add to playlist" icon={ <Add />} onClick={() => {setShowPlaylistsToAdd(true); closeAll()}}/>
                         {track.album && (
-                            <>
-                                <Link className="track-info-mobile-control-button" style={{ textDecoration: "none" }} to={`/artist/${track.artists[0]?.id}/album/${track.album?.id}`}>
-                                    <div className="track-info-mobile-control-icon">
-                                        <Album />
-                                    </div>
-                                    <div className="track-info-mobile-control-label">
-                                        Album
-                                    </div>
-                                </Link>
-                            </>
+                                <ContextMenuElement label="Album" icon={ <Album />} onClick={()=>{navigate(`/artist/${track.artists[0]?.id}/album/${track.album?.id}`)}}/>
                         )}
                         {track.genre ? (
-                            <div className="track-info-mobile-control-button" onClick={() => { setParams({ genres: track.genre }) }}>
-                                <div className="track-info-mobile-control-icon">
-                                    <FilterAlt />
-                                </div>
-                                <div className="track-info-mobile-control-label">
-                                    Filter by genre
-                                </div>
-                            </div>
+                            <ContextMenuElement onClick={() => { setParams({ genres: track.genre }) }} label="Filter by genre" icon={<FilterAlt />}/>
                         ) : null}
-                        <div className="track-info-mobile-control-button" onClick={()=>{setIsLoading(true);
-                            // fetchSimilarTracks(track.id).then(result => setSimilarTracks(result)).finally(() => setIsLoading(false))
-                        }}>
-                            <div className="track-info-mobile-control-icon">
-                                <ContentCopy />
-                            </div>
-                            <div className="track-info-mobile-control-label">
-                                Similar Tracks
-                            </div>
-                            <div className="track-info-mobile-control-label" style={{ flexGrow: "1", display: "flex", justifyContent:"end"}}> 
-                                <div style={{width:"30px"}}>
-                                    {isLoading && <Loader size={16}/>}
-                                </div>
-                                </div>
-                        </div>
                     </div>
                 </>
             </PopUpModal>
@@ -251,25 +180,6 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
                     )) : null}
                 </>
             </PopUpModal>
-            {/*<PopUpModal active={showSimilar} setActive={setShowSimilar}>*/}
-            {/*    <>*/}
-            {/*        <div className="track-info-mobile-about-wrapper">*/}
-            {/*            <Cover placeholder={<ImagePlaceholder size="medium" />} coverUri={track.coverUri} size="75x75" imageSize="200x200" />*/}
-            {/*            <div className="track-info-wrapper">*/}
-            {/*                <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>*/}
-            {/*                <div style={{ marginTop: "5px" }} className="track-info-artist">{`${similarTracks?.similarTracks.length} similar`}</div>*/}
-            {/*            </div>*/}
-            {/*            <div className="track-info-back-button">*/}
-            {/*                <KeyboardArrowDown className="track-info-back-icon" style={{ rotate: showSimilar ? "90deg" : "0deg" }} />*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className="track-info-songs-wrapper" onClick={(e)=>{e.stopPropagation()}} style={{maxHeight:"250px", overflowY:"scroll"}}>*/}
-            {/*            {similarTracks && similarTracks?.similarTracks.length !== 0 ? (*/}
-            {/*                <SongsList playlist={playlistFromTracksArr(trackArrayWrap(similarTracks.similarTracks), `${similarTracks.track.title}: similar`)} tracks={trackArrayWrap(similarTracks?.similarTracks)} />*/}
-            {/*            ) : null}*/}
-            {/*        </div>*/}
-            {/*    </>*/}
-            {/*</PopUpModal>*/}
         </>
     )
 }

@@ -181,14 +181,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                                                 setActive={setShowPlaylistsToAdd}>
                 <>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.map((playlist) => (
-                        <div key={playlist.id}
-                             onClick={() => {
-                                 addToCmPlaylist(playlist.id, [track])
-                             }}
-                        >
-                            <PlaylistCard title={playlist.name} type={"line"}
-                                          coverUri={getCMImageUrl(playlist.cover?.id, "400x400")}/>
-                        </div>
+                            <ContextMenuElement key={playlist.id} label={playlist.name} icon={<Cover src={getCMImageUrl(playlist.cover?.id, "50x50")} size="30x30"/>} onClick={() => {addToCmPlaylist(playlist.id, [track])}}/>
                     )) : null}
                 </>
             </ContextMenu>}

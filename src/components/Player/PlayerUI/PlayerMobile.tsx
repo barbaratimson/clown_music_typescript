@@ -1,29 +1,31 @@
-import React, {memo, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Box, IconButton, Skeleton, Slide} from "@mui/material";
-import {addAlpha, secToMinutesAndSeconds} from "../../../utils/utils";
+import {secToMinutesAndSeconds} from "../../../utils/utils";
 import ArtistName from '../../ArtistName';
 import {
     ExpandLess,
     ExpandMore,
     FastForwardRounded,
-    FastRewindRounded, Info, KeyboardArrowDown,
-    MoreVert, PeopleAlt, PlaylistAdd,
-    Repeat, Reply,
+    FastRewindRounded,
+    Info,
+    PeopleAlt,
+    Repeat,
+    Reply,
     Shuffle,
 } from '@mui/icons-material';
 import ListIcon from '@mui/icons-material/List';
 import SeekSlider from './SeekSlider';
 import PlayButton from './PlayButton';
 import Cover, {ImagePlaceholder} from '../../UI/Cover';
-import {PositionInChart} from '../../Track';
 import LikeButton from '../../LikeButton';
 import {playerStart, playerStop, setRepeat, setShuffle} from "../playerSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../../store";
 import {TrackT} from "../../../utils/types/types";
 import {setTrackInfo, setTrackInfoActiveState} from "../../../store/trackInfoSlice";
-import {addTrackToQueuePosition, setOpeningState} from "../../../store/playingQueueSlice";
+import {setOpeningState} from "../../../store/playingQueueSlice";
 import {useLocation, useNavigate} from "react-router-dom";
 import {getCMImageUrl} from "../../../utils/cmApiRequsts";
+import track from "../../Track";
 
 interface PlayerMobilePropsT {
     position: number,
@@ -44,7 +46,8 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
     const setPlayerRepeat = (repeat: boolean) => dispatch(setRepeat(repeat))
     const playerState = useAppSelector((state: RootState) => state.player)
     const setTrackInfoState = (track: TrackT) => dispatch(setTrackInfo(track))
-    const setTrackInfoShowState = (active: boolean) => dispatch(setTrackInfoActiveState(active))
+    const setTrackInfoActive = (active: boolean) => dispatch(setTrackInfoActiveState(active))
+
     const mobilePlayerFull = useRef<HTMLDivElement>(null)
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
@@ -329,14 +332,18 @@ const PlayerMobile = ({currentSong, position, duration, skipForward, skipBack, s
                                             </div>
 
                                             <div className="track-controls-button" onClick={() => {
-                                                setTrackInfoShowState(true);
                                                 setTrackInfoState(currentSong)
+                                                setTrackInfoActive(true)
                                             }}>
                                                 <Info/>
                                             </div>
 
                                         </div>
                                     </div>
+                                </div>
+                                <div className="player-mobile-bg">
+                                    <div className="player-mobile-bg-blur"></div>
+                                    <img className="player-mobile-bg-img" src={getCMImageUrl(currentSong.cover?.id, "120x120")}></img>
                                 </div>
                             </>)
                         : null}

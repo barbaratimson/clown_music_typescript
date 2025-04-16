@@ -4,7 +4,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import PersonIcon from '@mui/icons-material/Person';
 import {Link, useLocation} from "react-router-dom";
-import {LibraryMusic} from "@mui/icons-material";
+import {LibraryMusic, Upload} from "@mui/icons-material";
 import "../Navbar.scss"
 import NavButton from '../NavButton/NavButton';
 
@@ -18,6 +18,7 @@ const Navbar = () => {
                 <NavButton title="Your collection" to="/collection"><LibraryMusic/></NavButton>
                 <NavButton title="Music chart" to="/chart"><TrendingUpIcon/></NavButton>
                 <NavButton title="Your info" to="/user"><PersonIcon/></NavButton>
+                <NavButton title="Upload" to="/upload"><Upload/></NavButton>
             </div>
         </div>
         </div>

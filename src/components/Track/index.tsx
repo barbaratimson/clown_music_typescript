@@ -37,7 +37,10 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
     const setCurrentSong = (track: TrackT) => dispatch(changeCurrentSong(track))
     const stopPlayerFunc = () => dispatch(playerStop())
     const startPlayerFunc = () => dispatch(playerStart())
-    const [trackInfoActive, setTrackInfoActive] = useState(false)
+    const trackInfoActive = useAppSelector(state => state.trackInfo.active)
+    const trackInfoTrack = useAppSelector(state => state.trackInfo.track)
+    const setTrackInfoActive = (active: boolean) => dispatch(setTrackInfoActiveState(active))
+    const setTrackInfoTrack = (track: TrackT) => dispatch(setTrackInfo(track))
     const [isCurrentSong, setIsCurrentSong] = useState(false)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -119,6 +122,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                     {!hideControls &&
                         <Button style={{padding:0}} onClick={(e) => {
                             setTrackInfoActive(!trackInfoActive)
+                            setTrackInfoTrack(track)
                             setAnchorEl(e.currentTarget)
                         }}>
                             <MoreVert/>
@@ -126,11 +130,9 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                 </div>
             </div>
 
-            {!isMobile ? (<ContextMenu active={trackInfoActive} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
+            {!isMobile && <ContextMenu active={trackInfoActive && track.id == trackInfoTrack.id} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
                 <TrackInfo track={track}/>
-            </ContextMenu>) : (
-                <MobileTrackInfo active={trackInfoActive} setActive={setTrackInfoActive} track={track}/>
-                )}
+            </ContextMenu>}
         </>
     )
 }

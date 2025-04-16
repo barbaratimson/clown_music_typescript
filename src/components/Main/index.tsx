@@ -19,9 +19,11 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Queue from "../Queue/queue";
 import Loader from "../UI/Loader";
-import {fetchCmUser} from "../../utils/cmApiRequsts";
+import {fetchCmUser, getCMImageUrl} from "../../utils/cmApiRequsts";
 import {setIsLoading} from "../Player/playerSlice";
 import {AppAuth} from "../Pages/AppAuth/AppAuth";
+import TrackInfo from "../TrackInfo/TrackInfo";
+import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
 
 const QueueMobile = lazy(() => import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -30,6 +32,10 @@ const Main = () => {
     const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(true)
     const queueOpen = useAppSelector((state: RootState) => state.playingQueue.queue.queueOpen)
+    const currentSong = useAppSelector(state => state.CurrentSongStore.currentSong)
+    const trackInfoActive = useAppSelector(state => state.trackInfo.active)
+    const trackInfoTrack = useAppSelector(state => state.trackInfo.track)
+    const setTrackInfoActive = (active: boolean) => dispatch(setTrackInfoActiveState(active))
     const setQueueOpen = (open: boolean) => dispatch(setOpeningState(open))
     const [isMobile, setIsMobile] = useState(false)
     useEffect(() => {
@@ -64,6 +70,7 @@ const Main = () => {
             )
             }
             {isMobile && <MobilePlaylistInfo/>}
+            {isMobile && <MobileTrackInfo active={trackInfoActive} setActive={setTrackInfoActive} track={trackInfoTrack}/>}
         </div>
         </>
     )

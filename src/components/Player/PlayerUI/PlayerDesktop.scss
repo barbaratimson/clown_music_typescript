@@ -1,0 +1,60 @@
+.player-desktop-full-wrapper {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  top: 0;
+  width: 100dvw;
+  height: 100dvh;
+  z-index: 10;
+}
+
+.player-desktop-full-track-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  padding: 20px;
+  border-radius: 20px;
+  height: 655px;
+  overflow: hidden;
+}
+
+.player-track-info-desktop-full-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-desktop-full-queue-wrapper {
+    justify-content: start;
+    width: 400px;
+    height: 100%;
+}
+
+.player-desktop-full-top-wrapper {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    margin-top: 20px;
+}
+
+.player-desktop-full-queue-wrapper-songs-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+.player-desktop-full-secondary-controls {
+  display: flex;
+  justify-content: center;
+}
+
+
+
