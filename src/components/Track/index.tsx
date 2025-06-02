@@ -1,36 +1,35 @@
-import React, {useEffect, useState} from "react";
-import {TrackId, TrackT} from "../../utils/types/types";
-import {RootState, useAppDispatch, useAppSelector} from "../../store";
-import {changeCurrentSong} from "../../store/CurrentSongSlice";
-import {playerStart, playerStop} from "../Player/playerSlice";
-import {msToMinutesAndSeconds} from "../../utils/utils";
-import {MoreVert, PauseRounded, PlayArrowRounded} from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { TrackId, TrackT } from "../../utils/types/types";
+import { RootState, useAppDispatch, useAppSelector } from "../../store";
+import { changeCurrentSong } from "../../store/CurrentSongSlice";
+import { playerStart, playerStop } from "../Player/playerSlice";
+import { msToMinutesAndSeconds } from "../../utils/utils";
+import { MoreVert, PauseRounded, PlayArrowRounded } from "@mui/icons-material";
 import EqualizerIcon from "../../assets/EqualizerIcon";
 import ArtistName from "../ArtistName";
-import {setLikedSongs} from "../../store/LikedSongsSlice";
-import {showMessage} from "../../store/MessageSlice";
-import {trackWrap} from "../../utils/trackWrap";
-import {setTrackInfo, setTrackInfoActiveState} from "../../store/trackInfoSlice";
-import Cover, {ImagePlaceholder} from "../UI/Cover";
+import { setLikedSongs } from "../../store/LikedSongsSlice";
+import { showMessage } from "../../store/MessageSlice";
+import { trackWrap } from "../../utils/trackWrap";
+import { setTrackInfo, setTrackInfoActiveState } from "../../store/trackInfoSlice";
+import Cover, { ImagePlaceholder } from "../UI/Cover";
 import LikeButton from "../LikeButton";
-import './style.scss'
 import TrackInfo from "../TrackInfo/TrackInfo";
 import Button from "../UI/Button/Button";
-import {getCMImageUrl} from "../../utils/cmApiRequsts";
-import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
+import { getCMImageUrl } from "../../utils/cmApiRequsts";
+import { deviceState, getIsMobile, handleSubscribe, onSubscribe } from "../../utils/deviceHandler";
 import MobileTrackInfo from "../TrackInfo/MobileTrackInfo";
-import {ContextMenu} from "../UI/ContextMenu/ContextMenu";
-
+import { ContextMenu } from "../UI/ContextMenu/ContextMenu";
 
 interface TrackProps {
     track: TrackT,
     queueFunc?: Function
-    hideControls?:boolean
+    hideControls?: boolean
+    isPlaying?: boolean
 }
 
 const link = process.env.REACT_APP_YMAPI_LINK
 
-const Track = ({track, queueFunc, hideControls}: TrackProps) => {
+const Track = ({ track, queueFunc, hideControls }: TrackProps) => {
     const dispatch = useAppDispatch()
     const currentSong = useAppSelector((state: RootState) => state.CurrentSongStore.currentSong)
     const playerState = useAppSelector((state: RootState) => state.player)
@@ -45,7 +44,6 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [isMobile, setIsMobile] = useState(false)
-
 
     const changeSong = (song: TrackT) => {
         if (song.id != currentSong.id) {
@@ -68,9 +66,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
             setIsMobile(getIsMobile(deviceState))
         }
         getIsMobileInfo()
-
     }, []);
-
 
     useEffect(() => {
         setIsCurrentSong(currentSong.id === track.id)
@@ -79,60 +75,87 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
     return (
         <>
             <div
-                className={`track-wrapper animated-opacity-4ms ${isCurrentSong ? "track-current" : ""} ${!playerState.playing ? "active" : ""}`}
+                className={`
+                    group flex flex-row w-full p-1.5 rounded-2xl cursor-pointer transition-all duration-300
+                    ${isCurrentSong
+                    ? "bg-white/25"
+                    : "bg-transparent hover:bg-white/15 hover:bg-opacity-6 hover:translate-x-1.5 sm:hover:bg-opacity-6 sm:hover:translate-x-1.5"}
+                    active:transform-none
+                `}
                 onClick={() => {
                     changeSong(track)
-                }}>
-                <div className="track-cover-wrapper">
-                    <div className={`track-playing-status ${isCurrentSong ? "show" : ""}`}>
-                        {currentSong.id != track.id ? (
-                            <PlayArrowRounded/>
+                }}
+            >
+                <div className="relative flex self-center justify-self-center min-w-[50px] h-[50px] rounded-xl overflow-hidden bg-bg-color-secondary_hover shadow-[0_0_5px_3px_rgba(44,44,44,0.2)]">
+                    <div className={`
+                        absolute inset-0 flex items-center text-white justify-center transition-opacity duration-300 bg-black/20 group-hover:opacity-100
+                        ${isCurrentSong ? "opacity-100" : "opacity-0 hover:opacity-100"}
+                        backdrop-blur-[0.5px]
+                    `}>
+                        {currentSong.id !== track.id ? (
+                            <PlayArrowRounded />
                         ) : playerState.playing ? (
-                            <EqualizerIcon/>
+                            <EqualizerIcon />
                         ) : (
-                            <PauseRounded/>
+                            <PauseRounded />
                         )}
                     </div>
-                    <Cover unWrapped placeholder={<ImagePlaceholder size="medium"/>} src={getCMImageUrl(track.cover?.id, "120x120")}
-                           size="200x200"/>
+                    <Cover
+                        unWrapped
+                        placeholder={<ImagePlaceholder size="medium" />}
+                        src={getCMImageUrl(track.cover?.id, "120x120")}
+                        size="200x200"
+                    />
                 </div>
-                <div className="track-info-wrapper">
-                    <div className="track-info-title-wrapper">
-                        {/*{track.chart && <PositionInChart position={track.chart.position}/>}*/}
-                        <div
-                            className="track-info-title">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+
+                <div className="flex flex-col mx-2.5 justify-center text-white text-sm font-medium tracking-wider overflow-hidden whitespace-nowrap">
+                    <div className="flex">
+                        <div className="text-ellipsis overflow-hidden">
+                            {track.title + `${track.version ? ` (${track.version})` : ""}`}
+                        </div>
                     </div>
-                    <div onClick={(e) => {
-                        e.stopPropagation()
-                    }} className="track-info-artists-wrapper">
-                        <span className="track-info-artist-span">
+                    <div
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex flex-row gap-1 ml-0.5"
+                    >
+                        <span className="text-ellipsis overflow-hidden">
                             {track.artists.map(artist => (
-                                <ArtistName key={artist.id} artist={artist}/>
+                                <ArtistName key={artist.id} artist={artist} />
                             ))}
                         </span>
                     </div>
                 </div>
-                <div onClick={(e) => {
-                    e.stopPropagation()
-                }} className="track-controls-wrapper">
-                    {/*{!hideControls && <LikeButton className="mobile-hidden" track={track}/>}*/}
-                    {/*<div className="track-controls-info-time">*/}
-                    {/*    {msToMinutesAndSeconds(track.durationMs)}*/}
-                    {/*</div>*/}
-                    {!hideControls &&
-                        <Button style={{padding:0}} onClick={(e) => {
-                            setTrackInfoActive(!trackInfoActive)
-                            setTrackInfoTrack(track)
-                            setAnchorEl(e.currentTarget)
-                        }}>
-                            <MoreVert/>
-                        </Button>}
+
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center ml-auto mr-2"
+                >
+                    {!hideControls && (
+                        <Button
+                            style={{ padding: 0 }}
+                            onClick={(e) => {
+                                setTrackInfoActive(!trackInfoActive)
+                                setTrackInfoTrack(track)
+                                setAnchorEl(e.currentTarget)
+                            }}
+                        >
+                            <MoreVert />
+                        </Button>
+                    )}
                 </div>
             </div>
 
-            {!isMobile && <ContextMenu active={trackInfoActive && track.id == trackInfoTrack.id} setActive={setTrackInfoActive} anchorEl={anchorEl} position={"bottom"} clickAway>
-                <TrackInfo track={track}/>
-            </ContextMenu>}
+            {!isMobile && (
+                <ContextMenu
+                    active={trackInfoActive && track.id == trackInfoTrack.id}
+                    setActive={setTrackInfoActive}
+                    anchorEl={anchorEl}
+                    position={"bottom"}
+                    clickAway
+                >
+                    <TrackInfo track={track} />
+                </ContextMenu>
+            )}
         </>
     )
 }
@@ -142,12 +165,10 @@ interface PositionInChartProps {
     text?: string
 }
 
-
-export const PositionInChart = ({position, text}: PositionInChartProps) => {
+export const PositionInChart = ({ position, text }: PositionInChartProps) => {
     return (
         <div className="track-info-position">{text ?? "#" + position}</div>
     )
 }
-
 
 export default Track

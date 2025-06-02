@@ -21,7 +21,7 @@ import MobilePlaylistInfo from "../../../PlaylistInfo/MobilePlaylistInfo";
 import PlaylistInfo from "../../../PlaylistInfo/PlaylistInfo";
 import {getCMImageUrl} from "../../../../utils/cmApiRequsts";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../../../utils/deviceHandler";
-import { ContextMenu } from "../../../UI/ContextMenu/ContextMenu";
+import {ContextMenu} from "../../../UI/ContextMenu/ContextMenu";
 
 interface PlaylistProps {
     playlist: PlaylistT
@@ -35,7 +35,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const setHeaderOff = () => dispatch(hideHeader())
     const input = useRef<HTMLInputElement>(null);
     const playlistInfo = useRef(null)
-    const [tracksFiltered, setTracksFiltered] = useState<TrackT[]>()
+    const [tracksFiltered, setTracksFiltered] = useState<TrackT[]>([])
     const [tracksSearchResult, setTracksSearchResult] = useState<TrackT[]>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
@@ -70,22 +70,26 @@ const Playlist = ({playlist}: PlaylistProps) => {
                 ) : false))
     }
 
-    const handleClickAway = ()=> {
+    const handleClickAway = () => {
         setPlaylistInfoShow(false)
     }
 
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
-        if (filter.includes("Unknown")) {
-            setTracksFiltered(playlist.tracks.filter(track => track.genre === undefined))
+        const filterAlbums = filterQuery.get("albums")
+
+        if (filterAlbums === "false") {
+            setTracksFiltered([...tracksFiltered, ...playlist.tracks.filter(track => track.album === null)])
+        } else if (filter.includes("Unknown")) {
+            setTracksFiltered([...tracksFiltered, ...playlist.tracks.filter(track => track.genre === undefined)])
         } else if (filter.length !== 0) {
-            setTracksFiltered(playlist.tracks.filter(track => filter.includes(track.genre)))
+            setTracksFiltered([...tracksFiltered,...playlist.tracks.filter(track => filter.includes(track.genre))])
         } else {
             setSearch("")
             setTracksSearchResult(undefined)
-            setTracksFiltered(undefined)
+            setTracksFiltered([])
         }
-    }, [filterQuery]);
+    }, [filterQuery, playlist.tracks]);
 
     useEffect(() => {
         if (search === "") {
@@ -141,7 +145,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
         <>
             <div className="playlist-wrapper mobile-folded animated-opacity">
                 <PageHeader ref={playlistInfo} titleText={playlist.name}
-                            // descText={playlist.description}
+                    // descText={playlist.description}
                             src={getCMImageUrl(playlist.cover?.id, "800x800")}
                             controls={
                                 <>
@@ -173,12 +177,14 @@ const Playlist = ({playlist}: PlaylistProps) => {
                 <SongsList playlist={tracksSearchResult ? {
                     ...playlist,
                     tracks: tracksSearchResult
-                } : tracksFiltered ? {...playlist, tracks: tracksFiltered} : playlist}
-                           tracks={tracksSearchResult ?? tracksFiltered ?? playlist.tracks}/>
+                } : tracksFiltered.length !==0 ? {...playlist, tracks: tracksFiltered} : playlist}
+                           tracks={tracksSearchResult ? tracksSearchResult : tracksFiltered.length !== 0 ?  tracksFiltered : playlist.tracks}/>
 
-                {!isMobile && <ContextMenu active={playlistInfoState.active} position={"auto"} setActive={setPlaylistInfoShow} anchorEl={anchorEl} clickAway>
+                {!isMobile &&
+                    <ContextMenu active={playlistInfoState.active} position={"auto"} setActive={setPlaylistInfoShow}
+                                 anchorEl={anchorEl} clickAway>
                         <PlaylistInfo playlist={playlist}/>
-                </ContextMenu>}
+                    </ContextMenu>}
             </div>
         </>
     )

@@ -33,7 +33,6 @@ const Collection = () => {
             <PageBlock title="Playlists" controls={<div onClick={()=>{createCmPlaylist("abboba")}}><Add fontSize="large"/></div>}>
                 {!isPlaylistsLoading ? (
                     <div className="playlists-wrapper-flex">
-                    <PlaylistCard type="line" key={3} title="Мне нравится" coverUri="avatars.yandex.net/get-music-user-playlist/30088/playlist-favorite-default/" link={`/users/${userData.id}/playlist/3`} />
                         {userPlaylists ? userPlaylists.map((playlist) =>  (
                             <PlaylistCard type="line" key={playlist.id} coverUri={getCMImageUrl(playlist.cover?.id, "400x400")} title={playlist.name} link={`/users/${playlist.owner.id}/playlist/${playlist.id}`} />
                         )) : null}

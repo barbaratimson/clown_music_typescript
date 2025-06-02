@@ -29,38 +29,17 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
     const [params, setParams] = useSearchParams("")
     const [filterMenuActive, setFilterMenuActive] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [albumMenuActive, setAlbumMenuActive] = useState(false)
     const [genres, setGenres] = useState<GenreCountT[]>()
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const navigate = useNavigate()
     const [genresToFilter, setGenresToFilter] = useState<string[]>([])
+    const [filterAlbums, setFilterAlbums] = useState<string>()
     const currentUser = useAppSelector((state: RootState) => state.user)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
     const [isMobile, setIsMobile] = useState(false)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
-
-    const addPlaylist = async (playlistId: number) => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlist/${playlistId}/add`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
-            console.log(response.data)
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    }
-
-    const removePlaylist = async (playlistId: number) => {
-        try {
-            const response = await axios.get(
-                `${link}/ya/playlist/${playlistId}/remove`, {headers: {"Authorization": localStorage.getItem("Authorization")}});
-            console.log(response.data)
-            if (response.data === "ok") {
-                navigate(-1)
-            }
-        } catch (err) {
-            console.error('Ошибка при получении списка треков:', err);
-        }
-    }
     const fetchUserPlaylists = async () => {
         try {
             const response = await axios.get(
@@ -110,10 +89,15 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
 
     useEffect(() => {
         const filter = filterQuery.getAll("genres")
+        const excludeAlbums = filterQuery.get("albums")
         if (filter.length !== 0) {
             setGenresToFilter(filter)
         }
+        if (excludeAlbums) {
+            setFilterAlbums(excludeAlbums)
+        }
     }, [filterQuery]);
+
 
     useEffect(() => {
         const getIsMobileInfo = () => {
@@ -128,9 +112,20 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
     useEffect(() => {
         if (genresToFilter.length !== 0 ) {
             setFilterQuery({genres: genresToFilter})
+        } else {
+            setFilterQuery("")
+            filterQuery.delete("genre")
         }
     }, [genresToFilter]);
 
+    useEffect(() => {
+        if (filterAlbums) {
+            setFilterQuery({albums: filterAlbums})
+        }  else {
+            setFilterQuery("")
+            filterQuery.delete("albums")
+        }
+    }, [filterAlbums]);
 
     return (
         <>
@@ -140,6 +135,7 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                 }}>
                     <div className="track-info-mobile-control-button" onClick={(e) => {
                         setFilterMenuActive(!filterMenuActive);
+                        setAlbumMenuActive(false);
                         setAnchorEl(e.currentTarget);
                     }}>
                         <>
@@ -155,11 +151,19 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                                     filterQuery.delete("genres");
                                     setFilterQuery("");
                                     setGenresToFilter([]);
-                                    // setPlaylistInfoShow(false)
                                 }}>
                                         <FilterAltOff/>
                                     </Button>
-                            ) : null}
+                            ) : filterQuery.get("albums") === "false" && (
+                                <Button className="track-info-mobile-control-label additional" onClick={(e) => {
+                                    e.stopPropagation();
+                                    filterQuery.delete("artists");
+                                    setFilterQuery("");
+                                    setGenresToFilter([]);
+                                }}>
+                                    <FilterAltOff/>
+                                </Button>
+                            )}
                         </>
                     </div>
                     {/*{playlist.owner.uid === currentUser.user?.account?.uid && playlist.kind !== 3 ? (*/}
@@ -178,9 +182,10 @@ const PlaylistInfo = ({playlist}: PlaylistInfoProps) => {
                 </div>
             </div>
             {!isMobile && <ContextMenu active={filterMenuActive} setActive={setFilterMenuActive} position={"left-start"} anchorEl={anchorEl}>
-                <PlaylistFilters genres={genres} genresToFilter={genresToFilter} setGenresToFilter={setGenresToFilter}
+                <PlaylistFilters genres={genres} setFilterAlbums={setFilterAlbums} genresToFilter={genresToFilter} setGenresToFilter={setGenresToFilter}
                                  filterQuery={filterQuery}/>
             </ContextMenu>}
+
         </>
     )
 }
@@ -190,9 +195,11 @@ interface PlaylistFiltersProps {
     genresToFilter: string[]
     setGenresToFilter: (genres: string[]) => void
     filterQuery: URLSearchParams
+    setFilterAlbums: (albums: string) => void
 }
 
 const PlaylistFilters = ({
+                             setFilterAlbums,
                              setGenresToFilter,
                              genres,
                              genresToFilter,
@@ -203,6 +210,17 @@ const PlaylistFilters = ({
             <div className="playlist-filter__wrapper" onClick={(e) => {
                 e.stopPropagation()
             }}>
+                <div
+                    className={`playlist-filter__button  ${filterQuery.get("albums") === "false" ? "active" : ""}`}
+                    onClick={() => {
+                        filterQuery.get("albums") === "false" ?
+                            setFilterAlbums("true")
+                            :
+                            setFilterAlbums("false")
+                    }}>
+                    <div
+                        className="playlist-filter__button_text">Exclude Albums</div>
+                </div>
                 {genres?.map(genreRender => (
                     <div key={genreRender.genre}
                          className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}
@@ -225,5 +243,6 @@ const PlaylistFilters = ({
         </>
     )
 }
+
 
 export default PlaylistInfo

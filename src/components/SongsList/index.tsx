@@ -1,10 +1,10 @@
 import React, {useEffect, useRef, useState} from "react";
 import {AlbumT, PlaylistT, QueueT, TrackT, TrackType} from "../../utils/types/types";
-import './style.scss'
 import {initQueue} from "../../store/playingQueueSlice";
 import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {useSearchParams} from "react-router-dom";
 import Track from "../Track";
+import {motion, AnimatePresence} from "framer-motion";
 
 interface SongsListProps {
     tracks: Array<TrackT>
@@ -21,6 +21,7 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
     const [offset, setOffset] = useState(20)
     const [dataToShow, setDataToShow] = useState<TrackT[]>([])
     const loaderRef = useRef<any>();
+
     const setInitQueue = (tracks: Array<TrackT>) => {
         if (playlist) {
             const filter = filterQuery.getAll("genres")
@@ -47,29 +48,67 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
             setDataToShow(playlist?.tracks.slice(0,20))
         }
     }, [tracks]);
-    
+
     useEffect(() => {
-            const observer = new IntersectionObserver((entries) => {
-                const firstEntry = entries[0];
-                if (firstEntry.isIntersecting) {
-                    setDataToShow(showNextData(offset))
-                }
-            });
-            if (loaderRef.current) {
-                observer.observe(loaderRef.current);
+        const observer = new IntersectionObserver((entries) => {
+            const firstEntry = entries[0];
+            if (firstEntry.isIntersecting) {
+                setDataToShow(showNextData(offset))
             }
-            return () => observer.disconnect();
+        });
+        if (loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
+        return () => observer.disconnect();
     }, [showNextData]);
 
+    const trackVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i: number) => ({
+            opacity: 1,
+            y: 0,
+            transition: {
+                delay: i * 0.05,
+                duration: 0.3,
+                ease: "easeOut"
+            }
+        })
+    };
+
     return (
-            <>
-                <div key={tracks[0]?.id} className="songs-wrapper">
-                        {dataToShow ? dataToShow.map((song) => (
-                                    <Track hideControls={hideControls} key={song.id} queueFunc={setInitQueue} track={song} />
-                        )) : null}
-                </div>
-                <div ref={loaderRef} style={{width:"100%",height:dataToShow?.length !== tracks.length ? "2400px" : 0}}></div>
-            </>
+        <>
+            <motion.div
+                key={tracks[0]?.id}
+                className="flex flex-col w-full gap-3 md:gap-4"
+                initial="hidden"
+                animate="visible"
+            >
+                <AnimatePresence>
+                    {dataToShow?.map((song, index) => (
+                        <motion.div
+                            key={song.id}
+                            custom={index}
+                            variants={trackVariants}
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            layout
+                        >
+                            <Track
+                                hideControls={hideControls}
+                                key={song.id}
+                                queueFunc={setInitQueue}
+                                track={song}
+                            />
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
+            </motion.div>
+            <div
+                ref={loaderRef}
+                className={`w-full ${dataToShow?.length !== tracks.length ? "h-[2400px]" : "h-0"}`}
+            />
+        </>
     )
 })
 

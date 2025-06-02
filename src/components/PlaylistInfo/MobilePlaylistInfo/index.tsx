@@ -12,6 +12,7 @@ import {link} from "../../../utils/constants";
 import "./style.scss"
 import {PlaylistT} from "../../../utils/types/types";
 import {getCMImageUrl} from "../../../utils/cmApiRequsts";
+import Button from "../../UI/Button/Button";
 
 interface GenreCountT {
     genre: string,
@@ -33,6 +34,7 @@ const MobilePlaylistInfo = () => {
     const [filterQuery, setFilterQuery] = useSearchParams("")
     const navigate = useNavigate()
     const [genresToFilter, setGenresToFilter] = useState<string[]>([])
+    const [filterAlbums, setFilterAlbums] = useState<string>()
     const currentUser = useAppSelector((state:RootState)=> state.user)
     const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>()
 
@@ -101,17 +103,23 @@ const MobilePlaylistInfo = () => {
     }, [playlistInfoState.playlist]);
 
     useEffect(() => {
-        const filter = filterQuery.getAll("genres")
-        if (filter.length !== 0) {
-            setGenresToFilter(filter)
+        if (genresToFilter.length !== 0 ) {
+            setFilterQuery({genres: genresToFilter})
+        } else {
+            setFilterQuery("")
+            filterQuery.delete("genre")
         }
-    }, [filterQuery]);
-
-
+    }, [genresToFilter]);
 
     useEffect(() => {
-        setFilterQuery({genres: genresToFilter})
-    }, [genresToFilter]);
+        if (filterAlbums) {
+            setFilterQuery({albums: filterAlbums})
+        }  else {
+            setFilterQuery("")
+            filterQuery.delete("albums")
+        }
+    }, [filterAlbums]);
+
 
 
     return (
@@ -135,16 +143,30 @@ const MobilePlaylistInfo = () => {
                                     <div className="track-info-mobile-control-button" onClick={() => {setFilterMenuActive(!filterMenuActive);setPlaylistInfoShow(false)}}>
                                         <>
                                             <div className="track-info-mobile-control-icon">
-                                                <FilterAlt />
+                                                <FilterAlt/>
                                             </div>
                                             <div className="track-info-mobile-control-label">
                                                 Filter
                                             </div>
                                             {filterQuery.getAll("genres")?.length !== 0 ? (
-                                                <div className="track-info-mobile-control-label additional">
-                                                    <FilterAltOff onClick={(e)=>{e.stopPropagation();filterQuery.delete("genres");setFilterQuery("");setGenresToFilter([]);setPlaylistInfoShow(false)}}/>
-                                                </div>
-                                            ) : null}
+                                                <Button className="track-info-mobile-control-label additional" onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    filterQuery.delete("genres");
+                                                    setFilterQuery("");
+                                                    setGenresToFilter([]);
+                                                }}>
+                                                    <FilterAltOff/>
+                                                </Button>
+                                            ) : filterQuery.get("albums") === "false" && (
+                                                <Button className="track-info-mobile-control-label additional" onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    filterQuery.delete("artists");
+                                                    setFilterQuery("");
+                                                    setGenresToFilter([]);
+                                                }}>
+                                                    <FilterAltOff/>
+                                                </Button>
+                                            )}
                                         </>
                                     </div>
 
@@ -185,17 +207,31 @@ const MobilePlaylistInfo = () => {
                         </div>
                     </div>
                     <div className="playlist-filter__wrapper" onClick={(e)=>{e.stopPropagation()}}>
+                        <div
+                            className={`playlist-filter__button  ${filterQuery.get("albums") === "false" ? "active" : ""}`}
+                            onClick={() => {
+                                filterQuery.get("albums") === "false" ?
+                                    setFilterAlbums("true")
+                                    :
+                                    setFilterAlbums("false")
+                            }}>
+                            <div
+                                className="playlist-filter__button_text">Exclude Albums</div>
+                        </div>
                         {genres?.map(genreRender => (
-                            <div key={genreRender.genre} className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}
+                            <div key={genreRender.genre}
+                                 className={`playlist-filter__button  ${filterQuery.getAll("genres").includes(genreRender.genre) ? "active" : ""}`}
                                  onClick={() => {
-                                        !filterQuery.getAll("genres")?.includes(genreRender.genre) && genreRender.genre ?
+                                     !filterQuery.getAll("genres")?.includes(genreRender.genre) && genreRender.genre ?
                                          // setFilterQuery({ genre: [genreRender.genre })
                                          setGenresToFilter(genresToFilter?.concat(genreRender.genre))
                                          :
                                          setGenresToFilter(genresToFilter.filter(elem => elem !== genreRender.genre))
                                  }}>
-                                <div className="playlist-filter__button_text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
-                                <div className="playlist-filter__button_amount" style={{ width: genreRender.percentage * 100 / genres[0].percentage + "%" }}>
+                                <div
+                                    className="playlist-filter__button_text">{genreRender.genre ? genreRender.genre.charAt(0).toUpperCase() + genreRender.genre.slice(1) : null}</div>
+                                <div className="playlist-filter__button_amount"
+                                     style={{width: genreRender.percentage * 100 / genres[0].percentage + "%"}}>
                                     <div className="playlist-filter__button_amount_number">{genreRender.amount}</div>
                                 </div>
                             </div>

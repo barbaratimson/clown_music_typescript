@@ -5,6 +5,7 @@ import {TrackT} from "../../../utils/types/types";
 import {fetchCmUser, fetchCmUserTracks} from "../../../utils/cmApiRequsts";
 import {playlistFromTracksArr} from "../../../utils/utils";
 import {useAppSelector} from "../../../store";
+import Playlist from "../PlaylistView/Playlist";
 
 export const Upload = () => {
 
@@ -20,7 +21,7 @@ export const Upload = () => {
             <TrackUploadForm/>
             <ArtistUploadForm/>
             {uploadedTracks &&
-                <SongsList playlist={playlistFromTracksArr(uploadedTracks,"Uploaded tracks")} tracks={uploadedTracks}></SongsList>
+                <Playlist playlist={playlistFromTracksArr(uploadedTracks,"Uploaded tracks")}></Playlist>
             }
         </div>
     );

@@ -11,8 +11,8 @@ import {logMessage} from "../../store/devLogSlice";
 import Audio from "./Audio";
 import PlayerMobile from "./PlayerUI/PlayerMobile";
 import {deviceState, getIsMobile, handleSubscribe, onSubscribe} from "../../utils/deviceHandler";
-import PlayerDesktop from './PlayerUI/PlayerDesktop';
 import {fetchCMSongLink, getCMImageUrl} from "../../utils/cmApiRequsts";
+import { PlayerDesktop } from "./PlayerUI/PlayerDesktop";
 
 
 const savedVolume = localStorage.getItem("player_volume")

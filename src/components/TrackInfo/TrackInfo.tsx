@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {PlaylistT, TrackId, TrackT} from "../../utils/types/types";
 import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import {RootState, useAppSelector} from "../../store";
+import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {
     Add,
     Album,
@@ -26,6 +26,7 @@ import {playlistFromTracksArr} from "../../utils/utils";
 import {ContextMenu, ContextMenuElement} from "../UI/ContextMenu/ContextMenu";
 import {addToCmPlaylist, deleteTrack, fetchCmUserPlaylists, getCMImageUrl} from "../../utils/cmApiRequsts";
 import {userId} from "../../utils/constants";
+import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
 
 interface SimilarTracksT {
     track: TrackT
@@ -64,6 +65,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
         const likedSong = likedSongs?.find((song) => String(song.id) === String(id))
         return !!likedSong
     }
+    const setTrackInfoMenuActive = (active: boolean) => dispatch(setTrackInfoActiveState(active))
     const [isLoading, setIsLoading] = useState(true)
     const [similarTracks, setSimilarTracks] = useState<SimilarTracksT>()
     const [artistsOpen, setArtistsOpen] = useState(false)
@@ -74,6 +76,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
 
     const closeAll = () => {
         setArtistsOpen(false);
+        setTrackInfoMenuActive(false)
     }
 
     const closeCondArtists = () => {
@@ -104,9 +107,6 @@ const TrackInfo = ({track}: TrackInfoProps) => {
         setShowSimilar(false)
     }, [track]);
 
-    useEffect(() => {
-        closeAll()
-    }, [location]);
 
     useEffect(() => {
         setIsLoading(true)
@@ -137,6 +137,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                                         onClick={(e) => {
                                             track.artists.length === 1 ? navigate(`/artist/${track.artists[0]?.id}`) : setArtistsOpen(!artistsOpen);
                                             setAnchorEl(e.currentTarget)
+                                            closeAll()
                                         }}/>
                 )}
                 <ContextMenuElement onClick={(e) => {
@@ -147,6 +148,7 @@ const TrackInfo = ({track}: TrackInfoProps) => {
 
                 {track.album && <ContextMenuElement onClick={() => {
                     navigate(`/artist/${track.album?.artists[0]?.id}/album/${track.album?.id}`)
+                    ;closeAll()
                 }} icon={<Album/>} label="Album"/>}
                 {track.genre && <ContextMenuElement onClick={() => {
                     setParams({genres: track.genre})
@@ -181,7 +183,11 @@ const TrackInfo = ({track}: TrackInfoProps) => {
                                                 setActive={setShowPlaylistsToAdd}>
                 <>
                     {userPlaylists && userPlaylists.length !== 0 ? userPlaylists.map((playlist) => (
-                            <ContextMenuElement key={playlist.id} label={playlist.name} icon={<Cover src={getCMImageUrl(playlist.cover?.id, "50x50")} size="30x30"/>} onClick={() => {addToCmPlaylist(playlist.id, [track])}}/>
+                        <ContextMenuElement key={playlist.id} label={playlist.name}
+                                            icon={<Cover src={getCMImageUrl(playlist.cover?.id, "50x50")}
+                                                         size="30x30"/>} onClick={() => {
+                            addToCmPlaylist(playlist.id, [track])
+                        }}/>
                     )) : null}
                 </>
             </ContextMenu>}

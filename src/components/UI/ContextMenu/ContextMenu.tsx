@@ -70,7 +70,7 @@ export const ContextMenuElement = ({label, icon, onClick, additional}: ContextMe
                 {label}
             </div>
             {additional && <div className="context-menu__button__label additional">
-                    {additional}
+                {additional}
             </div>}
         </div>
     )
