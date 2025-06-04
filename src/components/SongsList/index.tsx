@@ -68,7 +68,6 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
             opacity: 1,
             y: 0,
             transition: {
-                delay: i * 0.05,
                 duration: 0.3,
                 ease: "easeOut"
             }

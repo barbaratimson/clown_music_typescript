@@ -115,6 +115,7 @@ interface ImagePlaceholderProps {
     children?: any;
 }
 
+
 export const ImagePlaceholder = ({ size, children }: ImagePlaceholderProps) => {
     return (
         <motion.div
