@@ -18,7 +18,7 @@ interface CoverProps {
     blurIntensity?: number;
 }
 
-const Cover = memo(({ src, size, unWrapped, placeholder, className, blurIntensity = 5 }: CoverProps) => {
+const Cover = memo(({ src, size, unWrapped, placeholder, className, blurIntensity = 2 }: CoverProps) => {
     const [width, height] = size.split("x");
     const [isLoaded, setIsLoaded] = useState(false);
     const [showPlaceholder, setShowPlaceholder] = useState(true);
