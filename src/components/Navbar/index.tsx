@@ -10,7 +10,7 @@ const Navbar = () => {
             bg-bg-color-main
             rounded-tr-[16px]
             fixed h-full
-            p-[10px] pb-[98px] px-[10px]
+            p-[10px] pb-[100px] px-[10px]
         ">
             <div className="
                 flex flex-col

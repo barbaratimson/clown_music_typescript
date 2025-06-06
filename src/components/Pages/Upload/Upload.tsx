@@ -17,9 +17,9 @@ export const Upload = () => {
     }, [user]);
     return (
         <div className="page-default animated-opacity-4ms">
-            <PlaylistCreateForm/>
-            <TrackUploadForm/>
-            <ArtistUploadForm/>
+            {/*<PlaylistCreateForm/>*/}
+            {/*<TrackUploadForm/>*/}
+            {/*<ArtistUploadForm/>*/}
             {uploadedTracks &&
                 <Playlist playlist={playlistFromTracksArr(uploadedTracks,"Uploaded tracks")}></Playlist>
             }

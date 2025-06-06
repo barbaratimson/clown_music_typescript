@@ -5,6 +5,8 @@ import {RootState, useAppDispatch, useAppSelector} from "../../store";
 import {useSearchParams} from "react-router-dom";
 import Track from "../Track";
 import {motion, AnimatePresence} from "framer-motion";
+import {Skeleton} from "@mui/material";
+import Loader from "../UI/Loader";
 
 interface SongsListProps {
     tracks: Array<TrackT>
@@ -106,7 +108,8 @@ const SongsList = (({ tracks, playlist, style, hideControls}: SongsListProps) =>
             <div
                 ref={loaderRef}
                 className={`w-full ${dataToShow?.length !== tracks.length ? "h-[2400px]" : "h-0"}`}
-            />
+            >
+            </div>
         </>
     )
 })

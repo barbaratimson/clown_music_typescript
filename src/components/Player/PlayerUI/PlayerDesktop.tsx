@@ -175,20 +175,30 @@ export const PlayerDesktop = React.memo(
       <>
         <AnimatePresence>
           {!isOpen ? (
-            <div className="fixed flex flex-row items-center bottom-0 w-full p-2.5 bg-black bg-opacity-50 backdrop-blur-sm rounded-tl-xl rounded-tr-xl gap-10 transition-all duration-400 ease-in">
+            <motion.div initial={{bottom: 0, opacity:1}} exit={{bottom:"-100%", opacity:0}} transition={{ease:[1, 0, 0.37, 0.58], duration:0.3}} className="fixed flex flex-row items-center bottom-0 w-full p-2.5 bg-black bg-opacity-50 backdrop-blur-xl rounded-tl-xl rounded-tr-xl gap-10 transition-all duration-400 ease-in">
               {/* Track Info */}
               <div
-                className="flex flex-row items-center bg-white/15 w-[30%] whitespace-nowrap overflow-hidden text-ellipsis hover:bg-background-secondary-hover rounded-xl p-2"
+                className="flex flex-row items-center bg-black w-[30%] whitespace-nowrap overflow-hidden text-ellipsis relative rounded-xl cursor-pointer pr-2 border border-white/10"
                 onClick={() => setIsOpen(true)}
               >
+                <div className="absolute w-full h-full blur-[50px] overflow-hidden pointer-events-none">
                 <Cover
-                  className="min-w-[60px] h-[60px] rounded-xl overflow-hidden bg-white bg-opacity-19 shadow-[0_0_5px_3px_rgba(44,44,44,0.2)]"
+                    className="absolute !w-full !h-full"
+                    placeholder={<ImagePlaceholder size="medium" />}
+                    src={getCMImageUrl(currentSong.cover?.id, "50x50")}
+                    size="200x100"
+                    unWrapped
+                    imageSize="50x50"
+                />
+                </div>
+                <Cover
+                  className="!rounded-l !rounded-r-none overflow-hidden bg-white bg-opacity-19 shadow-[0_0_5px_3px_rgba(44,44,44,0.2)]"
                   placeholder={<ImagePlaceholder size="medium" />}
                   src={getCMImageUrl(currentSong.cover?.id, "120x120")}
-                  size="60x60"
+                  size="80x80"
                   imageSize="200x200"
                 />
-                <div className="flex flex-col mx-2.5 justify-center text-white font-medium overflow-hidden">
+                <div className="flex flex-col mx-2.5 justify-center text-white font-medium overflow-hidden p-2 z-[1]">
                   {currentSong.title ? (
                     <div className="flex flex-row items-center gap-1.5">
                       <div className="text-lg truncate">
@@ -229,8 +239,8 @@ export const PlayerDesktop = React.memo(
                     />
                   )}
                 </div>
-                <div className="flex items-center justify-center ml-auto">
-                  <div className="flex justify-center items-center w-[50px] border-r border-r-gray-100 border-opacity-10 h-full">
+                <div className="flex items-center justify-center ml-auto z-[1]">
+                  <div className="flex justify-center items-center w-[50px] border-r border-r-white border-opacity-40 h-full">
                     <LikeButton track={currentSong} />
                   </div>
                 </div>
@@ -325,26 +335,36 @@ export const PlayerDesktop = React.memo(
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           ) : (
             <motion.div
               key="music-player-modal"
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, y:"100%", x:"-100%", scale: 0.2}}
               animate={{
                 opacity: 1,
                 scale: 1,
+                y:0,
+                x:0,
                 transition: {
-                  ease: "easeOut", duration: 0.5
-                },
+                  opacity: { ease: "easeOut", duration: 0.3, delay: 0.2 },
+                  y: { ease: "easeIn", duration: 0.3},
+                  x: { ease: "easeIn", duration: 0.3},
+                  scale: { ease: [1, 0, 0.37, 0.58], duration: 0.3, delay:0.3 },
+                }
               }}
               exit={{
                 opacity: 0,
-                scale: 0.5,
+                scale: 0.2,
+                y:"100%",
+                x:"-100%",
                 transition: {
-                  ease: "easeIn", duration: 0.3
-                },
+                  opacity: { ease: "easeOut", duration: 0.3,delay:0.3 },
+                  y: { ease: "easeIn", duration: 0.3,delay:0.3  },
+                  x: { ease: "easeIn", duration: 0.3,delay:0.3  },
+                  scale: { ease: [1, 0, 0.37, 0.58], duration: 0.3},
+                }
               }}
-              className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50"
+              className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 overflow-hidden"
               onClick={() => setIsOpen(false)}
             >
               {/* Main Player Container */}
@@ -372,8 +392,8 @@ export const PlayerDesktop = React.memo(
                                 : 0.95,
                             x: 0,
                             transition: {
-                              scale: { ease: "easeInOut", duration: 0.2 },
-                              ease: "easeIn",
+                              ease: [.26,.2,0,1],
+                              duration: 0.3,
                             },
                           }}
                           exit={{
@@ -381,11 +401,9 @@ export const PlayerDesktop = React.memo(
                             x: -150,
                             scale: 0.95,
                             transition: {
+                              ease: "easeIn",
                               duration: 0.2,
                             },
-                          }}
-                          transition={{
-                            ease: "easeIn",
                           }}
                           onClick={
                             playerState.playing
