@@ -11,6 +11,7 @@ import trackInfoSlice from "./trackInfoSlice";
 import devLogSlice from "./devLogSlice"
 import playlistInfoSlice from "./playlistInfoSlice";
 import userSlice from "../components/Pages/User/userSlice";
+import playlistFilterSlice from "./playlistFilterSlice";
 
 export const store = configureStore({
     reducer:{
@@ -25,6 +26,7 @@ export const store = configureStore({
         devLog: devLogSlice,
         playlistInfo: playlistInfoSlice,
         user: userSlice,
+        playlistFilters: playlistFilterSlice
     }
 });
 

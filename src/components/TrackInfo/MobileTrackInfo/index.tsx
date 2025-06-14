@@ -121,8 +121,8 @@ const MobileTrackInfo = ({active, track, setActive}: MobileTrackInfoProps) => {
                 <>
                     <div className="track-info-mobile-about-wrapper">
                         <Cover placeholder={<ImagePlaceholder size="medium" />} src={getCMImageUrl(track.cover?.id,"120x120")} size="75x75" imageSize="200x200" />
-                        <div className="track-info-wrapper">
-                            <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
+                        <div className="track-info-wrapper p-[10px]">
+                            <div onClick={(e) => { e.stopPropagation() }} className="track-info-title mobile text-white">{track.title + `${track.version ? ` (${track.version})` : ""}`}</div>
                             <div style={{ marginTop: "5px" }} className="track-info-artist">{track.genre}</div>
                         </div>
                         <div className="track-info-back-button">

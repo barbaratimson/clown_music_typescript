@@ -37,7 +37,8 @@ const Playlist = ({playlist}: PlaylistProps) => {
     const playlistInfo = useRef(null)
     const [tracksFiltered, setTracksFiltered] = useState<TrackT[]>([])
     const [tracksSearchResult, setTracksSearchResult] = useState<TrackT[]>()
-    const [filterQuery, setFilterQuery] = useSearchParams("")
+    const filter = useAppSelector(state => state.playlistFilters.genres)
+    const filterAlbums = useAppSelector(state => state.playlistFilters.excludeAlbums)
     const [filterMenuActive, setFilterMenuActive] = useState(false)
     const [search, setSearch] = useState("")
     const showSearch = useAppSelector(state => state.playlistInfo.searchActive)
@@ -75,10 +76,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
     }
 
     useEffect(() => {
-        const filter = filterQuery.getAll("genres")
-        const filterAlbums = filterQuery.get("albums")
-
-        if (filterAlbums === "false") {
+        if (filterAlbums) {
             setTracksFiltered([...tracksFiltered, ...playlist.tracks.filter(track => track.album === null)])
         } else if (filter.includes("Unknown")) {
             setTracksFiltered([...tracksFiltered, ...playlist.tracks.filter(track => track.genre === undefined)])
@@ -89,7 +87,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
             setTracksSearchResult(undefined)
             setTracksFiltered([])
         }
-    }, [filterQuery, playlist.tracks]);
+    }, [filterAlbums, filter, playlist.tracks]);
 
     useEffect(() => {
         if (search === "") {
@@ -150,7 +148,7 @@ const Playlist = ({playlist}: PlaylistProps) => {
                             controls={
                                 <>
                                 <span className="playlist__filters">
-                                    {filterQuery.getAll("genres").map((genre) => (
+                                    {filter.map((genre) => (
                                         <a key={genre}
                                            className="playlist__filters_filter-title">{genre.charAt(0).toUpperCase() + genre.slice(1)}</a>
                                     ))}
