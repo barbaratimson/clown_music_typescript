@@ -79,6 +79,7 @@ const Track = ({track, queueFunc, hideControls}: TrackProps) => {
                     ${isCurrentSong ? "bg-white/25" : "bg-transparent hover:bg-white/15 hover:bg-opacity-6 hover:translate-x-1.5 sm:hover:bg-opacity-6 sm:hover:translate-x-1.5"}
                     active:transform-none
                 `}
+                onDragEnd={(e)=>{e.stopPropagation()}}
                 onClick={() => {
                     changeSong(track)
                 }}

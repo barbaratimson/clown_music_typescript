@@ -45,11 +45,11 @@ const PlaylistInfo = ({ playlist }: PlaylistInfoProps) => {
   const filterAlbums = useAppSelector(
     (state) => state.playlistFilters.excludeAlbums,
   );
-  const navigate = useNavigate();
   const setFilterAlbums = (excludeAlbums: boolean) =>
     dispatch(setPlaylistFilterAlbumsState(excludeAlbums));
   const setGenresToFilter = (genres: string[]) =>
     dispatch(setPlaylistFilterGenresState(genres));
+  const navigate = useNavigate();
   const currentUser = useAppSelector((state: RootState) => state.user);
   const [userPlaylists, setUserPlaylists] = useState<PlaylistT[]>();
   const [isMobile, setIsMobile] = useState(false);
@@ -116,17 +116,17 @@ const PlaylistInfo = ({ playlist }: PlaylistInfoProps) => {
               </div>
               <div className="track-info-mobile-control-label">Filter</div>
               {genresToFilter.length !== 0 || !filterAlbums || (
-                  <Button
-                    className="track-info-mobile-control-label additional"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setGenresToFilter([]);
-                      setFilterAlbums(false);
-                    }}
-                  >
-                    <FilterAltOff />
-                  </Button>
-                )}
+                <Button
+                  className="track-info-mobile-control-label additional"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setGenresToFilter([]);
+                    setFilterAlbums(false);
+                  }}
+                >
+                  <FilterAltOff />
+                </Button>
+              )}
             </>
           </div>
           {/*{playlist.owner.uid === currentUser.user?.account?.uid && playlist.kind !== 3 ? (*/}
@@ -190,20 +190,18 @@ const PlaylistFilters = ({
         <div
           className={`playlist-filter__button  ${filterAlbums ? "active" : ""}`}
           onClick={() => {
-           setFilterAlbums(!filterAlbums)
+            setFilterAlbums(!filterAlbums);
           }}
         >
           <div className="playlist-filter__button_text">Exclude Albums</div>
         </div>
-        {genres?.map((genreRender) => (
+        {!filterAlbums && genres?.map((genreRender) => (
           <div
             key={genreRender.genre}
             className={`playlist-filter__button  ${genresToFilter.includes(genreRender.genre) ? "active" : ""}`}
             onClick={() => {
-              genresToFilter?.includes(genreRender.genre) &&
-              genreRender.genre
-                ? // setFilterQuery({ genre: [genreRender.genre })
-                  setGenresToFilter(genresToFilter?.concat(genreRender.genre))
+              !genresToFilter?.includes(genreRender.genre)
+                ? setGenresToFilter([...genresToFilter, genreRender.genre])
                 : setGenresToFilter(
                     genresToFilter.filter((elem) => elem !== genreRender.genre),
                   );

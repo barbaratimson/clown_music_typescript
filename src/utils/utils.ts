@@ -1,8 +1,17 @@
 import {CoverT, PlaylistT, TrackT, TrackType} from "./types/types";
+import {toast} from "react-toastify";
+import {CustomToast, CustomTrackToast} from "../components/UI/CustomToast/CustomToast";
 
 export function addAlpha(color:string, opacity:number) {
     opacity = Math.round(Math.min(Math.max(opacity ?? 1, 0), 1) * 255);
     return color + opacity.toString(16).toUpperCase();
+}
+export const messageToast = (msg:string, desc?: string) => {
+    toast(CustomToast,{className:"rounded-2xl bg-[rgb(145,145,145)]", data:{msg:msg, description: desc}, hideProgressBar:true, closeButton:false, autoClose:1000})
+}
+
+export const trackToast = (track:TrackT, type:"trackLiked" | "trackRemoved") => {
+    toast(CustomTrackToast,{className:"rounded-2xl p-2 bg-[rgb(145,145,145)]", data:{track:track, type: type}, hideProgressBar:true, closeButton:false, autoClose:1500})
 }
 
 

@@ -6,6 +6,7 @@ import {Favorite, FavoriteBorder} from "@mui/icons-material"
 import {useState} from "react"
 import Loader from "../UI/Loader"
 import './style.scss'
+import {trackToast} from "../../utils/utils";
 
 interface LikeButtonProps {
     track:TrackT,
@@ -54,6 +55,7 @@ const LikeButton = ({track, className, silent}:LikeButtonProps) => {
                             </div>
                         ) : (
                             <div className={`track-controls-button ${className}`}
+                                 onClick={()=>{trackToast(track, "trackLiked")}}
                                  // onClick={()=>{likeSong(track).then((response) => updateLikedSongs("liked"))}}
                             >
                                 <FavoriteBorder/>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, IconButton, Skeleton } from "@mui/material";
 import Slider from "@mui/material/Slider";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion, Reorder } from "framer-motion";
 import {
-  ArrowBack,
   FastForwardRounded,
   FastRewindRounded,
   PauseRounded,
@@ -15,22 +14,21 @@ import {
   VolumeOff,
   VolumeUp,
 } from "@mui/icons-material";
-import ListIcon from "@mui/icons-material/List";
 import { RootState, useAppDispatch, useAppSelector } from "../../../store";
 import { playerStart, playerStop, setRepeat, setShuffle } from "../playerSlice";
-import { TrackT } from "../../../utils/types/types";
-import { setOpeningState } from "../../../store/playingQueueSlice";
+import { QueueT, TrackT } from "../../../utils/types/types";
+import { initQueue } from "../../../store/playingQueueSlice";
 import Cover, { ImagePlaceholder } from "../../UI/Cover";
-import Track, { PositionInChart } from "../../Track";
+import Track from "../../Track";
 import ArtistName from "../../ArtistName";
 import LikeButton from "../../LikeButton";
-import { secToMinutesAndSeconds } from "../../../utils/utils";
+import {messageToast, secToMinutesAndSeconds} from "../../../utils/utils";
 import SeekSlider from "./SeekSlider";
 import { getCMImageUrl } from "../../../utils/cmApiRequsts";
-import { BiArrowToTop } from "react-icons/bi";
 import PlayButton from "./PlayButton";
-import EqualizerIcon from "../../../assets/EqualizerIcon";
 import Loader from "../../UI/Loader";
+import {toast, ToastContainer} from "react-toastify";
+import {CustomToast} from "../../UI/CustomToast/CustomToast";
 
 interface PlayerPropsT {
   currentSong: TrackT;
@@ -56,11 +54,10 @@ export const PlayerDesktop = React.memo(
   }: PlayerPropsT) => {
     const dispatch = useAppDispatch();
     const playerState = useAppSelector((state: RootState) => state.player);
-    const queueOpen = useAppSelector(
-      (state: RootState) => state.playingQueue.queue.queueOpen,
-    );
+    const setPlayingQueue = (queue: QueueT) => dispatch(initQueue(queue));
+    const [direction, setDirection] = useState<string>();
     const queue = useAppSelector(
-      (state: RootState) => state.playingQueue.queue.queueTracks,
+      (state: RootState) => state.playingQueue.queue,
     );
 
     const [isOpen, setIsOpen] = useState(false);
@@ -80,10 +77,6 @@ export const PlayerDesktop = React.memo(
     );
     const startPlayerFunc = useCallback(
       () => dispatch(playerStart()),
-      [dispatch],
-    );
-    const setQueueOpen = useCallback(
-      (open: boolean) => dispatch(setOpeningState(open)),
       [dispatch],
     );
 
@@ -129,36 +122,66 @@ export const PlayerDesktop = React.memo(
       [changeVolume],
     );
 
-    // Memoized track list to prevent unnecessary re-renders
+    const handleReorder = (tracks: TrackT[]) => {
+      if (tracks.indexOf(currentSong) === tracks.length - 1 || tracks.length <= 2) {
+        const a = setTimeout(() => {
+          messageToast("Playing track can`t be last!")
+          setPlayingQueue({
+            ...queue,
+            queueTracks: [...queue.queueTracks] // revert to previous order
+          });
+        }, 300);
+        return () => clearTimeout(a)
+      } else {
+        setPlayingQueue({
+          ...queue,
+          queueTracks: tracks
+        });
+      }
+    };
+
     const renderQueue = useMemo(
       () => (
-        <AnimatePresence>
-          {queue?.map((song, index) => (
-            <motion.div
-              key={`${song.id}-${index}`} // Added index to key for better stability
+        <Reorder.Group
+          axis="y"
+          className="flex flex-col"
+          as="div"
+          values={queue.queueTracks}
+          layoutScroll
+          onReorder={(e) => {
+            handleReorder(e);
+          }}
+        >
+          {queue.queueTracks.map((item, index) => (
+            <Reorder.Item
               custom={index}
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: (i) => ({
+                visible: {
                   opacity: 1,
                   y: 0,
                   transition: {
-                    // delay: i * 0.05,
                     duration: 0.2,
                     ease: "easeOut",
                   },
-                }),
-                exit: { opacity: 0, x: -50 },
+                },
+                exit: { opacity: 0 },
               }}
+              drag={item.id !== currentSong.id}
+              whileDrag={{ pointerEvents: "none" }}
               initial="hidden"
               animate="visible"
               exit="exit"
               layout
+              as="div"
+              className="mt-[10px] pr-2"
+              key={item.id}
+              value={item}
             >
-              <Track track={song} />
-            </motion.div>
+              <Track track={item} />
+            </Reorder.Item>
           ))}
-        </AnimatePresence>
+        </Reorder.Group>
       ),
       [queue],
     );
@@ -175,21 +198,26 @@ export const PlayerDesktop = React.memo(
       <>
         <AnimatePresence>
           {!isOpen ? (
-            <motion.div initial={{bottom: 0, opacity:1}} exit={{bottom:"-100%", opacity:0}} transition={{ease:[1, 0, 0.37, 0.58], duration:0.3}} className="fixed flex flex-row items-center bottom-0 w-full p-2.5 bg-black bg-opacity-50 backdrop-blur-xl rounded-tl-xl rounded-tr-xl gap-10 transition-all duration-400 ease-in">
+            <motion.div
+              initial={{ bottom: 0, opacity: 1 }}
+              exit={{ bottom: "-100%", opacity: 0 }}
+              transition={{ ease: [1, 0, 0.37, 0.58], duration: 0.3 }}
+              className="fixed flex flex-row items-center bottom-0 w-full p-2.5 bg-black bg-opacity-50 backdrop-blur-xl rounded-tl-xl rounded-tr-xl gap-10 transition-all duration-400 ease-in"
+            >
               {/* Track Info */}
               <div
                 className="flex flex-row items-center bg-black w-[30%] whitespace-nowrap overflow-hidden text-ellipsis relative rounded-xl cursor-pointer pr-2 border border-white/10"
                 onClick={() => setIsOpen(true)}
               >
                 <div className="absolute w-full h-full blur-[50px] overflow-hidden pointer-events-none">
-                <Cover
+                  <Cover
                     className="absolute !w-full !h-full"
                     placeholder={<ImagePlaceholder size="medium" />}
                     src={getCMImageUrl(currentSong.cover?.id, "50x50")}
                     size="200x100"
                     unWrapped
                     imageSize="50x50"
-                />
+                  />
                 </div>
                 <Cover
                   className="!rounded-l !rounded-r-none overflow-hidden bg-white bg-opacity-19 shadow-[0_0_5px_3px_rgba(44,44,44,0.2)]"
@@ -339,30 +367,34 @@ export const PlayerDesktop = React.memo(
           ) : (
             <motion.div
               key="music-player-modal"
-              initial={{ opacity: 0, y:"100%", x:"-100%", scale: 0.2}}
+              initial={{ opacity: 0, y: "100%", x: "-100%", scale: 0.2 }}
               animate={{
                 opacity: 1,
                 scale: 1,
-                y:0,
-                x:0,
+                y: 0,
+                x: 0,
                 transition: {
                   opacity: { ease: "easeOut", duration: 0.3, delay: 0.2 },
-                  y: { ease: "easeIn", duration: 0.3},
-                  x: { ease: "easeIn", duration: 0.3},
-                  scale: { ease: [1, 0, 0.37, 0.58], duration: 0.3, delay:0.3 },
-                }
+                  y: { ease: "easeIn", duration: 0.3 },
+                  x: { ease: "easeIn", duration: 0.3 },
+                  scale: {
+                    ease: [1, 0, 0.37, 0.58],
+                    duration: 0.3,
+                    delay: 0.3,
+                  },
+                },
               }}
               exit={{
                 opacity: 0,
                 scale: 0.2,
-                y:"100%",
-                x:"-100%",
+                y: "100%",
+                x: "-100%",
                 transition: {
-                  opacity: { ease: "easeOut", duration: 0.3,delay:0.3 },
-                  y: { ease: "easeIn", duration: 0.3,delay:0.3  },
-                  x: { ease: "easeIn", duration: 0.3,delay:0.3  },
-                  scale: { ease: [1, 0, 0.37, 0.58], duration: 0.3},
-                }
+                  opacity: { ease: "easeOut", duration: 0.3, delay: 0.3 },
+                  y: { ease: "easeIn", duration: 0.3, delay: 0.3 },
+                  x: { ease: "easeIn", duration: 0.3, delay: 0.3 },
+                  scale: { ease: [1, 0, 0.37, 0.58], duration: 0.3 },
+                },
               }}
               className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50 overflow-hidden"
               onClick={() => setIsOpen(false)}
@@ -383,7 +415,11 @@ export const PlayerDesktop = React.memo(
                         <motion.div
                           key={currentSong.id}
                           className="w-[384px] h-[384px] rounded-xl overflow-hidden bg-white/20 cursor-pointer relative"
-                          initial={{ opacity: 0, scale: 0.95, x: 150 }}
+                          initial={{
+                            opacity: 0,
+                            scale: 0.95,
+                            x: direction === "backward" ? -150 : 150,
+                          }}
                           animate={{
                             opacity: 1,
                             scale:
@@ -392,13 +428,13 @@ export const PlayerDesktop = React.memo(
                                 : 0.95,
                             x: 0,
                             transition: {
-                              ease: [.26,.2,0,1],
+                              ease: [0.26, 0.2, 0, 1],
                               duration: 0.3,
                             },
                           }}
                           exit={{
                             opacity: 0,
-                            x: -150,
+                            x: direction === "backward" ? 150 : -150,
                             scale: 0.95,
                             transition: {
                               ease: "easeIn",
@@ -529,7 +565,10 @@ export const PlayerDesktop = React.memo(
                         <Shuffle />
                       </div>
                       <IconButton
-                        onClick={skipBack}
+                        onClick={() => {
+                          skipBack();
+                          setDirection("backward");
+                        }}
                         className="p-0 mx-1 !text-white text-[2.5rem]"
                         aria-label="previous song"
                       >
@@ -543,7 +582,10 @@ export const PlayerDesktop = React.memo(
                         onKeyDown={(e: Event) => e.preventDefault()}
                       />
                       <IconButton
-                        onClick={skipForward}
+                        onClick={() => {
+                          skipForward();
+                          setDirection("forward");
+                        }}
                         className="p-0 mx-1 !text-white text-[2.5rem]"
                         aria-label="next song"
                       >
@@ -595,13 +637,7 @@ export const PlayerDesktop = React.memo(
                   className="flex flex-col justify-start w-[400px] h-auto overflow-x-hidden overflow-y-scroll"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <motion.div
-                    className="flex flex-col gap-2.5 pr-2.5"
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    {renderQueue}
-                  </motion.div>
+                  {renderQueue}
                 </div>
               </div>
 

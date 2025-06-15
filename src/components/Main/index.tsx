@@ -24,6 +24,7 @@ import {setIsLoading} from "../Player/playerSlice";
 import {AppAuth} from "../Pages/AppAuth/AppAuth";
 import TrackInfo from "../TrackInfo/TrackInfo";
 import {setTrackInfoActiveState} from "../../store/trackInfoSlice";
+import {ToastContainer} from "react-toastify";
 
 const QueueMobile = lazy(() => import("../Queue/QueueMobile"))
 const link = process.env.REACT_APP_YMAPI_LINK
@@ -57,6 +58,18 @@ const Main = () => {
             <Page isMobile={isMobile}/>
             <Player/>
             <Message/>
+            <ToastContainer
+                position="bottom-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             {!isMobile ? (
                 <>
                     <Fade in={queueOpen} unmountOnExit>
